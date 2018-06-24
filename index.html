@@ -300,7 +300,7 @@
       
         
           
-            <h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><pre><code>安装好Git和node.js,然后配置系统环境变量，我用nvm安装node.js时自动配好了环境变量，记得配Git的环境变量[https://blog.csdn.net/banqgg/article/details/52983827](https://blog.csdn.net/banqgg/article/details/52983827 &quot;请看这里&quot;)
+            <h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><pre><code>安装好Git和node.js,然后配置系统环境变量，我用nvm安装node.js时自动配好了环境变量，记得配Git的环境变量[http://blog.csdn.net/banqgg/article/details/52983827](http://blog.csdn.net/banqgg/article/details/52983827)
 </code></pre><h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><pre><code>新建文件夹存放博客内容和相关配置文件，例如在D盘建立Blog文件夹，进到文件夹，右键Git Bash,安装hexo
 npm install -g hexo-cli
 </code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><pre><code>hexo的初始化
@@ -319,12 +319,20 @@ hexo server/s 在 http://localhost:4000/查看
 </li>
 <li><p>添加密钥到Github<br>  <code>[https://github.com/settings/keys](https://github.com/settings/keys)下add new ssh key</code></p>
 </li>
-<li>测试连接<br>  <code>ssh git@github.com</code><h1 id="第八步"><a href="#第八步" class="headerlink" title="第八步"></a>第八步</h1>  修改D:\Blog下的_config.yml配置文件<br>  deploy:<pre><code>type: git
-repo: ssh://git@github.com/username/username.github.io
-branch: master
-</code></pre>   注意冒号后的空格<h1 id="第九步"><a href="#第九步" class="headerlink" title="第九步"></a>第九步</h1>  安装Git包<br>  npm install hexo-deployer-git –save<br>  如果你是第一次部署的话可能会出现fatal: Not a git repository<br>  此时初始化 git init<h1 id="第十步"><a href="#第十步" class="headerlink" title="第十步"></a>第十步</h1>  部署 hexo deploy/d</li>
+<li>测试连接<br>  <code>ssh git@github.com</code></li>
 </ul>
-
+<h1 id="第八步"><a href="#第八步" class="headerlink" title="第八步"></a>第八步</h1><pre><code>修改D:\Blog下的_config.yml配置文件
+deploy:
+    type: git
+    repo: ssh://git@github.com/username/username.github.io
+    branch: master
+ 注意冒号后的空格
+</code></pre><h1 id="第九步"><a href="#第九步" class="headerlink" title="第九步"></a>第九步</h1><pre><code>安装Git包
+npm install hexo-deployer-git --save
+如果你是第一次部署的话可能会出现fatal: Not a git repository
+此时初始化 git init
+</code></pre><h1 id="第十步"><a href="#第十步" class="headerlink" title="第十步"></a>第十步</h1><pre><code>部署 hexo deploy/d
+</code></pre>
           
         
       
