@@ -281,8 +281,7 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2018/06/24/First/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/24/First/" itemprop="commentCount"></span>
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/06/24/First/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -406,12 +405,9 @@ npm install hexo-deployer-git --save
 
   
     <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
+      
+        <div id="gitment-container"></div>
+      
     </div>
 
   
@@ -664,26 +660,6 @@ npm install hexo-deployer-git --save
 
   
 
-    
-      <script id="dsq-count-scr" src="https://comments.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://www.xuchunfa.cn/2018/06/24/First/';
-          this.page.identifier = '2018/06/24/First/';
-          this.page.title = 'Hexo + Github部署网站关键点';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://comments.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
 
 
 
@@ -696,6 +672,10 @@ npm install hexo-deployer-git --save
   
 
 
+
+
+
+  
 
 
 
