@@ -279,6 +279,346 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/13/variable/" itemprop="url">成员变量和局部变量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T13:29:01+08:00">
+                2018-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/变量/" itemprop="url" rel="index">
+                    <span itemprop="name">变量</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/13/variable/" class="leancloud_visitors" data-flag-title="成员变量和局部变量">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>局部变量保存在栈内存中，随方法的消失而消失;成员变量存储在堆中的对象里，由垃圾回收器负责回收。</p>
+</li>
+<li><p>包装类数据Integer、String等等存在于堆中。</p>
+</li>
+<li><p>JAVA的自动装箱拆箱</p>
+<p>  装箱：</p>
+<pre><code>Integer a = 99;
+(实际执行Integer.valueof(a))
+</code></pre><p>  拆箱：</p>
+<pre><code>int b = a;(实际执行a.intValue())
+</code></pre><p>  对于Integer:</p>
+<pre><code>在(-128,+128]之间有固定的256个值是为了避免多次创建对象，如果值在这个范围里就直接返回Integer对象
+</code></pre></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/string/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/13/string/" itemprop="url">字符串引用、字符串常量池以及比较</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T13:09:00+08:00">
+                2018-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/字符串/" itemprop="url" rel="index">
+                    <span itemprop="name">字符串</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/13/string/" class="leancloud_visitors" data-flag-title="字符串引用、字符串常量池以及比较">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>String s1 = “xuchunfa” 这个对象存放在常量池中</li>
+<li>Stirng s2 = new String(“xuchunfa”) 这个对象存放在堆里面。具体过程：<br>  <code>先去常量池去找，看有没有&quot;xuchunfa&quot;对象，如果没有则在常量池里面创建一个对象，如果有的话则在堆里面再创建&quot;xuchunfa&quot;对象的拷贝对象</code></li>
+<li><p>即equls()相同的字符串，在常量池中只有一份，在堆中可以有多份</p>
+</li>
+<li><p>String s1 = “xuchunfa”的理解：</p>
+<p>  <code>不能肯定的说创建了一个&quot;xuchunfa&quot;的对象，因为常量池中可能已经存在。只能肯定的说创建了指向&quot;xuchunfa&quot;对象的引用变量。new() 方法才是显示地创建一个对象</code></p>
+</li>
+</ul>
+<h2 id="字符串对象的不可变性"><a href="#字符串对象的不可变性" class="headerlink" title="字符串对象的不可变性"></a>字符串对象的不可变性</h2><ul>
+<li>当字符串在堆中被分配内容时，它就是不可变的，任何String的方法无法改变字符串本身。但是它创建的引用变量可以指向新的String对象。如图：</li>
+</ul>
+<p><img src="https://i.imgur.com/k6qoZRx.png" alt=""></p>
+<ul>
+<li><p>字符串不可变的原因？</p>
+<p>  <code>String s1 = &quot;as&quot;;
+   String s2 = &quot;as&quot;两句话创建了一个&quot;as&quot;对象，两个引用。如果s1指向的&quot;as&quot;对象发生了变化，那么s2原本指向的对象就会找不到了。</code></p>
+</li>
+</ul>
+<p>参考文档一：<a href="https://www.cnblogs.com/xiohao/p/4296088.html" title="参考文档一" target="_blank" rel="noopener">https://www.cnblogs.com/xiohao/p/4296088.html</a></p>
+<p>参考文档二：<a href="https://blog.csdn.net/qunzer/article/details/25157309" target="_blank" rel="noopener">https://blog.csdn.net/qunzer/article/details/25157309</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/12/Algorithm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1458,7 +1798,7 @@ npm install hexo-deployer-git --save
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1469,7 +1809,7 @@ npm install hexo-deployer-git --save
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
