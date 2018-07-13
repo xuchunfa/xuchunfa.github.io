@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？  就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i++">
+<meta name="description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？    就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i+">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字符串转整型">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/12/Algorithm/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？  就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i++">
+<meta property="og:description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？    就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i+">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-13T03:20:43.594Z">
+<meta property="og:updated_time" content="2018-07-13T08:59:00.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符串转整型">
-<meta name="twitter:description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？  就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i++">
+<meta name="twitter:description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？    就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i+">
 
 
 
@@ -401,10 +401,40 @@
 <li>字符串就只有正负号，即长度为1抛出异常</li>
 </ul>
 <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ul>
-<li><p>怎么判断第一个字符是非数字符？<br>  <code>就只考虑firstChar &lt; &#39;0&#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i++
+<li><p>怎么判断第一个字符是非数字符？</p>
+<p>   <code>就只考虑firstChar &lt; &#39;0&#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i++
 如果firstChar &gt; &#39;0&#39; 那么while循环从第一个开始(i=0)</code></p>
 </li>
-<li><p>怎么实现’1’-&gt; 1 的转换？<br>  <code>ch-&#39;0&#39;实现</code></p>
+<li><p>怎么实现’1’-&gt; 1 的转换？</p>
+<p>   <code>ch-&#39;0&#39;实现</code></p>
+</li>
+<li><p>怎么设置limit?</p>
+<p>  错误：</p>
+<p>  正号时：limit = Integer.MAX_VALUE；</p>
+<p>  负号时：limit = -Integer.MIN_VALUE；</p>
+<p>  条件：result*10 + digit &gt; limit</p>
+<p>  计算：result = result*10 + digit</p>
+<p>  <strong>limit的类型为int,越界了！！！</strong></p>
+</li>
+</ul>
+<pre><code>正确：
+
+正号时：limit = -Integer.MAX_VALUE；
+
+负号时：limit = Integer.MIN_VALUE；
+
+条件：result*10 - digit &lt; limit 为true时 越界
+
+计算：result = result*10 - digit
+</code></pre><ul>
+<li><p>容易忽略的地方？</p>
+<p>  例如：str = “21474836471”</p>
+<p>  方法：</p>
+<p>  int flag = limit/radix;</p>
+<p>  if(result &lt; flag){</p>
+<pre><code>**越界**
+</code></pre><p>  }</p>
+<p>  result = result*radix;</p>
 </li>
 </ul>
 
