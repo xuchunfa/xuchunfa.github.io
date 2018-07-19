@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？public class OptDuplication {  //哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n) boolean findDup1(int[] nums,int len,int[] duplication){      if(nums == null || len &amp;lt;= 0){">
+<meta name="description" content="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？核心思想： 1.数组下标 = 数组元素 2.目标交换：num[i] = m     swap: m  num[m] 直到 num[i] == i public class OptDuplication {  //哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n) boolean findDup1(int[] num">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数组中的重复数字">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？public class OptDuplication {  //哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n) boolean findDup1(int[] nums,int len,int[] duplication){      if(nums == null || len &amp;lt;= 0){">
+<meta property="og:description" content="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？核心思想： 1.数组下标 = 数组元素 2.目标交换：num[i] = m     swap: m  num[m] 直到 num[i] == i public class OptDuplication {  //哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n) boolean findDup1(int[] num">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-18T09:24:18.146Z">
+<meta property="og:updated_time" content="2018-07-19T12:06:19.968Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数组中的重复数字">
-<meta name="twitter:description" content="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？public class OptDuplication {  //哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n) boolean findDup1(int[] nums,int len,int[] duplication){      if(nums == null || len &amp;lt;= 0){">
+<meta name="twitter:description" content="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？核心思想： 1.数组下标 = 数组元素 2.目标交换：num[i] = m     swap: m  num[m] 直到 num[i] == i public class OptDuplication {  //哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n) boolean findDup1(int[] num">
 
 
 
@@ -392,7 +392,11 @@
       
 
       
-        <h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><pre><code>public class OptDuplication {
+        <h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
+<p>1.数组下标 = 数组元素</p>
+<p>2.目标交换：num[i] = m </p>
+<p>   swap: m <---> num[m] 直到 num[i] == i</---></p>
+<pre><code>public class OptDuplication {
 
 //哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)
 boolean findDup1(int[] nums,int len,int[] duplication){
@@ -457,7 +461,68 @@ boolean findDup(int[] nums,int len,int[] duplication){
     System.out.println(&quot;没有重复数字&quot;);
     return false;
 }
-</code></pre>
+</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
+<p>1.二分法的运用，加入了统计数字个数的方法</p>
+<p>2.循环结束条件：start == end</p>
+<pre><code>public class DuplicationVersion {
+
+//时间复杂度:O(nlogn) 空间复杂度:O(1)
+boolean findDup(int[] nums,int len,int[] duplication){
+
+    if(nums == null || len &lt;= 0){
+        System.out.println(&quot;数组必须存在且不能为空!&quot;);
+        return  false;
+    }
+
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {
+            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);
+            return false;
+        }
+    }
+
+    int start = 1;
+    int end = len-1;
+    int middle;
+    while(start &lt;=  end){
+
+        middle = (start + end)/2;
+        int number = calNum(nums,len,start,middle);
+
+        //结束条件
+        if(start == end){
+            if(number &gt; 1){
+                duplication[0] = start;
+                return true;
+            }else{
+                break;
+            }
+        }
+
+        if(middle - start + 1 &lt; number){
+            end = middle;
+        }else {
+            start = middle + 1;
+        }
+    }
+
+    System.out.println(&quot;没有重复数字&quot;);
+    return false;
+}
+
+private int calNum(int[] nums, int len, int start, int end) {
+    int count = 0;
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){
+            count++;
+        }
+    }
+    return count;
+}
+ }
+</code></pre><p>参考文档：</p>
+<p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>
+
       
     </div>
     
@@ -490,6 +555,10 @@ boolean findDup(int[] nums,int len,int[] duplication){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/18/java并发底层原理/" rel="prev" title="java并发底层原理">
+                java并发底层原理 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -577,7 +646,7 @@ boolean findDup(int[] nums,int len,int[] duplication){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -648,7 +717,7 @@ boolean findDup(int[] nums,int len,int[] duplication){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><span class="nav-number">1.</span> <span class="nav-text">长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><span class="nav-number">1.</span> <span class="nav-text">长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><span class="nav-number">2.</span> <span class="nav-text">长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</span></a></li></ol></div>
             
 
           </div>
