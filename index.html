@@ -383,9 +383,7 @@
       
         
           
-            <ul>
-<li><p>反转链表？</p>
-<pre><code>public class VerseLinkPrint {
+            <h4 id="反转链表？"><a href="#反转链表？" class="headerlink" title="反转链表？"></a>反转链表？</h4><pre><code>public class VerseLinkPrint {
 
 private ListNode head;
 
@@ -460,9 +458,7 @@ public static void main(String[] args){
     link.print();
     }
 }
-</code></pre></li>
-</ul>
-
+</code></pre>
           
         
       
@@ -614,10 +610,7 @@ public static void main(String[] args){
       
         
           
-            <ul>
-<li>从尾到头打印链表？</li>
-</ul>
-<p><strong>核心思想：</strong>栈和递归。</p>
+            <h4 id="从尾到头打印链表？"><a href="#从尾到头打印链表？" class="headerlink" title="从尾到头打印链表？"></a>从尾到头打印链表？</h4><p><strong>核心思想：</strong>栈和递归。</p>
 <pre><code>public class VerseLink {
 
 private ListNode head;
@@ -853,116 +846,115 @@ public static void main(String[] args){
       
         
           
-            <ul>
-<li><p>求链表中的倒数第k个结点？</p>
-<p>  public class Link {</p>
-<p>  private ListNode head;</p>
-<p>  class ListNode{</p>
-<pre><code>private int data;
+            <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {
 
-ListNode next;
+private ListNode head;
 
-public ListNode(int data) {
-    this.data = data;
-    this.next = null;
-}
+class ListNode{
 
-public void addNode(ListNode newNode){
+    private int data;
 
-    //相当于尾插法
-    if(this.next == null){
-        this.next = newNode;
-    }else {
-        this.next.addNode(newNode);
+    ListNode next;
+
+    public ListNode(int data) {
+        this.data = data;
+        this.next = null;
     }
-}
 
-public void printNode(){
-    System.out.print(this.data + &quot;--&gt;&quot;);
-    if(this.next != null){
-        this.next.printNode();
-    }
-    }
-}
+    public void addNode(ListNode newNode){
 
-//添加链表节点
-public void add(int data){
-ListNode node = new ListNode(data);
+        //相当于尾插法
+        if(this.next == null){
+            this.next = newNode;
+        }else {
+            this.next.addNode(newNode);
+        }
+    }
+
+    public void printNode(){
+        System.out.print(this.data + &quot;--&gt;&quot;);
+        if(this.next != null){
+            this.next.printNode();
+        }
+        }
+    }
+
+    //添加链表节点
+    public void add(int data){
+    ListNode node = new ListNode(data);
+        if(this.head == null){
+            this.head = node;
+        }else {
+            this.head.addNode(node);
+        }
+    }
+
+    //打印链表节点
+        public void print(){
     if(this.head == null){
-        this.head = node;
+        System.out.println(&quot;链表为空&quot;);
     }else {
-        this.head.addNode(node);
+        this.head.printNode();
+        System.out.println();
     }
-}
+    }
 
-//打印链表节点
-    public void print(){
-if(this.head == null){
-    System.out.println(&quot;链表为空&quot;);
-}else {
-    this.head.printNode();
-    System.out.println();
-}
-}
+    //链表中的倒数第 K 个结点
+    public ListNode FindKthToTail(ListNode head,int k){
+    int len = 0;
+    int i = 0;
+    ListNode counter = head;
+    ListNode p = head;
+    ListNode pre = head;
 
-//链表中的倒数第 K 个结点
-public ListNode FindKthToTail(ListNode head,int k){
-int len = 0;
-int i = 0;
-ListNode counter = head;
-ListNode p = head;
-ListNode pre = head;
+    if(k &lt;= 0){
+        System.out.println(&quot;请输入自然数k！&quot;);
+        //-1代表非正常退出
+        System.exit(-1);
+    }
 
-if(k &lt;= 0){
-    System.out.println(&quot;请输入自然数k！&quot;);
-    //-1代表非正常退出
-    System.exit(-1);
-}
+    if(head == null) {
+        System.out.println(&quot;链表不能为空！&quot;);
+        System.exit(-1);
+    }
 
-if(head == null) {
-    System.out.println(&quot;链表不能为空！&quot;);
-    System.exit(-1);
-}
+    while(counter != null){
+        len++;
+        counter = counter.next;
+    }
 
-while(counter != null){
-    len++;
-    counter = counter.next;
-}
+    if(k &gt; len){
+        System.out.println(&quot;k值大于了链表长度！&quot;);
+        System.exit(-1);
+    }
 
-if(k &gt; len){
-    System.out.println(&quot;k值大于了链表长度！&quot;);
-    System.exit(-1);
-}
+    //先走k步
+    while (i &lt; k){
+        pre = pre.next;
+        i++;
+    }
 
-//先走k步
-while (i &lt; k){
-    pre = pre.next;
-    i++;
-}
+    while (pre != null){
+        p = p.next;
+        pre = pre.next;
+    }
 
-while (pre != null){
-    p = p.next;
-    pre = pre.next;
-}
+    return p;
+    }
 
-return p;
-}
+    public static void main(String[] args){
+    Link link = new Link();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.print();
 
-public static void main(String[] args){
-Link link = new Link();
-link.add(1);
-link.add(2);
-link.add(3);
-link.print();
-
-ListNode node = link.FindKthToTail(link.head,4);
-node.next = null;
-node.printNode();
-}
-}
-</code></pre></li>
-</ul>
-
+    ListNode node = link.FindKthToTail(link.head,4);
+    node.next = null;
+    node.printNode();
+    }
+    }
+</code></pre>
           
         
       

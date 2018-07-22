@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="求链表中的倒数第k个结点？   public class Link {   private ListNode head;   class ListNode{ private int data;  ListNode next;  public ListNode(int data) {     this.data = data;     this.next = null; }  public voi">
+<meta name="description" content="求链表中的倒数第k个结点？public class Link {  private ListNode head;  class ListNode{      private int data;      ListNode next;      public ListNode(int data) {         this.data = data;         this.next = null">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链表中倒数第k个结点">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="求链表中的倒数第k个结点？   public class Link {   private ListNode head;   class ListNode{ private int data;  ListNode next;  public ListNode(int data) {     this.data = data;     this.next = null; }  public voi">
+<meta property="og:description" content="求链表中的倒数第k个结点？public class Link {  private ListNode head;  class ListNode{      private int data;      ListNode next;      public ListNode(int data) {         this.data = data;         this.next = null">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-22T06:35:14.986Z">
+<meta property="og:updated_time" content="2018-07-22T11:56:03.226Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表中倒数第k个结点">
-<meta name="twitter:description" content="求链表中的倒数第k个结点？   public class Link {   private ListNode head;   class ListNode{ private int data;  ListNode next;  public ListNode(int data) {     this.data = data;     this.next = null; }  public voi">
+<meta name="twitter:description" content="求链表中的倒数第k个结点？public class Link {  private ListNode head;  class ListNode{      private int data;      ListNode next;      public ListNode(int data) {         this.data = data;         this.next = null">
 
 
 
@@ -392,116 +392,115 @@
       
 
       
-        <ul>
-<li><p>求链表中的倒数第k个结点？</p>
-<p>  public class Link {</p>
-<p>  private ListNode head;</p>
-<p>  class ListNode{</p>
-<pre><code>private int data;
+        <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {
 
-ListNode next;
+private ListNode head;
 
-public ListNode(int data) {
-    this.data = data;
-    this.next = null;
-}
+class ListNode{
 
-public void addNode(ListNode newNode){
+    private int data;
 
-    //相当于尾插法
-    if(this.next == null){
-        this.next = newNode;
-    }else {
-        this.next.addNode(newNode);
+    ListNode next;
+
+    public ListNode(int data) {
+        this.data = data;
+        this.next = null;
     }
-}
 
-public void printNode(){
-    System.out.print(this.data + &quot;--&gt;&quot;);
-    if(this.next != null){
-        this.next.printNode();
-    }
-    }
-}
+    public void addNode(ListNode newNode){
 
-//添加链表节点
-public void add(int data){
-ListNode node = new ListNode(data);
+        //相当于尾插法
+        if(this.next == null){
+            this.next = newNode;
+        }else {
+            this.next.addNode(newNode);
+        }
+    }
+
+    public void printNode(){
+        System.out.print(this.data + &quot;--&gt;&quot;);
+        if(this.next != null){
+            this.next.printNode();
+        }
+        }
+    }
+
+    //添加链表节点
+    public void add(int data){
+    ListNode node = new ListNode(data);
+        if(this.head == null){
+            this.head = node;
+        }else {
+            this.head.addNode(node);
+        }
+    }
+
+    //打印链表节点
+        public void print(){
     if(this.head == null){
-        this.head = node;
+        System.out.println(&quot;链表为空&quot;);
     }else {
-        this.head.addNode(node);
+        this.head.printNode();
+        System.out.println();
     }
-}
+    }
 
-//打印链表节点
-    public void print(){
-if(this.head == null){
-    System.out.println(&quot;链表为空&quot;);
-}else {
-    this.head.printNode();
-    System.out.println();
-}
-}
+    //链表中的倒数第 K 个结点
+    public ListNode FindKthToTail(ListNode head,int k){
+    int len = 0;
+    int i = 0;
+    ListNode counter = head;
+    ListNode p = head;
+    ListNode pre = head;
 
-//链表中的倒数第 K 个结点
-public ListNode FindKthToTail(ListNode head,int k){
-int len = 0;
-int i = 0;
-ListNode counter = head;
-ListNode p = head;
-ListNode pre = head;
+    if(k &lt;= 0){
+        System.out.println(&quot;请输入自然数k！&quot;);
+        //-1代表非正常退出
+        System.exit(-1);
+    }
 
-if(k &lt;= 0){
-    System.out.println(&quot;请输入自然数k！&quot;);
-    //-1代表非正常退出
-    System.exit(-1);
-}
+    if(head == null) {
+        System.out.println(&quot;链表不能为空！&quot;);
+        System.exit(-1);
+    }
 
-if(head == null) {
-    System.out.println(&quot;链表不能为空！&quot;);
-    System.exit(-1);
-}
+    while(counter != null){
+        len++;
+        counter = counter.next;
+    }
 
-while(counter != null){
-    len++;
-    counter = counter.next;
-}
+    if(k &gt; len){
+        System.out.println(&quot;k值大于了链表长度！&quot;);
+        System.exit(-1);
+    }
 
-if(k &gt; len){
-    System.out.println(&quot;k值大于了链表长度！&quot;);
-    System.exit(-1);
-}
+    //先走k步
+    while (i &lt; k){
+        pre = pre.next;
+        i++;
+    }
 
-//先走k步
-while (i &lt; k){
-    pre = pre.next;
-    i++;
-}
+    while (pre != null){
+        p = p.next;
+        pre = pre.next;
+    }
 
-while (pre != null){
-    p = p.next;
-    pre = pre.next;
-}
+    return p;
+    }
 
-return p;
-}
+    public static void main(String[] args){
+    Link link = new Link();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.print();
 
-public static void main(String[] args){
-Link link = new Link();
-link.add(1);
-link.add(2);
-link.add(3);
-link.print();
-
-ListNode node = link.FindKthToTail(link.head,4);
-node.next = null;
-node.printNode();
-}
-}
-</code></pre></li>
-</ul>
-
+    ListNode node = link.FindKthToTail(link.head,4);
+    node.next = null;
+    node.printNode();
+    }
+    }
+</code></pre>
       
     </div>
     
@@ -596,8 +595,17 @@ node.printNode();
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -677,6 +685,22 @@ node.printNode();
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#求链表中的倒数第k个结点？"><span class="nav-number">1.</span> <span class="nav-text">求链表中的倒数第k个结点？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
