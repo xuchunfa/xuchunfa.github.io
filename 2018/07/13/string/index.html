@@ -87,7 +87,7 @@
 <meta property="og:description" content="String s1 = “xuchunfa” 这个对象存放在常量池中 Stirng s2 = new String(“xuchunfa”) 这个对象存放在堆里面。具体过程：  先去常量池去找，看有没有&amp;quot;xuchunfa&amp;quot;对象，如果没有则在常量池里面创建一个对象，如果有的话则在堆里面再创建&amp;quot;xuchunfa&amp;quot;对象的拷贝对象 即equls()相同的字符串，在常">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/k6qoZRx.png">
-<meta property="og:updated_time" content="2018-07-13T07:57:12.056Z">
+<meta property="og:updated_time" content="2018-07-20T01:52:36.522Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符串引用、字符串常量池以及比较">
 <meta name="twitter:description" content="String s1 = “xuchunfa” 这个对象存放在常量池中 Stirng s2 = new String(“xuchunfa”) 这个对象存放在堆里面。具体过程：  先去常量池去找，看有没有&amp;quot;xuchunfa&amp;quot;对象，如果没有则在常量池里面创建一个对象，如果有的话则在堆里面再创建&amp;quot;xuchunfa&amp;quot;对象的拷贝对象 即equls()相同的字符串，在常">
@@ -412,6 +412,11 @@
 <p>  <code>String s1 = &quot;as&quot;;
    String s2 = &quot;as&quot;两句话创建了一个&quot;as&quot;对象，两个引用。如果s1指向的&quot;as&quot;对象发生了变化，那么s2原本指向的对象就会找不到了。</code></p>
 </li>
+<li><p>案例分析</p>
+<p>  String a = “hello”</p>
+<p>  a.toUpper()</p>
+<p>  <strong>分析：</strong>在执行第二句的时候，首先会创建一个String的实例，而不会改变 a 的值，此时常量池中会存在 “hello” 和 “HELLO” 对象。</p>
+</li>
 </ul>
 <p>参考文档一：<a href="https://www.cnblogs.com/xiohao/p/4296088.html" title="参考文档一" target="_blank" rel="noopener">https://www.cnblogs.com/xiohao/p/4296088.html</a></p>
 <p>参考文档二：<a href="https://blog.csdn.net/qunzer/article/details/25157309" target="_blank" rel="noopener">https://blog.csdn.net/qunzer/article/details/25157309</a></p>
@@ -539,7 +544,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
