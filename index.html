@@ -279,6 +279,399 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/前序中序后序构建二叉树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/前序中序后序构建二叉树/" itemprop="url">前序中序后序构建二叉树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T14:58:22+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/24/前序中序后序构建二叉树/" class="leancloud_visitors" data-flag-title="前序中序后序构建二叉树">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"><a href="#根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？" class="headerlink" title="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"></a>根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？</h4><p><strong>核心思想：</strong>递归创建，更新start和end坐标。</p>
+<pre><code>public class RestructBinaryTree {
+
+private BinaryTreeNode root;
+
+//根据前序和中序构造二叉树
+public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,int[] in,int inStart,int inEnd){
+    if(preEnd &lt; preStart || inEnd &lt; inStart){
+        return null;
+    }
+
+    //第一个结点
+    BinaryTreeNode node = new BinaryTreeNode(pre[preStart]);
+
+    for(int i = 0;i&lt;in.length;i++){
+        if(node.data == in[i]){
+            node.left = preAndIn(pre,preStart+1,preStart+i-inStart,in,inStart,i-1);
+            node.right = preAndIn(pre,preStart+i-inStart+1,preEnd,in,i+1,inEnd);
+        }
+
+    }
+    return node;
+}
+
+//根据中序和后序构造二叉树
+public BinaryTreeNode inAndPost(int[] post,int postStart,int postEnd,int[] in,int inStart,int inEnd){
+
+    if(postEnd &lt; postStart || inEnd &lt; inStart){
+        return null;
+    }
+
+    //第一个结点
+    BinaryTreeNode node = new BinaryTreeNode(post[postEnd]);
+
+    for(int i = 0;i&lt;in.length;i++){
+        if(node.data == in[i]){
+            node.right = inAndPost(post,postEnd-inEnd+i,postEnd-1,in,i+1,inEnd);
+            node.left = inAndPost(post,postStart,postEnd-inEnd+i-1,in,inStart,i-1);
+        }
+
+    }
+    return node;
+}
+
+//先序遍历,递归实现
+public void preOrder(BinaryTreeNode node){
+    if (node == null)
+        return;
+
+    System.out.print(node.data + &quot; &quot;);
+    preOrder(node.left);
+    preOrder(node.right);
+}
+
+
+//后序遍历
+public void postOrder(BinaryTreeNode node) {
+
+    if (node == null)
+        return;
+    postOrder(node.left);
+    postOrder(node.right);
+    System.out.print(node.data + &quot; &quot;);
+
+}
+
+public static void main(String[] args){
+
+    RestructBinaryTree tree = new RestructBinaryTree();
+    int[] pre = {1,2,4,7,3,5,6,8};
+    int[] in = {4,7,2,1,5,3,8,6};
+    int[] post = {7,4,2,5,8,6,3,1};
+
+    tree.root = tree.inAndPost(post,0,post.length-1,in,0,in.length-1);
+    tree.preOrder(tree.root);
+
+ }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/java内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/java内存模型/" itemprop="url">java内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T20:12:59+08:00">
+                2018-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/23/java内存模型/" class="leancloud_visitors" data-flag-title="java内存模型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>happens-before原则：</p>
+<p>  1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p>
+<p>  2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p>
+<p>  3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p>
+<p>  4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p>
+<p>  5.<strong>顺序一致性模型和JMM的比较：</strong></p>
+<pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。
+(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。
+</code></pre></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/二叉树的创建和遍历/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2134,464 +2527,11 @@ public static void main(String[] args) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/18/数组中的重复数字/" itemprop="url">数组中的重复数字</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T17:20:58+08:00">
-                2018-07-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/18/数组中的重复数字/" class="leancloud_visitors" data-flag-title="数组中的重复数字">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
-<p>1.数组下标 = 数组元素</p>
-<p>2.目标交换：num[i] = m </p>
-<p>   swap: m <---> num[m] 直到 num[i] == i</---></p>
-<pre><code>public class OptDuplication {
-
-//哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)
-boolean findDup1(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
-            return false;
-        }
-    }
-
-    //哈希表
-    int[] count = new int[len];
-    for(int i = 0;i&lt;len;i++){
-        if(count[nums[i]] == 1){
-            duplication[0] = nums[i];
-            return true;
-        }
-
-        count[nums[i]]++;
-    }
-
-    return false;
-
-}
-
-boolean findDup(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
-            return false;
-        }
-    }
-
-    int temp;
-    for(int i = 0;i&lt;len;i++){
-        while (i != nums[i]){
-            //nums[i]=m 说明 m 所在的下标是 i 和 m 所以重复了
-            if(nums[i] == nums[nums[i]]){
-                duplication[0]=nums[i];
-                return true;
-            }else {
-                //交换num[i] 和 num[num[i]]
-                temp = nums[i];
-                nums[i] = nums[nums[i]];
-                nums[temp] = temp;
-            }
-        }
-    }
-
-    System.out.println(&quot;没有重复数字&quot;);
-    return false;
-}
-</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
-<p>1.二分法的运用，加入了统计数字个数的方法</p>
-<p>2.循环结束条件：start == end</p>
-<pre><code>public class DuplicationVersion {
-
-//时间复杂度:O(nlogn) 空间复杂度:O(1)
-boolean findDup(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);
-            return false;
-        }
-    }
-
-    int start = 1;
-    int end = len-1;
-    int middle;
-    while(start &lt;=  end){
-
-        middle = (start + end)/2;
-        int number = calNum(nums,len,start,middle);
-
-        //结束条件
-        if(start == end){
-            if(number &gt; 1){
-                duplication[0] = start;
-                return true;
-            }else{
-                break;
-            }
-        }
-
-        if(middle - start + 1 &lt; number){
-            end = middle;
-        }else {
-            start = middle + 1;
-        }
-    }
-
-    System.out.println(&quot;没有重复数字&quot;);
-    return false;
-}
-
-private int calNum(int[] nums, int len, int start, int end) {
-    int count = 0;
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){
-            count++;
-        }
-    }
-    return count;
-}
- }
-</code></pre><p>参考文档：</p>
-<p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/并发编程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/17/并发编程/" itemprop="url">匿名内部类</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T20:47:37+08:00">
-                2018-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/17/并发编程/" class="leancloud_visitors" data-flag-title="匿名内部类">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>匿名内部类？</p>
-<p>  没有名字的内部类，只能使用一次，简化代码编写。</p>
-<p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p>
-<pre><code>interface People {
-public abstract void eat();
-}
-
-public class Demo {
-   public static void main(String[] args) {
-People p = new People() {
-    public void eat() {
-        System.out.println(&quot;I can eat &quot;);
-    }
-};
-p.eat();
-}
-</code></pre></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2641,7 +2581,7 @@ p.eat();
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
