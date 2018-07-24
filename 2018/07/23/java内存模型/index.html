@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="happens-before原则：   1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。   2.数据竞争：一个线程在读，一个线程在写，而且两个线程还没有同步保证。   3.线程通信：线程间交换信息，例如：共享内存和消">
+<meta name="description" content="happens-before原则：   特点：happens-before保证了两个线程之间的内存可见性。   1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。   2.数据竞争：一个线程在读，一个线程在写，而且两个线">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java内存模型">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/23/java内存模型/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="happens-before原则：   1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。   2.数据竞争：一个线程在读，一个线程在写，而且两个线程还没有同步保证。   3.线程通信：线程间交换信息，例如：共享内存和消">
+<meta property="og:description" content="happens-before原则：   特点：happens-before保证了两个线程之间的内存可见性。   1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。   2.数据竞争：一个线程在读，一个线程在写，而且两个线">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-23T13:38:39.657Z">
+<meta property="og:updated_time" content="2018-07-24T09:05:15.451Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java内存模型">
-<meta name="twitter:description" content="happens-before原则：   1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。   2.数据竞争：一个线程在读，一个线程在写，而且两个线程还没有同步保证。   3.线程通信：线程间交换信息，例如：共享内存和消">
+<meta name="twitter:description" content="happens-before原则：   特点：happens-before保证了两个线程之间的内存可见性。   1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。   2.数据竞争：一个线程在读，一个线程在写，而且两个线">
 
 
 
@@ -394,6 +394,7 @@
       
         <ul>
 <li><p>happens-before原则：</p>
+<p>  <strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p>
 <p>  1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p>
 <p>  2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p>
 <p>  3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p>
@@ -518,7 +519,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
