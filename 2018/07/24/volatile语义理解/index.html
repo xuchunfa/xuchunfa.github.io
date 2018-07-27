@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。">
+<meta name="description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。 锁释放和获得：锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="volatile语义理解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/24/volatile语义理解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。">
+<meta property="og:description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。 锁释放和获得：锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-24T09:09:52.113Z">
+<meta property="og:updated_time" content="2018-07-25T02:54:46.302Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="volatile语义理解">
-<meta name="twitter:description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。">
+<meta name="twitter:description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。 锁释放和获得：锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。">
 
 
 
@@ -393,6 +393,7 @@
 
       
         <p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p>
+<p><strong>锁释放和获得：</strong>锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。</p>
 
       
     </div>
@@ -508,7 +509,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -519,7 +520,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

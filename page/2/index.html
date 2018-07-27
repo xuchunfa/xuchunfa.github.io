@@ -279,6 +279,469 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/合并两个有序数组/" itemprop="url">合并两个有序数组</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T13:54:01+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/合并两个有序数组/" class="leancloud_visitors" data-flag-title="合并两个有序数组">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>两个有序数组A1和A2，把A2的所有数字插入到A1？</li>
+</ul>
+<p><strong>核心思想：</strong>从数组末尾开始比较，指针依次往前挪。</p>
+<pre><code>//时间复杂度(O(n)) 空间复杂度(O(n))
+public static int[] merge(int[] a,int[] b){
+
+    if(a==null || b==null){
+        System.out.println(&quot;输入两个数组&quot;);
+    }
+
+    if(a.length == 0)
+        return b;
+
+    if(b.length == 0)
+        return a;
+
+    int len1 = a.length;
+    int len2 = b.length;
+
+    int[] c = new int[len1+len2];
+    int i = len1 - 1;
+    int j = len2 - 1;
+
+    while(i &gt;= 0 &amp;&amp; j &gt;= 0){
+        if(a[i] &gt; b[j]){
+            c[i+j+1] = a[i];
+            i--;
+        }else{
+            c[i+j+1] = b[j];
+            j--;
+        }
+    }
+
+    while (i &gt;= 0){
+        c[i+j+1] = a[i];
+        i--;
+    }
+
+    while(j &gt;= 0){
+        c[i+j+1] = b[j];
+        j--;
+    }
+
+    return c;
+}
+
+
+//时间复杂度(O(n)) 空间复杂度(O(1)) 直接在第一个数组上操作
+public static void merge1(int[] a,int[] b){
+
+    if(a==null || b==null){
+        System.out.println(&quot;输入两个数组&quot;);
+    }
+
+    int len1 = a.length;
+    int len2 = b.length;
+
+    int i = len1 - len2 -1;
+    int j = len2 - 1;
+
+    while(i &gt;= 0 &amp;&amp; j &gt;= 0){
+        if(a[i] &gt; b[j]){
+            a[i+j+1] = a[i];
+            i--;
+        }else{
+            a[i+j+1] = b[j];
+            j--;
+        }
+    }
+
+    while(j &gt;= 0){
+        a[i+j+1] = b[j];
+        j--;
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/20/替换字符串字符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/20/替换字符串字符/" itemprop="url">替换字符串字符</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T15:45:59+08:00">
+                2018-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/字符串/" itemprop="url" rel="index">
+                    <span itemprop="name">字符串</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/20/替换字符串字符/" class="leancloud_visitors" data-flag-title="替换字符串字符">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>将字符串中的’ ‘替换成”20%”？</li>
+</ul>
+<p><strong>核心思想：</strong></p>
+<p>1.从最后一字符开始从前遍历，最后一个字符是’\0’。</p>
+<p>2.将字符串变为数组时，要在字符串数组后面添加’\0’。</p>
+<pre><code>public class ReplaceChar {
+
+//时间复杂度：O(n) 空间复杂度：O(n)
+public void replace(char[] a,int len){
+
+    //len = 1 时就一个字符&apos;\0&apos;
+    if(a == null || len&lt;2){
+        System.out.println(&quot;输入长度大于0的字符串&quot;);
+        System.exit(-1);
+    }
+
+    int oldLen = 0;
+    int count = 0;
+    int newLen;
+    for(int i = 0;a[i] !=&apos;\0&apos;;i++){
+        if(a[i] == &apos; &apos;)
+            count++;
+        oldLen++;
+    }
+
+    newLen = oldLen + 2*count;
+
+    if(newLen &gt; len)
+        return;
+
+    int i = oldLen;//从&apos;\0&apos;开始
+    int j = newLen;
+
+    while (i &gt;= 0 &amp;&amp; i &lt; j){
+
+        if(a[i] == &apos; &apos;){
+            a[j--] = &apos;0&apos;;
+            a[j--] = &apos;2&apos;;
+            a[j--] = &apos;%&apos;;
+        }else {
+            //注意 j 越界的情况
+            a[j--] = a[i];
+        }
+
+        i--;
+    }
+}
+
+public static void main(String[] args) {
+
+    String s = &quot;abcd&quot;;
+
+    //多了个&apos;\0&apos;
+    char oldChar[] = new char[s.length()+1];
+
+    int counter = 0;
+    for (int i = 0; i&lt;s.length(); i++) {
+        if (s.charAt(i) == &apos; &apos;)
+            counter++;
+        oldChar[i] = s.charAt(i);
+    }
+
+    //字符串结束标志
+    oldChar[s.length()] = &apos;\0&apos;;
+
+    //里面已经包含了&apos;\0&apos;结束符
+    int totalLen = oldChar.length + counter*2;
+
+    //数组扩容
+    char[] newChar = new char[totalLen];
+    for(int i = 0;i&lt;oldChar.length;i++){
+        newChar[i] = oldChar[i];
+    }
+
+    new ReplaceChar().replace(newChar,totalLen);
+
+    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){
+        System.out.print(newChar[i]);
+    }
+
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/19/二维数组的查找/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1816,375 +2279,6 @@ p.eat();
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/04/Github/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/04/Github/" itemprop="url">Github常用命令总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T09:55:59+08:00">
-                2018-07-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Github/" itemprop="url" rel="index">
-                    <span itemprop="name">Github</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/04/Github/" class="leancloud_visitors" data-flag-title="Github常用命令总结">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="https://foofish.net/images/github7.png" alt=""></p>
-<ul>
-<li>master: 本地项目</li>
-<li>origin: Fork的远程项目</li>
-<li>upstream: 别人的开源项目</li>
-</ul>
-<hr>
-<p><img src="https://i.imgur.com/teG0F62.png" alt=""></p>
-<h2 id="git-pull-git-fetch-git-merge"><a href="#git-pull-git-fetch-git-merge" class="headerlink" title="git pull = git fetch + git merge"></a>git pull = git fetch + git merge</h2><p>例如：<br>    <code>git pull origin next</code><br>            等价于</p>
-<pre><code>` git fetch origin`
- `git merge origin/next`
-</code></pre><hr>
-<p>常用命令图解：<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png" alt=""></p>
-<ul>
-<li><p>代码提交</p>
-<p>  例如：提交工作区自上次commit之后的变化，直接到仓库区</p>
-<p>  <code>git commit -a</code></p>
-<p>  例如：提交暂存区到仓库区</p>
-<p>  <code>git commit -m [message]</code></p>
-</li>
-<li><p>切换分支</p>
-<p>  例如：切换到指定分支，并更新工作区</p>
-<p>  <code>git checkout [branch-name]</code></p>
-</li>
-<li><p>合并分支</p>
-<p>  例如：合并指定分支到当前分支</p>
-<p>  <code>git merge [branch]</code></p>
-</li>
-<li><p>查看远程仓库</p>
-<pre><code>`git remote -v `
-</code></pre></li>
-<li><p>添加远程仓库</p>
-<pre><code>`git remote add pb https://github.com/paulboone/ticgit`
-</code></pre></li>
-<li><p>从远程仓库中抓取与拉取</p>
-<p>  <code>git fetch [remote-name]</code></p>
-</li>
-<li><p>推送到远程仓库</p>
-<p>  <code>git push [remote-name] [branch-name]</code></p>
-</li>
-<li><p>在origin/master基础上创建一个新分支</p>
-<p>  <code>git checkout -b newBranch origin/master</code></p>
-</li>
-<li><p>在本地分支上合并远程分支</p>
-<p>  <code>git merge origin/master</code></p>
-<pre><code>或者
-</code></pre><p>  <code>git rebase origin/master</code></p>
-</li>
-<li><p>取回远程主机某个分支的更新，再与本地的指定分支合并</p>
-<p>  <code>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></p>
-<p>  例如：</p>
-<pre><code>`git pull origin next:master`
-</code></pre><p>  远程分支与当前分支合并：</p>
-<pre><code>`git pull origin next`
-</code></pre></li>
-<li><p>将本地分支更新，推送到远程主机</p>
-<p>  <code>git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code></p>
-<p>  不要弄混淆了：</p>
-<pre><code>pull 拉取远程分支名
-
-push 推送本地分支名
-</code></pre><p>  例如：将本地的branch1分支推送到origin主机的master分支</p>
-<pre><code>`git push origin branch1`
-</code></pre></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/03/Spark/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/03/Spark/" itemprop="url">Spark完全分布式集群的搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T11:49:49+08:00">
-                2018-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index">
-                    <span itemprop="name">Spark</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/03/Spark/" class="leancloud_visitors" data-flag-title="Spark完全分布式集群的搭建">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2239,7 +2333,7 @@ push 推送本地分支名
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2250,7 +2344,7 @@ push 推送本地分支名
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
