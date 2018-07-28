@@ -279,6 +279,449 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/旋转数组中的最小值/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/旋转数组中的最小值/" itemprop="url">旋转数组中的最小值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T21:37:21+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/28/旋转数组中的最小值/" class="leancloud_visitors" data-flag-title="旋转数组中的最小值">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="找出递增数组旋转后的最小值？"><a href="#找出递增数组旋转后的最小值？" class="headerlink" title="找出递增数组旋转后的最小值？"></a>找出递增数组旋转后的最小值？</h4><pre><code>public class RotateArray {
+
+//如果把排序数组的前0个元素搬到最后面,算法得不到正确结果
+public static int minElement2(int[] a){
+
+    if(a == null){
+        throw new RuntimeException(&quot;输入数组&quot;);
+    }
+
+    if(a.length == 0){
+        throw new RuntimeException(&quot;数组为空&quot;);
+    }
+
+    int low = 0;
+    int high = a.length-1;
+    int media;
+    while (low &lt; high){
+
+        if(high == low + 1){
+            return a[high];
+        }
+
+        media = (low + high)/2;
+        if(a[media] &gt;= a[low]){
+            low = media;
+        }else if(a[media] &lt;= a[high]){
+            high = media;
+        }
+    }
+    return a[high];
+}
+
+//解决了a = {1,2,3} 的问题
+public static int minElement1(int[] a){
+
+    if(a == null){
+        throw new RuntimeException(&quot;输入数组&quot;);
+    }
+
+    if(a.length == 0){
+        throw new RuntimeException(&quot;数组为空&quot;);
+    }
+
+    int low = 0;
+    int high = a.length-1;
+    int media = low;
+
+    while (a[low] &gt;= a[high]){
+
+        if(high == low + 1){
+            media = high;
+            break;
+        }
+
+        media = (low + high)/2;
+
+        if(a[media] &gt;= a[low]){
+            low = media;
+        }else if(a[media] &lt;= a[high]){
+            high = media;
+        }
+    }
+
+    return a[media];
+}
+
+//解决了 a = {0,1,1,1,1} --&gt; {1,0,1,1,1}的情况
+public static int minElement(int[] a){
+    if(a == null){
+        throw new RuntimeException(&quot;输入数组&quot;);
+    }
+
+    if(a.length == 0){
+        throw new RuntimeException(&quot;数组为空&quot;);
+    }
+
+    int low = 0;
+    int high = a.length-1;
+    int media = low;
+
+    while (a[low] &gt;= a[high]){
+
+        if(high == low + 1){
+            media = high;
+            break;
+        }
+
+        media = (low + high)/2;
+
+        //顺序查找
+        if(a[low] == a[high] &amp;&amp; a[low] == a[media]){
+            return fromBeginToEnd(a,low,high);
+        }
+
+        if(a[media] &gt;= a[low]){
+            low = media;
+        }else if(a[media] &lt;= a[high]){
+            high = media;
+        }
+    }
+    return a[media];
+}
+
+private static int fromBeginToEnd(int[] a,int start,int end) {
+    int min = a[start];
+    for(int i = start;i&lt;end;i++){
+        if(a[i] &lt; min){
+            min = a[i];
+        }
+    }
+
+    return min;
+}
+
+public static void main(String[] args){
+    int[] a = {1,1,1,0,1};
+    System.out.println(RotateArray.minElement(a));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/排序算法比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/排序算法比较/" itemprop="url">排序算法比较</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T16:13:19+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/28/排序算法比较/" class="leancloud_visitors" data-flag-title="排序算法比较">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p>
+<p><strong>学习过程中一点点积累补充</strong></p>
+<ul>
+<li><p>快排分析</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p>
+<p>  时间复杂度：nlogn</p>
+<p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p>
+<p>  时间复杂度：n^2</p>
+<p>  3.一般情况下：略</p>
+<p>  时间复杂度：nlogn</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p>
+<p>  空间复杂度：O(logn)</p>
+<p>  2.最差情况：略</p>
+<p>  空间复杂度：O(n)</p>
+<p>  <strong>补充：</strong>快排是不稳定的。稳定性是指—表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
+</li>
+</ul>
+<p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/斐波拉契数列/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -420,6 +863,38 @@ public static long fibonacci(int n){
 
 public static void main(String[] args){
     System.out.println(Fibonacci.fibonacci1(50));
+}
+}
+</code></pre><h4 id="青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><a href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？" class="headerlink" title="青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？"></a>青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</h4><pre><code>public class FrogStep {
+
+public static long solution(int n) {
+
+    if (n == 0) {
+        throw new RuntimeException(&quot;输入自然数&quot;);
+    }
+
+    if (n == 1) {
+        return 1;
+    }
+
+    if (n == 2) {
+        return 2;
+    }
+
+    long one = 1;
+    long two = 2;
+    long three = 0;
+    for (int i = 3; i &lt;= n; i++) {
+        three = one + two;
+        one = two;
+        two = three;
+    }
+
+    return three;
+}
+
+public static void main(String[] args){
+    System.out.println(FrogStep.solution(100));
 }
 }
 </code></pre>
@@ -2066,502 +2541,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/从尾到头打印链表/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/22/从尾到头打印链表/" itemprop="url">从尾到头打印链表</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T18:53:03+08:00">
-                2018-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/链表/" itemprop="url" rel="index">
-                    <span itemprop="name">链表</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/22/从尾到头打印链表/" class="leancloud_visitors" data-flag-title="从尾到头打印链表">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="从尾到头打印链表？"><a href="#从尾到头打印链表？" class="headerlink" title="从尾到头打印链表？"></a>从尾到头打印链表？</h4><p><strong>核心思想：</strong>栈和递归。</p>
-<pre><code>public class VerseLink {
-
-private ListNode head;
-
-//添加链表节点
-public void add(int data){
-    ListNode node = new ListNode(data);
-    if(this.head == null){
-        this.head = node;
-    }else {
-        this.head.addNode(node);
-    }
-}
-
-//从头到尾打印链表节点
-public void print(){
-    if(this.head == null){
-        System.out.println(&quot;链表为空&quot;);
-    }else {
-        this.head.printNode();
-        System.out.println();
-    }
-}
-
-//从尾到头打印链表节点(常规方法) 时间复杂度(O(n)) 空间复杂度(O(1))
-public void versePrint(){
-
-    if(head == null){
-        System.out.println(&quot;链表为空&quot;);
-        return;
-    }
-
-    ListNode p = head.next;
-    ListNode q = null;
-    head.next = null;
-
-    while (p != null){
-        q = p.next;
-        p.next = head;
-        head = p;
-        p = q;
-    }
-    print();
-}
-
-//栈实现 时间复杂度:O(n) 空间复杂度:O(n)
-public void versePrint1(){
-    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
-
-    ListNode p = head;
-    if(p == null){
-        System.out.println(&quot;链表为空&quot;);
-        return;
-    }
-
-    while (p != null){
-        stack.push(p.data);
-        p = p.next;
-    }
-
-    while (!stack.empty()){
-        System.out.print(stack.pop()+&quot;--&gt;&quot;);
-    }
-}
-
-//递归实现
-public void versePrint2(ListNode p){
-    if(p == null){
-        return;
-    }
-    versePrint2(p.next);
-    System.out.print(p.data+&quot;--&gt;&quot;);
-}
-
-
-public static void main(String[] args){
-    VerseLink link = new VerseLink();
-    link.add(1);
-    link.add(2);
-    link.add(3);
-    link.versePrint2(link.head);
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/22/链表中倒数第k个结点/" itemprop="url">链表中倒数第k个结点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T14:29:00+08:00">
-                2018-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/链表/" itemprop="url" rel="index">
-                    <span itemprop="name">链表</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/22/链表中倒数第k个结点/" class="leancloud_visitors" data-flag-title="链表中倒数第k个结点">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {
-
-private ListNode head;
-
-class ListNode{
-
-    private int data;
-
-    ListNode next;
-
-    public ListNode(int data) {
-        this.data = data;
-        this.next = null;
-    }
-
-    public void addNode(ListNode newNode){
-
-        //相当于尾插法
-        if(this.next == null){
-            this.next = newNode;
-        }else {
-            this.next.addNode(newNode);
-        }
-    }
-
-    public void printNode(){
-        System.out.print(this.data + &quot;--&gt;&quot;);
-        if(this.next != null){
-            this.next.printNode();
-        }
-        }
-    }
-
-    //添加链表节点
-    public void add(int data){
-    ListNode node = new ListNode(data);
-        if(this.head == null){
-            this.head = node;
-        }else {
-            this.head.addNode(node);
-        }
-    }
-
-    //打印链表节点
-        public void print(){
-    if(this.head == null){
-        System.out.println(&quot;链表为空&quot;);
-    }else {
-        this.head.printNode();
-        System.out.println();
-    }
-    }
-
-    //链表中的倒数第 K 个结点
-    public ListNode FindKthToTail(ListNode head,int k){
-    int len = 0;
-    int i = 0;
-    ListNode counter = head;
-    ListNode p = head;
-    ListNode pre = head;
-
-    if(k &lt;= 0){
-        System.out.println(&quot;请输入自然数k！&quot;);
-        //-1代表非正常退出
-        System.exit(-1);
-    }
-
-    if(head == null) {
-        System.out.println(&quot;链表不能为空！&quot;);
-        System.exit(-1);
-    }
-
-    while(counter != null){
-        len++;
-        counter = counter.next;
-    }
-
-    if(k &gt; len){
-        System.out.println(&quot;k值大于了链表长度！&quot;);
-        System.exit(-1);
-    }
-
-    //先走k步
-    while (i &lt; k){
-        pre = pre.next;
-        i++;
-    }
-
-    while (pre != null){
-        p = p.next;
-        pre = pre.next;
-    }
-
-    return p;
-    }
-
-    public static void main(String[] args){
-    Link link = new Link();
-    link.add(1);
-    link.add(2);
-    link.add(3);
-    link.print();
-
-    ListNode node = link.FindKthToTail(link.head,4);
-    node.next = null;
-    node.printNode();
-    }
-    }
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2616,7 +2595,7 @@ class ListNode{
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2627,7 +2606,7 @@ class ListNode{
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

@@ -279,6 +279,502 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/从尾到头打印链表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/从尾到头打印链表/" itemprop="url">从尾到头打印链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T18:53:03+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/从尾到头打印链表/" class="leancloud_visitors" data-flag-title="从尾到头打印链表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="从尾到头打印链表？"><a href="#从尾到头打印链表？" class="headerlink" title="从尾到头打印链表？"></a>从尾到头打印链表？</h4><p><strong>核心思想：</strong>栈和递归。</p>
+<pre><code>public class VerseLink {
+
+private ListNode head;
+
+//添加链表节点
+public void add(int data){
+    ListNode node = new ListNode(data);
+    if(this.head == null){
+        this.head = node;
+    }else {
+        this.head.addNode(node);
+    }
+}
+
+//从头到尾打印链表节点
+public void print(){
+    if(this.head == null){
+        System.out.println(&quot;链表为空&quot;);
+    }else {
+        this.head.printNode();
+        System.out.println();
+    }
+}
+
+//从尾到头打印链表节点(常规方法) 时间复杂度(O(n)) 空间复杂度(O(1))
+public void versePrint(){
+
+    if(head == null){
+        System.out.println(&quot;链表为空&quot;);
+        return;
+    }
+
+    ListNode p = head.next;
+    ListNode q = null;
+    head.next = null;
+
+    while (p != null){
+        q = p.next;
+        p.next = head;
+        head = p;
+        p = q;
+    }
+    print();
+}
+
+//栈实现 时间复杂度:O(n) 空间复杂度:O(n)
+public void versePrint1(){
+    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
+
+    ListNode p = head;
+    if(p == null){
+        System.out.println(&quot;链表为空&quot;);
+        return;
+    }
+
+    while (p != null){
+        stack.push(p.data);
+        p = p.next;
+    }
+
+    while (!stack.empty()){
+        System.out.print(stack.pop()+&quot;--&gt;&quot;);
+    }
+}
+
+//递归实现
+public void versePrint2(ListNode p){
+    if(p == null){
+        return;
+    }
+    versePrint2(p.next);
+    System.out.print(p.data+&quot;--&gt;&quot;);
+}
+
+
+public static void main(String[] args){
+    VerseLink link = new VerseLink();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.versePrint2(link.head);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/链表中倒数第k个结点/" itemprop="url">链表中倒数第k个结点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T14:29:00+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/链表中倒数第k个结点/" class="leancloud_visitors" data-flag-title="链表中倒数第k个结点">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {
+
+private ListNode head;
+
+class ListNode{
+
+    private int data;
+
+    ListNode next;
+
+    public ListNode(int data) {
+        this.data = data;
+        this.next = null;
+    }
+
+    public void addNode(ListNode newNode){
+
+        //相当于尾插法
+        if(this.next == null){
+            this.next = newNode;
+        }else {
+            this.next.addNode(newNode);
+        }
+    }
+
+    public void printNode(){
+        System.out.print(this.data + &quot;--&gt;&quot;);
+        if(this.next != null){
+            this.next.printNode();
+        }
+        }
+    }
+
+    //添加链表节点
+    public void add(int data){
+    ListNode node = new ListNode(data);
+        if(this.head == null){
+            this.head = node;
+        }else {
+            this.head.addNode(node);
+        }
+    }
+
+    //打印链表节点
+        public void print(){
+    if(this.head == null){
+        System.out.println(&quot;链表为空&quot;);
+    }else {
+        this.head.printNode();
+        System.out.println();
+    }
+    }
+
+    //链表中的倒数第 K 个结点
+    public ListNode FindKthToTail(ListNode head,int k){
+    int len = 0;
+    int i = 0;
+    ListNode counter = head;
+    ListNode p = head;
+    ListNode pre = head;
+
+    if(k &lt;= 0){
+        System.out.println(&quot;请输入自然数k！&quot;);
+        //-1代表非正常退出
+        System.exit(-1);
+    }
+
+    if(head == null) {
+        System.out.println(&quot;链表不能为空！&quot;);
+        System.exit(-1);
+    }
+
+    while(counter != null){
+        len++;
+        counter = counter.next;
+    }
+
+    if(k &gt; len){
+        System.out.println(&quot;k值大于了链表长度！&quot;);
+        System.exit(-1);
+    }
+
+    //先走k步
+    while (i &lt; k){
+        pre = pre.next;
+        i++;
+    }
+
+    while (pre != null){
+        p = p.next;
+        pre = pre.next;
+    }
+
+    return p;
+    }
+
+    public static void main(String[] args){
+    Link link = new Link();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.print();
+
+    ListNode node = link.FindKthToTail(link.head,4);
+    node.next = null;
+    node.printNode();
+    }
+    }
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1904,381 +2400,6 @@ p.eat();
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/string/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/13/string/" itemprop="url">字符串引用、字符串常量池以及比较</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T13:09:00+08:00">
-                2018-07-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/字符串/" itemprop="url" rel="index">
-                    <span itemprop="name">字符串</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/13/string/" class="leancloud_visitors" data-flag-title="字符串引用、字符串常量池以及比较">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>String s1 = “xuchunfa” 这个对象存放在常量池中</li>
-<li>Stirng s2 = new String(“xuchunfa”) 这个对象存放在堆里面。具体过程：<br>  <code>先去常量池去找，看有没有&quot;xuchunfa&quot;对象，如果没有则在常量池里面创建一个对象，如果有的话则在堆里面再创建&quot;xuchunfa&quot;对象的拷贝对象</code></li>
-<li><p>即equls()相同的字符串，在常量池中只有一份，在堆中可以有多份</p>
-</li>
-<li><p>String s1 = “xuchunfa”的理解：</p>
-<p>  <code>不能肯定的说创建了一个&quot;xuchunfa&quot;的对象，因为常量池中可能已经存在。只能肯定的说创建了指向&quot;xuchunfa&quot;对象的引用变量。new() 方法才是显示地创建一个对象</code></p>
-</li>
-</ul>
-<h2 id="字符串对象的不可变性"><a href="#字符串对象的不可变性" class="headerlink" title="字符串对象的不可变性"></a>字符串对象的不可变性</h2><ul>
-<li>当字符串在堆中被分配内容时，它就是不可变的，任何String的方法无法改变字符串本身。但是它创建的引用变量可以指向新的String对象。如图：</li>
-</ul>
-<p><img src="https://i.imgur.com/k6qoZRx.png" alt=""></p>
-<ul>
-<li><p>字符串不可变的原因？</p>
-<p>  <code>String s1 = &quot;as&quot;;
-   String s2 = &quot;as&quot;两句话创建了一个&quot;as&quot;对象，两个引用。如果s1指向的&quot;as&quot;对象发生了变化，那么s2原本指向的对象就会找不到了。</code></p>
-</li>
-<li><p>案例分析</p>
-<p>  String a = “hello”</p>
-<p>  a.toUpper()</p>
-<p>  <strong>分析：</strong>在执行第二句的时候，首先会创建一个String的实例，而不会改变 a 的值，此时常量池中会存在 “hello” 和 “HELLO” 对象。</p>
-</li>
-</ul>
-<p>参考文档一：<a href="https://www.cnblogs.com/xiohao/p/4296088.html" title="参考文档一" target="_blank" rel="noopener">https://www.cnblogs.com/xiohao/p/4296088.html</a></p>
-<p>参考文档二：<a href="https://blog.csdn.net/qunzer/article/details/25157309" target="_blank" rel="noopener">https://blog.csdn.net/qunzer/article/details/25157309</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/12/Algorithm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/12/Algorithm/" itemprop="url">字符串转整型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-12T20:06:59+08:00">
-                2018-07-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/字符串/" itemprop="url" rel="index">
-                    <span itemprop="name">字符串</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/12/Algorithm/" class="leancloud_visitors" data-flag-title="字符串转整型">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="需要考虑的临界条件"><a href="#需要考虑的临界条件" class="headerlink" title="需要考虑的临界条件"></a>需要考虑的临界条件</h2><ul>
-<li>Integer的范围-2的31次方 到 +2的31次方减1</li>
-<li>整型可以从最小2进制到最大36进制</li>
-<li>字符串为空时抛异常</li>
-<li>字符串有非数字字符时抛异常</li>
-<li>字符串有正负号</li>
-<li>字符串就只有正负号，即长度为1抛出异常</li>
-</ul>
-<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ul>
-<li><p>怎么判断第一个字符是非数字符？</p>
-<p>   <code>就只考虑firstChar &lt; &#39;0&#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i++
-如果firstChar &gt; &#39;0&#39; 那么while循环从第一个开始(i=0)</code></p>
-</li>
-<li><p>怎么实现’1’-&gt; 1 的转换？</p>
-<p>   <code>ch-&#39;0&#39;实现</code></p>
-</li>
-<li><p>怎么设置limit?</p>
-<p>  错误：</p>
-<p>  正号时：limit = Integer.MAX_VALUE；</p>
-<p>  负号时：limit = -Integer.MIN_VALUE；</p>
-<p>  条件：result*10 + digit &gt; limit</p>
-<p>  计算：result = result*10 + digit</p>
-<p>  <strong>limit的类型为int,越界了！！！</strong></p>
-</li>
-</ul>
-<pre><code>正确：
-
-正号时：limit = -Integer.MAX_VALUE；
-
-负号时：limit = Integer.MIN_VALUE；
-
-条件：result*10 - digit &lt; limit 为true时 越界
-
-计算：result = result*10 - digit
-</code></pre><ul>
-<li><p>容易忽略的地方？</p>
-<p>  例如：str = “21474836471”</p>
-<p>  方法：</p>
-<p>  int flag = limit/radix;</p>
-<p>  if(result &lt; flag){</p>
-<pre><code>**越界**
-</code></pre><p>  }</p>
-<p>  result = result*radix;</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2333,7 +2454,7 @@ p.eat();
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2344,7 +2465,7 @@ p.eat();
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

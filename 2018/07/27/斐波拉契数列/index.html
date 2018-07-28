@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="斐波拉契数列？public class Fibonacci {  //效率差 public static long fibonacci1(int n){      if(n == 0)         return 0;      if(n == 1)         return 1;      return fibonacci1(n-1) + fibonacci1(n-2);  }  publ">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-27T11:45:25.827Z">
+<meta property="og:updated_time" content="2018-07-27T13:49:26.110Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="斐波拉契数列">
 <meta name="twitter:description" content="斐波拉契数列？public class Fibonacci {  //效率差 public static long fibonacci1(int n){      if(n == 0)         return 0;      if(n == 1)         return 1;      return fibonacci1(n-1) + fibonacci1(n-2);  }  publ">
@@ -431,6 +431,38 @@ public static void main(String[] args){
     System.out.println(Fibonacci.fibonacci1(50));
 }
 }
+</code></pre><h4 id="青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><a href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？" class="headerlink" title="青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？"></a>青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</h4><pre><code>public class FrogStep {
+
+public static long solution(int n) {
+
+    if (n == 0) {
+        throw new RuntimeException(&quot;输入自然数&quot;);
+    }
+
+    if (n == 1) {
+        return 1;
+    }
+
+    if (n == 2) {
+        return 2;
+    }
+
+    long one = 1;
+    long two = 2;
+    long three = 0;
+    for (int i = 3; i &lt;= n; i++) {
+        three = one + two;
+        one = two;
+        two = three;
+    }
+
+    return three;
+}
+
+public static void main(String[] args){
+    System.out.println(FrogStep.solution(100));
+}
+}
 </code></pre>
       
     </div>
@@ -464,6 +496,10 @@ public static void main(String[] args){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/28/排序算法比较/" rel="prev" title="排序算法比较">
+                排序算法比较 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -551,7 +587,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -562,7 +598,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -622,7 +658,7 @@ public static void main(String[] args){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#斐波拉契数列？"><span class="nav-number">1.</span> <span class="nav-text">斐波拉契数列？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#斐波拉契数列？"><span class="nav-number">1.</span> <span class="nav-text">斐波拉契数列？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><span class="nav-number">2.</span> <span class="nav-text">青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</span></a></li></ol></div>
             
 
           </div>
