@@ -87,7 +87,7 @@
 <meta property="og:description" content="学习过程中一点点积累补充  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次   时间复杂度：n^2   3.一般情况下：略   时间复杂度：nlogn   空间">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png">
-<meta property="og:updated_time" content="2018-07-28T09:13:54.421Z">
+<meta property="og:updated_time" content="2018-07-29T10:26:25.811Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法比较">
 <meta name="twitter:description" content="学习过程中一点点积累补充  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次   时间复杂度：n^2   3.一般情况下：略   时间复杂度：nlogn   空间">
@@ -412,8 +412,46 @@
 <p>  空间复杂度：O(n)</p>
 <p>  <strong>补充：</strong>快排是不稳定的。稳定性是指—表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
 </li>
+<li><p>直接插入排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  平均复杂度:O(n^2)</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  空间复杂度：O(1)</p>
+<p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p>
+</li>
+<li><p>冒泡排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)。</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>简单选择排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>堆排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  分析：</p>
+<p>  初始化堆的过程时间：O(n)</p>
+<p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p>
+<p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
 </ul>
 <p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
+<p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>
 
       
     </div>
@@ -529,7 +567,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
