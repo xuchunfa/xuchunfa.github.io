@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Flying in the ocean of knowledge</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://www.xuchunfa.cn/"/>
+  <updated>2018-07-29T10:35:01.869Z</updated>
+  <id>http://www.xuchunfa.cn/</id>
+  
+  <author>
+    <name>Xu chunfa</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>堆排序</title>
+    <link href="http://www.xuchunfa.cn/2018/07/29/%E5%A0%86%E6%8E%92%E5%BA%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/07/29/堆排序/</id>
+    <published>2018-07-29T10:33:19.000Z</published>
+    <updated>2018-07-29T10:35:01.869Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="堆排序？"><a href="#堆排序？" class="headerlink" title="堆排序？"></a>堆排序？</h4><pre><code>public class HeapSort {public static void heapSort(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    int len = a.length;    //构建大顶堆    for(int i = len/2-1;i&gt;=0;i--){        createHeap(a,i,len);    }    for(int j = a.length-1;j&gt;0;j--){        swap(a,0,j);        createHeap(a,0,j);    }}private static void swap(int[] a, int i, int j) {    int temp = a[i];    a[i] = a[j];    a[j] = temp;}private static void createHeap(int[] a,int i,int len) {    int father = a[i];    int j;//j代表子结点坐标 i代表父结点坐标    while(2*i + 1 &lt; len){        j = 2*i + 1;        if(j + 1 &lt; len &amp;&amp; a[j] &lt; a[j+1] )            j++;        if(a[j] &gt; father){            a[i] = a[j];            i = j;        }else {            break;        }    }    //找到最终位置    a[i] = father;}public static void main(String[] args){    int[] a = {1,1,1};    HeapSort.heapSort(a);    System.out.println(Arrays.toString(a));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;堆排序？&quot;&gt;&lt;a href=&quot;#堆排序？&quot; class=&quot;headerlink&quot; title=&quot;堆排序？&quot;&gt;&lt;/a&gt;堆排序？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class HeapSort {
+
+public static void heapSort(i
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>直接插入排序</title>
+    <link href="http://www.xuchunfa.cn/2018/07/29/%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/07/29/直接插入排序/</id>
+    <published>2018-07-29T10:30:34.000Z</published>
+    <updated>2018-07-29T10:33:02.808Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="直接插入排序？"><a href="#直接插入排序？" class="headerlink" title="直接插入排序？"></a>直接插入排序？</h4><pre><code>public class InsertSort {public static void insert(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length &lt;= 1){        return;    }    for(int j = 1;j&lt;a.length;j++){        int temp = a[j];        int i;        for(i = j-1;i&gt;=0 &amp;&amp; a[i]&gt;temp;i--){            a[i+1] = a[i];        }        //不满足上面for循环的话,元素不动        a[i+1] = temp;    }}public static void main(String[] args){    int[] a = {4,2,2,2,1,5,7,6};    InsertSort.insert(a);    System.out.println(Arrays.toString(a));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;直接插入排序？&quot;&gt;&lt;a href=&quot;#直接插入排序？&quot; class=&quot;headerlink&quot; title=&quot;直接插入排序？&quot;&gt;&lt;/a&gt;直接插入排序？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class InsertSort {
+
+public static v
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>旋转数组中的最小值</title>
+    <link href="http://www.xuchunfa.cn/2018/07/28/%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9C%80%E5%B0%8F%E5%80%BC/"/>
+    <id>http://www.xuchunfa.cn/2018/07/28/旋转数组中的最小值/</id>
+    <published>2018-07-28T13:37:21.000Z</published>
+    <updated>2018-07-28T13:40:56.221Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="找出递增数组旋转后的最小值？"><a href="#找出递增数组旋转后的最小值？" class="headerlink" title="找出递增数组旋转后的最小值？"></a>找出递增数组旋转后的最小值？</h4><pre><code>public class RotateArray {//如果把排序数组的前0个元素搬到最后面,算法得不到正确结果public static int minElement2(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length == 0){        throw new RuntimeException(&quot;数组为空&quot;);    }    int low = 0;    int high = a.length-1;    int media;    while (low &lt; high){        if(high == low + 1){            return a[high];        }        media = (low + high)/2;        if(a[media] &gt;= a[low]){            low = media;        }else if(a[media] &lt;= a[high]){            high = media;        }    }    return a[high];}//解决了a = {1,2,3} 的问题public static int minElement1(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length == 0){        throw new RuntimeException(&quot;数组为空&quot;);    }    int low = 0;    int high = a.length-1;    int media = low;    while (a[low] &gt;= a[high]){        if(high == low + 1){            media = high;            break;        }        media = (low + high)/2;        if(a[media] &gt;= a[low]){            low = media;        }else if(a[media] &lt;= a[high]){            high = media;        }    }    return a[media];}//解决了 a = {0,1,1,1,1} --&gt; {1,0,1,1,1}的情况public static int minElement(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length == 0){        throw new RuntimeException(&quot;数组为空&quot;);    }    int low = 0;    int high = a.length-1;    int media = low;    while (a[low] &gt;= a[high]){        if(high == low + 1){            media = high;            break;        }        media = (low + high)/2;        //顺序查找        if(a[low] == a[high] &amp;&amp; a[low] == a[media]){            return fromBeginToEnd(a,low,high);        }        if(a[media] &gt;= a[low]){            low = media;        }else if(a[media] &lt;= a[high]){            high = media;        }    }    return a[media];}private static int fromBeginToEnd(int[] a,int start,int end) {    int min = a[start];    for(int i = start;i&lt;end;i++){        if(a[i] &lt; min){            min = a[i];        }    }    return min;}public static void main(String[] args){    int[] a = {1,1,1,0,1};    System.out.println(RotateArray.minElement(a));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;找出递增数组旋转后的最小值？&quot;&gt;&lt;a href=&quot;#找出递增数组旋转后的最小值？&quot; class=&quot;headerlink&quot; title=&quot;找出递增数组旋转后的最小值？&quot;&gt;&lt;/a&gt;找出递增数组旋转后的最小值？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class R
+      
+    
+    </summary>
+    
+      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>排序算法比较</title>
+    <link href="http://www.xuchunfa.cn/2018/07/28/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/"/>
+    <id>http://www.xuchunfa.cn/2018/07/28/排序算法比较/</id>
+    <published>2018-07-28T08:13:19.000Z</published>
+    <updated>2018-07-29T10:26:25.811Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p><p><strong>学习过程中一点点积累补充</strong></p><ul><li><p>快排分析</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p><p>  时间复杂度：nlogn</p><p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p><p>  时间复杂度：n^2</p><p>  3.一般情况下：略</p><p>  时间复杂度：nlogn</p><p>  <strong>空间复杂度：</strong></p><p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p><p>  空间复杂度：O(logn)</p><p>  2.最差情况：略</p><p>  空间复杂度：O(n)</p><p>  <strong>补充：</strong>快排是不稳定的。稳定性是指—表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p></li><li><p>直接插入排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p><p>  时间复杂度：O(n^2)</p><p>  平均复杂度:O(n^2)</p><p>  <strong>空间复杂度：</strong></p><p>  空间复杂度：O(1)</p><p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p></li><li><p>冒泡排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：逆序，交换次数O(n^2)。</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>简单选择排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p><p>  时间复杂度：O(n^2)</p><p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>堆排序</p><p>  <strong>时间复杂度：</strong></p><p>  分析：</p><p>  初始化堆的过程时间：O(n)</p><p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p><p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li></ul><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p><p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;学习过程中一点点积累补充&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>斐波拉契数列</title>
+    <link href="http://www.xuchunfa.cn/2018/07/27/%E6%96%90%E6%B3%A2%E6%8B%89%E5%A5%91%E6%95%B0%E5%88%97/"/>
+    <id>http://www.xuchunfa.cn/2018/07/27/斐波拉契数列/</id>
+    <published>2018-07-27T11:43:48.000Z</published>
+    <updated>2018-07-27T13:49:26.110Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="斐波拉契数列？"><a href="#斐波拉契数列？" class="headerlink" title="斐波拉契数列？"></a>斐波拉契数列？</h4><pre><code>public class Fibonacci {//效率差public static long fibonacci1(int n){    if(n == 0)        return 0;    if(n == 1)        return 1;    return fibonacci1(n-1) + fibonacci1(n-2);}public static long fibonacci(int n){    if(n == 0)        return 0;    if(n == 1)        return 1;    long one = 0;    long two = 1;    long three = 0;    for(int i = 2;i&lt;=n;i++){        three = one + two;        one = two;        two = three;    }    return three;}public static void main(String[] args){    System.out.println(Fibonacci.fibonacci1(50));}}</code></pre><h4 id="青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><a href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？" class="headerlink" title="青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？"></a>青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</h4><pre><code>public class FrogStep {public static long solution(int n) {    if (n == 0) {        throw new RuntimeException(&quot;输入自然数&quot;);    }    if (n == 1) {        return 1;    }    if (n == 2) {        return 2;    }    long one = 1;    long two = 2;    long three = 0;    for (int i = 3; i &lt;= n; i++) {        three = one + two;        one = two;        two = three;    }    return three;}public static void main(String[] args){    System.out.println(FrogStep.solution(100));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;斐波拉契数列？&quot;&gt;&lt;a href=&quot;#斐波拉契数列？&quot; class=&quot;headerlink&quot; title=&quot;斐波拉契数列？&quot;&gt;&lt;/a&gt;斐波拉契数列？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class Fibonacci {
+
+//效率差
+public sta
+      
+    
+    </summary>
+    
+      <category term="策略类" scheme="http://www.xuchunfa.cn/categories/%E7%AD%96%E7%95%A5%E7%B1%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>栈和队列</title>
+    <link href="http://www.xuchunfa.cn/2018/07/27/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/"/>
+    <id>http://www.xuchunfa.cn/2018/07/27/栈和队列/</id>
+    <published>2018-07-27T11:39:06.000Z</published>
+    <updated>2018-07-27T11:43:19.234Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="两个栈实现队列？"><a href="#两个栈实现队列？" class="headerlink" title="两个栈实现队列？"></a>两个栈实现队列？</h4><pre><code>public class StackToQueue&lt;T&gt; {private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();public void appendTail(T element){    stack1.push(element);}public T deleteHead(){    if(stack2.size() &lt;= 0){        while(!stack1.empty()){            T element = stack1.pop();            stack2.push(element);        }    }    //说明stack1 也没元素了    if(stack2.isEmpty()){        throw new RuntimeException(&quot;队列为空&quot;);    }    T head = stack2.pop();    return head;}public static void main(String[] args){    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();    queue.appendTail(1);    queue.appendTail(2);    queue.appendTail(3);    Integer a = queue.deleteHead();    queue.appendTail(4);    Integer b = queue.deleteHead();    System.out.println(b);}}</code></pre><h4 id="两个队列实现栈？"><a href="#两个队列实现栈？" class="headerlink" title="两个队列实现栈？"></a>两个队列实现栈？</h4><pre><code>public class StackToQueue&lt;T&gt; {private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();public void appendTail(T element){    stack1.push(element);}public T deleteHead(){    if(stack2.size() &lt;= 0){        while(!stack1.empty()){            T element = stack1.pop();            stack2.push(element);        }    }    //说明stack1 也没元素了    if(stack2.isEmpty()){        throw new RuntimeException(&quot;队列为空&quot;);    }    T head = stack2.pop();    return head;}public static void main(String[] args){    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();    queue.appendTail(1);    queue.appendTail(2);    queue.appendTail(3);    Integer a = queue.deleteHead();    queue.appendTail(4);    Integer b = queue.deleteHead();    System.out.println(b);}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;两个栈实现队列？&quot;&gt;&lt;a href=&quot;#两个栈实现队列？&quot; class=&quot;headerlink&quot; title=&quot;两个栈实现队列？&quot;&gt;&lt;/a&gt;两个栈实现队列？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class StackToQueue&amp;lt;T&amp;gt; {
+
+
+      
+    
+    </summary>
+    
+      <category term="栈和队列" scheme="http://www.xuchunfa.cn/categories/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>二叉树的下一个结点</title>
+    <link href="http://www.xuchunfa.cn/2018/07/24/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%8B%E4%B8%80%E4%B8%AA%E7%BB%93%E7%82%B9/"/>
+    <id>http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/</id>
+    <published>2018-07-24T14:16:23.000Z</published>
+    <updated>2018-07-24T14:19:19.302Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public class ParentBinaryTree {ParentBinaryTreeNode root;public void createTree(ParentBinaryTreeNode node,int data){    if(this.root == null){        root = new ParentBinaryTreeNode(data);    }else {        //二叉查找树        if(data &lt; node.data){            if(node.left == null){                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);                node.left = temp;                temp.parent = node;            }else {                createTree(node.left,data);            }        }else {            if(node.right == null){                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);                node.right = temp;                temp.parent = node;            }else {                createTree(node.right,data);            }        }    }}//中序遍历,递归实现public void inOrder(ParentBinaryTreeNode node){    if(node == null)        return;    inOrder(node.left);    System.out.print(node.data + &quot; &quot;);    inOrder(node.right);}//找出中序遍历中的下一个点public ParentBinaryTreeNode searchNext(ParentBinaryTreeNode node,int data){    if(node == null){        throw new RuntimeException(&quot;空树&quot;);    }    ParentBinaryTreeNode dataNode = searchData(node,data);    ParentBinaryTreeNode next = null;    if(dataNode == null){        throw new RuntimeException(&quot;不存在该值&quot;);    }else{        //有右子树        if(dataNode.right != null){            ParentBinaryTreeNode temp = dataNode.right;            while (temp.left != null){                temp = temp.left;            }            next = temp;        }else if(dataNode.parent != null){//等于null说明是根节点            ParentBinaryTreeNode current =  dataNode;            ParentBinaryTreeNode parent = current.parent;            while (parent != null &amp;&amp; parent.right == current){                current = parent;                parent = parent.parent;            }            next = parent;//parent有可能为null        }    }    return next;}private ParentBinaryTreeNode searchData(ParentBinaryTreeNode node, int data) {    if(node == null){       return null;    }    if(node.data == data){        return node;    }else if(searchData(node.left,data) != null){        return searchData(node.left,data);    }else        return searchData(node.right,data);}public static void main(String[] args){    ParentBinaryTree tree = new ParentBinaryTree();    //for(int i = 2;i&lt;10;i++){    //    tree.createTree(tree.root,i);    //}    tree.createTree(tree.root,9);    tree.createTree(tree.root,5);    tree.createTree(tree.root,3);    tree.createTree(tree.root,7);    tree.createTree(tree.root,6);    tree.createTree(tree.root,8);    tree.createTree(tree.root,12);    tree.createTree(tree.root,10);    tree.createTree(tree.root,14);    tree.inOrder(tree.root);    System.out.println();    ParentBinaryTreeNode node = tree.searchNext(tree.root,5);    if(node != null){        System.out.println(node.data);    }else {        System.out.println(&quot;最后一个结点&quot;);    }}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;给定一个结点，找出中序遍历序列的下一个结点？&quot;&gt;&lt;a href=&quot;#给定一个结点，找出中序遍历序列的下一个结点？&quot; class=&quot;headerlink&quot; title=&quot;给定一个结点，找出中序遍历序列的下一个结点？&quot;&gt;&lt;/a&gt;给定一个结点，找出中序遍历序列的下一个结
+      
+    
+    </summary>
+    
+      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>volatile语义理解</title>
+    <link href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E7%90%86%E8%A7%A3/"/>
+    <id>http://www.xuchunfa.cn/2018/07/24/volatile语义理解/</id>
+    <published>2018-07-24T09:05:01.000Z</published>
+    <updated>2018-07-25T02:54:46.302Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p><p><strong>锁释放和获得：</strong>锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;volatile读：&lt;/strong&gt;线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;锁释放和获得：&lt;/strong&gt;锁释放的内存语义和volatile
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>前序中序后序构建二叉树</title>
+    <link href="http://www.xuchunfa.cn/2018/07/24/%E5%89%8D%E5%BA%8F%E4%B8%AD%E5%BA%8F%E5%90%8E%E5%BA%8F%E6%9E%84%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
+    <id>http://www.xuchunfa.cn/2018/07/24/前序中序后序构建二叉树/</id>
+    <published>2018-07-24T06:58:22.000Z</published>
+    <updated>2018-07-24T08:26:16.443Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"><a href="#根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？" class="headerlink" title="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"></a>根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？</h4><p><strong>核心思想：</strong>递归创建，更新start和end坐标。</p><pre><code>public class RestructBinaryTree {private BinaryTreeNode root;//根据前序和中序构造二叉树public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,int[] in,int inStart,int inEnd){    if(pre == null || in == null || pre.length &lt;= 0 || in.length &lt;= 0){        throw new RuntimeException(&quot;序列数组长度需大于0&quot;);    }    if(preEnd &lt; preStart || inEnd &lt; inStart){        return null;    }    //第一个结点    BinaryTreeNode node = new BinaryTreeNode(pre[preStart]);    int i = 0;    for(;i&lt;in.length;i++){        if(node.data == in[i]){            node.left = preAndIn(pre,preStart+1,preStart+i-inStart,in,inStart,i-1);            node.right = preAndIn(pre,preStart+i-inStart+1,preEnd,in,i+1,inEnd);            break;        }    }    if(i == in.length){        throw new RuntimeException(&quot;两组序列不匹配&quot;);    }    return node;}//根据中序和后序构造二叉树public BinaryTreeNode inAndPost(int[] post,int postStart,int postEnd,int[] in,int inStart,int inEnd){    if(post == null || in == null || post.length &lt;= 0 || in.length &lt;= 0){        throw new RuntimeException(&quot;序列数组长度需大于0&quot;);    }    if(postEnd &lt; postStart || inEnd &lt; inStart){        return null;    }    //第一个结点    BinaryTreeNode node = new BinaryTreeNode(post[postEnd]);    int i = 0;    for(;i&lt;in.length;i++){        if(node.data == in[i]){            node.right = inAndPost(post,postEnd-inEnd+i,postEnd-1,in,i+1,inEnd);            node.left = inAndPost(post,postStart,postEnd-inEnd+i-1,in,inStart,i-1);            break;        }    }    if(i == in.length){        throw new RuntimeException(&quot;两组序列不匹配&quot;);    }    return node;}//先序遍历,递归实现public void preOrder(BinaryTreeNode node){    if (node == null)        return;    System.out.print(node.data + &quot; &quot;);    preOrder(node.left);    preOrder(node.right);}//后序遍历public void postOrder(BinaryTreeNode node) {    if (node == null)        return;    postOrder(node.left);    postOrder(node.right);    System.out.print(node.data + &quot; &quot;);}public static void main(String[] args){    RestructBinaryTree tree = new RestructBinaryTree();    int[] pre = {1,2,3,4};    int[] in = {4,3,2,1};    int[] post = {7,4,2,5,8,6,3,1};    //tree.root = tree.inAndPost(post,0,post.length-1,in,0,in.length-1);    tree.root = tree.preAndIn(pre,0,pre.length-1,in,0,in.length-1);    //tree.preOrder(tree.root);    tree.postOrder(tree.root); }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？&quot;&gt;&lt;a href=&quot;#根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？&quot; class=&quot;headerlink&quot; title=&quot;根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java内存模型</title>
+    <link href="http://www.xuchunfa.cn/2018/07/23/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://www.xuchunfa.cn/2018/07/23/java内存模型/</id>
+    <published>2018-07-23T12:12:59.000Z</published>
+    <updated>2018-07-24T09:05:15.451Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p>happens-before原则：</p><p>  <strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p><p>  1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p><p>  2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p><p>  3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p><p>  4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p><p>  5.<strong>顺序一致性模型和JMM的比较：</strong></p><pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。</code></pre></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;happens-before原则：&lt;/p&gt;
+&lt;p&gt;  &lt;strong&gt;特点：&lt;/strong&gt;happens-before保证了两个线程之间的内存可见性。&lt;/p&gt;
+&lt;p&gt;  1.两个操作之间存在happens-before关系，并不意味着一定要按照happ
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>二叉树的创建和遍历</title>
+    <link href="http://www.xuchunfa.cn/2018/07/23/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E9%81%8D%E5%8E%86/"/>
+    <id>http://www.xuchunfa.cn/2018/07/23/二叉树的创建和遍历/</id>
+    <published>2018-07-23T07:57:04.000Z</published>
+    <updated>2018-07-23T08:00:37.409Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="前序、中序和后序递归与非递归的遍历二叉树？"><a href="#前序、中序和后序递归与非递归的遍历二叉树？" class="headerlink" title="前序、中序和后序递归与非递归的遍历二叉树？"></a>前序、中序和后序递归与非递归的遍历二叉树？</h4><pre><code>public class BinaryTree {private BinaryTreeNode root;public boolean isEmpty(){    if(this.root == null)        return true;    return false;}public BinaryTreeNode getRoot() {    return root;}public void createBinaryTree(BinaryTreeNode node, int data){    if(root == null){        this.root = new BinaryTreeNode(data);    }else{        //创建二叉查找树        if(data &lt; node.data){            //构建左子树            if(node.left == null){                node.left = new BinaryTreeNode(data);            }else {                createBinaryTree(node.left,data);            }        }else {            //构建右子树            if(node.right == null){                node.right = new BinaryTreeNode(data);            }else {                createBinaryTree(node.right,data);            }        }    }}//先序遍历,递归实现public void preOrder(BinaryTreeNode node){    if (node == null)        return;    System.out.print(node.data + &quot; &quot;);    preOrder(node.left);    preOrder(node.right);}//先序遍历,非递归实现public void cyclePreOrder(BinaryTreeNode node){    BinaryTreeNode p = node;    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();    if(p == null){        System.out.println(&quot;二叉树为空&quot;);    }    //根节点出栈后栈空了但 p != null    while (p != null || !stack.isEmpty()){        while (p != null){            System.out.print(p.data + &quot; &quot;);            stack.push(p);            p = p.left;        }        if(!stack.isEmpty()){            p = stack.pop();            p = p.right;        }    }}//中序遍历,递归实现public void inOrder(BinaryTreeNode node){    if(node == null)        return;    inOrder(node.left);    System.out.print(node.data + &quot; &quot;);    inOrder(node.right);}//中序遍历,非递归实现public void cycleInOrder(BinaryTreeNode node){    BinaryTreeNode p = node;    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();    if(p == null){        System.out.println(&quot;二叉树为空&quot;);    }    //根节点出栈后栈空了但 p != null    while (p != null || !stack.isEmpty()){        while (p != null){            stack.push(p);            p = p.left;        }        if(!stack.isEmpty()){            p = stack.pop();            System.out.print(p.data + &quot; &quot;);            p = p.right;        }    }}//后序遍历,递归实现public void postOrder(BinaryTreeNode node) {    if (node == null)        return;    postOrder(node.left);    postOrder(node.right);    System.out.print(node.data + &quot; &quot;);}//后序遍历,非递归实现public void cyclePostOrder(BinaryTreeNode node){    BinaryTreeNode current;    BinaryTreeNode visited = null;    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();    s.push(node);    while (!s.isEmpty()){        //还不能出栈        current = s.peek();        if((current.left == null &amp;&amp; current.right == null) || (visited != null &amp;&amp; (current.left == visited || current.right == visited)) ){            current = s.pop();            System.out.print(current.data + &quot; &quot;);            visited = current;        }else {            if(current.right != null){                s.push(current.right);            }            if(current.left != null){                s.push(current.left);            }        }    }}public static void main(String[] args){    BinaryTree bt = new BinaryTree();    Random random = new Random();    //10个结点    for(int i = 0;i&lt;6;i++){        bt.createBinaryTree(bt.root,random.nextInt(10));    }    bt.postOrder(bt.root);    System.out.println();    bt.cyclePostOrder(bt.root);}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;前序、中序和后序递归与非递归的遍历二叉树？&quot;&gt;&lt;a href=&quot;#前序、中序和后序递归与非递归的遍历二叉树？&quot; class=&quot;headerlink&quot; title=&quot;前序、中序和后序递归与非递归的遍历二叉树？&quot;&gt;&lt;/a&gt;前序、中序和后序递归与非递归的遍历二叉树？&lt;/
+      
+    
+    </summary>
+    
+      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>反转链表</title>
+    <link href="http://www.xuchunfa.cn/2018/07/22/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/"/>
+    <id>http://www.xuchunfa.cn/2018/07/22/反转链表/</id>
+    <published>2018-07-22T11:44:48.000Z</published>
+    <updated>2018-07-22T11:54:55.982Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="反转链表？"><a href="#反转链表？" class="headerlink" title="反转链表？"></a>反转链表？</h4><pre><code>public class VerseLinkPrint {private ListNode head;    private ListNode q;//添加链表节点   public void add(int data){    ListNode node = new ListNode(data);    if(this.head == null){        this.head = node;    }else {        this.head.addNode(node);    }}//从头到尾打印链表节点    public void print(){    if(this.head == null){        System.out.println(&quot;链表为空&quot;);    }else {        this.head.printNode();        System.out.println();    }}//非递归实现反转链表   public void versePrint(){if(head == null){    System.out.println(&quot;链表为空&quot;);    return;}//已经改变的链表的结构ListNode p = head.next;ListNode q = null;head.next = null;while (p != null){    q = p.next;    p.next = head;    head = p;    p = q;}print();}//递归实现反转链表   public void verseRecursive(ListNode p){if(p == null)    return;verseRecursive(p.next);if(p.next == null){    head = p;    q = p;}p.next = null;q.next = p;q = q.next;}public static void main(String[] args){    VerseLinkPrint link = new VerseLinkPrint();    link.add(1);    link.add(2);    link.add(3);    link.verseRecursive(link.head);    link.print();    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;反转链表？&quot;&gt;&lt;a href=&quot;#反转链表？&quot; class=&quot;headerlink&quot; title=&quot;反转链表？&quot;&gt;&lt;/a&gt;反转链表？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class VerseLinkPrint {
+
+private ListNode he
+      
+    
+    </summary>
+    
+      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>从尾到头打印链表</title>
+    <link href="http://www.xuchunfa.cn/2018/07/22/%E4%BB%8E%E5%B0%BE%E5%88%B0%E5%A4%B4%E6%89%93%E5%8D%B0%E9%93%BE%E8%A1%A8/"/>
+    <id>http://www.xuchunfa.cn/2018/07/22/从尾到头打印链表/</id>
+    <published>2018-07-22T10:53:03.000Z</published>
+    <updated>2018-07-22T11:55:51.480Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="从尾到头打印链表？"><a href="#从尾到头打印链表？" class="headerlink" title="从尾到头打印链表？"></a>从尾到头打印链表？</h4><p><strong>核心思想：</strong>栈和递归。</p><pre><code>public class VerseLink {private ListNode head;//添加链表节点public void add(int data){    ListNode node = new ListNode(data);    if(this.head == null){        this.head = node;    }else {        this.head.addNode(node);    }}//从头到尾打印链表节点public void print(){    if(this.head == null){        System.out.println(&quot;链表为空&quot;);    }else {        this.head.printNode();        System.out.println();    }}//从尾到头打印链表节点(常规方法) 时间复杂度(O(n)) 空间复杂度(O(1))public void versePrint(){    if(head == null){        System.out.println(&quot;链表为空&quot;);        return;    }    ListNode p = head.next;    ListNode q = null;    head.next = null;    while (p != null){        q = p.next;        p.next = head;        head = p;        p = q;    }    print();}//栈实现 时间复杂度:O(n) 空间复杂度:O(n)public void versePrint1(){    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();    ListNode p = head;    if(p == null){        System.out.println(&quot;链表为空&quot;);        return;    }    while (p != null){        stack.push(p.data);        p = p.next;    }    while (!stack.empty()){        System.out.print(stack.pop()+&quot;--&gt;&quot;);    }}//递归实现public void versePrint2(ListNode p){    if(p == null){        return;    }    versePrint2(p.next);    System.out.print(p.data+&quot;--&gt;&quot;);}public static void main(String[] args){    VerseLink link = new VerseLink();    link.add(1);    link.add(2);    link.add(3);    link.versePrint2(link.head);}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;从尾到头打印链表？&quot;&gt;&lt;a href=&quot;#从尾到头打印链表？&quot; class=&quot;headerlink&quot; title=&quot;从尾到头打印链表？&quot;&gt;&lt;/a&gt;从尾到头打印链表？&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;栈和递归。&lt;/p&gt;
+&lt;pre&gt;&lt;code
+      
+    
+    </summary>
+    
+      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>链表中倒数第k个结点</title>
+    <link href="http://www.xuchunfa.cn/2018/07/22/%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%80%92%E6%95%B0%E7%AC%ACk%E4%B8%AA%E7%BB%93%E7%82%B9/"/>
+    <id>http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/</id>
+    <published>2018-07-22T06:29:00.000Z</published>
+    <updated>2018-07-22T11:56:03.226Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {private ListNode head;class ListNode{    private int data;    ListNode next;    public ListNode(int data) {        this.data = data;        this.next = null;    }    public void addNode(ListNode newNode){        //相当于尾插法        if(this.next == null){            this.next = newNode;        }else {            this.next.addNode(newNode);        }    }    public void printNode(){        System.out.print(this.data + &quot;--&gt;&quot;);        if(this.next != null){            this.next.printNode();        }        }    }    //添加链表节点    public void add(int data){    ListNode node = new ListNode(data);        if(this.head == null){            this.head = node;        }else {            this.head.addNode(node);        }    }    //打印链表节点        public void print(){    if(this.head == null){        System.out.println(&quot;链表为空&quot;);    }else {        this.head.printNode();        System.out.println();    }    }    //链表中的倒数第 K 个结点    public ListNode FindKthToTail(ListNode head,int k){    int len = 0;    int i = 0;    ListNode counter = head;    ListNode p = head;    ListNode pre = head;    if(k &lt;= 0){        System.out.println(&quot;请输入自然数k！&quot;);        //-1代表非正常退出        System.exit(-1);    }    if(head == null) {        System.out.println(&quot;链表不能为空！&quot;);        System.exit(-1);    }    while(counter != null){        len++;        counter = counter.next;    }    if(k &gt; len){        System.out.println(&quot;k值大于了链表长度！&quot;);        System.exit(-1);    }    //先走k步    while (i &lt; k){        pre = pre.next;        i++;    }    while (pre != null){        p = p.next;        pre = pre.next;    }    return p;    }    public static void main(String[] args){    Link link = new Link();    link.add(1);    link.add(2);    link.add(3);    link.print();    ListNode node = link.FindKthToTail(link.head,4);    node.next = null;    node.printNode();    }    }</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;求链表中的倒数第k个结点？&quot;&gt;&lt;a href=&quot;#求链表中的倒数第k个结点？&quot; class=&quot;headerlink&quot; title=&quot;求链表中的倒数第k个结点？&quot;&gt;&lt;/a&gt;求链表中的倒数第k个结点？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class Link 
+      
+    
+    </summary>
+    
+      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>合并两个有序数组</title>
+    <link href="http://www.xuchunfa.cn/2018/07/22/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84/"/>
+    <id>http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/</id>
+    <published>2018-07-22T05:54:01.000Z</published>
+    <updated>2018-07-22T05:57:48.317Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>两个有序数组A1和A2，把A2的所有数字插入到A1？</li></ul><p><strong>核心思想：</strong>从数组末尾开始比较，指针依次往前挪。</p><pre><code>//时间复杂度(O(n)) 空间复杂度(O(n))public static int[] merge(int[] a,int[] b){    if(a==null || b==null){        System.out.println(&quot;输入两个数组&quot;);    }    if(a.length == 0)        return b;    if(b.length == 0)        return a;    int len1 = a.length;    int len2 = b.length;    int[] c = new int[len1+len2];    int i = len1 - 1;    int j = len2 - 1;    while(i &gt;= 0 &amp;&amp; j &gt;= 0){        if(a[i] &gt; b[j]){            c[i+j+1] = a[i];            i--;        }else{            c[i+j+1] = b[j];            j--;        }    }    while (i &gt;= 0){        c[i+j+1] = a[i];        i--;    }    while(j &gt;= 0){        c[i+j+1] = b[j];        j--;    }    return c;}//时间复杂度(O(n)) 空间复杂度(O(1)) 直接在第一个数组上操作public static void merge1(int[] a,int[] b){    if(a==null || b==null){        System.out.println(&quot;输入两个数组&quot;);    }    int len1 = a.length;    int len2 = b.length;    int i = len1 - len2 -1;    int j = len2 - 1;    while(i &gt;= 0 &amp;&amp; j &gt;= 0){        if(a[i] &gt; b[j]){            a[i+j+1] = a[i];            i--;        }else{            a[i+j+1] = b[j];            j--;        }    }    while(j &gt;= 0){        a[i+j+1] = b[j];        j--;    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;两个有序数组A1和A2，把A2的所有数字插入到A1？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;从数组末尾开始比较，指针依次往前挪。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//时间复杂度(O(n)) 空间复杂度(O(n))
+public s
+      
+    
+    </summary>
+    
+      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>替换字符串字符</title>
+    <link href="http://www.xuchunfa.cn/2018/07/20/%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E7%AC%A6/"/>
+    <id>http://www.xuchunfa.cn/2018/07/20/替换字符串字符/</id>
+    <published>2018-07-20T07:45:59.000Z</published>
+    <updated>2018-07-20T08:09:14.899Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>将字符串中的’ ‘替换成”20%”？</li></ul><p><strong>核心思想：</strong></p><p>1.从最后一字符开始从前遍历，最后一个字符是’\0’。</p><p>2.将字符串变为数组时，要在字符串数组后面添加’\0’。</p><pre><code>public class ReplaceChar {//时间复杂度：O(n) 空间复杂度：O(n)public void replace(char[] a,int len){    //len = 1 时就一个字符&apos;\0&apos;    if(a == null || len&lt;2){        System.out.println(&quot;输入长度大于0的字符串&quot;);        System.exit(-1);    }    int oldLen = 0;    int count = 0;    int newLen;    for(int i = 0;a[i] !=&apos;\0&apos;;i++){        if(a[i] == &apos; &apos;)            count++;        oldLen++;    }    newLen = oldLen + 2*count;    if(newLen &gt; len)        return;    int i = oldLen;//从&apos;\0&apos;开始    int j = newLen;    while (i &gt;= 0 &amp;&amp; i &lt; j){        if(a[i] == &apos; &apos;){            a[j--] = &apos;0&apos;;            a[j--] = &apos;2&apos;;            a[j--] = &apos;%&apos;;        }else {            //注意 j 越界的情况            a[j--] = a[i];        }        i--;    }}public static void main(String[] args) {    String s = &quot;abcd&quot;;    //多了个&apos;\0&apos;    char oldChar[] = new char[s.length()+1];    int counter = 0;    for (int i = 0; i&lt;s.length(); i++) {        if (s.charAt(i) == &apos; &apos;)            counter++;        oldChar[i] = s.charAt(i);    }    //字符串结束标志    oldChar[s.length()] = &apos;\0&apos;;    //里面已经包含了&apos;\0&apos;结束符    int totalLen = oldChar.length + counter*2;    //数组扩容    char[] newChar = new char[totalLen];    for(int i = 0;i&lt;oldChar.length;i++){        newChar[i] = oldChar[i];    }    new ReplaceChar().replace(newChar,totalLen);    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){        System.out.print(newChar[i]);    }}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;将字符串中的’ ‘替换成”20%”？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1.从最后一字符开始从前遍历，最后一个字符是’\0’。&lt;/p&gt;
+&lt;p&gt;2.将字符串变为数组时，要在字符串数组后面添加’\0’。&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="字符串" scheme="http://www.xuchunfa.cn/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>二维数组的查找</title>
+    <link href="http://www.xuchunfa.cn/2018/07/19/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E6%9F%A5%E6%89%BE/"/>
+    <id>http://www.xuchunfa.cn/2018/07/19/二维数组的查找/</id>
+    <published>2018-07-19T14:01:59.000Z</published>
+    <updated>2018-07-19T14:07:11.002Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？"><a href="#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？" class="headerlink" title="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？"></a>二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？</h4><p><strong>核心思想：</strong></p><p>1.右上角的数字与要查找的数字比较。</p><p>2.右上角 &gt; key 去列 否则 去行</p><pre><code>public int findElement(int[][] arr,int n,int m,int search){    int row = n;    int col = m;    int key = search;    int i = 0;    if(arr == null){        System.out.println(&quot;请输入一个二维数组&quot;);        return 0;    }    if(n &lt;= 0 || m &lt;=0){        System.out.println(&quot;输入两个自然数&quot;);    }    while(i &lt; row &amp;&amp; col &gt;0){        //去列        if(arr[i][col-1] &gt; key){            col--;        }else if(arr[i][col-1] &lt; key){            i++;        }else {            //找到元素            return arr[i][col-1];        }        //只剩一行        if(i == row-1){            for(int j=0;j&lt;col;j++){                if(arr[i][j] == key) {                    return arr[i][j];                }            }            return 0;        }        //只剩一列        if(col == 1){            for(int j = 0;j&lt;row;j++){                if(arr[j][0] == key)                    return arr[j][0];            }            return 0;        }    }    //不存在    return 0;}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？&quot;&gt;&lt;a href=&quot;#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？&quot; class=&quot;headerlink&quot; title=&quot;二维数组，每一行从左到右递增，每一列从上
+      
+    
+    </summary>
+    
+      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java并发底层原理</title>
+    <link href="http://www.xuchunfa.cn/2018/07/18/java%E5%B9%B6%E5%8F%91%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
+    <id>http://www.xuchunfa.cn/2018/07/18/java并发底层原理/</id>
+    <published>2018-07-18T13:31:59.000Z</published>
+    <updated>2018-07-18T13:34:19.458Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p>处理器如何实现的原子操作？</p><p>  1.通过总线锁。</p><p>  2.通过缓存锁定。</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;处理器如何实现的原子操作？&lt;/p&gt;
+&lt;p&gt;  1.通过总线锁。&lt;/p&gt;
+&lt;p&gt;  2.通过缓存锁定。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数组中的重复数字</title>
+    <link href="http://www.xuchunfa.cn/2018/07/18/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/"/>
+    <id>http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/</id>
+    <published>2018-07-18T09:20:58.000Z</published>
+    <updated>2018-07-19T12:06:19.968Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p><p>1.数组下标 = 数组元素</p><p>2.目标交换：num[i] = m </p><p>   swap: m <---> num[m] 直到 num[i] == i</---></p><pre><code>public class OptDuplication {//哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)boolean findDup1(int[] nums,int len,int[] duplication){    if(nums == null || len &lt;= 0){        System.out.println(&quot;数组必须存在且不能为空!&quot;);        return  false;    }    for(int i = 0;i&lt;len;i++){        if(nums[i]&lt;0 || nums[i]&gt;len-1) {            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);            return false;        }    }    //哈希表    int[] count = new int[len];    for(int i = 0;i&lt;len;i++){        if(count[nums[i]] == 1){            duplication[0] = nums[i];            return true;        }        count[nums[i]]++;    }    return false;}boolean findDup(int[] nums,int len,int[] duplication){    if(nums == null || len &lt;= 0){        System.out.println(&quot;数组必须存在且不能为空!&quot;);        return  false;    }    for(int i = 0;i&lt;len;i++){        if(nums[i]&lt;0 || nums[i]&gt;len-1) {            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);            return false;        }    }    int temp;    for(int i = 0;i&lt;len;i++){        while (i != nums[i]){            //nums[i]=m 说明 m 所在的下标是 i 和 m 所以重复了            if(nums[i] == nums[nums[i]]){                duplication[0]=nums[i];                return true;            }else {                //交换num[i] 和 num[num[i]]                temp = nums[i];                nums[i] = nums[nums[i]];                nums[temp] = temp;            }        }    }    System.out.println(&quot;没有重复数字&quot;);    return false;}</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p><p>1.二分法的运用，加入了统计数字个数的方法</p><p>2.循环结束条件：start == end</p><pre><code>public class DuplicationVersion {//时间复杂度:O(nlogn) 空间复杂度:O(1)boolean findDup(int[] nums,int len,int[] duplication){    if(nums == null || len &lt;= 0){        System.out.println(&quot;数组必须存在且不能为空!&quot;);        return  false;    }    for(int i = 0;i&lt;len;i++){        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);            return false;        }    }    int start = 1;    int end = len-1;    int middle;    while(start &lt;=  end){        middle = (start + end)/2;        int number = calNum(nums,len,start,middle);        //结束条件        if(start == end){            if(number &gt; 1){                duplication[0] = start;                return true;            }else{                break;            }        }        if(middle - start + 1 &lt; number){            end = middle;        }else {            start = middle + 1;        }    }    System.out.println(&quot;没有重复数字&quot;);    return false;}private int calNum(int[] nums, int len, int start, int end) {    int count = 0;    for(int i = 0;i&lt;len;i++){        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){            count++;        }    }    return count;} }</code></pre><p>参考文档：</p><p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？&quot;&gt;&lt;a href=&quot;#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？&quot; class=&quot;headerlink&quot; title=&quot;长度为n的数组里面的所有数字都在0~
+      
+    
+    </summary>
+    
+      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>匿名内部类</title>
+    <link href="http://www.xuchunfa.cn/2018/07/17/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    <id>http://www.xuchunfa.cn/2018/07/17/并发编程/</id>
+    <published>2018-07-17T12:47:37.000Z</published>
+    <updated>2018-07-17T13:53:42.338Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p>匿名内部类？</p><p>  没有名字的内部类，只能使用一次，简化代码编写。</p><p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p><pre><code>interface People {public abstract void eat();}public class Demo {   public static void main(String[] args) {People p = new People() {    public void eat() {        System.out.println(&quot;I can eat &quot;);    }};p.eat();}</code></pre></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;匿名内部类？&lt;/p&gt;
+&lt;p&gt;  没有名字的内部类，只能使用一次，简化代码编写。&lt;/p&gt;
+&lt;p&gt;  &lt;strong&gt;使用前提条件：必须继承父类或者实现一个接口。&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;interface People {
+publi
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+</feed>
