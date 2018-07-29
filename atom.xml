@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-07-29T10:35:01.869Z</updated>
+  <updated>2018-07-29T15:14:08.962Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://www.xuchunfa.cn/2018/07/29/%E5%A0%86%E6%8E%92%E5%BA%8F/"/>
     <id>http://www.xuchunfa.cn/2018/07/29/堆排序/</id>
     <published>2018-07-29T10:33:19.000Z</published>
-    <updated>2018-07-29T10:35:01.869Z</updated>
+    <updated>2018-07-29T15:14:08.962Z</updated>
     
     <content type="html"><![CDATA[<h4 id="堆排序？"><a href="#堆排序？" class="headerlink" title="堆排序？"></a>堆排序？</h4><pre><code>public class HeapSort {public static void heapSort(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    int len = a.length;    //构建大顶堆    for(int i = len/2-1;i&gt;=0;i--){        createHeap(a,i,len);    }    for(int j = a.length-1;j&gt;0;j--){        swap(a,0,j);        createHeap(a,0,j);    }}private static void swap(int[] a, int i, int j) {    int temp = a[i];    a[i] = a[j];    a[j] = temp;}private static void createHeap(int[] a,int i,int len) {    int father = a[i];    int j;//j代表子结点坐标 i代表父结点坐标    while(2*i + 1 &lt; len){        j = 2*i + 1;        if(j + 1 &lt; len &amp;&amp; a[j] &lt; a[j+1] )            j++;        if(a[j] &gt; father){            a[i] = a[j];            i = j;        }else {            break;        }    }    //找到最终位置    a[i] = father;}public static void main(String[] args){    int[] a = {1,1,1};    HeapSort.heapSort(a);    System.out.println(Arrays.toString(a));}}</code></pre>]]></content>
     
