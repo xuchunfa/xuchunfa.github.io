@@ -241,9 +241,9 @@ public sta
     <link href="http://www.xuchunfa.cn/2018/07/23/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
     <id>http://www.xuchunfa.cn/2018/07/23/java内存模型/</id>
     <published>2018-07-23T12:12:59.000Z</published>
-    <updated>2018-07-24T09:05:15.451Z</updated>
+    <updated>2018-07-31T07:37:01.777Z</updated>
     
-    <content type="html"><![CDATA[<ul><li><p>happens-before原则：</p><p>  <strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p><p>  1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p><p>  2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p><p>  3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p><p>  4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p><p>  5.<strong>顺序一致性模型和JMM的比较：</strong></p><pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。</code></pre></li></ul>]]></content>
+    <content type="html"><![CDATA[<ul><li><p>happens-before原则：</p><h4 id="怎么理解内存可见性？"><a href="#怎么理解内存可见性？" class="headerlink" title="怎么理解内存可见性？"></a>怎么理解内存可见性？</h4><p>  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。</p><h4 id="happens-before规则有哪些？"><a href="#happens-before规则有哪些？" class="headerlink" title="happens-before规则有哪些？"></a>happens-before规则有哪些？</h4></li></ul><ol><li>程序顺序规则：但线程内，在不改变程序结果的情况下(可能会发生重排序),程序按顺序执行。</li><li>监视器锁规则：对一个锁的解锁(volatile写)优先于锁的加锁(volatile读)。</li><li>volatile变量规则：volatile写优先volatile读。</li><li>传递性：A happens-before B, Bhappens-before C则 A happens-before C。</li><li>start()原则：如果在线程A中执行ThreadB.start(),那么A线程的ThreadB.start()操作要先于线程B中的任意操作。</li><li>join()操作：线程A执行ThreadB.join()操作并成功返回,那么B中的任意操作都先于线程A从ThreadB.join()操作成功返回。</li></ol><p>举个例子：</p><p><img src="https://i.imgur.com/5HFiSBc.png" alt=""></p><p><strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p><p>1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p><p>2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p><p>3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p><p>4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p><p>5.<strong>顺序一致性模型和JMM的比较：</strong></p><pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。</code></pre>]]></content>
     
     <summary type="html">
     
@@ -251,8 +251,7 @@ public sta
       
         &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;happens-before原则：&lt;/p&gt;
-&lt;p&gt;  &lt;strong&gt;特点：&lt;/strong&gt;happens-before保证了两个线程之间的内存可见性。&lt;/p&gt;
-&lt;p&gt;  1.两个操作之间存在happens-before关系，并不意味着一定要按照happ
+&lt;h4 id=&quot;怎么理解内存可见性？&quot;&gt;&lt;a href=&quot;#怎么理解内存可见性？&quot; class=&quot;headerlink&quot; title=&quot;怎么理解内存可见性？&quot;&gt;&lt;/a&gt;怎么理解内存可见性？&lt;/h4&gt;&lt;p&gt;  在单
       
     
     </summary>
