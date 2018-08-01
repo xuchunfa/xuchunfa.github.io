@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？    就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i+">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-13T08:59:00.340Z">
+<meta property="og:updated_time" content="2018-08-01T10:09:36.531Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字符串转整型">
 <meta name="twitter:description" content="需要考虑的临界条件 Integer的范围-2的31次方 到 +2的31次方减1 整型可以从最小2进制到最大36进制 字符串为空时抛异常 字符串有非数字字符时抛异常 字符串有正负号 字符串就只有正负号，即长度为1抛出异常  遇到的问题 怎么判断第一个字符是非数字符？    就只考虑firstChar &amp;lt; &amp;#39;0&amp;#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i+">
@@ -439,12 +439,104 @@
 <p>  方法：</p>
 <p>  int flag = limit/radix;</p>
 <p>  if(result &lt; flag){</p>
-<pre><code>**越界**
+<pre><code>越界
 </code></pre><p>  }</p>
 <p>  result = result*radix;</p>
 </li>
 </ul>
+<hr>
+<pre><code>public class StringToInteger {
 
+public static int vary(String s) {
+
+    int i = 0;
+    int len = s.length();
+    int result = 0;
+    int radix = 10;
+    boolean negative = false;//默认正数
+    int limit = -Integer.MAX_VALUE;//-2147483647
+
+   /* if(s == null){
+        System.out.println(&quot;null&quot;);
+        return -1;
+    }*/
+
+    if (s == null || s.length() == 0) {
+        System.out.println(&quot;字符串不能为空!&quot;);
+        return -1;
+    }
+
+    if (len &gt; 0) {
+        char firstChar = s.charAt(i);
+
+        //判断第一个字符是不是正负号
+
+            if (firstChar &lt; &apos;0&apos;) {
+            if (firstChar == &apos;-&apos;) {
+                limit = Integer.MIN_VALUE;//-2147483648
+                negative = true;
+            } else if (firstChar != &apos;+&apos;) {
+                System.out.println(&quot;非法字符!&quot;);
+                return -1;
+            }
+
+            if (len == 1) {
+                System.out.println(&quot;非法格式&quot;);
+                return -1;
+            }
+            i++;
+        }
+
+        //用于判断result &lt; Integer.MIN_VALUE 的情况!!!
+        int flag = limit/radix;
+
+
+        //接着开始循环
+        while (i &lt; len) {
+            char ch = s.charAt(i);
+            if (ch &gt;= &apos;0&apos; &amp;&amp; ch &lt;= &apos;9&apos;) {
+                int digit = ch - &apos;0&apos;;
+
+                if(result &lt; flag){
+                    System.out.println(&quot;越界!&quot;);
+                    return -1;
+                }
+                //这里result定义的为int型,有可能越界
+                result = result * radix;
+                if (result - digit &lt; limit) {
+                    System.out.println(&quot;越界!&quot;);
+                    return -1;
+                }
+                result -= digit;
+
+            } else {
+                System.out.println(&quot;非法字符!&quot;);
+                return -1;
+            }
+            i++;
+        }
+    }
+    //结束 if(len &gt; 0)
+    return negative ? result : -result;
+}
+
+public static void main(String[] args) {
+    String s = &quot;&quot;;
+    //String s = &quot;&quot;;
+    //String s = &quot;123aaa&quot;;
+    //String s = &quot;2147483647&quot;;
+    //String s = &quot;2147483648&quot;;
+    //String s = &quot;2147483641222&quot;;
+    //String s = &quot;21474&quot;;
+    //String s = &quot;-1&quot;;
+    //String s = &quot;-2147483648&quot;;
+    //String s = &quot;-2147483649&quot;;
+    //String s = &quot;-2147483641&quot;;
+
+    System.out.println(StringToInteger.vary(s));
+}
+}
+</code></pre>
       
     </div>
     
