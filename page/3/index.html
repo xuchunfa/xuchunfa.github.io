@@ -400,8 +400,15 @@
 <p>  2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。</p>
 </li>
 <li><p>单例模式中volatile变量的作用？</p>
-<p>  当一个共享变量被volatile修饰时，它会保证修改的值立即更新到主存，其他线程去内存中读取新值。</p>
+<p>  首先分析 instance = new Singleton() 的本质：</p>
+<p>  1.为对象分配内存空间</p>
+<p>  2.对象初始化</p>
+<p>  3.将对象的引用指向对应的内存地址。</p>
 </li>
+</ul>
+<p>但是在单线程内2和3可能会发生重排序，于是发生了如下情况：<br><img src="https://i.imgur.com/EXnDWsp.png" alt=""></p>
+<p>此时线程B访问的是没有经过初始化的对象，会报错，所以使用volatile的根源在于：<strong>禁止A2和A3的重排序</strong>。</p>
+<ul>
 <li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
 <p>  因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。我们只需要在实例还没有创建之前添加加锁操作。</p>
 </li>
@@ -2445,5 +2452,5 @@ npm install hexo-deployer-git --save
   <!-- 页面点击小红心 -->
   <script type="text/javascript" src="/js/src/love.js"></script>
   
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</body>
 </html>
