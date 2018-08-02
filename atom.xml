@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-07-29T15:14:08.962Z</updated>
+  <updated>2018-08-02T08:25:38.669Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,56 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>归并排序</title>
+    <link href="http://www.xuchunfa.cn/2018/08/02/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/08/02/归并排序/</id>
+    <published>2018-08-02T06:40:42.000Z</published>
+    <updated>2018-08-02T08:25:38.669Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>什么叫分治思想？</strong></p><p>分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之</p><p><img src="https://images2015.cnblogs.com/blog/1024555/201612/1024555-20161218163120151-452283750.png" alt=""></p><pre><code>public class MergeSort {//临时数组public static void sort(int[] a){    int[] temp = new int[a.length];    mergeSort(a,0,a.length-1,temp);}//治的思想public static void merge(int[] a,int left,int mid,int right,int[] temp){    int i = left;    int j = mid + 1;    int k = 0;    while(i &lt;= mid &amp;&amp; j &lt;= right){        if(a[i] &lt; a[j]){            temp[k++] = a[i++];        }else{            temp[k++] = a[j++];        }    }    while (i &lt;= mid){        temp[k++] = a[i++];    }    while (j &lt;= right){        temp[k++] = a[j++];    }    k = 0;    while (left &lt;= right){        a[left++] = temp[k++];    }}//归并排序public static void mergeSort(int[] a,int left,int right,int[] temp){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(left &lt; 0 || left &gt;= a.length || right &lt; 0 || right &gt;= a.length ){        throw new RuntimeException(&quot;越界&quot;);    }    if(left &gt;= right)        return;    int mid = (left + right)/2;    //分    mergeSort(a,left,mid,temp);    mergeSort(a,mid+1,right,temp);    //治    merge(a,left,mid,right,temp);}public static void main(String[] args){    int[] a = {6,5,4,4,4,3,2,1};    sort(a);    System.out.println(Arrays.toString(a));}}</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6194356.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6194356.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;什么叫分治思想？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://images2015
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>进程和线程的区别</title>
+    <link href="http://www.xuchunfa.cn/2018/08/02/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://www.xuchunfa.cn/2018/08/02/进程和线程的区别/</id>
+    <published>2018-08-02T05:36:27.000Z</published>
+    <updated>2018-08-02T05:51:38.198Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>进程：</strong>可以看成是每个运行中的程序。它可以拥有自己独立的资源。</p><p><strong>线程：</strong>操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。</p><p><strong>进程和线程的联系：</strong>一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;进程：&lt;/strong&gt;可以看成是每个运行中的程序。它可以拥有自己独立的资源。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;线程：&lt;/strong&gt;操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;进程和线程的联系：
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>堆排序</title>
@@ -94,9 +144,9 @@ public static v
     <link href="http://www.xuchunfa.cn/2018/07/28/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/"/>
     <id>http://www.xuchunfa.cn/2018/07/28/排序算法比较/</id>
     <published>2018-07-28T08:13:19.000Z</published>
-    <updated>2018-07-29T10:26:25.811Z</updated>
+    <updated>2018-08-02T08:38:03.498Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p><p><strong>学习过程中一点点积累补充</strong></p><ul><li><p>快排分析</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p><p>  时间复杂度：nlogn</p><p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p><p>  时间复杂度：n^2</p><p>  3.一般情况下：略</p><p>  时间复杂度：nlogn</p><p>  <strong>空间复杂度：</strong></p><p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p><p>  空间复杂度：O(logn)</p><p>  2.最差情况：略</p><p>  空间复杂度：O(n)</p><p>  <strong>补充：</strong>快排是不稳定的。稳定性是指—表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p></li><li><p>直接插入排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p><p>  时间复杂度：O(n^2)</p><p>  平均复杂度:O(n^2)</p><p>  <strong>空间复杂度：</strong></p><p>  空间复杂度：O(1)</p><p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p></li><li><p>冒泡排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：逆序，交换次数O(n^2)。</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>简单选择排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p><p>  时间复杂度：O(n^2)</p><p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>堆排序</p><p>  <strong>时间复杂度：</strong></p><p>  分析：</p><p>  初始化堆的过程时间：O(n)</p><p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p><p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li></ul><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p><p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>]]></content>
+    <content type="html"><![CDATA[<p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p><p><strong>学习过程中一点点积累补充</strong></p><ul><li><p>快排分析</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p><p>  时间复杂度：nlogn</p><p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p><p>  时间复杂度：n^2</p><p>  3.一般情况下：略</p><p>  时间复杂度：nlogn</p><p>  <strong>空间复杂度：</strong></p><p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p><p>  空间复杂度：O(logn)</p><p>  2.最差情况：略</p><p>  空间复杂度：O(n)</p><p>  <strong>补充：</strong>快排是不稳定的。稳定性是指—表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p></li><li><p>直接插入排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p><p>  时间复杂度：O(n^2)</p><p>  平均复杂度:O(n^2)</p><p>  <strong>空间复杂度：</strong></p><p>  空间复杂度：O(1)</p><p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p></li><li><p>冒泡排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：逆序，交换次数O(n^2)。</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>简单选择排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p><p>  时间复杂度：O(n^2)</p><p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>堆排序</p><p>  <strong>时间复杂度：</strong></p><p>  分析：</p><p>  初始化堆的过程时间：O(n)</p><p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p><p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>归并排序</p><p>  总时间 = 划分时间 + 合并时间</p><p>  <strong>时间复杂度：</strong></p><p>  最好 = 最坏 = 平均 = O(nlogn)</p><p>  <strong>空间复杂度：</strong></p><p>  O(n) = O(logn) + O(n)</p></li></ul><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p><p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>]]></content>
     
     <summary type="html">
     
@@ -456,57 +506,6 @@ public s
 &lt;/li&gt;
 &lt;/ul&gt;
 
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>数组中的重复数字</title>
-    <link href="http://www.xuchunfa.cn/2018/07/18/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/"/>
-    <id>http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/</id>
-    <published>2018-07-18T09:20:58.000Z</published>
-    <updated>2018-07-19T12:06:19.968Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p><p>1.数组下标 = 数组元素</p><p>2.目标交换：num[i] = m </p><p>   swap: m <---> num[m] 直到 num[i] == i</---></p><pre><code>public class OptDuplication {//哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)boolean findDup1(int[] nums,int len,int[] duplication){    if(nums == null || len &lt;= 0){        System.out.println(&quot;数组必须存在且不能为空!&quot;);        return  false;    }    for(int i = 0;i&lt;len;i++){        if(nums[i]&lt;0 || nums[i]&gt;len-1) {            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);            return false;        }    }    //哈希表    int[] count = new int[len];    for(int i = 0;i&lt;len;i++){        if(count[nums[i]] == 1){            duplication[0] = nums[i];            return true;        }        count[nums[i]]++;    }    return false;}boolean findDup(int[] nums,int len,int[] duplication){    if(nums == null || len &lt;= 0){        System.out.println(&quot;数组必须存在且不能为空!&quot;);        return  false;    }    for(int i = 0;i&lt;len;i++){        if(nums[i]&lt;0 || nums[i]&gt;len-1) {            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);            return false;        }    }    int temp;    for(int i = 0;i&lt;len;i++){        while (i != nums[i]){            //nums[i]=m 说明 m 所在的下标是 i 和 m 所以重复了            if(nums[i] == nums[nums[i]]){                duplication[0]=nums[i];                return true;            }else {                //交换num[i] 和 num[num[i]]                temp = nums[i];                nums[i] = nums[nums[i]];                nums[temp] = temp;            }        }    }    System.out.println(&quot;没有重复数字&quot;);    return false;}</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p><p>1.二分法的运用，加入了统计数字个数的方法</p><p>2.循环结束条件：start == end</p><pre><code>public class DuplicationVersion {//时间复杂度:O(nlogn) 空间复杂度:O(1)boolean findDup(int[] nums,int len,int[] duplication){    if(nums == null || len &lt;= 0){        System.out.println(&quot;数组必须存在且不能为空!&quot;);        return  false;    }    for(int i = 0;i&lt;len;i++){        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);            return false;        }    }    int start = 1;    int end = len-1;    int middle;    while(start &lt;=  end){        middle = (start + end)/2;        int number = calNum(nums,len,start,middle);        //结束条件        if(start == end){            if(number &gt; 1){                duplication[0] = start;                return true;            }else{                break;            }        }        if(middle - start + 1 &lt; number){            end = middle;        }else {            start = middle + 1;        }    }    System.out.println(&quot;没有重复数字&quot;);    return false;}private int calNum(int[] nums, int len, int start, int end) {    int count = 0;    for(int i = 0;i&lt;len;i++){        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){            count++;        }    }    return count;} }</code></pre><p>参考文档：</p><p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？&quot;&gt;&lt;a href=&quot;#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？&quot; class=&quot;headerlink&quot; title=&quot;长度为n的数组里面的所有数字都在0~
-      
-    
-    </summary>
-    
-      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>匿名内部类</title>
-    <link href="http://www.xuchunfa.cn/2018/07/17/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    <id>http://www.xuchunfa.cn/2018/07/17/并发编程/</id>
-    <published>2018-07-17T12:47:37.000Z</published>
-    <updated>2018-07-17T13:53:42.338Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li><p>匿名内部类？</p><p>  没有名字的内部类，只能使用一次，简化代码编写。</p><p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p><pre><code>interface People {public abstract void eat();}public class Demo {   public static void main(String[] args) {People p = new People() {    public void eat() {        System.out.println(&quot;I can eat &quot;);    }};p.eat();}</code></pre></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;匿名内部类？&lt;/p&gt;
-&lt;p&gt;  没有名字的内部类，只能使用一次，简化代码编写。&lt;/p&gt;
-&lt;p&gt;  &lt;strong&gt;使用前提条件：必须继承父类或者实现一个接口。&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;interface People {
-publi
       
     
     </summary>

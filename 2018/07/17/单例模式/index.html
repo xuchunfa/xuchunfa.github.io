@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/MkkHyU0.png">
 <meta property="og:image" content="https://i.imgur.com/EXnDWsp.png">
-<meta property="og:updated_time" content="2018-07-31T08:54:01.937Z">
+<meta property="og:updated_time" content="2018-08-02T05:02:51.084Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式">
 <meta name="twitter:description" content="单例模式指？   只生成一个对象，避免重复创建对象。     单例模式中构造函数为什么私有化？   1.构造函数私有化后，那么只能通过这个类的内部函数才能构造这个类的对象。   2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。  单例模式中volatile变量的作用？   首先分析 instance = new Singleton() 的本质：   1.为对">
@@ -424,6 +424,17 @@
 <li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
 <p>  因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。我们只需要在实例还没有创建之前添加加锁操作。</p>
 </li>
+<li><p>线程安全的延迟初始化？</p>
+<p>  1.基于volatile</p>
+<p>  2.基于类初始化</p>
+<p> 对于2举个例子：</p>
+<p>  private static class Holder{</p>
+<pre><code>private static Singleton instance =  new Singleton();
+</code></pre><p>  }</p>
+<p>  public static Singleton getInstance(int i){</p>
+<pre><code>return Holder.instance;
+</code></pre><p>  }</p>
+</li>
 <li><p>静态内部类方法创建单例模式的好处？</p>
 <p>  按需创建实例（饿汉式模式：在类加载时就完成了初始化），提高了内存的利用效率。</p>
 <p>  <code>这种方式的特点是：Singleton类被装载了，instance不一定被初始化，只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。</code></p>
@@ -544,7 +555,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

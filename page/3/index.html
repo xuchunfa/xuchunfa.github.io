@@ -286,6 +286,459 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/18/数组中的重复数字/" itemprop="url">数组中的重复数字</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T17:20:58+08:00">
+                2018-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/18/数组中的重复数字/" class="leancloud_visitors" data-flag-title="数组中的重复数字">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
+<p>1.数组下标 = 数组元素</p>
+<p>2.目标交换：num[i] = m </p>
+<p>   swap: m <---> num[m] 直到 num[i] == i</---></p>
+<pre><code>public class OptDuplication {
+
+//哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)
+boolean findDup1(int[] nums,int len,int[] duplication){
+
+    if(nums == null || len &lt;= 0){
+        System.out.println(&quot;数组必须存在且不能为空!&quot;);
+        return  false;
+    }
+
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
+            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
+            return false;
+        }
+    }
+
+    //哈希表
+    int[] count = new int[len];
+    for(int i = 0;i&lt;len;i++){
+        if(count[nums[i]] == 1){
+            duplication[0] = nums[i];
+            return true;
+        }
+
+        count[nums[i]]++;
+    }
+
+    return false;
+
+}
+
+boolean findDup(int[] nums,int len,int[] duplication){
+
+    if(nums == null || len &lt;= 0){
+        System.out.println(&quot;数组必须存在且不能为空!&quot;);
+        return  false;
+    }
+
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
+            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
+            return false;
+        }
+    }
+
+    int temp;
+    for(int i = 0;i&lt;len;i++){
+        while (i != nums[i]){
+            //nums[i]=m 说明 m 所在的下标是 i 和 m 所以重复了
+            if(nums[i] == nums[nums[i]]){
+                duplication[0]=nums[i];
+                return true;
+            }else {
+                //交换num[i] 和 num[num[i]]
+                temp = nums[i];
+                nums[i] = nums[nums[i]];
+                nums[temp] = temp;
+            }
+        }
+    }
+
+    System.out.println(&quot;没有重复数字&quot;);
+    return false;
+}
+</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
+<p>1.二分法的运用，加入了统计数字个数的方法</p>
+<p>2.循环结束条件：start == end</p>
+<pre><code>public class DuplicationVersion {
+
+//时间复杂度:O(nlogn) 空间复杂度:O(1)
+boolean findDup(int[] nums,int len,int[] duplication){
+
+    if(nums == null || len &lt;= 0){
+        System.out.println(&quot;数组必须存在且不能为空!&quot;);
+        return  false;
+    }
+
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {
+            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);
+            return false;
+        }
+    }
+
+    int start = 1;
+    int end = len-1;
+    int middle;
+    while(start &lt;=  end){
+
+        middle = (start + end)/2;
+        int number = calNum(nums,len,start,middle);
+
+        //结束条件
+        if(start == end){
+            if(number &gt; 1){
+                duplication[0] = start;
+                return true;
+            }else{
+                break;
+            }
+        }
+
+        if(middle - start + 1 &lt; number){
+            end = middle;
+        }else {
+            start = middle + 1;
+        }
+    }
+
+    System.out.println(&quot;没有重复数字&quot;);
+    return false;
+}
+
+private int calNum(int[] nums, int len, int start, int end) {
+    int count = 0;
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){
+            count++;
+        }
+    }
+    return count;
+}
+ }
+</code></pre><p>参考文档：</p>
+<p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/并发编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/17/并发编程/" itemprop="url">匿名内部类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T20:47:37+08:00">
+                2018-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/17/并发编程/" class="leancloud_visitors" data-flag-title="匿名内部类">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>匿名内部类？</p>
+<p>  没有名字的内部类，只能使用一次，简化代码编写。</p>
+<p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p>
+<pre><code>interface People {
+public abstract void eat();
+}
+
+public class Demo {
+   public static void main(String[] args) {
+People p = new People() {
+    public void eat() {
+        System.out.println(&quot;I can eat &quot;);
+    }
+};
+p.eat();
+}
+</code></pre></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -411,6 +864,17 @@
 <ul>
 <li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
 <p>  因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。我们只需要在实例还没有创建之前添加加锁操作。</p>
+</li>
+<li><p>线程安全的延迟初始化？</p>
+<p>  1.基于volatile</p>
+<p>  2.基于类初始化</p>
+<p> 对于2举个例子：</p>
+<p>  private static class Holder{</p>
+<pre><code>private static Singleton instance =  new Singleton();
+</code></pre><p>  }</p>
+<p>  public static Singleton getInstance(int i){</p>
+<pre><code>return Holder.instance;
+</code></pre><p>  }</p>
 </li>
 <li><p>静态内部类方法创建单例模式的好处？</p>
 <p>  按需创建实例（饿汉式模式：在类加载时就完成了初始化），提高了内存的利用效率。</p>
@@ -1777,313 +2241,11 @@ push 推送本地分支名
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/06/24/First/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/24/First/" itemprop="url">Hexo + Github部署网站关键点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T19:01:00+08:00">
-                2018-06-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/24/First/" class="leancloud_visitors" data-flag-title="Hexo + Github部署网站关键点">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><pre><code>安装好Git和node.js,然后配置系统环境变量，我用nvm安装node.js时自动配好了环境变量，记得配Git的环境变量
-</code></pre><p><a href="http://blog.csdn.net/banqgg/article/details/52983827" target="_blank" rel="noopener">请看这里</a></p>
-<h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><pre><code>新建文件夹存放博客内容和相关配置文件，例如在D盘建立Blog文件夹，进到文件夹，右键Git Bash,安装hexo
-npm install -g hexo-cli
-</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><pre><code>hexo的初始化
-hexo init 默认是在当下文件夹，即在D:\Blog\下
-</code></pre><h1 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h1><pre><code>根据package.json文件中的dependencies的配置文件安装依赖
-npm install
-</code></pre><h1 id="第五步"><a href="#第五步" class="headerlink" title="第五步"></a>第五步</h1><pre><code>生成部署文件，启动本地服务
-hexo generate/g 
-hexo server/s 在 http://localhost:4000/查看
-</code></pre><h1 id="第六步"><a href="#第六步" class="headerlink" title="第六步"></a>第六步</h1><pre><code>在Github上建库，库名为username.github.io,其中username是你github账号的用户名，
-</code></pre><h1 id="第七步"><a href="#第七步" class="headerlink" title="第七步"></a>第七步</h1><ul>
-<li><p>生成ssh密钥</p>
-<pre><code>`ssh -keygen -t rsa -C &quot;username@**.com&quot;`
-</code></pre></li>
-<li><p>拷贝密钥<br>  <code>在Git Bash 中查看并拷贝cat ~/.ssh/id_rsa.pub</code></p>
-</li>
-<li><p>添加密钥到Github<br>  <code>[https://github.com/settings/keys](https://github.com/settings/keys)下add new ssh key</code></p>
-</li>
-<li>测试连接<br>  <code>ssh git@github.com</code></li>
-</ul>
-<h1 id="第八步"><a href="#第八步" class="headerlink" title="第八步"></a>第八步</h1><pre><code>修改D:\Blog下的_config.yml配置文件
-deploy:
-    type: git
-    repo: ssh://git@github.com/username/username.github.io
-    branch: master
- 注意冒号后的空格
-</code></pre><h1 id="第九步"><a href="#第九步" class="headerlink" title="第九步"></a>第九步</h1><pre><code>安装Git包
-npm install hexo-deployer-git --save
-如果你是第一次部署的话可能会出现fatal: Not a git repository
-此时初始化 git init
-</code></pre><h1 id="第十步"><a href="#第十步" class="headerlink" title="第十步"></a>第十步</h1><pre><code>部署 hexo deploy/d
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/06/24/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/24/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T18:33:37+08:00">
-                2018-06-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/24/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2133,7 +2295,7 @@ npm install hexo-deployer-git --save
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
