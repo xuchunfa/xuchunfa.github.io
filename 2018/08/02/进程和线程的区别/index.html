@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="进程：可以看成是每个运行中的程序。它可以拥有自己独立的资源。 线程：操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。 进程和线程的联系：一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。">
+<meta name="description" content="title: 进程和线程的区别date: 2018-08-02 13:36:27categories:  Java并发编程   线程中Blocked 和 Waiting 状态的区别？Blocked:线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。 Wa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="进程和线程的区别">
+<meta property="og:title" content="Flying in the ocean of knowledge">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/02/进程和线程的区别/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="进程：可以看成是每个运行中的程序。它可以拥有自己独立的资源。 线程：操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。 进程和线程的联系：一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。">
+<meta property="og:description" content="title: 进程和线程的区别date: 2018-08-02 13:36:27categories:  Java并发编程   线程中Blocked 和 Waiting 状态的区别？Blocked:线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。 Wa">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-02T05:51:38.198Z">
+<meta property="og:updated_time" content="2018-08-03T09:03:00.985Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="进程和线程的区别">
-<meta name="twitter:description" content="进程：可以看成是每个运行中的程序。它可以拥有自己独立的资源。 线程：操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。 进程和线程的联系：一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。">
+<meta name="twitter:title" content="Flying in the ocean of knowledge">
+<meta name="twitter:description" content="title: 进程和线程的区别date: 2018-08-02 13:36:27categories:  Java并发编程   线程中Blocked 和 Waiting 状态的区别？Blocked:线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。 Wa">
 
 
 
@@ -127,7 +127,7 @@
 
 
 
-  <title>进程和线程的区别 | Flying in the ocean of knowledge</title>
+  <title> | Flying in the ocean of knowledge</title>
   
 
 
@@ -306,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">进程和线程的区别</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -329,28 +329,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -368,7 +346,7 @@
 
           
           
-             <span id="/2018/08/02/进程和线程的区别/" class="leancloud_visitors" data-flag-title="进程和线程的区别">
+             <span id="/2018/08/02/进程和线程的区别/" class="leancloud_visitors" data-flag-title="">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -399,7 +377,16 @@
       
 
       
-        <p><strong>进程：</strong>可以看成是每个运行中的程序。它可以拥有自己独立的资源。</p>
+        <hr>
+<p>title: 进程和线程的区别<br>date: 2018-08-02 13:36:27<br>categories:</p>
+<ul>
+<li>Java并发编程</li>
+</ul>
+<hr>
+<h4 id="线程中Blocked-和-Waiting-状态的区别？"><a href="#线程中Blocked-和-Waiting-状态的区别？" class="headerlink" title="线程中Blocked 和 Waiting 状态的区别？"></a>线程中Blocked 和 Waiting 状态的区别？</h4><p><strong>Blocked:</strong>线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。</p>
+<p><strong>Waiting:</strong><br>由于主动调用了以下方法而进入的状态：<br>1.Object.wait()<br>2.Thread.join()<br>3.LockSupport.park()</p>
+<p><strong>Time_waiting:</strong><br>调用了以下方法：<br>1.Thread.sleep<br>2.Object.wait(long)<br>3.Thread.join(long)<br>4.LockSupport.parkNanos<br>5.LockSupport.parkUntil</p>
+<p><strong>进程：</strong>可以看成是每个运行中的程序。它可以拥有自己独立的资源。</p>
 <p><strong>线程：</strong>操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。</p>
 <p><strong>进程和线程的联系：</strong>一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。</p>
 
@@ -497,8 +484,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -585,6 +581,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#线程中Blocked-和-Waiting-状态的区别？"><span class="nav-number">1.</span> <span class="nav-text">线程中Blocked 和 Waiting 状态的区别？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

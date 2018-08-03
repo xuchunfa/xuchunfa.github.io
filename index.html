@@ -723,7 +723,7 @@ public static void main(String[] args){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/02/进程和线程的区别/" itemprop="url">进程和线程的区别</a></h1>
+                <a class="post-title-link" href="/2018/08/02/进程和线程的区别/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -746,28 +746,6 @@ public static void main(String[] args){
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -775,7 +753,7 @@ public static void main(String[] args){
 
           
           
-             <span id="/2018/08/02/进程和线程的区别/" class="leancloud_visitors" data-flag-title="进程和线程的区别">
+             <span id="/2018/08/02/进程和线程的区别/" class="leancloud_visitors" data-flag-title="">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -808,7 +786,16 @@ public static void main(String[] args){
       
         
           
-            <p><strong>进程：</strong>可以看成是每个运行中的程序。它可以拥有自己独立的资源。</p>
+            <hr>
+<p>title: 进程和线程的区别<br>date: 2018-08-02 13:36:27<br>categories:</p>
+<ul>
+<li>Java并发编程</li>
+</ul>
+<hr>
+<h4 id="线程中Blocked-和-Waiting-状态的区别？"><a href="#线程中Blocked-和-Waiting-状态的区别？" class="headerlink" title="线程中Blocked 和 Waiting 状态的区别？"></a>线程中Blocked 和 Waiting 状态的区别？</h4><p><strong>Blocked:</strong>线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。</p>
+<p><strong>Waiting:</strong><br>由于主动调用了以下方法而进入的状态：<br>1.Object.wait()<br>2.Thread.join()<br>3.LockSupport.park()</p>
+<p><strong>Time_waiting:</strong><br>调用了以下方法：<br>1.Thread.sleep<br>2.Object.wait(long)<br>3.Thread.join(long)<br>4.LockSupport.parkNanos<br>5.LockSupport.parkUntil</p>
+<p><strong>进程：</strong>可以看成是每个运行中的程序。它可以拥有自己独立的资源。</p>
 <p><strong>线程：</strong>操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。</p>
 <p><strong>进程和线程的联系：</strong>一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。</p>
 
