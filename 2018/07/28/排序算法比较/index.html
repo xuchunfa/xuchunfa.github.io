@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="学习过程中一点点积累补充  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次   时间复杂度：n^2   3.一般情况下：略   时间复杂度：nlogn   空间">
+<meta name="description" content="学习过程中一点点积累补充 什么叫做稳定性？稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排序算法比较">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/28/排序算法比较/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="学习过程中一点点积累补充  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次   时间复杂度：n^2   3.一般情况下：略   时间复杂度：nlogn   空间">
+<meta property="og:description" content="学习过程中一点点积累补充 什么叫做稳定性？稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png">
-<meta property="og:updated_time" content="2018-08-02T08:38:03.498Z">
+<meta property="og:updated_time" content="2018-08-03T07:21:43.873Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法比较">
-<meta name="twitter:description" content="学习过程中一点点积累补充  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次   时间复杂度：n^2   3.一般情况下：略   时间复杂度：nlogn   空间">
+<meta name="twitter:description" content="学习过程中一点点积累补充 什么叫做稳定性？稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树">
 <meta name="twitter:image" content="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png">
 
 
@@ -403,6 +403,7 @@
       
         <p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p>
 <p><strong>学习过程中一点点积累补充</strong></p>
+<h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
 <ul>
 <li><p>快排分析</p>
 <p>  <strong>时间复杂度：</strong></p>
@@ -417,7 +418,7 @@
 <p>  空间复杂度：O(logn)</p>
 <p>  2.最差情况：略</p>
 <p>  空间复杂度：O(n)</p>
-<p>  <strong>补充：</strong>快排是不稳定的。稳定性是指—表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
+<p>  <strong>补充：</strong>快排是不稳定的。</p>
 </li>
 <li><p>直接插入排序</p>
 <p>  <strong>时间复杂度：</strong></p>
@@ -462,6 +463,13 @@
 <p>  最好 = 最坏 = 平均 = O(nlogn)</p>
 <p>  <strong>空间复杂度：</strong></p>
 <p>  O(n) = O(logn) + O(n)</p>
+</li>
+<li><p>希尔排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  最坏：O(n^2)</p>
+<p>  最好：O(n)</p>
+<p>  平均：O(n^1.5)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
 </li>
 </ul>
 <p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
@@ -561,8 +569,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -581,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -649,6 +666,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么叫做稳定性？"><span class="nav-number">1.</span> <span class="nav-text">什么叫做稳定性？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

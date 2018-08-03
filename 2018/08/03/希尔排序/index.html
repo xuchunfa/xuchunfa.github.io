@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="反转链表？public class VerseLinkPrint {  private ListNode head;      private ListNode q;  //添加链表节点    public void add(int data){     ListNode node = new ListNode(data);     if(this.head == null){         t">
+<meta name="description" content="希尔排序示意图 public class ShellSort {  public static void shellSort(int[] a){     for(int increment = a.length/2;increment &amp;gt; 0 ;increment /= 2){         for(int i = increment;i&amp;lt;a.length;i++){">
 <meta property="og:type" content="article">
-<meta property="og:title" content="反转链表">
-<meta property="og:url" content="http://www.xuchunfa.cn/2018/07/22/反转链表/index.html">
+<meta property="og:title" content="希尔排序">
+<meta property="og:url" content="http://www.xuchunfa.cn/2018/08/03/希尔排序/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="反转链表？public class VerseLinkPrint {  private ListNode head;      private ListNode q;  //添加链表节点    public void add(int data){     ListNode node = new ListNode(data);     if(this.head == null){         t">
+<meta property="og:description" content="希尔排序示意图 public class ShellSort {  public static void shellSort(int[] a){     for(int increment = a.length/2;increment &amp;gt; 0 ;increment /= 2){         for(int i = increment;i&amp;lt;a.length;i++){">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-22T11:54:55.982Z">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161128110416068-1421707828.png">
+<meta property="og:updated_time" content="2018-08-03T06:49:56.265Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="反转链表">
-<meta name="twitter:description" content="反转链表？public class VerseLinkPrint {  private ListNode head;      private ListNode q;  //添加链表节点    public void add(int data){     ListNode node = new ListNode(data);     if(this.head == null){         t">
+<meta name="twitter:title" content="希尔排序">
+<meta name="twitter:description" content="希尔排序示意图 public class ShellSort {  public static void shellSort(int[] a){     for(int increment = a.length/2;increment &amp;gt; 0 ;increment /= 2){         for(int i = increment;i&amp;lt;a.length;i++){">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161128110416068-1421707828.png">
 
 
 
@@ -121,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://www.xuchunfa.cn/2018/07/22/反转链表/"/>
+  <link rel="canonical" href="http://www.xuchunfa.cn/2018/08/03/希尔排序/"/>
 
 
 
 
 
-  <title>反转链表 | Flying in the ocean of knowledge</title>
+  <title>希尔排序 | Flying in the ocean of knowledge</title>
   
 
 
@@ -289,7 +291,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/反转链表/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/03/希尔排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -306,7 +308,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">反转链表</h1>
+          <h1 class="post-title" itemprop="name headline">希尔排序</h1>
         
 
         <div class="post-meta">
@@ -318,8 +320,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T19:44:48+08:00">
-                2018-07-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T14:46:38+08:00">
+                2018-08-03
               </time>
             
 
@@ -341,8 +343,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/链表/" itemprop="url" rel="index">
-                    <span itemprop="name">链表</span>
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
                   </a>
                 </span>
 
@@ -359,8 +361,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/22/反转链表/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/07/22/反转链表/" itemprop="commentsCount"></span>
+                <a href="/2018/08/03/希尔排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/03/希尔排序/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -368,7 +370,7 @@
 
           
           
-             <span id="/2018/07/22/反转链表/" class="leancloud_visitors" data-flag-title="反转链表">
+             <span id="/2018/08/03/希尔排序/" class="leancloud_visitors" data-flag-title="希尔排序">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -399,82 +401,52 @@
       
 
       
-        <h4 id="反转链表？"><a href="#反转链表？" class="headerlink" title="反转链表？"></a>反转链表？</h4><pre><code>public class VerseLinkPrint {
+        <h4 id="希尔排序示意图"><a href="#希尔排序示意图" class="headerlink" title="希尔排序示意图"></a>希尔排序示意图</h4><p><img src="https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161128110416068-1421707828.png" alt=""></p>
+<pre><code>public class ShellSort {
 
-private ListNode head;
-
-    private ListNode q;
-
-//添加链表节点
-   public void add(int data){
-    ListNode node = new ListNode(data);
-    if(this.head == null){
-        this.head = node;
-    }else {
-        this.head.addNode(node);
+public static void shellSort(int[] a){
+    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){
+        for(int i = increment;i&lt;a.length;i++){
+            int j = i;
+            while (j - increment &gt;=0  &amp;&amp; a[j-increment] &gt; a[j]){
+                //交换排序
+                swap(a,j,j-increment);
+                j -= increment;
+        }
+        }
     }
 }
 
-//从头到尾打印链表节点
-    public void print(){
-    if(this.head == null){
-        System.out.println(&quot;链表为空&quot;);
-    }else {
-        this.head.printNode();
-        System.out.println();
+private static void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+
+public static void shellSort1(int[] a){
+    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){
+        for(int i = increment;i&lt;a.length;i++){
+            int j = i;
+            int temp = a[j];
+
+            //直接插入
+            while(j-increment &gt;= 0 &amp;&amp; a[j-increment] &gt; temp){
+                a[j] = a[j-increment];
+                j -= increment;
+            }
+            a[j] = temp;
+        }
     }
-}
-
-//非递归实现反转链表
-   public void versePrint(){
-
-if(head == null){
-    System.out.println(&quot;链表为空&quot;);
-    return;
-}
-
-//已经改变的链表的结构
-ListNode p = head.next;
-ListNode q = null;
-head.next = null;
-
-while (p != null){
-    q = p.next;
-    p.next = head;
-    head = p;
-    p = q;
-}
-print();
-}
-
-//递归实现反转链表
-   public void verseRecursive(ListNode p){
-
-if(p == null)
-    return;
-
-verseRecursive(p.next);
-
-if(p.next == null){
-    head = p;
-    q = p;
-}
-
-p.next = null;
-q.next = p;
-q = q.next;
 }
 
 public static void main(String[] args){
-    VerseLinkPrint link = new VerseLinkPrint();
-    link.add(1);
-    link.add(2);
-    link.add(3);
-    link.verseRecursive(link.head);
-    link.print();
-    }
+    int[] a = {9,8,7,6,5,4,3,2,1};
+    ShellSort.shellSort1(a);
+    System.out.println(Arrays.toString(a));
 }
-</code></pre>
+}
+</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6104371.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6104371.html</a></p>
+
       
     </div>
     
@@ -498,8 +470,8 @@ public static void main(String[] args){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/22/从尾到头打印链表/" rel="next" title="从尾到头打印链表">
-                <i class="fa fa-chevron-left"></i> 从尾到头打印链表
+              <a href="/2018/08/02/归并排序/" rel="next" title="归并排序">
+                <i class="fa fa-chevron-left"></i> 归并排序
               </a>
             
           </div>
@@ -507,10 +479,6 @@ public static void main(String[] args){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/23/二叉树的创建和遍历/" rel="prev" title="二叉树的创建和遍历">
-                二叉树的创建和遍历 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -676,7 +644,7 @@ public static void main(String[] args){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#反转链表？"><span class="nav-number">1.</span> <span class="nav-text">反转链表？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#希尔排序示意图"><span class="nav-number">1.</span> <span class="nav-text">希尔排序示意图</span></a></li></ol></div>
             
 
           </div>

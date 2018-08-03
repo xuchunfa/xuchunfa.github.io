@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-02T08:25:38.669Z</updated>
+  <updated>2018-08-03T06:49:56.265Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>希尔排序</title>
+    <link href="http://www.xuchunfa.cn/2018/08/03/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/08/03/希尔排序/</id>
+    <published>2018-08-03T06:46:38.000Z</published>
+    <updated>2018-08-03T06:49:56.265Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="希尔排序示意图"><a href="#希尔排序示意图" class="headerlink" title="希尔排序示意图"></a>希尔排序示意图</h4><p><img src="https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161128110416068-1421707828.png" alt=""></p><pre><code>public class ShellSort {public static void shellSort(int[] a){    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){        for(int i = increment;i&lt;a.length;i++){            int j = i;            while (j - increment &gt;=0  &amp;&amp; a[j-increment] &gt; a[j]){                //交换排序                swap(a,j,j-increment);                j -= increment;        }        }    }}private static void swap(int[] a, int i, int j) {    int temp = a[i];    a[i] = a[j];    a[j] = temp;}public static void shellSort1(int[] a){    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){        for(int i = increment;i&lt;a.length;i++){            int j = i;            int temp = a[j];            //直接插入            while(j-increment &gt;= 0 &amp;&amp; a[j-increment] &gt; temp){                a[j] = a[j-increment];                j -= increment;            }            a[j] = temp;        }    }}public static void main(String[] args){    int[] a = {9,8,7,6,5,4,3,2,1};    ShellSort.shellSort1(a);    System.out.println(Arrays.toString(a));}}</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6104371.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6104371.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;希尔排序示意图&quot;&gt;&lt;a href=&quot;#希尔排序示意图&quot; class=&quot;headerlink&quot; title=&quot;希尔排序示意图&quot;&gt;&lt;/a&gt;希尔排序示意图&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://images2015.cnblogs.com/blog/1024
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>归并排序</title>
@@ -144,9 +167,9 @@ public static v
     <link href="http://www.xuchunfa.cn/2018/07/28/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/"/>
     <id>http://www.xuchunfa.cn/2018/07/28/排序算法比较/</id>
     <published>2018-07-28T08:13:19.000Z</published>
-    <updated>2018-08-02T08:38:03.498Z</updated>
+    <updated>2018-08-03T07:21:43.873Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p><p><strong>学习过程中一点点积累补充</strong></p><ul><li><p>快排分析</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p><p>  时间复杂度：nlogn</p><p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p><p>  时间复杂度：n^2</p><p>  3.一般情况下：略</p><p>  时间复杂度：nlogn</p><p>  <strong>空间复杂度：</strong></p><p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p><p>  空间复杂度：O(logn)</p><p>  2.最差情况：略</p><p>  空间复杂度：O(n)</p><p>  <strong>补充：</strong>快排是不稳定的。稳定性是指—表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p></li><li><p>直接插入排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p><p>  时间复杂度：O(n^2)</p><p>  平均复杂度:O(n^2)</p><p>  <strong>空间复杂度：</strong></p><p>  空间复杂度：O(1)</p><p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p></li><li><p>冒泡排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：逆序，交换次数O(n^2)。</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>简单选择排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p><p>  时间复杂度：O(n^2)</p><p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>堆排序</p><p>  <strong>时间复杂度：</strong></p><p>  分析：</p><p>  初始化堆的过程时间：O(n)</p><p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p><p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>归并排序</p><p>  总时间 = 划分时间 + 合并时间</p><p>  <strong>时间复杂度：</strong></p><p>  最好 = 最坏 = 平均 = O(nlogn)</p><p>  <strong>空间复杂度：</strong></p><p>  O(n) = O(logn) + O(n)</p></li></ul><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p><p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>]]></content>
+    <content type="html"><![CDATA[<p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p><p><strong>学习过程中一点点积累补充</strong></p><h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p><ul><li><p>快排分析</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p><p>  时间复杂度：nlogn</p><p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p><p>  时间复杂度：n^2</p><p>  3.一般情况下：略</p><p>  时间复杂度：nlogn</p><p>  <strong>空间复杂度：</strong></p><p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p><p>  空间复杂度：O(logn)</p><p>  2.最差情况：略</p><p>  空间复杂度：O(n)</p><p>  <strong>补充：</strong>快排是不稳定的。</p></li><li><p>直接插入排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p><p>  时间复杂度：O(n^2)</p><p>  平均复杂度:O(n^2)</p><p>  <strong>空间复杂度：</strong></p><p>  空间复杂度：O(1)</p><p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p></li><li><p>冒泡排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：逆序，交换次数O(n^2)。</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>简单选择排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p><p>  时间复杂度：O(n^2)</p><p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>堆排序</p><p>  <strong>时间复杂度：</strong></p><p>  分析：</p><p>  初始化堆的过程时间：O(n)</p><p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p><p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>归并排序</p><p>  总时间 = 划分时间 + 合并时间</p><p>  <strong>时间复杂度：</strong></p><p>  最好 = 最坏 = 平均 = O(nlogn)</p><p>  <strong>空间复杂度：</strong></p><p>  O(n) = O(logn) + O(n)</p></li><li><p>希尔排序</p><p>  <strong>时间复杂度：</strong></p><p>  最坏：O(n^2)</p><p>  最好：O(n)</p><p>  平均：O(n^1.5)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li></ul><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p><p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>]]></content>
     
     <summary type="html">
     
@@ -154,8 +177,7 @@ public static v
       
         &lt;p&gt;&lt;img src=&quot;https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;学习过程中一点点积累补充&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p
+&lt;h4 id=&quot;什么叫
       
     
     </summary>
@@ -482,35 +504,6 @@ public s
     </summary>
     
       <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>java并发底层原理</title>
-    <link href="http://www.xuchunfa.cn/2018/07/18/java%E5%B9%B6%E5%8F%91%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/"/>
-    <id>http://www.xuchunfa.cn/2018/07/18/java并发底层原理/</id>
-    <published>2018-07-18T13:31:59.000Z</published>
-    <updated>2018-07-18T13:34:19.458Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li><p>处理器如何实现的原子操作？</p><p>  1.通过总线锁。</p><p>  2.通过缓存锁定。</p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;处理器如何实现的原子操作？&lt;/p&gt;
-&lt;p&gt;  1.通过总线锁。&lt;/p&gt;
-&lt;p&gt;  2.通过缓存锁定。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
     
     
   </entry>
