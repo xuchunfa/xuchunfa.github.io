@@ -286,6 +286,501 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/栈和队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/27/栈和队列/" itemprop="url">栈和队列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T19:39:06+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/栈和队列/" itemprop="url" rel="index">
+                    <span itemprop="name">栈和队列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/27/栈和队列/" class="leancloud_visitors" data-flag-title="栈和队列">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="两个栈实现队列？"><a href="#两个栈实现队列？" class="headerlink" title="两个栈实现队列？"></a>两个栈实现队列？</h4><pre><code>public class StackToQueue&lt;T&gt; {
+
+private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();
+private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();
+
+public void appendTail(T element){
+    stack1.push(element);
+}
+
+public T deleteHead(){
+    if(stack2.size() &lt;= 0){
+        while(!stack1.empty()){
+            T element = stack1.pop();
+            stack2.push(element);
+        }
+    }
+
+    //说明stack1 也没元素了
+    if(stack2.isEmpty()){
+        throw new RuntimeException(&quot;队列为空&quot;);
+    }
+
+    T head = stack2.pop();
+    return head;
+}
+
+public static void main(String[] args){
+    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();
+    queue.appendTail(1);
+    queue.appendTail(2);
+    queue.appendTail(3);
+    Integer a = queue.deleteHead();
+    queue.appendTail(4);
+    Integer b = queue.deleteHead();
+    System.out.println(b);
+}
+}
+</code></pre><h4 id="两个队列实现栈？"><a href="#两个队列实现栈？" class="headerlink" title="两个队列实现栈？"></a>两个队列实现栈？</h4><pre><code>public class StackToQueue&lt;T&gt; {
+
+private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();
+private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();
+
+public void appendTail(T element){
+    stack1.push(element);
+}
+
+public T deleteHead(){
+    if(stack2.size() &lt;= 0){
+        while(!stack1.empty()){
+            T element = stack1.pop();
+            stack2.push(element);
+        }
+    }
+
+    //说明stack1 也没元素了
+    if(stack2.isEmpty()){
+        throw new RuntimeException(&quot;队列为空&quot;);
+    }
+
+    T head = stack2.pop();
+    return head;
+}
+
+public static void main(String[] args){
+    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();
+    queue.appendTail(1);
+    queue.appendTail(2);
+    queue.appendTail(3);
+    Integer a = queue.deleteHead();
+    queue.appendTail(4);
+    Integer b = queue.deleteHead();
+    System.out.println(b);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/二叉树的下一个结点/" itemprop="url">二叉树的下一个结点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T22:16:23+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/24/二叉树的下一个结点/" class="leancloud_visitors" data-flag-title="二叉树的下一个结点">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public class ParentBinaryTree {
+
+ParentBinaryTreeNode root;
+
+public void createTree(ParentBinaryTreeNode node,int data){
+
+    if(this.root == null){
+        root = new ParentBinaryTreeNode(data);
+    }else {
+        //二叉查找树
+        if(data &lt; node.data){
+            if(node.left == null){
+                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
+                node.left = temp;
+                temp.parent = node;
+            }else {
+                createTree(node.left,data);
+            }
+        }else {
+            if(node.right == null){
+                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
+                node.right = temp;
+                temp.parent = node;
+            }else {
+                createTree(node.right,data);
+            }
+        }
+    }
+}
+
+//中序遍历,递归实现
+public void inOrder(ParentBinaryTreeNode node){
+    if(node == null)
+        return;
+
+    inOrder(node.left);
+    System.out.print(node.data + &quot; &quot;);
+    inOrder(node.right);
+}
+
+//找出中序遍历中的下一个点
+public ParentBinaryTreeNode searchNext(ParentBinaryTreeNode node,int data){
+
+    if(node == null){
+        throw new RuntimeException(&quot;空树&quot;);
+    }
+
+    ParentBinaryTreeNode dataNode = searchData(node,data);
+
+    ParentBinaryTreeNode next = null;
+
+    if(dataNode == null){
+        throw new RuntimeException(&quot;不存在该值&quot;);
+    }else{
+        //有右子树
+        if(dataNode.right != null){
+            ParentBinaryTreeNode temp = dataNode.right;
+            while (temp.left != null){
+                temp = temp.left;
+            }
+            next = temp;
+        }else if(dataNode.parent != null){//等于null说明是根节点
+            ParentBinaryTreeNode current =  dataNode;
+            ParentBinaryTreeNode parent = current.parent;
+            while (parent != null &amp;&amp; parent.right == current){
+                current = parent;
+                parent = parent.parent;
+            }
+            next = parent;//parent有可能为null
+        }
+    }
+    return next;
+}
+
+private ParentBinaryTreeNode searchData(ParentBinaryTreeNode node, int data) {
+
+    if(node == null){
+       return null;
+    }
+
+    if(node.data == data){
+        return node;
+    }else if(searchData(node.left,data) != null){
+        return searchData(node.left,data);
+    }else
+        return searchData(node.right,data);
+}
+
+public static void main(String[] args){
+
+    ParentBinaryTree tree = new ParentBinaryTree();
+
+    //for(int i = 2;i&lt;10;i++){
+    //    tree.createTree(tree.root,i);
+    //}
+
+    tree.createTree(tree.root,9);
+    tree.createTree(tree.root,5);
+    tree.createTree(tree.root,3);
+    tree.createTree(tree.root,7);
+    tree.createTree(tree.root,6);
+    tree.createTree(tree.root,8);
+    tree.createTree(tree.root,12);
+    tree.createTree(tree.root,10);
+    tree.createTree(tree.root,14);
+
+    tree.inOrder(tree.root);
+    System.out.println();
+
+    ParentBinaryTreeNode node = tree.searchNext(tree.root,5);
+    if(node != null){
+        System.out.println(node.data);
+    }else {
+        System.out.println(&quot;最后一个结点&quot;);
+    }
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/volatile语义理解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2122,448 +2617,6 @@ public static void merge1(int[] a,int[] b){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/20/替换字符串字符/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/20/替换字符串字符/" itemprop="url">替换字符串字符</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T15:45:59+08:00">
-                2018-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/字符串/" itemprop="url" rel="index">
-                    <span itemprop="name">字符串</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/20/替换字符串字符/" class="leancloud_visitors" data-flag-title="替换字符串字符">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>将字符串中的’ ‘替换成”20%”？</li>
-</ul>
-<p><strong>核心思想：</strong></p>
-<p>1.从最后一字符开始从前遍历，最后一个字符是’\0’。</p>
-<p>2.将字符串变为数组时，要在字符串数组后面添加’\0’。</p>
-<pre><code>public class ReplaceChar {
-
-//时间复杂度：O(n) 空间复杂度：O(n)
-public void replace(char[] a,int len){
-
-    //len = 1 时就一个字符&apos;\0&apos;
-    if(a == null || len&lt;2){
-        System.out.println(&quot;输入长度大于0的字符串&quot;);
-        System.exit(-1);
-    }
-
-    int oldLen = 0;
-    int count = 0;
-    int newLen;
-    for(int i = 0;a[i] !=&apos;\0&apos;;i++){
-        if(a[i] == &apos; &apos;)
-            count++;
-        oldLen++;
-    }
-
-    newLen = oldLen + 2*count;
-
-    if(newLen &gt; len)
-        return;
-
-    int i = oldLen;//从&apos;\0&apos;开始
-    int j = newLen;
-
-    while (i &gt;= 0 &amp;&amp; i &lt; j){
-
-        if(a[i] == &apos; &apos;){
-            a[j--] = &apos;0&apos;;
-            a[j--] = &apos;2&apos;;
-            a[j--] = &apos;%&apos;;
-        }else {
-            //注意 j 越界的情况
-            a[j--] = a[i];
-        }
-
-        i--;
-    }
-}
-
-public static void main(String[] args) {
-
-    String s = &quot;abcd&quot;;
-
-    //多了个&apos;\0&apos;
-    char oldChar[] = new char[s.length()+1];
-
-    int counter = 0;
-    for (int i = 0; i&lt;s.length(); i++) {
-        if (s.charAt(i) == &apos; &apos;)
-            counter++;
-        oldChar[i] = s.charAt(i);
-    }
-
-    //字符串结束标志
-    oldChar[s.length()] = &apos;\0&apos;;
-
-    //里面已经包含了&apos;\0&apos;结束符
-    int totalLen = oldChar.length + counter*2;
-
-    //数组扩容
-    char[] newChar = new char[totalLen];
-    for(int i = 0;i&lt;oldChar.length;i++){
-        newChar[i] = oldChar[i];
-    }
-
-    new ReplaceChar().replace(newChar,totalLen);
-
-    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){
-        System.out.print(newChar[i]);
-    }
-
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/19/二维数组的查找/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/19/二维数组的查找/" itemprop="url">二维数组的查找</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-19T22:01:59+08:00">
-                2018-07-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/19/二维数组的查找/" class="leancloud_visitors" data-flag-title="二维数组的查找">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？"><a href="#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？" class="headerlink" title="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？"></a>二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？</h4><p><strong>核心思想：</strong></p>
-<p>1.右上角的数字与要查找的数字比较。</p>
-<p>2.右上角 &gt; key 去列 否则 去行</p>
-<pre><code>public int findElement(int[][] arr,int n,int m,int search){
-
-    int row = n;
-    int col = m;
-    int key = search;
-    int i = 0;
-
-    if(arr == null){
-        System.out.println(&quot;请输入一个二维数组&quot;);
-        return 0;
-    }
-
-    if(n &lt;= 0 || m &lt;=0){
-        System.out.println(&quot;输入两个自然数&quot;);
-    }
-
-    while(i &lt; row &amp;&amp; col &gt;0){
-        //去列
-        if(arr[i][col-1] &gt; key){
-            col--;
-        }else if(arr[i][col-1] &lt; key){
-            i++;
-        }else {
-            //找到元素
-            return arr[i][col-1];
-        }
-
-        //只剩一行
-        if(i == row-1){
-            for(int j=0;j&lt;col;j++){
-                if(arr[i][j] == key) {
-                    return arr[i][j];
-                }
-            }
-
-            return 0;
-        }
-
-        //只剩一列
-        if(col == 1){
-            for(int j = 0;j&lt;row;j++){
-                if(arr[j][0] == key)
-                    return arr[j][0];
-            }
-
-            return 0;
-        }
-    }
-
-    //不存在
-    return 0;
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2618,7 +2671,7 @@ public static void main(String[] args) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

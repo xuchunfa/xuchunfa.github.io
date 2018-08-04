@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-03T06:49:56.265Z</updated>
+  <updated>2018-08-04T06:29:30.225Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,57 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>基数排序</title>
+    <link href="http://www.xuchunfa.cn/2018/08/04/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/08/04/基数排序/</id>
+    <published>2018-08-04T06:04:16.000Z</published>
+    <updated>2018-08-04T06:29:30.225Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="桶的思想？"><a href="#桶的思想？" class="headerlink" title="桶的思想？"></a>桶的思想？</h4><p><img src="https://i.imgur.com/5NeTrG5.png" alt=""></p><pre><code>public class RadixSort {public static void radixSort(int[] a,int k){    int[] counter = new int[10];    int[][] container = new int[10][a.length];    int n = 1;    int t = 0;    while (n &lt; k){        for(int num : a){            int radix = (num/n)%10;            container[radix][counter[radix]] = num;            counter[radix]++;        }        for(int i = 0;i &lt; 10;i++){                if(counter[i] != 0){                    for(int j = 0;j&lt;counter[i];j++){                        a[t] = container[i][j];                        t++;                    }                }            counter[i] = 0;        }        t = 0;        n *= 10;    }}public static void main(String[] args){    int[] a = {1,21,32,45,687,89,43,44,95};    RadixSort.radixSort(a,1000);    System.out.println(Arrays.toString(a));}}</code></pre><p><strong>时间复杂度：</strong></p><pre><code>时间复杂度 = [放桶的时间(O(n)) + 取桶里面的元素(O(n))]*位数     = O(d*n) (d为常数)空间复杂度 = O(n * 10 + 10) = O(n)</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;桶的思想？&quot;&gt;&lt;a href=&quot;#桶的思想？&quot; class=&quot;headerlink&quot; title=&quot;桶的思想？&quot;&gt;&lt;/a&gt;桶的思想？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/5NeTrG5.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;pr
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>计数排序</title>
+    <link href="http://www.xuchunfa.cn/2018/08/04/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/08/04/计数排序/</id>
+    <published>2018-08-04T04:32:23.000Z</published>
+    <updated>2018-08-04T04:46:07.709Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>核心思想：</strong>哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。</p><pre><code>public class CountSort {//数组数字在0 ~ k之间public static int[] countSort(int[] a,int k){    int[] elementCounter = new int[k+1];    for(int i = 0;i&lt;a.length;i++){        elementCounter[a[i]]++;    }    //构造计数数组(即小于等于该元素的个数)    int preSum = elementCounter[0];    for(int j = 1;j&lt;elementCounter.length;j++){        elementCounter[j] = preSum + elementCounter[j];        preSum = elementCounter[j];    }    int[] result = new int[a.length];    //从原数组末尾开始遍历    for(int i = a.length-1;i&gt;=0;i--){        result[elementCounter[a[i]]-1] = a[i];        elementCounter[a[i]]--;    }    return result;}public static void main(String[] args){    int[] a = {6,5,4,3,2,1};    int[] result = new int[a.length];    result = CountSort.countSort(a,6);    System.out.println(Arrays.toString(result));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class CountSort {
+
+//数组数字在0 ~ k之间
+public static int[] co
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>希尔排序</title>
@@ -165,9 +216,9 @@ public static v
     <link href="http://www.xuchunfa.cn/2018/07/28/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/"/>
     <id>http://www.xuchunfa.cn/2018/07/28/排序算法比较/</id>
     <published>2018-07-28T08:13:19.000Z</published>
-    <updated>2018-08-03T07:21:43.873Z</updated>
+    <updated>2018-08-04T04:51:34.645Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p><p><strong>学习过程中一点点积累补充</strong></p><h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p><ul><li><p>快排分析</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p><p>  时间复杂度：nlogn</p><p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p><p>  时间复杂度：n^2</p><p>  3.一般情况下：略</p><p>  时间复杂度：nlogn</p><p>  <strong>空间复杂度：</strong></p><p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p><p>  空间复杂度：O(logn)</p><p>  2.最差情况：略</p><p>  空间复杂度：O(n)</p><p>  <strong>补充：</strong>快排是不稳定的。</p></li><li><p>直接插入排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p><p>  时间复杂度：O(n^2)</p><p>  平均复杂度:O(n^2)</p><p>  <strong>空间复杂度：</strong></p><p>  空间复杂度：O(1)</p><p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p></li><li><p>冒泡排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：逆序，交换次数O(n^2)。</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>简单选择排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p><p>  时间复杂度：O(n^2)</p><p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>堆排序</p><p>  <strong>时间复杂度：</strong></p><p>  分析：</p><p>  初始化堆的过程时间：O(n)</p><p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p><p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>归并排序</p><p>  总时间 = 划分时间 + 合并时间</p><p>  <strong>时间复杂度：</strong></p><p>  最好 = 最坏 = 平均 = O(nlogn)</p><p>  <strong>空间复杂度：</strong></p><p>  O(n) = O(logn) + O(n)</p></li><li><p>希尔排序</p><p>  <strong>时间复杂度：</strong></p><p>  最坏：O(n^2)</p><p>  最好：O(n)</p><p>  平均：O(n^1.5)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li></ul><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p><p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>]]></content>
+    <content type="html"><![CDATA[<p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p><p><strong>学习过程中一点点积累补充</strong></p><h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p><ul><li><p>快排分析</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p><p>  时间复杂度：nlogn</p><p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p><p>  时间复杂度：n^2</p><p>  3.一般情况下：略</p><p>  时间复杂度：nlogn</p><p>  <strong>空间复杂度：</strong></p><p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p><p>  空间复杂度：O(logn)</p><p>  2.最差情况：略</p><p>  空间复杂度：O(n)</p><p>  <strong>补充：</strong>快排是不稳定的。</p></li><li><p>直接插入排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p><p>  时间复杂度：O(n^2)</p><p>  平均复杂度:O(n^2)</p><p>  <strong>空间复杂度：</strong></p><p>  空间复杂度：O(1)</p><p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p></li><li><p>冒泡排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p><p>  时间复杂度：O(n)</p><p>  2.最坏情况：逆序，交换次数O(n^2)。</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>简单选择排序</p><p>  <strong>时间复杂度：</strong></p><p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p><p>  时间复杂度：O(n^2)</p><p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p><p>  时间复杂度:O(n^2)</p><p>  平均时间复杂度：O(n^2)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>堆排序</p><p>  <strong>时间复杂度：</strong></p><p>  分析：</p><p>  初始化堆的过程时间：O(n)</p><p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p><p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li><li><p>归并排序</p><p>  总时间 = 划分时间 + 合并时间</p><p>  <strong>时间复杂度：</strong></p><p>  最好 = 最坏 = 平均 = O(nlogn)</p><p>  <strong>空间复杂度：</strong></p><p>  O(n) = O(logn) + O(n)</p></li><li><p>希尔排序</p><p>  <strong>时间复杂度：</strong></p><p>  最坏：O(n^2)</p><p>  最好：O(n)</p><p>  平均：O(n^1.5)</p><p>  <strong>空间复杂度：</strong>O(1)</p></li></ul><p>-计数排序</p><pre><code>时间复杂度： O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组       = O(n) + O(k) + O(n)空间复杂度：O(n+k)</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p><p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>]]></content>
     
     <summary type="html">
     
@@ -445,58 +496,6 @@ private ListNode he
 &lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;从数组末尾开始比较，指针依次往前挪。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;//时间复杂度(O(n)) 空间复杂度(O(n))
 public s
-      
-    
-    </summary>
-    
-      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>替换字符串字符</title>
-    <link href="http://www.xuchunfa.cn/2018/07/20/%E6%9B%BF%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E7%AC%A6/"/>
-    <id>http://www.xuchunfa.cn/2018/07/20/替换字符串字符/</id>
-    <published>2018-07-20T07:45:59.000Z</published>
-    <updated>2018-07-20T08:09:14.899Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>将字符串中的’ ‘替换成”20%”？</li></ul><p><strong>核心思想：</strong></p><p>1.从最后一字符开始从前遍历，最后一个字符是’\0’。</p><p>2.将字符串变为数组时，要在字符串数组后面添加’\0’。</p><pre><code>public class ReplaceChar {//时间复杂度：O(n) 空间复杂度：O(n)public void replace(char[] a,int len){    //len = 1 时就一个字符&apos;\0&apos;    if(a == null || len&lt;2){        System.out.println(&quot;输入长度大于0的字符串&quot;);        System.exit(-1);    }    int oldLen = 0;    int count = 0;    int newLen;    for(int i = 0;a[i] !=&apos;\0&apos;;i++){        if(a[i] == &apos; &apos;)            count++;        oldLen++;    }    newLen = oldLen + 2*count;    if(newLen &gt; len)        return;    int i = oldLen;//从&apos;\0&apos;开始    int j = newLen;    while (i &gt;= 0 &amp;&amp; i &lt; j){        if(a[i] == &apos; &apos;){            a[j--] = &apos;0&apos;;            a[j--] = &apos;2&apos;;            a[j--] = &apos;%&apos;;        }else {            //注意 j 越界的情况            a[j--] = a[i];        }        i--;    }}public static void main(String[] args) {    String s = &quot;abcd&quot;;    //多了个&apos;\0&apos;    char oldChar[] = new char[s.length()+1];    int counter = 0;    for (int i = 0; i&lt;s.length(); i++) {        if (s.charAt(i) == &apos; &apos;)            counter++;        oldChar[i] = s.charAt(i);    }    //字符串结束标志    oldChar[s.length()] = &apos;\0&apos;;    //里面已经包含了&apos;\0&apos;结束符    int totalLen = oldChar.length + counter*2;    //数组扩容    char[] newChar = new char[totalLen];    for(int i = 0;i&lt;oldChar.length;i++){        newChar[i] = oldChar[i];    }    new ReplaceChar().replace(newChar,totalLen);    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){        System.out.print(newChar[i]);    }}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;将字符串中的’ ‘替换成”20%”？&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;1.从最后一字符开始从前遍历，最后一个字符是’\0’。&lt;/p&gt;
-&lt;p&gt;2.将字符串变为数组时，要在字符串数组后面添加’\0’。&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-      <category term="字符串" scheme="http://www.xuchunfa.cn/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>二维数组的查找</title>
-    <link href="http://www.xuchunfa.cn/2018/07/19/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E6%9F%A5%E6%89%BE/"/>
-    <id>http://www.xuchunfa.cn/2018/07/19/二维数组的查找/</id>
-    <published>2018-07-19T14:01:59.000Z</published>
-    <updated>2018-07-19T14:07:11.002Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？"><a href="#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？" class="headerlink" title="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？"></a>二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？</h4><p><strong>核心思想：</strong></p><p>1.右上角的数字与要查找的数字比较。</p><p>2.右上角 &gt; key 去列 否则 去行</p><pre><code>public int findElement(int[][] arr,int n,int m,int search){    int row = n;    int col = m;    int key = search;    int i = 0;    if(arr == null){        System.out.println(&quot;请输入一个二维数组&quot;);        return 0;    }    if(n &lt;= 0 || m &lt;=0){        System.out.println(&quot;输入两个自然数&quot;);    }    while(i &lt; row &amp;&amp; col &gt;0){        //去列        if(arr[i][col-1] &gt; key){            col--;        }else if(arr[i][col-1] &lt; key){            i++;        }else {            //找到元素            return arr[i][col-1];        }        //只剩一行        if(i == row-1){            for(int j=0;j&lt;col;j++){                if(arr[i][j] == key) {                    return arr[i][j];                }            }            return 0;        }        //只剩一列        if(col == 1){            for(int j = 0;j&lt;row;j++){                if(arr[j][0] == key)                    return arr[j][0];            }            return 0;        }    }    //不存在    return 0;}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？&quot;&gt;&lt;a href=&quot;#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？&quot; class=&quot;headerlink&quot; title=&quot;二维数组，每一行从左到右递增，每一列从上
       
     
     </summary>
