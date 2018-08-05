@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-04T06:29:30.225Z</updated>
+  <updated>2018-08-04T13:26:45.308Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>线程池</title>
+    <link href="http://www.xuchunfa.cn/2018/08/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0/"/>
+    <id>http://www.xuchunfa.cn/2018/08/04/线程池/</id>
+    <published>2018-08-04T12:12:47.000Z</published>
+    <updated>2018-08-04T13:26:45.308Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p><p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p><p>3.提高线程的可管理性。</p><h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p><pre><code>public static void start(){    ServerSocket serverSocket = new ServerSocket(port);    Socket socket = null;    while ((socket = serverSocket.accept() != null)){        thread.execute(new HttpRequestHandler(socket));    }}分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;为什么要使用线程池？&quot;&gt;&lt;a href=&quot;#为什么要使用线程池？&quot; class=&quot;headerlink&quot; title=&quot;为什么要使用线程池？&quot;&gt;&lt;/a&gt;为什么要使用线程池？&lt;/h4&gt;&lt;p&gt;1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗ja
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>基数排序</title>
@@ -473,34 +496,6 @@ private ListNode he
     </summary>
     
       <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>合并两个有序数组</title>
-    <link href="http://www.xuchunfa.cn/2018/07/22/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84/"/>
-    <id>http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/</id>
-    <published>2018-07-22T05:54:01.000Z</published>
-    <updated>2018-07-22T05:57:48.317Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>两个有序数组A1和A2，把A2的所有数字插入到A1？</li></ul><p><strong>核心思想：</strong>从数组末尾开始比较，指针依次往前挪。</p><pre><code>//时间复杂度(O(n)) 空间复杂度(O(n))public static int[] merge(int[] a,int[] b){    if(a==null || b==null){        System.out.println(&quot;输入两个数组&quot;);    }    if(a.length == 0)        return b;    if(b.length == 0)        return a;    int len1 = a.length;    int len2 = b.length;    int[] c = new int[len1+len2];    int i = len1 - 1;    int j = len2 - 1;    while(i &gt;= 0 &amp;&amp; j &gt;= 0){        if(a[i] &gt; b[j]){            c[i+j+1] = a[i];            i--;        }else{            c[i+j+1] = b[j];            j--;        }    }    while (i &gt;= 0){        c[i+j+1] = a[i];        i--;    }    while(j &gt;= 0){        c[i+j+1] = b[j];        j--;    }    return c;}//时间复杂度(O(n)) 空间复杂度(O(1)) 直接在第一个数组上操作public static void merge1(int[] a,int[] b){    if(a==null || b==null){        System.out.println(&quot;输入两个数组&quot;);    }    int len1 = a.length;    int len2 = b.length;    int i = len1 - len2 -1;    int j = len2 - 1;    while(i &gt;= 0 &amp;&amp; j &gt;= 0){        if(a[i] &gt; b[j]){            a[i+j+1] = a[i];            i--;        }else{            a[i+j+1] = b[j];            j--;        }    }    while(j &gt;= 0){        a[i+j+1] = b[j];        j--;    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;两个有序数组A1和A2，把A2的所有数字插入到A1？&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;从数组末尾开始比较，指针依次往前挪。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;//时间复杂度(O(n)) 空间复杂度(O(n))
-public s
-      
-    
-    </summary>
-    
-      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
     
     
   </entry>
