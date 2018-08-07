@@ -89,7 +89,7 @@
 <meta property="og:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ public static void start(){     ServerSocket serverSocket = new ServerSoc">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/U289xRb.png">
-<meta property="og:updated_time" content="2018-08-04T13:26:45.308Z">
+<meta property="og:updated_time" content="2018-08-05T07:23:29.619Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ public static void start(){     ServerSocket serverSocket = new ServerSoc">
@@ -413,7 +413,12 @@
     }
 }
 分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
-</code></pre>
+</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
+<p>1.corePoolSize:线程池中线程的基本数量。</p>
+<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize</p>
+<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
+<p>4.keepAliveTime:工作线程空闲时的存活时间。</p>
+
       
     </div>
     
@@ -446,6 +451,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/05/Executors详解/" rel="prev" title="Executors详解">
+                Executors详解 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -533,7 +542,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -544,7 +553,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -611,7 +620,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要使用线程池？"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用线程池？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池执行流程？"><span class="nav-number">2.</span> <span class="nav-text">线程池执行流程？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要使用线程池？"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用线程池？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池执行流程？"><span class="nav-number">2.</span> <span class="nav-text">线程池执行流程？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池的创建？"><span class="nav-number">3.</span> <span class="nav-text">线程池的创建？</span></a></li></ol></div>
             
 
           </div>

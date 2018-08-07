@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-04T13:26:45.308Z</updated>
+  <updated>2018-08-07T05:14:54.006Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -17,13 +17,144 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>二进制中1的个数</title>
+    <link href="http://www.xuchunfa.cn/2018/08/07/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E4%B8%AA%E6%95%B0/"/>
+    <id>http://www.xuchunfa.cn/2018/08/07/二进制中1的个数/</id>
+    <published>2018-08-07T05:13:50.000Z</published>
+    <updated>2018-08-07T05:14:54.006Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="计算二进制中的1的个数？"><a href="#计算二进制中的1的个数？" class="headerlink" title="计算二进制中的1的个数？"></a>计算二进制中的1的个数？</h4><pre><code>public class Count1 {//循环次数为num的位数public static int count2(int num){    int count = 0;    int flag = 1;    while (flag != 0){        if((num &amp; flag) != 0){            count++;        }        flag = flag &lt;&lt; 1;    }    return count;}public static int count1(int num){    int count = 0;    while (num != 0){        num = num &amp; num-1;        count++;    }    return count;}public static void main(String[] args){    System.out.println(Count1.count1(0));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;计算二进制中的1的个数？&quot;&gt;&lt;a href=&quot;#计算二进制中的1的个数？&quot; class=&quot;headerlink&quot; title=&quot;计算二进制中的1的个数？&quot;&gt;&lt;/a&gt;计算二进制中的1的个数？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class Count1 {
+
+      
+    
+    </summary>
+    
+      <category term="位运算" scheme="http://www.xuchunfa.cn/categories/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>位运算</title>
+    <link href="http://www.xuchunfa.cn/2018/08/06/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+    <id>http://www.xuchunfa.cn/2018/08/06/位运算/</id>
+    <published>2018-08-06T13:21:30.000Z</published>
+    <updated>2018-08-07T06:19:33.326Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>移位实现乘除运算</p></blockquote><p>除2 = 右移1位 乘2 = 左移1位 </p><p>除4 = 右移2位 乘4 = 左移2位 </p><p>除8 = 右移3位 乘8 = 左移3位 </p><blockquote><p>要注意带符号类型的左右移位</p></blockquote><p>将负值向右移位可生成原始值一半的值（向下舍入）。 例如，-253（二进制 11111111 00000011）向右移动 1 位会生成 -127（二进制 11111111 10000001）。 将 + 253 向右移位生成 +126。</p><p><strong>注：</strong></p><p>1.如果数字是有符号正数，右移n位，则在最左边补n个0;</p><p>2.如果数字是有符号负数，右移n位，则在最左边补n个1;</p><p>3.如果一个数字，左移n位，则在最右边补n个0;</p><blockquote><p>一个数减去一后再与原本的自己做位与运算，得到的结果是将原数二进制中最右边的1变为0</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;移位实现乘除运算&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;除2 = 右移1位 乘2 = 左移1位 &lt;/p&gt;
+&lt;p&gt;除4 = 右移2位 乘4 = 左移2位 &lt;/p&gt;
+&lt;p&gt;除8 = 右移3位 乘8 = 左移3位 &lt;/p&gt;
+&lt;blockquote&gt;
+
+      
+    
+    </summary>
+    
+      <category term="位运算" scheme="http://www.xuchunfa.cn/categories/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>动态规划问题集</title>
+    <link href="http://www.xuchunfa.cn/2018/08/06/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E9%97%AE%E9%A2%98%E9%9B%86/"/>
+    <id>http://www.xuchunfa.cn/2018/08/06/动态规划问题集/</id>
+    <published>2018-08-06T07:26:09.000Z</published>
+    <updated>2018-08-06T11:55:05.905Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>动态规划问题的特点</p></blockquote><ul><li><p>大问题可以分解成小问题，每个小问题都存在最优解。</p></li><li><p>整体问题最优解依赖子问题的最优解。</p></li><li><p>小问题之间还会存在相互重叠的更小的问题。</p></li><li><p>从上往下分析问题，从下往上求解问题。</p></li></ul><h4 id="剪绳子把长度为-n-的绳子剪成-m-段-n-gt-1-m-gt-1-所有相乘乘积最小？"><a href="#剪绳子把长度为-n-的绳子剪成-m-段-n-gt-1-m-gt-1-所有相乘乘积最小？" class="headerlink" title="剪绳子把长度为 n 的绳子剪成 m 段(n &gt; 1,m &gt; 1)所有相乘乘积最小？"></a>剪绳子把长度为 n 的绳子剪成 m 段(n &gt; 1,m &gt; 1)所有相乘乘积最小？</h4><pre><code>public class CutStrip {public static int cutStrip(int length){    if(length &lt; 2)        return 0;    if(length == 2)        return 1;    if(length == 3)        return 2;    int[] result = new int[length+1];    result[1] = 1;    result[2] = 2;    result[3] = 3;    for (int i = 4;i&lt;=length;i++){        int max = 0;        for(int j = 1;j&lt;=i/2;j++){            int temp = result[j]*result[i-j];            if(temp &gt; max)                max = temp;        }        result[i] = max;    }    return result[length];}public static void main(String[] args){    System.out.println(CutStrip.cutStrip(10));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;动态规划问题的特点&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;大问题可以分解成小问题，每个小问题都存在最优解。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;整体问题最优解依赖子问题的最优解。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;小问题之间还会
+      
+    
+    </summary>
+    
+      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>矩阵路径</title>
+    <link href="http://www.xuchunfa.cn/2018/08/06/%E7%9F%A9%E9%98%B5%E8%B7%AF%E5%BE%84/"/>
+    <id>http://www.xuchunfa.cn/2018/08/06/矩阵路径/</id>
+    <published>2018-08-06T05:20:10.000Z</published>
+    <updated>2018-08-06T07:13:48.247Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="回溯和递归的理解？"><a href="#回溯和递归的理解？" class="headerlink" title="回溯和递归的理解？"></a>回溯和递归的理解？</h4><p>1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。</p><p>2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。</p><p>3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。</p><ul><li><p>矩阵路径问题？</p><pre><code>public class MatrixPath {public static boolean hasPath(char[][] a,int rows,int cols,String str){    if(a == null || rows &lt; 1 || cols &lt; 1 || str == null)        throw new RuntimeException(&quot;参数非法&quot;);    boolean[][] visited = new boolean[rows][cols];    int pathLength = 0;    for(int row = 0;row &lt; rows;row++){        for(int col = 0;col &lt; cols;col++){            if(hasOnePath(a,row,col,rows,cols,str,pathLength,visited)){                return true;        }    }}    return false;}private static boolean hasOnePath(char[][] a, int row, int col, int rows, int cols, String str,int pathLength,boolean[][] visited) {    boolean result = false;    if(str.length() == pathLength){        return true;    }    if(row &gt;= 0 &amp;&amp; row &lt; rows &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; cols &amp;&amp; a[row][col] == str.charAt(pathLength) &amp;&amp; !visited[row][col]) {        ++pathLength;        visited[row][col] = true;        result = hasOnePath(a, row - 1, col, rows, cols, str, pathLength, visited) ||            hasOnePath(a, row, col - 1, rows, cols, str, pathLength, visited) ||            hasOnePath(a, row + 1, col, rows, cols, str, pathLength, visited) ||            hasOnePath(a, row, col + 1, rows, cols, str, pathLength, visited);        if (!result) {            --pathLength;            visited[row][col] = false;        }    }    return result;}  public static void main(String[] args){/*char[][] a = {{'a','b','t','g'},                    {'c','f','c','s'},                    {'j','d','e','h'}};*/char[][] a = {{'a'},                      {'f'},                      {'g'},                      {'d'}};String str = &quot;gl&quot;;System.out.println(MatrixPath.hasPath(a,4,1,str));}}</code></pre></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;回溯和递归的理解？&quot;&gt;&lt;a href=&quot;#回溯和递归的理解？&quot; class=&quot;headerlink&quot; title=&quot;回溯和递归的理解？&quot;&gt;&lt;/a&gt;回溯和递归的理解？&lt;/h4&gt;&lt;p&gt;1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决
+      
+    
+    </summary>
+    
+      <category term="回溯算法" scheme="http://www.xuchunfa.cn/categories/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Executors详解</title>
+    <link href="http://www.xuchunfa.cn/2018/08/05/Executors%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://www.xuchunfa.cn/2018/08/05/Executors详解/</id>
+    <published>2018-08-05T07:24:34.000Z</published>
+    <updated>2018-08-06T04:54:47.146Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="Excutors框架的类与接口"><a href="#Excutors框架的类与接口" class="headerlink" title="Excutors框架的类与接口"></a>Excutors框架的类与接口</h4><p><img src="https://i.imgur.com/F7UbYhu.png" alt=""></p><h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p><ul><li><p>FixedThreadPool</p></li><li><p>SingleThreadPool</p></li><li><p>CachedThreadPool</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;Excutors框架的类与接口&quot;&gt;&lt;a href=&quot;#Excutors框架的类与接口&quot; class=&quot;headerlink&quot; title=&quot;Excutors框架的类与接口&quot;&gt;&lt;/a&gt;Excutors框架的类与接口&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>线程池</title>
     <link href="http://www.xuchunfa.cn/2018/08/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0/"/>
     <id>http://www.xuchunfa.cn/2018/08/04/线程池/</id>
     <published>2018-08-04T12:12:47.000Z</published>
-    <updated>2018-08-04T13:26:45.308Z</updated>
+    <updated>2018-08-05T07:23:29.619Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p><p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p><p>3.提高线程的可管理性。</p><h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p><pre><code>public static void start(){    ServerSocket serverSocket = new ServerSocket(port);    Socket socket = null;    while ((socket = serverSocket.accept() != null)){        thread.execute(new HttpRequestHandler(socket));    }}分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。</code></pre>]]></content>
+    <content type="html"><![CDATA[<h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p><p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p><p>3.提高线程的可管理性。</p><h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p><pre><code>public static void start(){    ServerSocket serverSocket = new ServerSocket(port);    Socket socket = null;    while ((socket = serverSocket.accept() != null)){        thread.execute(new HttpRequestHandler(socket));    }}分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p><p>1.corePoolSize:线程池中线程的基本数量。</p><p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize</p><p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p><p>4.keepAliveTime:工作线程空闲时的存活时间。</p>]]></content>
     
     <summary type="html">
     
@@ -376,126 +507,6 @@ public sta
     </summary>
     
       <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>java内存模型</title>
-    <link href="http://www.xuchunfa.cn/2018/07/23/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
-    <id>http://www.xuchunfa.cn/2018/07/23/java内存模型/</id>
-    <published>2018-07-23T12:12:59.000Z</published>
-    <updated>2018-07-31T07:37:01.777Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li><p>happens-before原则：</p><h4 id="怎么理解内存可见性？"><a href="#怎么理解内存可见性？" class="headerlink" title="怎么理解内存可见性？"></a>怎么理解内存可见性？</h4><p>  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。</p><h4 id="happens-before规则有哪些？"><a href="#happens-before规则有哪些？" class="headerlink" title="happens-before规则有哪些？"></a>happens-before规则有哪些？</h4></li></ul><ol><li>程序顺序规则：但线程内，在不改变程序结果的情况下(可能会发生重排序),程序按顺序执行。</li><li>监视器锁规则：对一个锁的解锁(volatile写)优先于锁的加锁(volatile读)。</li><li>volatile变量规则：volatile写优先volatile读。</li><li>传递性：A happens-before B, Bhappens-before C则 A happens-before C。</li><li>start()原则：如果在线程A中执行ThreadB.start(),那么A线程的ThreadB.start()操作要先于线程B中的任意操作。</li><li>join()操作：线程A执行ThreadB.join()操作并成功返回,那么B中的任意操作都先于线程A从ThreadB.join()操作成功返回。</li></ol><p>举个例子：</p><p><img src="https://i.imgur.com/5HFiSBc.png" alt=""></p><p><strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p><p>1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p><p>2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p><p>3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p><p>4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p><p>5.<strong>顺序一致性模型和JMM的比较：</strong></p><pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;happens-before原则：&lt;/p&gt;
-&lt;h4 id=&quot;怎么理解内存可见性？&quot;&gt;&lt;a href=&quot;#怎么理解内存可见性？&quot; class=&quot;headerlink&quot; title=&quot;怎么理解内存可见性？&quot;&gt;&lt;/a&gt;怎么理解内存可见性？&lt;/h4&gt;&lt;p&gt;  在单
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>二叉树的创建和遍历</title>
-    <link href="http://www.xuchunfa.cn/2018/07/23/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E9%81%8D%E5%8E%86/"/>
-    <id>http://www.xuchunfa.cn/2018/07/23/二叉树的创建和遍历/</id>
-    <published>2018-07-23T07:57:04.000Z</published>
-    <updated>2018-07-23T08:00:37.409Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="前序、中序和后序递归与非递归的遍历二叉树？"><a href="#前序、中序和后序递归与非递归的遍历二叉树？" class="headerlink" title="前序、中序和后序递归与非递归的遍历二叉树？"></a>前序、中序和后序递归与非递归的遍历二叉树？</h4><pre><code>public class BinaryTree {private BinaryTreeNode root;public boolean isEmpty(){    if(this.root == null)        return true;    return false;}public BinaryTreeNode getRoot() {    return root;}public void createBinaryTree(BinaryTreeNode node, int data){    if(root == null){        this.root = new BinaryTreeNode(data);    }else{        //创建二叉查找树        if(data &lt; node.data){            //构建左子树            if(node.left == null){                node.left = new BinaryTreeNode(data);            }else {                createBinaryTree(node.left,data);            }        }else {            //构建右子树            if(node.right == null){                node.right = new BinaryTreeNode(data);            }else {                createBinaryTree(node.right,data);            }        }    }}//先序遍历,递归实现public void preOrder(BinaryTreeNode node){    if (node == null)        return;    System.out.print(node.data + &quot; &quot;);    preOrder(node.left);    preOrder(node.right);}//先序遍历,非递归实现public void cyclePreOrder(BinaryTreeNode node){    BinaryTreeNode p = node;    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();    if(p == null){        System.out.println(&quot;二叉树为空&quot;);    }    //根节点出栈后栈空了但 p != null    while (p != null || !stack.isEmpty()){        while (p != null){            System.out.print(p.data + &quot; &quot;);            stack.push(p);            p = p.left;        }        if(!stack.isEmpty()){            p = stack.pop();            p = p.right;        }    }}//中序遍历,递归实现public void inOrder(BinaryTreeNode node){    if(node == null)        return;    inOrder(node.left);    System.out.print(node.data + &quot; &quot;);    inOrder(node.right);}//中序遍历,非递归实现public void cycleInOrder(BinaryTreeNode node){    BinaryTreeNode p = node;    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();    if(p == null){        System.out.println(&quot;二叉树为空&quot;);    }    //根节点出栈后栈空了但 p != null    while (p != null || !stack.isEmpty()){        while (p != null){            stack.push(p);            p = p.left;        }        if(!stack.isEmpty()){            p = stack.pop();            System.out.print(p.data + &quot; &quot;);            p = p.right;        }    }}//后序遍历,递归实现public void postOrder(BinaryTreeNode node) {    if (node == null)        return;    postOrder(node.left);    postOrder(node.right);    System.out.print(node.data + &quot; &quot;);}//后序遍历,非递归实现public void cyclePostOrder(BinaryTreeNode node){    BinaryTreeNode current;    BinaryTreeNode visited = null;    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();    s.push(node);    while (!s.isEmpty()){        //还不能出栈        current = s.peek();        if((current.left == null &amp;&amp; current.right == null) || (visited != null &amp;&amp; (current.left == visited || current.right == visited)) ){            current = s.pop();            System.out.print(current.data + &quot; &quot;);            visited = current;        }else {            if(current.right != null){                s.push(current.right);            }            if(current.left != null){                s.push(current.left);            }        }    }}public static void main(String[] args){    BinaryTree bt = new BinaryTree();    Random random = new Random();    //10个结点    for(int i = 0;i&lt;6;i++){        bt.createBinaryTree(bt.root,random.nextInt(10));    }    bt.postOrder(bt.root);    System.out.println();    bt.cyclePostOrder(bt.root);}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;前序、中序和后序递归与非递归的遍历二叉树？&quot;&gt;&lt;a href=&quot;#前序、中序和后序递归与非递归的遍历二叉树？&quot; class=&quot;headerlink&quot; title=&quot;前序、中序和后序递归与非递归的遍历二叉树？&quot;&gt;&lt;/a&gt;前序、中序和后序递归与非递归的遍历二叉树？&lt;/
-      
-    
-    </summary>
-    
-      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>反转链表</title>
-    <link href="http://www.xuchunfa.cn/2018/07/22/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/"/>
-    <id>http://www.xuchunfa.cn/2018/07/22/反转链表/</id>
-    <published>2018-07-22T11:44:48.000Z</published>
-    <updated>2018-07-22T11:54:55.982Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="反转链表？"><a href="#反转链表？" class="headerlink" title="反转链表？"></a>反转链表？</h4><pre><code>public class VerseLinkPrint {private ListNode head;    private ListNode q;//添加链表节点   public void add(int data){    ListNode node = new ListNode(data);    if(this.head == null){        this.head = node;    }else {        this.head.addNode(node);    }}//从头到尾打印链表节点    public void print(){    if(this.head == null){        System.out.println(&quot;链表为空&quot;);    }else {        this.head.printNode();        System.out.println();    }}//非递归实现反转链表   public void versePrint(){if(head == null){    System.out.println(&quot;链表为空&quot;);    return;}//已经改变的链表的结构ListNode p = head.next;ListNode q = null;head.next = null;while (p != null){    q = p.next;    p.next = head;    head = p;    p = q;}print();}//递归实现反转链表   public void verseRecursive(ListNode p){if(p == null)    return;verseRecursive(p.next);if(p.next == null){    head = p;    q = p;}p.next = null;q.next = p;q = q.next;}public static void main(String[] args){    VerseLinkPrint link = new VerseLinkPrint();    link.add(1);    link.add(2);    link.add(3);    link.verseRecursive(link.head);    link.print();    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;反转链表？&quot;&gt;&lt;a href=&quot;#反转链表？&quot; class=&quot;headerlink&quot; title=&quot;反转链表？&quot;&gt;&lt;/a&gt;反转链表？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class VerseLinkPrint {
-
-private ListNode he
-      
-    
-    </summary>
-    
-      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>从尾到头打印链表</title>
-    <link href="http://www.xuchunfa.cn/2018/07/22/%E4%BB%8E%E5%B0%BE%E5%88%B0%E5%A4%B4%E6%89%93%E5%8D%B0%E9%93%BE%E8%A1%A8/"/>
-    <id>http://www.xuchunfa.cn/2018/07/22/从尾到头打印链表/</id>
-    <published>2018-07-22T10:53:03.000Z</published>
-    <updated>2018-07-22T11:55:51.480Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="从尾到头打印链表？"><a href="#从尾到头打印链表？" class="headerlink" title="从尾到头打印链表？"></a>从尾到头打印链表？</h4><p><strong>核心思想：</strong>栈和递归。</p><pre><code>public class VerseLink {private ListNode head;//添加链表节点public void add(int data){    ListNode node = new ListNode(data);    if(this.head == null){        this.head = node;    }else {        this.head.addNode(node);    }}//从头到尾打印链表节点public void print(){    if(this.head == null){        System.out.println(&quot;链表为空&quot;);    }else {        this.head.printNode();        System.out.println();    }}//从尾到头打印链表节点(常规方法) 时间复杂度(O(n)) 空间复杂度(O(1))public void versePrint(){    if(head == null){        System.out.println(&quot;链表为空&quot;);        return;    }    ListNode p = head.next;    ListNode q = null;    head.next = null;    while (p != null){        q = p.next;        p.next = head;        head = p;        p = q;    }    print();}//栈实现 时间复杂度:O(n) 空间复杂度:O(n)public void versePrint1(){    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();    ListNode p = head;    if(p == null){        System.out.println(&quot;链表为空&quot;);        return;    }    while (p != null){        stack.push(p.data);        p = p.next;    }    while (!stack.empty()){        System.out.print(stack.pop()+&quot;--&gt;&quot;);    }}//递归实现public void versePrint2(ListNode p){    if(p == null){        return;    }    versePrint2(p.next);    System.out.print(p.data+&quot;--&gt;&quot;);}public static void main(String[] args){    VerseLink link = new VerseLink();    link.add(1);    link.add(2);    link.add(3);    link.versePrint2(link.head);}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;从尾到头打印链表？&quot;&gt;&lt;a href=&quot;#从尾到头打印链表？&quot; class=&quot;headerlink&quot; title=&quot;从尾到头打印链表？&quot;&gt;&lt;/a&gt;从尾到头打印链表？&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;栈和递归。&lt;/p&gt;
-&lt;pre&gt;&lt;code
-      
-    
-    </summary>
-    
-      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>链表中倒数第k个结点</title>
-    <link href="http://www.xuchunfa.cn/2018/07/22/%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%80%92%E6%95%B0%E7%AC%ACk%E4%B8%AA%E7%BB%93%E7%82%B9/"/>
-    <id>http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/</id>
-    <published>2018-07-22T06:29:00.000Z</published>
-    <updated>2018-07-22T11:56:03.226Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {private ListNode head;class ListNode{    private int data;    ListNode next;    public ListNode(int data) {        this.data = data;        this.next = null;    }    public void addNode(ListNode newNode){        //相当于尾插法        if(this.next == null){            this.next = newNode;        }else {            this.next.addNode(newNode);        }    }    public void printNode(){        System.out.print(this.data + &quot;--&gt;&quot;);        if(this.next != null){            this.next.printNode();        }        }    }    //添加链表节点    public void add(int data){    ListNode node = new ListNode(data);        if(this.head == null){            this.head = node;        }else {            this.head.addNode(node);        }    }    //打印链表节点        public void print(){    if(this.head == null){        System.out.println(&quot;链表为空&quot;);    }else {        this.head.printNode();        System.out.println();    }    }    //链表中的倒数第 K 个结点    public ListNode FindKthToTail(ListNode head,int k){    int len = 0;    int i = 0;    ListNode counter = head;    ListNode p = head;    ListNode pre = head;    if(k &lt;= 0){        System.out.println(&quot;请输入自然数k！&quot;);        //-1代表非正常退出        System.exit(-1);    }    if(head == null) {        System.out.println(&quot;链表不能为空！&quot;);        System.exit(-1);    }    while(counter != null){        len++;        counter = counter.next;    }    if(k &gt; len){        System.out.println(&quot;k值大于了链表长度！&quot;);        System.exit(-1);    }    //先走k步    while (i &lt; k){        pre = pre.next;        i++;    }    while (pre != null){        p = p.next;        pre = pre.next;    }    return p;    }    public static void main(String[] args){    Link link = new Link();    link.add(1);    link.add(2);    link.add(3);    link.print();    ListNode node = link.FindKthToTail(link.head,4);    node.next = null;    node.printNode();    }    }</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;求链表中的倒数第k个结点？&quot;&gt;&lt;a href=&quot;#求链表中的倒数第k个结点？&quot; class=&quot;headerlink&quot; title=&quot;求链表中的倒数第k个结点？&quot;&gt;&lt;/a&gt;求链表中的倒数第k个结点？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class Link 
-      
-    
-    </summary>
-    
-      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
     
     
   </entry>
