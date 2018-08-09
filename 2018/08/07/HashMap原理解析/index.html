@@ -81,14 +81,19 @@
 
 
 
+<meta name="description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark完全分布式集群的搭建">
-<meta property="og:url" content="http://www.xuchunfa.cn/2018/07/03/Spark/index.html">
+<meta property="og:title" content="HashMap原理解析">
+<meta property="og:url" content="http://www.xuchunfa.cn/2018/08/07/HashMap原理解析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
+<meta property="og:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T03:54:08.721Z">
+<meta property="og:image" content="https://i.imgur.com/8h4npik.png">
+<meta property="og:updated_time" content="2018-08-09T05:41:40.512Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark完全分布式集群的搭建">
+<meta name="twitter:title" content="HashMap原理解析">
+<meta name="twitter:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
+<meta name="twitter:image" content="https://i.imgur.com/8h4npik.png">
 
 
 
@@ -118,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://www.xuchunfa.cn/2018/07/03/Spark/"/>
+  <link rel="canonical" href="http://www.xuchunfa.cn/2018/08/07/HashMap原理解析/"/>
 
 
 
 
 
-  <title>Spark完全分布式集群的搭建 | Flying in the ocean of knowledge</title>
+  <title>HashMap原理解析 | Flying in the ocean of knowledge</title>
   
 
 
@@ -286,7 +291,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/03/Spark/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/07/HashMap原理解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -303,7 +308,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spark完全分布式集群的搭建</h1>
+          <h1 class="post-title" itemprop="name headline">HashMap原理解析</h1>
         
 
         <div class="post-meta">
@@ -315,8 +320,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T11:49:49+08:00">
-                2018-07-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T16:01:32+08:00">
+                2018-08-07
               </time>
             
 
@@ -338,8 +343,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index">
-                    <span itemprop="name">Spark</span>
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
                   </a>
                 </span>
 
@@ -356,8 +361,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/03/Spark/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/07/03/Spark/" itemprop="commentsCount"></span>
+                <a href="/2018/08/07/HashMap原理解析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/07/HashMap原理解析/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -365,7 +370,7 @@
 
           
           
-             <span id="/2018/07/03/Spark/" class="leancloud_visitors" data-flag-title="Spark完全分布式集群的搭建">
+             <span id="/2018/08/07/HashMap原理解析/" class="leancloud_visitors" data-flag-title="HashMap原理解析">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -396,7 +401,83 @@
       
 
       
-        
+        <h4 id="哈希表的长度为什么要为2-n"><a href="#哈希表的长度为什么要为2-n" class="headerlink" title="哈希表的长度为什么要为2^n?"></a>哈希表的长度为什么要为2^n?</h4><pre><code>因为当哈希表的长度为2^n次方时，hash &amp; (length-1) == hash % length
+</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next)
+
+{e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))}//键值包括int和String类型
+</code></pre><h4 id="HashMap怎么处理key为null元素"><a href="#HashMap怎么处理key为null元素" class="headerlink" title="HashMap怎么处理key为null元素"></a>HashMap怎么处理key为null元素</h4><pre><code>所有key为null的元素放在了table[0]的桶里面了。
+private V putForNullKey(V value) {
+    for (Entry&lt;K,V&gt; e = table[0]; e != null; e = e.next) {
+        if (e.key == null) {
+            V oldValue = e.value;
+            e.value = value;
+            e.recordAccess(this);
+            return oldValue;
+        }
+    }
+    modCount++;
+    addEntry(0, null, value, 0);
+    return null;
+}
+</code></pre><h4 id="HashTable和HashMap的区别"><a href="#HashTable和HashMap的区别" class="headerlink" title="HashTable和HashMap的区别"></a>HashTable和HashMap的区别</h4><pre><code>1.前者线程安全的,但是效率低。
+
+2.前者的键和值都不允许为空，而后者的key和value都允许为空。
+</code></pre><blockquote>
+<p>JDK源码注释总结</p>
+</blockquote>
+<p>1.HashMap允许键和值为空，而且是不同步的，非线程安全的，而HashTable不允许键值为空。</p>
+<p>2.HashMap的两个重要参数：</p>
+<ul>
+<li><p>DEFAULT_INITIAL_CAPACITY:默认的初始容量。默认值16。</p>
+</li>
+<li><p>DEFAULT_LOAD_FACTOR:负载因子，用来衡量哈希表满的程度。默认值0.75。</p>
+</li>
+<li><p>threshold:存放元素的阈值。threshold = capacity * load factor.当key-value对的数量大于threshold，将调用resize()方法。</p>
+</li>
+</ul>
+<p>其他参数：</p>
+<ul>
+<li><p>MAXIMUM_CAPACITY：最大容量。为2^30.</p>
+</li>
+<li><p>TREEIFY_THRESHOLD:链表转化成红黑树的临界值。默认值为8。</p>
+</li>
+<li><p>UNTREEIFY_THRESHOLD：当执行resize操作时，当桶中bin的数量少于UNTREEIFY_THRESHOLD时使用链表来代替树。默认值是6。</p>
+</li>
+<li><p>MIN_TREEIFY_CAPACITY：当桶中的bin被树化时最小的hash表容量。默认值64.</p>
+</li>
+</ul>
+<p><strong>3.把Map元素哈希到桶的索引方法</strong></p>
+<p>1.将key.hashcode() 与 哈希值的高16位作异或运算。</p>
+<pre><code>(key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);
+</code></pre><p>2.将1步得到的值进行取模运算(取模哈希桶的长度，长度为2^n)，而方法采用的是高效的与运算。咋证明的呢？？？</p>
+<pre><code>i = (table.length - 1) &amp; hash
+</code></pre><p>3.jdk1.8中的rehash的理解。</p>
+<p>在确定元素在新数组的下标时，我们只需要检测元素的hash值与oldCap作与操作的结果是否为0：</p>
+<p>为0，那么下标还是原来的下标。</p>
+<p>为1，那么下标等于原来下标加上旧数组长度。</p>
+<pre><code>为0的情况由loHead和loTail这组指针维护。
+
+为1的情况由hiHead和hiTail这组指针维护。
+</code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p>
+<p><strong>4.JDK1.8以下hashMap线程不安全的原因？</strong></p>
+<p>源码：</p>
+<pre><code>void transfer(Entry[] newTable, boolean rehash) {  
+    int newCapacity = newTable.length;  
+    for (Entry&lt;K,V&gt; e : table) {  
+        while(null != e) {  
+            Entry&lt;K,V&gt; next = e.next;           
+            if (rehash) {  
+                e.hash = null == e.key ? 0 : hash(e.key);  
+            }  
+            int i = indexFor(e.hash, newCapacity);   
+            e.next = newTable[i];  
+            newTable[i] = e;  
+            e = next;  
+        } 
+    }  
+}
+</code></pre><p>在进行哈希表扩容的时候，如果是多线程的话，则会因为transfer()(采用的头插法)原因，会出现循环链表的情况。</p>
+
       
     </div>
     
@@ -420,8 +501,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/03/test1/" rel="next" title="Hadoop完全分布式集群的搭建">
-                <i class="fa fa-chevron-left"></i> Hadoop完全分布式集群的搭建
+              <a href="/2018/08/07/二进制中1的个数/" rel="next" title="二进制中1的个数">
+                <i class="fa fa-chevron-left"></i> 二进制中1的个数
               </a>
             
           </div>
@@ -430,8 +511,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/04/Github/" rel="prev" title="Github常用命令总结">
-                Github常用命令总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/08/ConcurrentHashMap的理解/" rel="prev" title="ConcurrentHashMap的理解">
+                ConcurrentHashMap的理解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -491,8 +572,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -579,6 +669,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表的长度为什么要为2-n"><span class="nav-number">1.</span> <span class="nav-text">哈希表的长度为什么要为2^n?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找到哈希表中元素的条件？"><span class="nav-number">2.</span> <span class="nav-text">查找到哈希表中元素的条件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap怎么处理key为null元素"><span class="nav-number">3.</span> <span class="nav-text">HashMap怎么处理key为null元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashTable和HashMap的区别"><span class="nav-number">4.</span> <span class="nav-text">HashTable和HashMap的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

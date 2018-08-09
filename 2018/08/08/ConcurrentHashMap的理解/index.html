@@ -81,14 +81,17 @@
 
 
 
+<meta name="description" content="JDK1.7源码的参数  参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.segmentMask:默认值15。   4.segmentShift:默认值28。  初始化操作   1.Segment[i] 为每个段桶的数目(必须为2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark完全分布式集群的搭建">
-<meta property="og:url" content="http://www.xuchunfa.cn/2018/07/03/Spark/index.html">
+<meta property="og:title" content="ConcurrentHashMap的理解">
+<meta property="og:url" content="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
+<meta property="og:description" content="JDK1.7源码的参数  参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.segmentMask:默认值15。   4.segmentShift:默认值28。  初始化操作   1.Segment[i] 为每个段桶的数目(必须为2">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T03:54:08.721Z">
+<meta property="og:updated_time" content="2018-08-09T05:51:20.901Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark完全分布式集群的搭建">
+<meta name="twitter:title" content="ConcurrentHashMap的理解">
+<meta name="twitter:description" content="JDK1.7源码的参数  参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.segmentMask:默认值15。   4.segmentShift:默认值28。  初始化操作   1.Segment[i] 为每个段桶的数目(必须为2">
 
 
 
@@ -118,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://www.xuchunfa.cn/2018/07/03/Spark/"/>
+  <link rel="canonical" href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/"/>
 
 
 
 
 
-  <title>Spark完全分布式集群的搭建 | Flying in the ocean of knowledge</title>
+  <title>ConcurrentHashMap的理解 | Flying in the ocean of knowledge</title>
   
 
 
@@ -286,7 +289,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/03/Spark/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -303,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spark完全分布式集群的搭建</h1>
+          <h1 class="post-title" itemprop="name headline">ConcurrentHashMap的理解</h1>
         
 
         <div class="post-meta">
@@ -315,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T11:49:49+08:00">
-                2018-07-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T19:47:32+08:00">
+                2018-08-08
               </time>
             
 
@@ -338,8 +341,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index">
-                    <span itemprop="name">Spark</span>
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
                   </a>
                 </span>
 
@@ -356,8 +359,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/03/Spark/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/07/03/Spark/" itemprop="commentsCount"></span>
+                <a href="/2018/08/08/ConcurrentHashMap的理解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/08/ConcurrentHashMap的理解/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -365,7 +368,7 @@
 
           
           
-             <span id="/2018/07/03/Spark/" class="leancloud_visitors" data-flag-title="Spark完全分布式集群的搭建">
+             <span id="/2018/08/08/ConcurrentHashMap的理解/" class="leancloud_visitors" data-flag-title="ConcurrentHashMap的理解">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -396,7 +399,39 @@
       
 
       
-        
+        <p><strong>JDK1.7源码的参数</strong></p>
+<ul>
+<li><p>参数</p>
+<p>  1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。</p>
+<p>  2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536</p>
+<p>  3.segmentMask:默认值15。</p>
+<p>  4.segmentShift:默认值28。</p>
+</li>
+<li><p>初始化操作</p>
+<p>  1.Segment[i] 为每个段桶的数目(必须为2^n)，默认值为2，负载因子是 0.75，得出初始阈值为 1.5，也就是以后插入第一个元素不会触发扩容，插入第二个会进行第一次扩容。</p>
+<p>  2.</p>
+</li>
+<li><p>定位Segment的散列算法</p>
+<p>  1.(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask：即让hash值的高4位与掩码做与运算。</p>
+</li>
+<li><p>定位HashEntry的散列算法</p>
+<p>  int index = (tab.length - 1) &amp; hash;</p>
+</li>
+</ul>
+<ul>
+<li>Put操作流程</li>
+</ul>
+<p>1.定位到Segment</p>
+<p>2.初始化segment的某一段，ensureSegment(int k)。</p>
+<p>3.获取锁，scanAndLockForPut(key, hash, value);</p>
+<p>5.如果需要的话，进行扩容。segment数组是不能扩容的，扩容的对象是HashEntry数组，该方法不需要考虑并发的，因为此时segment分段锁被独占的。</p>
+<blockquote>
+<p>Segment&lt;K,V&gt;的理解</p>
+</blockquote>
+<p>1.HashEntry&lt;K,V&gt;[] table：每个segment有一个HashEntry数组。</p>
+<p>2.count：</p>
+<p>3.HashEntry&lt;K,V&gt;：一个四元组，next被声明成final,所以每次插入元素都只能头插。node&lt;K,V&gt;的next域呢？</p>
+
       
     </div>
     
@@ -420,8 +455,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/03/test1/" rel="next" title="Hadoop完全分布式集群的搭建">
-                <i class="fa fa-chevron-left"></i> Hadoop完全分布式集群的搭建
+              <a href="/2018/08/07/HashMap原理解析/" rel="next" title="HashMap原理解析">
+                <i class="fa fa-chevron-left"></i> HashMap原理解析
               </a>
             
           </div>
@@ -429,10 +464,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/04/Github/" rel="prev" title="Github常用命令总结">
-                Github常用命令总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
