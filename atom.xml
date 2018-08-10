@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-09T05:51:20.901Z</updated>
+  <updated>2018-08-10T12:38:59.117Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>背包问题</title>
+    <link href="http://www.xuchunfa.cn/2018/08/10/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/"/>
+    <id>http://www.xuchunfa.cn/2018/08/10/背包问题/</id>
+    <published>2018-08-10T08:06:29.000Z</published>
+    <updated>2018-08-10T12:38:59.117Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="http://incdn1.b0.upaiyun.com/2014/09/79f53699ae233c86bd329783ace0a404.png" alt=""></p><p>例如：</p><p>int[] v = {4,2,10,1,2}</p><p>int[] w = {12,1,4,1,2}</p><p>最大价值为：15kg</p><p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p><p>v[i]:第i个物体的价值。</p><p>w[i]:第i个物体的重量。</p><p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p><p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p><blockquote><p>动态规划</p></blockquote><p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p><pre><code>public class ThiefProblem {static int max(int a, int b) { return (a &gt; b)? a : b; }//基于递归的解法static int knapSack(int W, int wt[], int val[], int n){    if (n == 0 || W == 0)        return 0;    // If weight of the nth item is more than Knapsack capacity W, then    // this item cannot be included in the optimal solution    if (wt[n-1] &gt; W)        return knapSack(W, wt, val, n-1);        // Return the maximum of two cases:        // (1) nth item included        // (2) not included    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),            knapSack(W, wt, val, n-1)    );}//基于动态规划的解法static int maxValue(int W, int wt[], int val[], int n){   int[][] itemToValue = new int[n+1][W+1];   for(int i = 0;i&lt;W+1;i++){       itemToValue[0][i] = 0;   }   for(int j = 0;j&lt;n+1;j++){       itemToValue[j][0] = 0;   }   for(int i = 1;i&lt;=n;i++){        for(int j = 1;j&lt;=W;j++){            int weightPlus = j - wt[i-1];            if(weightPlus &lt; 0){                itemToValue[i][j] = itemToValue[i-1][j];            }else {                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);            }        }   }   return itemToValue[n][W];}public static void main(String[] args){    int[] value = {6,3,5,4,6};    int[] weight = {2,3,6,5,7};    int maxWeight = 10;    int n = value.length;    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;解背包问题？&quot;&gt;&lt;a href=&quot;#解背包问题？&quot; class=&quot;headerlink&quot; title=&quot;解背包问题？&quot;&gt;&lt;/a&gt;解背包问题？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;http://incdn1.b0.upaiyun.com/2014/09/79f5369
+      
+    
+    </summary>
+    
+      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>CAS的理解</title>
+    <link href="http://www.xuchunfa.cn/2018/08/09/CAS%E7%9A%84%E7%90%86%E8%A7%A3/"/>
+    <id>http://www.xuchunfa.cn/2018/08/09/CAS的理解/</id>
+    <published>2018-08-09T08:01:17.000Z</published>
+    <updated>2018-08-09T08:27:18.059Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>原子操作类</p></blockquote><ol><li>原子更新基本类型</li><li>原子更新数组类型</li><li>原子更新引用</li><li>原子更新属性</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;原子操作类&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;原子更新基本类型&lt;/li&gt;
+&lt;li&gt;原子更新数组类型&lt;/li&gt;
+&lt;li&gt;原子更新引用&lt;/li&gt;
+&lt;li&gt;原子更新属性&lt;/li&gt;
+&lt;/ol&gt;
+
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>ConcurrentHashMap的理解</title>
@@ -462,54 +517,6 @@ public sta
     </summary>
     
       <category term="策略类" scheme="http://www.xuchunfa.cn/categories/%E7%AD%96%E7%95%A5%E7%B1%BB/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>栈和队列</title>
-    <link href="http://www.xuchunfa.cn/2018/07/27/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/"/>
-    <id>http://www.xuchunfa.cn/2018/07/27/栈和队列/</id>
-    <published>2018-07-27T11:39:06.000Z</published>
-    <updated>2018-07-27T11:43:19.234Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="两个栈实现队列？"><a href="#两个栈实现队列？" class="headerlink" title="两个栈实现队列？"></a>两个栈实现队列？</h4><pre><code>public class StackToQueue&lt;T&gt; {private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();public void appendTail(T element){    stack1.push(element);}public T deleteHead(){    if(stack2.size() &lt;= 0){        while(!stack1.empty()){            T element = stack1.pop();            stack2.push(element);        }    }    //说明stack1 也没元素了    if(stack2.isEmpty()){        throw new RuntimeException(&quot;队列为空&quot;);    }    T head = stack2.pop();    return head;}public static void main(String[] args){    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();    queue.appendTail(1);    queue.appendTail(2);    queue.appendTail(3);    Integer a = queue.deleteHead();    queue.appendTail(4);    Integer b = queue.deleteHead();    System.out.println(b);}}</code></pre><h4 id="两个队列实现栈？"><a href="#两个队列实现栈？" class="headerlink" title="两个队列实现栈？"></a>两个队列实现栈？</h4><pre><code>public class StackToQueue&lt;T&gt; {private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();public void appendTail(T element){    stack1.push(element);}public T deleteHead(){    if(stack2.size() &lt;= 0){        while(!stack1.empty()){            T element = stack1.pop();            stack2.push(element);        }    }    //说明stack1 也没元素了    if(stack2.isEmpty()){        throw new RuntimeException(&quot;队列为空&quot;);    }    T head = stack2.pop();    return head;}public static void main(String[] args){    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();    queue.appendTail(1);    queue.appendTail(2);    queue.appendTail(3);    Integer a = queue.deleteHead();    queue.appendTail(4);    Integer b = queue.deleteHead();    System.out.println(b);}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;两个栈实现队列？&quot;&gt;&lt;a href=&quot;#两个栈实现队列？&quot; class=&quot;headerlink&quot; title=&quot;两个栈实现队列？&quot;&gt;&lt;/a&gt;两个栈实现队列？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class StackToQueue&amp;lt;T&amp;gt; {
-
-
-      
-    
-    </summary>
-    
-      <category term="栈和队列" scheme="http://www.xuchunfa.cn/categories/%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>二叉树的下一个结点</title>
-    <link href="http://www.xuchunfa.cn/2018/07/24/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%8B%E4%B8%80%E4%B8%AA%E7%BB%93%E7%82%B9/"/>
-    <id>http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/</id>
-    <published>2018-07-24T14:16:23.000Z</published>
-    <updated>2018-07-24T14:19:19.302Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public class ParentBinaryTree {ParentBinaryTreeNode root;public void createTree(ParentBinaryTreeNode node,int data){    if(this.root == null){        root = new ParentBinaryTreeNode(data);    }else {        //二叉查找树        if(data &lt; node.data){            if(node.left == null){                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);                node.left = temp;                temp.parent = node;            }else {                createTree(node.left,data);            }        }else {            if(node.right == null){                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);                node.right = temp;                temp.parent = node;            }else {                createTree(node.right,data);            }        }    }}//中序遍历,递归实现public void inOrder(ParentBinaryTreeNode node){    if(node == null)        return;    inOrder(node.left);    System.out.print(node.data + &quot; &quot;);    inOrder(node.right);}//找出中序遍历中的下一个点public ParentBinaryTreeNode searchNext(ParentBinaryTreeNode node,int data){    if(node == null){        throw new RuntimeException(&quot;空树&quot;);    }    ParentBinaryTreeNode dataNode = searchData(node,data);    ParentBinaryTreeNode next = null;    if(dataNode == null){        throw new RuntimeException(&quot;不存在该值&quot;);    }else{        //有右子树        if(dataNode.right != null){            ParentBinaryTreeNode temp = dataNode.right;            while (temp.left != null){                temp = temp.left;            }            next = temp;        }else if(dataNode.parent != null){//等于null说明是根节点            ParentBinaryTreeNode current =  dataNode;            ParentBinaryTreeNode parent = current.parent;            while (parent != null &amp;&amp; parent.right == current){                current = parent;                parent = parent.parent;            }            next = parent;//parent有可能为null        }    }    return next;}private ParentBinaryTreeNode searchData(ParentBinaryTreeNode node, int data) {    if(node == null){       return null;    }    if(node.data == data){        return node;    }else if(searchData(node.left,data) != null){        return searchData(node.left,data);    }else        return searchData(node.right,data);}public static void main(String[] args){    ParentBinaryTree tree = new ParentBinaryTree();    //for(int i = 2;i&lt;10;i++){    //    tree.createTree(tree.root,i);    //}    tree.createTree(tree.root,9);    tree.createTree(tree.root,5);    tree.createTree(tree.root,3);    tree.createTree(tree.root,7);    tree.createTree(tree.root,6);    tree.createTree(tree.root,8);    tree.createTree(tree.root,12);    tree.createTree(tree.root,10);    tree.createTree(tree.root,14);    tree.inOrder(tree.root);    System.out.println();    ParentBinaryTreeNode node = tree.searchNext(tree.root,5);    if(node != null){        System.out.println(node.data);    }else {        System.out.println(&quot;最后一个结点&quot;);    }}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;给定一个结点，找出中序遍历序列的下一个结点？&quot;&gt;&lt;a href=&quot;#给定一个结点，找出中序遍历序列的下一个结点？&quot; class=&quot;headerlink&quot; title=&quot;给定一个结点，找出中序遍历序列的下一个结点？&quot;&gt;&lt;/a&gt;给定一个结点，找出中序遍历序列的下一个结
-      
-    
-    </summary>
-    
-      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
     
     
   </entry>
