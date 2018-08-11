@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="移位实现乘除运算  除2 = 右移1位 乘2 = 左移1位  除4 = 右移2位 乘4 = 左移2位  除8 = 右移3位 乘8 = 左移3位     ：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。     要注意带符号类型的左右移位  将负值向右移位可生成原始值一半的值（向下舍入）。 例如，-253（二进制 11111111 00000011）向右移动 1 位会生成 -1">
+<meta name="description" content="移位实现乘除运算  除2 = 右移1位 乘2 = 左移1位  除4 = 右移2位 乘4 = 左移2位  除8 = 右移3位 乘8 = 左移3位   取余运算用位运算与来代替  A % B - A &amp;amp; (B - 1)其中满足 A&amp;gt;0 And B = 2^n 其中&amp;gt;&amp;gt;&amp;gt;表示：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。  要注意带符号类型的左右移">
 <meta property="og:type" content="article">
 <meta property="og:title" content="位运算">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/06/位运算/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="移位实现乘除运算  除2 = 右移1位 乘2 = 左移1位  除4 = 右移2位 乘4 = 左移2位  除8 = 右移3位 乘8 = 左移3位     ：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。     要注意带符号类型的左右移位  将负值向右移位可生成原始值一半的值（向下舍入）。 例如，-253（二进制 11111111 00000011）向右移动 1 位会生成 -1">
+<meta property="og:description" content="移位实现乘除运算  除2 = 右移1位 乘2 = 左移1位  除4 = 右移2位 乘4 = 左移2位  除8 = 右移3位 乘8 = 左移3位   取余运算用位运算与来代替  A % B - A &amp;amp; (B - 1)其中满足 A&amp;gt;0 And B = 2^n 其中&amp;gt;&amp;gt;&amp;gt;表示：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。  要注意带符号类型的左右移">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-07T11:40:47.884Z">
+<meta property="og:updated_time" content="2018-08-11T06:16:00.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="位运算">
-<meta name="twitter:description" content="移位实现乘除运算  除2 = 右移1位 乘2 = 左移1位  除4 = 右移2位 乘4 = 左移2位  除8 = 右移3位 乘8 = 左移3位     ：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。     要注意带符号类型的左右移位  将负值向右移位可生成原始值一半的值（向下舍入）。 例如，-253（二进制 11111111 00000011）向右移动 1 位会生成 -1">
+<meta name="twitter:description" content="移位实现乘除运算  除2 = 右移1位 乘2 = 左移1位  除4 = 右移2位 乘4 = 左移2位  除8 = 右移3位 乘8 = 左移3位   取余运算用位运算与来代替  A % B - A &amp;amp; (B - 1)其中满足 A&amp;gt;0 And B = 2^n 其中&amp;gt;&amp;gt;&amp;gt;表示：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。  要注意带符号类型的左右移">
 
 
 
@@ -406,12 +406,10 @@
 <p>除4 = 右移2位 乘4 = 左移2位 </p>
 <p>除8 = 右移3位 乘8 = 左移3位 </p>
 <blockquote>
-<blockquote>
-<blockquote>
-<p>：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。</p>
+<p>取余运算用位运算与来代替</p>
 </blockquote>
-</blockquote>
-</blockquote>
+<p>A % B - A &amp; (B - 1)其中满足 A&gt;0 And B = 2^n</p>
+<p><strong>其中&gt;&gt;&gt;表示：</strong>无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。</p>
 <blockquote>
 <p>要注意带符号类型的左右移位</p>
 </blockquote>
@@ -538,7 +536,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

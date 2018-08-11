@@ -286,6 +286,462 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/排序算法比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/排序算法比较/" itemprop="url">排序算法比较</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T16:13:19+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/28/排序算法比较/" class="leancloud_visitors" data-flag-title="排序算法比较">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p>
+<p><strong>学习过程中一点点积累补充</strong></p>
+<h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
+<ul>
+<li><p>快排分析</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p>
+<p>  时间复杂度：nlogn</p>
+<p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p>
+<p>  时间复杂度：n^2</p>
+<p>  3.一般情况下：略</p>
+<p>  时间复杂度：nlogn</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p>
+<p>  空间复杂度：O(logn)</p>
+<p>  2.最差情况：略</p>
+<p>  空间复杂度：O(n)</p>
+<p>  <strong>补充：</strong>快排是不稳定的。</p>
+</li>
+<li><p>直接插入排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  平均复杂度:O(n^2)</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  空间复杂度：O(1)</p>
+<p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p>
+</li>
+<li><p>冒泡排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)。</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>简单选择排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>堆排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  分析：</p>
+<p>  初始化堆的过程时间：O(n)</p>
+<p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p>
+<p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>归并排序</p>
+<p>  总时间 = 划分时间 + 合并时间</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  最好 = 最坏 = 平均 = O(nlogn)</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  O(n) = O(logn) + O(n)</p>
+</li>
+<li><p>希尔排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  最坏：O(n^2)</p>
+<p>  最好：O(n)</p>
+<p>  平均：O(n^1.5)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+</ul>
+<p>-计数排序</p>
+<pre><code>时间复杂度： 
+
+O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组
+
+       = O(n) + O(k) + O(n)
+
+空间复杂度：O(n+k)
+</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
+<p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/斐波拉契数列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/27/斐波拉契数列/" itemprop="url">斐波拉契数列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T19:43:48+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/27/斐波拉契数列/" class="leancloud_visitors" data-flag-title="斐波拉契数列">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="斐波拉契数列？"><a href="#斐波拉契数列？" class="headerlink" title="斐波拉契数列？"></a>斐波拉契数列？</h4><pre><code>public class Fibonacci {
+
+//效率差
+public static long fibonacci1(int n){
+
+    if(n == 0)
+        return 0;
+
+    if(n == 1)
+        return 1;
+
+    return fibonacci1(n-1) + fibonacci1(n-2);
+
+}
+
+public static long fibonacci(int n){
+
+    if(n == 0)
+        return 0;
+
+    if(n == 1)
+        return 1;
+
+    long one = 0;
+    long two = 1;
+    long three = 0;
+    for(int i = 2;i&lt;=n;i++){
+        three = one + two;
+        one = two;
+        two = three;
+    }
+
+    return three;
+}
+
+public static void main(String[] args){
+    System.out.println(Fibonacci.fibonacci1(50));
+}
+}
+</code></pre><h4 id="青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><a href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？" class="headerlink" title="青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？"></a>青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</h4><pre><code>public class FrogStep {
+
+public static long solution(int n) {
+
+    if (n == 0) {
+        throw new RuntimeException(&quot;输入自然数&quot;);
+    }
+
+    if (n == 1) {
+        return 1;
+    }
+
+    if (n == 2) {
+        return 2;
+    }
+
+    long one = 1;
+    long two = 2;
+    long three = 0;
+    for (int i = 3; i &lt;= n; i++) {
+        three = one + two;
+        one = two;
+        two = three;
+    }
+
+    return three;
+}
+
+public static void main(String[] args){
+    System.out.println(FrogStep.solution(100));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/栈和队列/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2129,494 +2585,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/22/链表中倒数第k个结点/" itemprop="url">链表中倒数第k个结点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T14:29:00+08:00">
-                2018-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/链表/" itemprop="url" rel="index">
-                    <span itemprop="name">链表</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/22/链表中倒数第k个结点/" class="leancloud_visitors" data-flag-title="链表中倒数第k个结点">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {
-
-private ListNode head;
-
-class ListNode{
-
-    private int data;
-
-    ListNode next;
-
-    public ListNode(int data) {
-        this.data = data;
-        this.next = null;
-    }
-
-    public void addNode(ListNode newNode){
-
-        //相当于尾插法
-        if(this.next == null){
-            this.next = newNode;
-        }else {
-            this.next.addNode(newNode);
-        }
-    }
-
-    public void printNode(){
-        System.out.print(this.data + &quot;--&gt;&quot;);
-        if(this.next != null){
-            this.next.printNode();
-        }
-        }
-    }
-
-    //添加链表节点
-    public void add(int data){
-    ListNode node = new ListNode(data);
-        if(this.head == null){
-            this.head = node;
-        }else {
-            this.head.addNode(node);
-        }
-    }
-
-    //打印链表节点
-        public void print(){
-    if(this.head == null){
-        System.out.println(&quot;链表为空&quot;);
-    }else {
-        this.head.printNode();
-        System.out.println();
-    }
-    }
-
-    //链表中的倒数第 K 个结点
-    public ListNode FindKthToTail(ListNode head,int k){
-    int len = 0;
-    int i = 0;
-    ListNode counter = head;
-    ListNode p = head;
-    ListNode pre = head;
-
-    if(k &lt;= 0){
-        System.out.println(&quot;请输入自然数k！&quot;);
-        //-1代表非正常退出
-        System.exit(-1);
-    }
-
-    if(head == null) {
-        System.out.println(&quot;链表不能为空！&quot;);
-        System.exit(-1);
-    }
-
-    while(counter != null){
-        len++;
-        counter = counter.next;
-    }
-
-    if(k &gt; len){
-        System.out.println(&quot;k值大于了链表长度！&quot;);
-        System.exit(-1);
-    }
-
-    //先走k步
-    while (i &lt; k){
-        pre = pre.next;
-        i++;
-    }
-
-    while (pre != null){
-        p = p.next;
-        pre = pre.next;
-    }
-
-    return p;
-    }
-
-    public static void main(String[] args){
-    Link link = new Link();
-    link.add(1);
-    link.add(2);
-    link.add(3);
-    link.print();
-
-    ListNode node = link.FindKthToTail(link.head,4);
-    node.next = null;
-    node.printNode();
-    }
-    }
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/22/合并两个有序数组/" itemprop="url">合并两个有序数组</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T13:54:01+08:00">
-                2018-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/22/合并两个有序数组/" class="leancloud_visitors" data-flag-title="合并两个有序数组">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>两个有序数组A1和A2，把A2的所有数字插入到A1？</li>
-</ul>
-<p><strong>核心思想：</strong>从数组末尾开始比较，指针依次往前挪。</p>
-<pre><code>//时间复杂度(O(n)) 空间复杂度(O(n))
-public static int[] merge(int[] a,int[] b){
-
-    if(a==null || b==null){
-        System.out.println(&quot;输入两个数组&quot;);
-    }
-
-    if(a.length == 0)
-        return b;
-
-    if(b.length == 0)
-        return a;
-
-    int len1 = a.length;
-    int len2 = b.length;
-
-    int[] c = new int[len1+len2];
-    int i = len1 - 1;
-    int j = len2 - 1;
-
-    while(i &gt;= 0 &amp;&amp; j &gt;= 0){
-        if(a[i] &gt; b[j]){
-            c[i+j+1] = a[i];
-            i--;
-        }else{
-            c[i+j+1] = b[j];
-            j--;
-        }
-    }
-
-    while (i &gt;= 0){
-        c[i+j+1] = a[i];
-        i--;
-    }
-
-    while(j &gt;= 0){
-        c[i+j+1] = b[j];
-        j--;
-    }
-
-    return c;
-}
-
-
-//时间复杂度(O(n)) 空间复杂度(O(1)) 直接在第一个数组上操作
-public static void merge1(int[] a,int[] b){
-
-    if(a==null || b==null){
-        System.out.println(&quot;输入两个数组&quot;);
-    }
-
-    int len1 = a.length;
-    int len2 = b.length;
-
-    int i = len1 - len2 -1;
-    int j = len2 - 1;
-
-    while(i &gt;= 0 &amp;&amp; j &gt;= 0){
-        if(a[i] &gt; b[j]){
-            a[i+j+1] = a[i];
-            i--;
-        }else{
-            a[i+j+1] = b[j];
-            j--;
-        }
-    }
-
-    while(j &gt;= 0){
-        a[i+j+1] = b[j];
-        j--;
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2671,7 +2639,7 @@ public static void merge1(int[] a,int[] b){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

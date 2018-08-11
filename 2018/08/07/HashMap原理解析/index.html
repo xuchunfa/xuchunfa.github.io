@@ -89,7 +89,7 @@
 <meta property="og:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/8h4npik.png">
-<meta property="og:updated_time" content="2018-08-09T05:41:40.512Z">
+<meta property="og:updated_time" content="2018-08-11T09:00:19.525Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap原理解析">
 <meta name="twitter:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
@@ -423,7 +423,7 @@ private V putForNullKey(V value) {
 
 2.前者的键和值都不允许为空，而后者的key和value都允许为空。
 </code></pre><blockquote>
-<p>JDK源码注释总结</p>
+<p>JDK1.8的源码注释总结</p>
 </blockquote>
 <p>1.HashMap允许键和值为空，而且是不同步的，非线程安全的，而HashTable不允许键值为空。</p>
 <p>2.HashMap的两个重要参数：</p>
@@ -459,7 +459,32 @@ private V putForNullKey(V value) {
 
 为1的情况由hiHead和hiTail这组指针维护。
 </code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p>
-<p><strong>4.JDK1.8以下hashMap线程不安全的原因？</strong></p>
+<h4 id="源码中方法的理解？"><a href="#源码中方法的理解？" class="headerlink" title="源码中方法的理解？"></a>源码中方法的理解？</h4><p>1.get(Object key)方法：</p>
+<pre><code>public V get(Object key) {
+    Node&lt;K,V&gt; e;
+    return (e = getNode(hash(key), key)) == null ? null : e.value;
+}
+
+final Node&lt;K,V&gt; getNode(int hash, Object key) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;
+    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
+        (first = tab[(n - 1) &amp; hash]) != null) {
+        if (first.hash == hash &amp;&amp; // always check first node
+            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))//第一个结点就是目标结点，其中key有可能为空
+            return first;
+        if ((e = first.next) != null) {//第一个结点排除，继续遍历下一个结点
+            if (first instanceof TreeNode)//红黑树的查找结点方法
+                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);//从树的根节点开始查找
+            do {//从链表的第二个结点开始遍历
+                if (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                    return e;
+            } while ((e = e.next) != null);
+        }
+    }
+    return null;//没找到
+}
+</code></pre><p><strong>4.JDK1.8以下hashMap线程不安全的原因？</strong></p>
 <p>源码：</p>
 <pre><code>void transfer(Entry[] newTable, boolean rehash) {  
     int newCapacity = newTable.length;  
@@ -601,7 +626,7 @@ private V putForNullKey(V value) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -679,7 +704,7 @@ private V putForNullKey(V value) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表的长度为什么要为2-n"><span class="nav-number">1.</span> <span class="nav-text">哈希表的长度为什么要为2^n?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找到哈希表中元素的条件？"><span class="nav-number">2.</span> <span class="nav-text">查找到哈希表中元素的条件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap怎么处理key为null元素"><span class="nav-number">3.</span> <span class="nav-text">HashMap怎么处理key为null元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashTable和HashMap的区别"><span class="nav-number">4.</span> <span class="nav-text">HashTable和HashMap的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表的长度为什么要为2-n"><span class="nav-number">1.</span> <span class="nav-text">哈希表的长度为什么要为2^n?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找到哈希表中元素的条件？"><span class="nav-number">2.</span> <span class="nav-text">查找到哈希表中元素的条件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap怎么处理key为null元素"><span class="nav-number">3.</span> <span class="nav-text">HashMap怎么处理key为null元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashTable和HashMap的区别"><span class="nav-number">4.</span> <span class="nav-text">HashTable和HashMap的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#源码中方法的理解？"><span class="nav-number">5.</span> <span class="nav-text">源码中方法的理解？</span></a></li></ol></div>
             
 
           </div>

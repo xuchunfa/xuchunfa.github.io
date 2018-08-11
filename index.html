@@ -286,6 +286,410 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/打印从1到最大的n位数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/11/打印从1到最大的n位数/" itemprop="url">打印从1到最大的n位数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T20:23:13+08:00">
+                2018-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/字符串/" itemprop="url" rel="index">
+                    <span itemprop="name">字符串</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/11/打印从1到最大的n位数/" class="leancloud_visitors" data-flag-title="打印从1到最大的n位数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="打印从1到最大的n位数？"><a href="#打印从1到最大的n位数？" class="headerlink" title="打印从1到最大的n位数？"></a>打印从1到最大的n位数？</h4><pre><code>public class Print1ToMaxOfNdigits {
+
+public static void print1ToMaxOfNdigits(int n){
+    char[] nums = new char[n+1];
+    nums[n] = &apos;\0&apos;;
+
+    for(int i = 0;i&lt;10;i++){
+        nums[0] = (char) (i + &apos;0&apos;);
+        everyBigitRecursive(nums,n,0);
+    }
+}
+
+private static void everyBigitRecursive(char[] nums, int length, int index) {
+
+    if(index == length-1){
+        printNum(nums);
+        return;
+    }
+
+    for(int i = 0;i&lt;10;i++){
+
+        //向个位递进
+        nums[index + 1] = (char) (i + &apos;0&apos;);
+        everyBigitRecursive(nums,length,index+1);
+    }
+}
+
+private static void printNum(char[] nums) {
+
+    boolean isBegin0 = true;
+
+    for(int i = 0;i &lt; nums.length;i++){
+        if(isBegin0 &amp;&amp; nums[i] != &apos;0&apos;)
+            isBegin0 = false;
+
+        if(!isBegin0){
+            System.out.print(nums[i]);
+        }
+    }
+
+    System.out.println();
+}
+
+public static void main(String[] args){
+    Print1ToMaxOfNdigits.print1ToMaxOfNdigits(10);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/指数幂运算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/11/指数幂运算/" itemprop="url">指数幂运算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T14:58:18+08:00">
+                2018-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/位运算/" itemprop="url" rel="index">
+                    <span itemprop="name">位运算</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/11/指数幂运算/" class="leancloud_visitors" data-flag-title="指数幂运算">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><pre><code>public class Pow {
+
+public static double pow(double base,int exp){
+
+    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp == 0){
+        return 0.0;
+    }
+
+    //浮点数的比较
+    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp &lt; 0){
+        throw new RuntimeException(&quot;参数不合法&quot;);
+    }
+
+    double result;
+    int absExp;
+    if(exp &lt; 0){
+        absExp = -exp;
+    }else {
+        absExp = exp;
+    }
+
+    result = calPow(base,absExp);
+    if(exp &lt; 0){
+        result = 1.0/result;
+    }
+
+    return result;
+}
+
+private static double calPow(double base, int exp) {
+
+    if(exp == 0)
+        return 1;
+
+    if(exp == 1)
+        return base;
+
+    //位移运算代替除法
+    double result = calPow(base,exp &gt;&gt; 1);
+    result *= result;
+
+    //与运算代替取余
+    if((exp &amp; 1) == 1){
+        result *= base;
+    }
+
+    return result;
+}
+
+public static void main(String[] args){
+    System.out.println(Pow.pow(0,-4));
+}
+</code></pre><p>}</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/10/背包问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -986,7 +1390,7 @@ private V putForNullKey(V value) {
 
 2.前者的键和值都不允许为空，而后者的key和value都允许为空。
 </code></pre><blockquote>
-<p>JDK源码注释总结</p>
+<p>JDK1.8的源码注释总结</p>
 </blockquote>
 <p>1.HashMap允许键和值为空，而且是不同步的，非线程安全的，而HashTable不允许键值为空。</p>
 <p>2.HashMap的两个重要参数：</p>
@@ -1022,7 +1426,32 @@ private V putForNullKey(V value) {
 
 为1的情况由hiHead和hiTail这组指针维护。
 </code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p>
-<p><strong>4.JDK1.8以下hashMap线程不安全的原因？</strong></p>
+<h4 id="源码中方法的理解？"><a href="#源码中方法的理解？" class="headerlink" title="源码中方法的理解？"></a>源码中方法的理解？</h4><p>1.get(Object key)方法：</p>
+<pre><code>public V get(Object key) {
+    Node&lt;K,V&gt; e;
+    return (e = getNode(hash(key), key)) == null ? null : e.value;
+}
+
+final Node&lt;K,V&gt; getNode(int hash, Object key) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;
+    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
+        (first = tab[(n - 1) &amp; hash]) != null) {
+        if (first.hash == hash &amp;&amp; // always check first node
+            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))//第一个结点就是目标结点，其中key有可能为空
+            return first;
+        if ((e = first.next) != null) {//第一个结点排除，继续遍历下一个结点
+            if (first instanceof TreeNode)//红黑树的查找结点方法
+                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);//从树的根节点开始查找
+            do {//从链表的第二个结点开始遍历
+                if (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                    return e;
+            } while ((e = e.next) != null);
+        }
+    }
+    return null;//没找到
+}
+</code></pre><p><strong>4.JDK1.8以下hashMap线程不安全的原因？</strong></p>
 <p>源码：</p>
 <pre><code>void transfer(Entry[] newTable, boolean rehash) {  
     int newCapacity = newTable.length;  
@@ -1385,12 +1814,10 @@ public static void main(String[] args){
 <p>除4 = 右移2位 乘4 = 左移2位 </p>
 <p>除8 = 右移3位 乘8 = 左移3位 </p>
 <blockquote>
-<blockquote>
-<blockquote>
-<p>：无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。</p>
+<p>取余运算用位运算与来代替</p>
 </blockquote>
-</blockquote>
-</blockquote>
+<p>A % B - A &amp; (B - 1)其中满足 A&gt;0 And B = 2^n</p>
+<p><strong>其中&gt;&gt;&gt;表示：</strong>无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。</p>
 <blockquote>
 <p>要注意带符号类型的左右移位</p>
 </blockquote>
@@ -1850,337 +2277,6 @@ System.out.println(MatrixPath.hasPath(a,4,1,str));
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/05/Executors详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/05/Executors详解/" itemprop="url">Executors详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-05T15:24:34+08:00">
-                2018-08-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/05/Executors详解/" class="leancloud_visitors" data-flag-title="Executors详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Excutors框架的类与接口"><a href="#Excutors框架的类与接口" class="headerlink" title="Excutors框架的类与接口"></a>Excutors框架的类与接口</h4><p><img src="https://i.imgur.com/F7UbYhu.png" alt=""></p>
-<h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p>
-<ul>
-<li><p>FixedThreadPool</p>
-</li>
-<li><p>SingleThreadPool</p>
-</li>
-<li><p>CachedThreadPool</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/04/线程池/" itemprop="url">线程池</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T20:12:47+08:00">
-                2018-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/04/线程池/" class="leancloud_visitors" data-flag-title="线程池">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
-<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
-<p>3.提高线程的可管理性。</p>
-<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
-<pre><code>public static void start(){
-    ServerSocket serverSocket = new ServerSocket(port);
-    Socket socket = null;
-    while ((socket = serverSocket.accept() != null)){
-        thread.execute(new HttpRequestHandler(socket));
-    }
-}
-分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
-</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
-<p>1.corePoolSize:线程池中线程的基本数量。</p>
-<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize</p>
-<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
-<p>4.keepAliveTime:工作线程空闲时的存活时间。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2235,7 +2331,7 @@ System.out.println(MatrixPath.hasPath(a,4,1,str));
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
