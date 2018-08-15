@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-11T12:25:19.893Z</updated>
+  <updated>2018-08-14T12:42:42.197Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -17,13 +17,92 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>java内存区域</title>
+    <link href="http://www.xuchunfa.cn/2018/08/14/java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
+    <id>http://www.xuchunfa.cn/2018/08/14/java内存区域/</id>
+    <published>2018-08-14T08:35:17.000Z</published>
+    <updated>2018-08-14T12:42:42.197Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>对象创建过程</p></blockquote><p>1.检查类是否已经加载</p><p>2.虚拟机为对象分配内存</p><p>3.将分配到的内存区域初始化</p><blockquote><p>虚拟机常见参数</p></blockquote><p>1.-Xms20M:虚拟机堆内存的最小值</p><p>2.-Xmx20M:虚拟机堆内存的最大值</p><p>3.-Xss1M:每个线程的栈的大小为1M</p><p>4.-Xmn10M:Java Heap Young区的大小为10M</p><p>5.MaxPermSize:方法区最大内存</p><p>6.-XX:PermSize=10M：虚拟机方法区内存最小值</p><p>7.-XX：MaxPermSize=100M:虚拟机方法区内存最大值</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;对象创建过程&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;1.检查类是否已经加载&lt;/p&gt;
+&lt;p&gt;2.虚拟机为对象分配内存&lt;/p&gt;
+&lt;p&gt;3.将分配到的内存区域初始化&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;虚拟机常见参数&lt;/p&gt;
+&lt;/blockquo
+      
+    
+    </summary>
+    
+      <category term="java虚拟机" scheme="http://www.xuchunfa.cn/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>红黑树</title>
+    <link href="http://www.xuchunfa.cn/2018/08/14/%E7%BA%A2%E9%BB%91%E6%A0%91/"/>
+    <id>http://www.xuchunfa.cn/2018/08/14/红黑树/</id>
+    <published>2018-08-14T06:14:00.000Z</published>
+    <updated>2018-08-14T07:39:04.394Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="红黑树的定义？"><a href="#红黑树的定义？" class="headerlink" title="红黑树的定义？"></a>红黑树的定义？</h4><p><img src="https://i.imgur.com/y7nMfe8.jpg" alt=""></p><p>红黑树的特点：</p><p> 1.每个节点不是红色就是黑色的；</p><p> 2.根节点总是黑色的；</p><p> 3.如果节点是红色的，则它的子节点必须是黑色的（反之不一定）；</p><p> 4.从根节点到叶节点或空子节点的每条路径，必须包含相同数目的黑色节点（即相同的黑色高度）。 </p><p> 5.每个叶子结点(nil)为黑色。</p><h4 id="插入结点后的红黑树调整？"><a href="#插入结点后的红黑树调整？" class="headerlink" title="插入结点后的红黑树调整？"></a>插入结点后的红黑树调整？</h4><p>分以下三种情况：</p><p>1.插入节点的父节点和其叔叔节点（祖父节点的另一个子节点）均为红色的。</p><p>插入结点4：</p><p><img src="https://i.imgur.com/Z864C7i.png" alt=""></p><p><strong>调整：</strong>将当前节点(4)的父节点(5)和叔叔节点(8)涂黑，将祖父节点(7)涂红，变成下图所示的情况。再将当前节点指向其祖父节点(7)。</p><p><img src="https://i.imgur.com/4he7MLS.png" alt=""></p><p>2.插入节点的父节点是红色，叔叔节点是黑色，且插入节点是其父节点的右子节点。</p><p>情况2的示意图为第一步操作的结果。相当于插入当前结点7.</p><p><strong>调整：</strong>将当前节点(7)的父节点(2)作为新的节点，以(2)为支点做左旋(LR)操作.</p><p><img src="https://i.imgur.com/yoP1mMb.png" alt=""></p><p>3.插入节点的父节点是红色，叔叔节点是黑色，且插入节点是其父节点的左子节点。</p><p>情况3的示意图为第二步操作的结果。相当于插入当前结点2.</p><p><strong>调整：</strong>将当前节点的父节点(7)涂黑，将祖父节点(11)涂红，在祖父节点(11)为支点做右旋操作.</p><p><img src="https://i.imgur.com/QYM4k1S.png" alt=""></p><p><strong>总结：</strong>整个完整的流程是从：变色-左旋-右旋。也可能直接从情况2或3开始。</p><p>参考文档一：<a href="https://blog.csdn.net/eson_15/article/details/51144079" target="_blank" rel="noopener">https://blog.csdn.net/eson_15/article/details/51144079</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;红黑树的定义？&quot;&gt;&lt;a href=&quot;#红黑树的定义？&quot; class=&quot;headerlink&quot; title=&quot;红黑树的定义？&quot;&gt;&lt;/a&gt;红黑树的定义？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/y7nMfe8.jpg&quot; alt=&quot;&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>平衡二叉树</title>
+    <link href="http://www.xuchunfa.cn/2018/08/13/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
+    <id>http://www.xuchunfa.cn/2018/08/13/平衡二叉树/</id>
+    <published>2018-08-13T13:16:21.000Z</published>
+    <updated>2018-08-14T06:06:51.552Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="什么是平衡二叉树（AVL树）？"><a href="#什么是平衡二叉树（AVL树）？" class="headerlink" title="什么是平衡二叉树（AVL树）？"></a>什么是平衡二叉树（AVL树）？</h4><ol><li>可以为空</li><li>任何一个结点的左子树与右子树都是平衡二叉树，并且高度之差的绝对值不超过1。简单来讲就是任意结点的左右子树的数目基本相同。</li><li>平衡二叉树是二叉查找树的优化，因为二叉查找树适用于无序数据，对于<br>有序数据插入时就是一颗斜树，遍历时的时间复杂度为O(n),已经体现不出了优势了。</li></ol><h4 id="怎么调整平衡二叉树？"><a href="#怎么调整平衡二叉树？" class="headerlink" title="怎么调整平衡二叉树？"></a>怎么调整平衡二叉树？</h4><p>举个LR旋转的例子：</p><p><img src="https://i.imgur.com/jBi58WA.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;什么是平衡二叉树（AVL树）？&quot;&gt;&lt;a href=&quot;#什么是平衡二叉树（AVL树）？&quot; class=&quot;headerlink&quot; title=&quot;什么是平衡二叉树（AVL树）？&quot;&gt;&lt;/a&gt;什么是平衡二叉树（AVL树）？&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;可以为空&lt;/li&gt;
+&lt;l
+      
+    
+    </summary>
+    
+      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>打印从1到最大的n位数</title>
     <link href="http://www.xuchunfa.cn/2018/08/11/%E6%89%93%E5%8D%B0%E4%BB%8E1%E5%88%B0%E6%9C%80%E5%A4%A7%E7%9A%84n%E4%BD%8D%E6%95%B0/"/>
     <id>http://www.xuchunfa.cn/2018/08/11/打印从1到最大的n位数/</id>
     <published>2018-08-11T12:23:13.000Z</published>
-    <updated>2018-08-11T12:25:19.893Z</updated>
+    <updated>2018-08-11T12:36:46.083Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="打印从1到最大的n位数？"><a href="#打印从1到最大的n位数？" class="headerlink" title="打印从1到最大的n位数？"></a>打印从1到最大的n位数？</h4><pre><code>public class Print1ToMaxOfNdigits {public static void print1ToMaxOfNdigits(int n){    char[] nums = new char[n+1];    nums[n] = &apos;\0&apos;;    for(int i = 0;i&lt;10;i++){        nums[0] = (char) (i + &apos;0&apos;);        everyBigitRecursive(nums,n,0);    }}private static void everyBigitRecursive(char[] nums, int length, int index) {    if(index == length-1){        printNum(nums);        return;    }    for(int i = 0;i&lt;10;i++){        //向个位递进        nums[index + 1] = (char) (i + &apos;0&apos;);        everyBigitRecursive(nums,length,index+1);    }}private static void printNum(char[] nums) {    boolean isBegin0 = true;    for(int i = 0;i &lt; nums.length;i++){        if(isBegin0 &amp;&amp; nums[i] != &apos;0&apos;)            isBegin0 = false;        if(!isBegin0){            System.out.print(nums[i]);        }    }    System.out.println();}public static void main(String[] args){    Print1ToMaxOfNdigits.print1ToMaxOfNdigits(10);}}</code></pre>]]></content>
+    <content type="html"><![CDATA[<h4 id="打印从1到最大的n位数？"><a href="#打印从1到最大的n位数？" class="headerlink" title="打印从1到最大的n位数？"></a>打印从1到最大的n位数？</h4><pre><code>public class Print1ToMaxOfNdigits {public static void print1ToMaxOfNdigits(int n){    if(n &lt;= 0){        throw new RuntimeException(&quot;参数非法&quot;);    }    char[] nums = new char[n+1];    nums[n] = &apos;\0&apos;;    for(int i = 0;i&lt;10;i++){        nums[0] = (char) (i + &apos;0&apos;);        everyBigitRecursive(nums,n,0);    }}private static void everyBigitRecursive(char[] nums, int length, int index) {    if(index == length-1){        printNum(nums);        return;    }    for(int i = 0;i&lt;10;i++){        //向个位递进        nums[index + 1] = (char) (i + &apos;0&apos;);        everyBigitRecursive(nums,length,index+1);    }}private static void printNum(char[] nums) {    boolean isBegin0 = true;    for(int i = 0;i &lt; nums.length;i++){        if(isBegin0 &amp;&amp; nums[i] != &apos;0&apos;)            isBegin0 = false;        if(!isBegin0){            System.out.print(nums[i]);        }    }    System.out.println();}public static void main(String[] args){    Print1ToMaxOfNdigits.print1ToMaxOfNdigits(10);}}</code></pre>]]></content>
     
     <summary type="html">
     
@@ -149,9 +228,9 @@
     <link href="http://www.xuchunfa.cn/2018/08/07/HashMap%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/"/>
     <id>http://www.xuchunfa.cn/2018/08/07/HashMap原理解析/</id>
     <published>2018-08-07T08:01:32.000Z</published>
-    <updated>2018-08-11T09:00:19.525Z</updated>
+    <updated>2018-08-14T05:52:51.631Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="哈希表的长度为什么要为2-n"><a href="#哈希表的长度为什么要为2-n" class="headerlink" title="哈希表的长度为什么要为2^n?"></a>哈希表的长度为什么要为2^n?</h4><pre><code>因为当哈希表的长度为2^n次方时，hash &amp; (length-1) == hash % length</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next){e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))}//键值包括int和String类型</code></pre><h4 id="HashMap怎么处理key为null元素"><a href="#HashMap怎么处理key为null元素" class="headerlink" title="HashMap怎么处理key为null元素"></a>HashMap怎么处理key为null元素</h4><pre><code>所有key为null的元素放在了table[0]的桶里面了。private V putForNullKey(V value) {    for (Entry&lt;K,V&gt; e = table[0]; e != null; e = e.next) {        if (e.key == null) {            V oldValue = e.value;            e.value = value;            e.recordAccess(this);            return oldValue;        }    }    modCount++;    addEntry(0, null, value, 0);    return null;}</code></pre><h4 id="HashTable和HashMap的区别"><a href="#HashTable和HashMap的区别" class="headerlink" title="HashTable和HashMap的区别"></a>HashTable和HashMap的区别</h4><pre><code>1.前者线程安全的,但是效率低。2.前者的键和值都不允许为空，而后者的key和value都允许为空。</code></pre><blockquote><p>JDK1.8的源码注释总结</p></blockquote><p>1.HashMap允许键和值为空，而且是不同步的，非线程安全的，而HashTable不允许键值为空。</p><p>2.HashMap的两个重要参数：</p><ul><li><p>DEFAULT_INITIAL_CAPACITY:默认的初始容量。默认值16。</p></li><li><p>DEFAULT_LOAD_FACTOR:负载因子，用来衡量哈希表满的程度。默认值0.75。</p></li><li><p>threshold:存放元素的阈值。threshold = capacity * load factor.当key-value对的数量大于threshold，将调用resize()方法。</p></li></ul><p>其他参数：</p><ul><li><p>MAXIMUM_CAPACITY：最大容量。为2^30.</p></li><li><p>TREEIFY_THRESHOLD:链表转化成红黑树的临界值。默认值为8。</p></li><li><p>UNTREEIFY_THRESHOLD：当执行resize操作时，当桶中bin的数量少于UNTREEIFY_THRESHOLD时使用链表来代替树。默认值是6。</p></li><li><p>MIN_TREEIFY_CAPACITY：当桶中的bin被树化时最小的hash表容量。默认值64.</p></li></ul><p><strong>3.把Map元素哈希到桶的索引方法</strong></p><p>1.将key.hashcode() 与 哈希值的高16位作异或运算。</p><pre><code>(key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);</code></pre><p>2.将1步得到的值进行取模运算(取模哈希桶的长度，长度为2^n)，而方法采用的是高效的与运算。咋证明的呢？？？</p><pre><code>i = (table.length - 1) &amp; hash</code></pre><p>3.jdk1.8中的rehash的理解。</p><p>在确定元素在新数组的下标时，我们只需要检测元素的hash值与oldCap作与操作的结果是否为0：</p><p>为0，那么下标还是原来的下标。</p><p>为1，那么下标等于原来下标加上旧数组长度。</p><pre><code>为0的情况由loHead和loTail这组指针维护。为1的情况由hiHead和hiTail这组指针维护。</code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p><h4 id="源码中方法的理解？"><a href="#源码中方法的理解？" class="headerlink" title="源码中方法的理解？"></a>源码中方法的理解？</h4><p>1.get(Object key)方法：</p><pre><code>public V get(Object key) {    Node&lt;K,V&gt; e;    return (e = getNode(hash(key), key)) == null ? null : e.value;}final Node&lt;K,V&gt; getNode(int hash, Object key) {    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;        (first = tab[(n - 1) &amp; hash]) != null) {        if (first.hash == hash &amp;&amp; // always check first node            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))//第一个结点就是目标结点，其中key有可能为空            return first;        if ((e = first.next) != null) {//第一个结点排除，继续遍历下一个结点            if (first instanceof TreeNode)//红黑树的查找结点方法                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);//从树的根节点开始查找            do {//从链表的第二个结点开始遍历                if (e.hash == hash &amp;&amp;                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))                    return e;            } while ((e = e.next) != null);        }    }    return null;//没找到}</code></pre><p><strong>4.JDK1.8以下hashMap线程不安全的原因？</strong></p><p>源码：</p><pre><code>void transfer(Entry[] newTable, boolean rehash) {      int newCapacity = newTable.length;      for (Entry&lt;K,V&gt; e : table) {          while(null != e) {              Entry&lt;K,V&gt; next = e.next;                       if (rehash) {                  e.hash = null == e.key ? 0 : hash(e.key);              }              int i = indexFor(e.hash, newCapacity);               e.next = newTable[i];              newTable[i] = e;              e = next;          }     }  }</code></pre><p>在进行哈希表扩容的时候，如果是多线程的话，则会因为transfer()(采用的头插法)原因，会出现循环链表的情况。</p>]]></content>
+    <content type="html"><![CDATA[<h4 id="哈希表的长度为什么要为2-n"><a href="#哈希表的长度为什么要为2-n" class="headerlink" title="哈希表的长度为什么要为2^n?"></a>哈希表的长度为什么要为2^n?</h4><pre><code>因为当哈希表的长度为2^n次方时，hash &amp; (length-1) == hash % length</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next){e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))}//键值包括int和String类型</code></pre><h4 id="HashMap怎么处理key为null元素"><a href="#HashMap怎么处理key为null元素" class="headerlink" title="HashMap怎么处理key为null元素"></a>HashMap怎么处理key为null元素</h4><pre><code>所有key为null的元素放在了table[0]的桶里面了。private V putForNullKey(V value) {    for (Entry&lt;K,V&gt; e = table[0]; e != null; e = e.next) {        if (e.key == null) {            V oldValue = e.value;            e.value = value;            e.recordAccess(this);            return oldValue;        }    }    modCount++;    addEntry(0, null, value, 0);    return null;}</code></pre><h4 id="HashTable和HashMap的区别"><a href="#HashTable和HashMap的区别" class="headerlink" title="HashTable和HashMap的区别"></a>HashTable和HashMap的区别</h4><pre><code>1.前者线程安全的,但是效率低。2.前者的键和值都不允许为空，而后者的key和value都允许为空。</code></pre><blockquote><p>JDK1.8的源码注释总结</p></blockquote><p>1.HashMap允许键和值为空，而且是不同步的，非线程安全的，而HashTable不允许键值为空。</p><p>2.HashMap的两个重要参数：</p><ul><li><p>DEFAULT_INITIAL_CAPACITY:默认的初始容量。默认值16。</p></li><li><p>DEFAULT_LOAD_FACTOR:负载因子，用来衡量哈希表满的程度。默认值0.75。</p></li><li><p>threshold:存放元素的阈值。threshold = capacity * load factor.当key-value对的数量大于threshold，将调用resize()方法。</p></li></ul><p>其他参数：</p><ul><li><p>MAXIMUM_CAPACITY：最大容量。为2^30.</p></li><li><p>TREEIFY_THRESHOLD:链表转化成红黑树的临界值。默认值为8。</p></li><li><p>UNTREEIFY_THRESHOLD：当执行resize操作时，当桶中bin的数量少于UNTREEIFY_THRESHOLD时使用链表来代替树。默认值是6。</p></li><li><p>MIN_TREEIFY_CAPACITY：当桶中的bin被树化时最小的hash表容量。默认值64.</p></li></ul><p><strong>3.把Map元素哈希到桶的索引方法</strong></p><p>1.将key.hashcode() 与 哈希值的高16位作异或运算。</p><pre><code>(key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);</code></pre><p>2.将1步得到的值进行取模运算(取模哈希桶的长度，长度为2^n)，而方法采用的是高效的与运算。咋证明的呢？？？</p><pre><code>i = (table.length - 1) &amp; hash</code></pre><p>3.jdk1.8中的rehash的理解。</p><p>在确定元素在新数组的下标时，我们只需要检测元素的hash值与oldCap作与操作的结果是否为0：</p><p>为0，那么下标还是原来的下标。</p><p>为1，那么下标等于原来下标加上旧数组长度。</p><pre><code>为0的情况由loHead和loTail这组指针维护。为1的情况由hiHead和hiTail这组指针维护。</code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p><h4 id="源码中方法的理解？"><a href="#源码中方法的理解？" class="headerlink" title="源码中方法的理解？"></a>源码中方法的理解？</h4><p>1.get(Object key)方法：</p><pre><code>public V get(Object key) {    Node&lt;K,V&gt; e;    return (e = getNode(hash(key), key)) == null ? null : e.value;}final Node&lt;K,V&gt; getNode(int hash, Object key) {    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;        (first = tab[(n - 1) &amp; hash]) != null) {        if (first.hash == hash &amp;&amp; // always check first node            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))//第一个结点就是目标结点，其中key有可能为空            return first;        if ((e = first.next) != null) {//第一个结点排除，继续遍历下一个结点            if (first instanceof TreeNode)//红黑树的查找结点方法                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);//从树的根节点开始查找            do {//从链表的第二个结点开始遍历                if (e.hash == hash &amp;&amp;                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))                    return e;            } while ((e = e.next) != null);        }    }    return null;//没找到}</code></pre><p><strong>4.JDK1.8以下hashMap线程不安全的原因？</strong></p><p>1.因为扩容后可能会出现结点顺序反掉的情况。</p><p>源码：</p><pre><code>void transfer(Entry[] newTable, boolean rehash) {      int newCapacity = newTable.length;      for (Entry&lt;K,V&gt; e : table) {          while(null != e) {              Entry&lt;K,V&gt; next = e.next;                       if (rehash) {                  e.hash = null == e.key ? 0 : hash(e.key);              }              int i = indexFor(e.hash, newCapacity);               e.next = newTable[i];              newTable[i] = e;              e = next;          }     }  }</code></pre><p>在进行哈希表扩容的时候，如果是多线程的话，则会因为transfer()(采用的头插法)原因，会出现循环链表的情况。</p>]]></content>
     
     <summary type="html">
     
@@ -439,79 +518,6 @@ public static int[] co
     </summary>
     
       <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>堆排序</title>
-    <link href="http://www.xuchunfa.cn/2018/07/29/%E5%A0%86%E6%8E%92%E5%BA%8F/"/>
-    <id>http://www.xuchunfa.cn/2018/07/29/堆排序/</id>
-    <published>2018-07-29T10:33:19.000Z</published>
-    <updated>2018-07-29T15:14:08.962Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="堆排序？"><a href="#堆排序？" class="headerlink" title="堆排序？"></a>堆排序？</h4><pre><code>public class HeapSort {public static void heapSort(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    int len = a.length;    //构建大顶堆    for(int i = len/2-1;i&gt;=0;i--){        createHeap(a,i,len);    }    for(int j = a.length-1;j&gt;0;j--){        swap(a,0,j);        createHeap(a,0,j);    }}private static void swap(int[] a, int i, int j) {    int temp = a[i];    a[i] = a[j];    a[j] = temp;}private static void createHeap(int[] a,int i,int len) {    int father = a[i];    int j;//j代表子结点坐标 i代表父结点坐标    while(2*i + 1 &lt; len){        j = 2*i + 1;        if(j + 1 &lt; len &amp;&amp; a[j] &lt; a[j+1] )            j++;        if(a[j] &gt; father){            a[i] = a[j];            i = j;        }else {            break;        }    }    //找到最终位置    a[i] = father;}public static void main(String[] args){    int[] a = {1,1,1};    HeapSort.heapSort(a);    System.out.println(Arrays.toString(a));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;堆排序？&quot;&gt;&lt;a href=&quot;#堆排序？&quot; class=&quot;headerlink&quot; title=&quot;堆排序？&quot;&gt;&lt;/a&gt;堆排序？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class HeapSort {
-
-public static void heapSort(i
-      
-    
-    </summary>
-    
-      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>直接插入排序</title>
-    <link href="http://www.xuchunfa.cn/2018/07/29/%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/"/>
-    <id>http://www.xuchunfa.cn/2018/07/29/直接插入排序/</id>
-    <published>2018-07-29T10:30:34.000Z</published>
-    <updated>2018-07-29T10:33:02.808Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="直接插入排序？"><a href="#直接插入排序？" class="headerlink" title="直接插入排序？"></a>直接插入排序？</h4><pre><code>public class InsertSort {public static void insert(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length &lt;= 1){        return;    }    for(int j = 1;j&lt;a.length;j++){        int temp = a[j];        int i;        for(i = j-1;i&gt;=0 &amp;&amp; a[i]&gt;temp;i--){            a[i+1] = a[i];        }        //不满足上面for循环的话,元素不动        a[i+1] = temp;    }}public static void main(String[] args){    int[] a = {4,2,2,2,1,5,7,6};    InsertSort.insert(a);    System.out.println(Arrays.toString(a));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;直接插入排序？&quot;&gt;&lt;a href=&quot;#直接插入排序？&quot; class=&quot;headerlink&quot; title=&quot;直接插入排序？&quot;&gt;&lt;/a&gt;直接插入排序？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class InsertSort {
-
-public static v
-      
-    
-    </summary>
-    
-      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>旋转数组中的最小值</title>
-    <link href="http://www.xuchunfa.cn/2018/07/28/%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9C%80%E5%B0%8F%E5%80%BC/"/>
-    <id>http://www.xuchunfa.cn/2018/07/28/旋转数组中的最小值/</id>
-    <published>2018-07-28T13:37:21.000Z</published>
-    <updated>2018-07-28T13:40:56.221Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="找出递增数组旋转后的最小值？"><a href="#找出递增数组旋转后的最小值？" class="headerlink" title="找出递增数组旋转后的最小值？"></a>找出递增数组旋转后的最小值？</h4><pre><code>public class RotateArray {//如果把排序数组的前0个元素搬到最后面,算法得不到正确结果public static int minElement2(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length == 0){        throw new RuntimeException(&quot;数组为空&quot;);    }    int low = 0;    int high = a.length-1;    int media;    while (low &lt; high){        if(high == low + 1){            return a[high];        }        media = (low + high)/2;        if(a[media] &gt;= a[low]){            low = media;        }else if(a[media] &lt;= a[high]){            high = media;        }    }    return a[high];}//解决了a = {1,2,3} 的问题public static int minElement1(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length == 0){        throw new RuntimeException(&quot;数组为空&quot;);    }    int low = 0;    int high = a.length-1;    int media = low;    while (a[low] &gt;= a[high]){        if(high == low + 1){            media = high;            break;        }        media = (low + high)/2;        if(a[media] &gt;= a[low]){            low = media;        }else if(a[media] &lt;= a[high]){            high = media;        }    }    return a[media];}//解决了 a = {0,1,1,1,1} --&gt; {1,0,1,1,1}的情况public static int minElement(int[] a){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(a.length == 0){        throw new RuntimeException(&quot;数组为空&quot;);    }    int low = 0;    int high = a.length-1;    int media = low;    while (a[low] &gt;= a[high]){        if(high == low + 1){            media = high;            break;        }        media = (low + high)/2;        //顺序查找        if(a[low] == a[high] &amp;&amp; a[low] == a[media]){            return fromBeginToEnd(a,low,high);        }        if(a[media] &gt;= a[low]){            low = media;        }else if(a[media] &lt;= a[high]){            high = media;        }    }    return a[media];}private static int fromBeginToEnd(int[] a,int start,int end) {    int min = a[start];    for(int i = start;i&lt;end;i++){        if(a[i] &lt; min){            min = a[i];        }    }    return min;}public static void main(String[] args){    int[] a = {1,1,1,0,1};    System.out.println(RotateArray.minElement(a));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;找出递增数组旋转后的最小值？&quot;&gt;&lt;a href=&quot;#找出递增数组旋转后的最小值？&quot; class=&quot;headerlink&quot; title=&quot;找出递增数组旋转后的最小值？&quot;&gt;&lt;/a&gt;找出递增数组旋转后的最小值？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class R
-      
-    
-    </summary>
-    
-      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
     
     
   </entry>

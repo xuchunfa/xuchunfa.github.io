@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="打印从1到最大的n位数？public class Print1ToMaxOfNdigits {  public static void print1ToMaxOfNdigits(int n){     char[] nums = new char[n+1];     nums[n] = &amp;apos;\0&amp;apos;;      for(int i = 0;i&amp;lt;10;i++){">
+<meta name="description" content="打印从1到最大的n位数？public class Print1ToMaxOfNdigits {  public static void print1ToMaxOfNdigits(int n){     if(n &amp;lt;= 0){         throw new RuntimeException(&amp;quot;参数非法&amp;quot;);     }      char[] nums = new c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="打印从1到最大的n位数">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/11/打印从1到最大的n位数/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="打印从1到最大的n位数？public class Print1ToMaxOfNdigits {  public static void print1ToMaxOfNdigits(int n){     char[] nums = new char[n+1];     nums[n] = &amp;apos;\0&amp;apos;;      for(int i = 0;i&amp;lt;10;i++){">
+<meta property="og:description" content="打印从1到最大的n位数？public class Print1ToMaxOfNdigits {  public static void print1ToMaxOfNdigits(int n){     if(n &amp;lt;= 0){         throw new RuntimeException(&amp;quot;参数非法&amp;quot;);     }      char[] nums = new c">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-11T12:25:19.893Z">
+<meta property="og:updated_time" content="2018-08-11T12:36:46.083Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="打印从1到最大的n位数">
-<meta name="twitter:description" content="打印从1到最大的n位数？public class Print1ToMaxOfNdigits {  public static void print1ToMaxOfNdigits(int n){     char[] nums = new char[n+1];     nums[n] = &amp;apos;\0&amp;apos;;      for(int i = 0;i&amp;lt;10;i++){">
+<meta name="twitter:description" content="打印从1到最大的n位数？public class Print1ToMaxOfNdigits {  public static void print1ToMaxOfNdigits(int n){     if(n &amp;lt;= 0){         throw new RuntimeException(&amp;quot;参数非法&amp;quot;);     }      char[] nums = new c">
 
 
 
@@ -402,6 +402,10 @@
         <h4 id="打印从1到最大的n位数？"><a href="#打印从1到最大的n位数？" class="headerlink" title="打印从1到最大的n位数？"></a>打印从1到最大的n位数？</h4><pre><code>public class Print1ToMaxOfNdigits {
 
 public static void print1ToMaxOfNdigits(int n){
+    if(n &lt;= 0){
+        throw new RuntimeException(&quot;参数非法&quot;);
+    }
+
     char[] nums = new char[n+1];
     nums[n] = &apos;\0&apos;;
 
@@ -479,6 +483,10 @@ public static void main(String[] args){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/13/平衡二叉树/" rel="prev" title="平衡二叉树">
+                平衡二叉树 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -566,7 +574,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -577,7 +585,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

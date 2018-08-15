@@ -81,14 +81,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="http://www.xuchunfa.cn/tags/index.html">
+<meta name="description" content="什么是平衡二叉树（AVL树）？ 可以为空 任何一个结点的左子树与右子树都是平衡二叉树，并且高度之差的绝对值不超过1。简单来讲就是任意结点的左右子树的数目基本相同。 平衡二叉树是二叉查找树的优化，因为二叉查找树适用于无序数据，对于有序数据插入时就是一颗斜树，遍历时的时间复杂度为O(n),已经体现不出了优势了。  怎么调整平衡二叉树？举个LR旋转的例子：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="平衡二叉树">
+<meta property="og:url" content="http://www.xuchunfa.cn/2018/08/13/平衡二叉树/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
+<meta property="og:description" content="什么是平衡二叉树（AVL树）？ 可以为空 任何一个结点的左子树与右子树都是平衡二叉树，并且高度之差的绝对值不超过1。简单来讲就是任意结点的左右子树的数目基本相同。 平衡二叉树是二叉查找树的优化，因为二叉查找树适用于无序数据，对于有序数据插入时就是一颗斜树，遍历时的时间复杂度为O(n),已经体现不出了优势了。  怎么调整平衡二叉树？举个LR旋转的例子：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T03:39:48.952Z">
+<meta property="og:image" content="https://i.imgur.com/jBi58WA.png">
+<meta property="og:updated_time" content="2018-08-14T06:06:51.552Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签">
+<meta name="twitter:title" content="平衡二叉树">
+<meta name="twitter:description" content="什么是平衡二叉树（AVL树）？ 可以为空 任何一个结点的左子树与右子树都是平衡二叉树，并且高度之差的绝对值不超过1。简单来讲就是任意结点的左右子树的数目基本相同。 平衡二叉树是二叉查找树的优化，因为二叉查找树适用于无序数据，对于有序数据插入时就是一颗斜树，遍历时的时间复杂度为O(n),已经体现不出了优势了。  怎么调整平衡二叉树？举个LR旋转的例子：">
+<meta name="twitter:image" content="https://i.imgur.com/jBi58WA.png">
 
 
 
@@ -118,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://www.xuchunfa.cn/tags/"/>
+  <link rel="canonical" href="http://www.xuchunfa.cn/2018/08/13/平衡二叉树/"/>
 
 
 
 
 
-  <title>标签 | Flying in the ocean of knowledge</title>
+  <title>平衡二叉树 | Flying in the ocean of knowledge</title>
   
 
 
@@ -274,40 +279,191 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/13/平衡二叉树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">标签</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 4 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Hadoop环境配置/" style="font-size: 12px; color: #ccc">Hadoop环境配置</a> <a href="/tags/Hadoop的解压安装/" style="font-size: 12px; color: #ccc">Hadoop的解压安装</a> <a href="/tags/Hadoop配置文件修改/" style="font-size: 12px; color: #ccc">Hadoop配置文件修改</a> <a href="/tags/SSH免密登陆/" style="font-size: 12px; color: #ccc">SSH免密登陆</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">平衡二叉树</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T21:16:21+08:00">
+                2018-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/13/平衡二叉树/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/13/平衡二叉树/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/13/平衡二叉树/" class="leancloud_visitors" data-flag-title="平衡二叉树">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h4 id="什么是平衡二叉树（AVL树）？"><a href="#什么是平衡二叉树（AVL树）？" class="headerlink" title="什么是平衡二叉树（AVL树）？"></a>什么是平衡二叉树（AVL树）？</h4><ol>
+<li>可以为空</li>
+<li>任何一个结点的左子树与右子树都是平衡二叉树，并且高度之差的绝对值不超过1。简单来讲就是任意结点的左右子树的数目基本相同。</li>
+<li>平衡二叉树是二叉查找树的优化，因为二叉查找树适用于无序数据，对于<br>有序数据插入时就是一颗斜树，遍历时的时间复杂度为O(n),已经体现不出了优势了。</li>
+</ol>
+<h4 id="怎么调整平衡二叉树？"><a href="#怎么调整平衡二叉树？" class="headerlink" title="怎么调整平衡二叉树？"></a>怎么调整平衡二叉树？</h4><p>举个LR旋转的例子：</p>
+<p><img src="https://i.imgur.com/jBi58WA.png" alt=""></p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/11/打印从1到最大的n位数/" rel="next" title="打印从1到最大的n位数">
+                <i class="fa fa-chevron-left"></i> 打印从1到最大的n位数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/14/红黑树/" rel="prev" title="红黑树">
+                红黑树 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -347,8 +503,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -435,6 +600,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是平衡二叉树（AVL树）？"><span class="nav-number">1.</span> <span class="nav-text">什么是平衡二叉树（AVL树）？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么调整平衡二叉树？"><span class="nav-number">2.</span> <span class="nav-text">怎么调整平衡二叉树？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
