@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-14T12:42:42.197Z</updated>
+  <updated>2018-08-16T05:47:39.185Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,75 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>并行和并发的区别</title>
+    <link href="http://www.xuchunfa.cn/2018/08/16/%E5%B9%B6%E8%A1%8C%E5%92%8C%E5%B9%B6%E5%8F%91%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://www.xuchunfa.cn/2018/08/16/并行和并发的区别/</id>
+    <published>2018-08-16T05:10:53.000Z</published>
+    <updated>2018-08-16T05:47:39.185Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>举个例子：</strong></p><p>桌子上放着一本书，桌子旁坐着四个人，书就相当于cpu资源，并行可以比喻成这四个人打开书同时阅读；而并发可以看成是则这四个人轮流看这本书。</p><blockquote><p>并行（parallelism）</p></blockquote><p>1.物理上同时发生的。</p><p>2.某一时刻能处理多个任务。</p><blockquote><p>并发（concurrency）</p></blockquote><p>1.逻辑上同时发生的。</p><p>2.某一时间间隔内能同时处理多个任务，但是某一时刻就只处理一个任务。</p><p>直观点的示意图：两核CPU创建四个线程的情况</p><p><img src="https://i.imgur.com/MV4eOd9.png" alt=""></p><p>操作1,2,3,4并发执行。</p><p>操作1,5以及2,6都是并行的。</p><p>可以理解现在大多数CPU都是多核的，在执行大量请求时，并行并发一般都是一起发生的。</p><p>参考文档：<a href="https://www.jianshu.com/p/b11e251d3dc7" target="_blank" rel="noopener">https://www.jianshu.com/p/b11e251d3dc7</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;举个例子：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;桌子上放着一本书，桌子旁坐着四个人，书就相当于cpu资源，并行可以比喻成这四个人打开书同时阅读；而并发可以看成是则这四个人轮流看这本书。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;并行（parallelism）&lt;/p
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java虚拟机垃圾收集器</title>
+    <link href="http://www.xuchunfa.cn/2018/08/15/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/"/>
+    <id>http://www.xuchunfa.cn/2018/08/15/java虚拟机垃圾收集器/</id>
+    <published>2018-08-15T12:13:35.000Z</published>
+    <updated>2018-08-15T13:35:13.011Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>垃圾回收前先标记,标记的方法？</p></blockquote><p>1.引用计数</p><p>给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1.</p><p>2.可达性分析</p><p>不在”GC Roots”引用链上的对象会被标记为将要收集的对象。</p><p><strong>可作为GC Roots的对象：</strong></p><ul><li><p>虚拟机栈（栈中的本地变量表）中引用的对象</p></li><li><p>方法区中类静态属性引用的对象</p></li><li><p>方法区中常量引用的对象</p></li><li><p>本地方法栈（native方法）引用的对象、</p></li></ul><blockquote><p>垃圾收集算法</p></blockquote><ul><li><p>标记-清除算法</p></li><li><p>复制算法</p><p>  1.需要额外的内存空间进行分配担保。不适用于对象存活率较高的老年代。</p></li><li><p>标记-整理算法</p><p>  1.适用于老年代垃圾的回收。</p></li><li><p>分代回收算法</p><p>  1.将内存划分为新生代和老年代，新生代由于“朝生夕死”的特点，即对象的存活率低，可采用复制算法；老年代对象存活率高，没有额外内存空间担保，所以采用标记-清除算法和标记-整理算法较好。</p></li></ul><blockquote><p>垃圾收集器</p></blockquote><ul><li><p>Serial收集器</p><p>  1.在收集垃圾时，必须暂停其它所有工作的线程，直到它收集结束。</p><p>  2.没有线程交互的开销，效率最高的单线程垃圾收集器。</p><p>  3.适用于运行在Client端的虚拟机</p></li><li><p>ParNew收集器</p><p>  1.多线程。</p><p>  2.适用于运行在Server端的虚拟机。</p><p>  3.唯一一个能与CMS收集器（老年代的收集器）配合使用。</p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;垃圾回收前先标记,标记的方法？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;1.引用计数&lt;/p&gt;
+&lt;p&gt;给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1.&lt;/p&gt;
+&lt;p&gt;2.可达性分析&lt;/p&gt;
+&lt;p&gt;不在”GC Roots”引用链上的对象
+      
+    
+    </summary>
+    
+      <category term="java虚拟机" scheme="http://www.xuchunfa.cn/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>找到链表中的中间结点</title>
+    <link href="http://www.xuchunfa.cn/2018/08/15/%E6%89%BE%E5%88%B0%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E4%B8%AD%E9%97%B4%E7%BB%93%E7%82%B9/"/>
+    <id>http://www.xuchunfa.cn/2018/08/15/找到链表中的中间结点/</id>
+    <published>2018-08-15T11:46:51.000Z</published>
+    <updated>2018-08-15T11:46:52.005Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>java内存区域</title>
@@ -146,15 +215,15 @@
     <link href="http://www.xuchunfa.cn/2018/08/10/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/"/>
     <id>http://www.xuchunfa.cn/2018/08/10/背包问题/</id>
     <published>2018-08-10T08:06:29.000Z</published>
-    <updated>2018-08-10T12:38:59.117Z</updated>
+    <updated>2018-08-15T11:53:10.738Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="http://incdn1.b0.upaiyun.com/2014/09/79f53699ae233c86bd329783ace0a404.png" alt=""></p><p>例如：</p><p>int[] v = {4,2,10,1,2}</p><p>int[] w = {12,1,4,1,2}</p><p>最大价值为：15kg</p><p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p><p>v[i]:第i个物体的价值。</p><p>w[i]:第i个物体的重量。</p><p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p><p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p><blockquote><p>动态规划</p></blockquote><p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p><pre><code>public class ThiefProblem {static int max(int a, int b) { return (a &gt; b)? a : b; }//基于递归的解法static int knapSack(int W, int wt[], int val[], int n){    if (n == 0 || W == 0)        return 0;    // If weight of the nth item is more than Knapsack capacity W, then    // this item cannot be included in the optimal solution    if (wt[n-1] &gt; W)        return knapSack(W, wt, val, n-1);        // Return the maximum of two cases:        // (1) nth item included        // (2) not included    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),            knapSack(W, wt, val, n-1)    );}//基于动态规划的解法static int maxValue(int W, int wt[], int val[], int n){   int[][] itemToValue = new int[n+1][W+1];   for(int i = 0;i&lt;W+1;i++){       itemToValue[0][i] = 0;   }   for(int j = 0;j&lt;n+1;j++){       itemToValue[j][0] = 0;   }   for(int i = 1;i&lt;=n;i++){        for(int j = 1;j&lt;=W;j++){            int weightPlus = j - wt[i-1];            if(weightPlus &lt; 0){                itemToValue[i][j] = itemToValue[i-1][j];            }else {                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);            }        }   }   return itemToValue[n][W];}public static void main(String[] args){    int[] value = {6,3,5,4,6};    int[] weight = {2,3,6,5,7};    int maxWeight = 10;    int n = value.length;    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));}}</code></pre>]]></content>
+    <content type="html"><![CDATA[<h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="https://i.imgur.com/bZL8dQF.png" alt=""></p><p>例如：</p><p>int[] v = {4,2,10,1,2}</p><p>int[] w = {12,1,4,1,2}</p><p>最大价值为：15kg</p><p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p><p>v[i]:第i个物体的价值。</p><p>w[i]:第i个物体的重量。</p><p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p><p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p><blockquote><p>动态规划</p></blockquote><p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p><pre><code>public class ThiefProblem {static int max(int a, int b) { return (a &gt; b)? a : b; }//基于递归的解法static int knapSack(int W, int wt[], int val[], int n){    if (n == 0 || W == 0)        return 0;    // If weight of the nth item is more than Knapsack capacity W, then    // this item cannot be included in the optimal solution    if (wt[n-1] &gt; W)        return knapSack(W, wt, val, n-1);        // Return the maximum of two cases:        // (1) nth item included        // (2) not included    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),            knapSack(W, wt, val, n-1)    );}//基于动态规划的解法static int maxValue(int W, int wt[], int val[], int n){   int[][] itemToValue = new int[n+1][W+1];   for(int i = 0;i&lt;W+1;i++){       itemToValue[0][i] = 0;   }   for(int j = 0;j&lt;n+1;j++){       itemToValue[j][0] = 0;   }   for(int i = 1;i&lt;=n;i++){        for(int j = 1;j&lt;=W;j++){            int weightPlus = j - wt[i-1];            if(weightPlus &lt; 0){                itemToValue[i][j] = itemToValue[i-1][j];            }else {                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);            }        }   }   return itemToValue[n][W];}public static void main(String[] args){    int[] value = {6,3,5,4,6};    int[] weight = {2,3,6,5,7};    int maxWeight = 10;    int n = value.length;    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));}}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h4 id=&quot;解背包问题？&quot;&gt;&lt;a href=&quot;#解背包问题？&quot; class=&quot;headerlink&quot; title=&quot;解背包问题？&quot;&gt;&lt;/a&gt;解背包问题？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;http://incdn1.b0.upaiyun.com/2014/09/79f5369
+        &lt;h4 id=&quot;解背包问题？&quot;&gt;&lt;a href=&quot;#解背包问题？&quot; class=&quot;headerlink&quot; title=&quot;解背包问题？&quot;&gt;&lt;/a&gt;解背包问题？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/bZL8dQF.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
       
     
     </summary>
@@ -447,77 +516,6 @@ public static int[] co
     </summary>
     
       <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>希尔排序</title>
-    <link href="http://www.xuchunfa.cn/2018/08/03/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/"/>
-    <id>http://www.xuchunfa.cn/2018/08/03/希尔排序/</id>
-    <published>2018-08-03T06:46:38.000Z</published>
-    <updated>2018-08-03T06:49:56.265Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="希尔排序示意图"><a href="#希尔排序示意图" class="headerlink" title="希尔排序示意图"></a>希尔排序示意图</h4><p><img src="https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161128110416068-1421707828.png" alt=""></p><pre><code>public class ShellSort {public static void shellSort(int[] a){    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){        for(int i = increment;i&lt;a.length;i++){            int j = i;            while (j - increment &gt;=0  &amp;&amp; a[j-increment] &gt; a[j]){                //交换排序                swap(a,j,j-increment);                j -= increment;        }        }    }}private static void swap(int[] a, int i, int j) {    int temp = a[i];    a[i] = a[j];    a[j] = temp;}public static void shellSort1(int[] a){    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){        for(int i = increment;i&lt;a.length;i++){            int j = i;            int temp = a[j];            //直接插入            while(j-increment &gt;= 0 &amp;&amp; a[j-increment] &gt; temp){                a[j] = a[j-increment];                j -= increment;            }            a[j] = temp;        }    }}public static void main(String[] args){    int[] a = {9,8,7,6,5,4,3,2,1};    ShellSort.shellSort1(a);    System.out.println(Arrays.toString(a));}}</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6104371.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6104371.html</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;希尔排序示意图&quot;&gt;&lt;a href=&quot;#希尔排序示意图&quot; class=&quot;headerlink&quot; title=&quot;希尔排序示意图&quot;&gt;&lt;/a&gt;希尔排序示意图&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://images2015.cnblogs.com/blog/1024
-      
-    
-    </summary>
-    
-      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>归并排序</title>
-    <link href="http://www.xuchunfa.cn/2018/08/02/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/"/>
-    <id>http://www.xuchunfa.cn/2018/08/02/归并排序/</id>
-    <published>2018-08-02T06:40:42.000Z</published>
-    <updated>2018-08-02T08:25:38.669Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>什么叫分治思想？</strong></p><p>分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之</p><p><img src="https://images2015.cnblogs.com/blog/1024555/201612/1024555-20161218163120151-452283750.png" alt=""></p><pre><code>public class MergeSort {//临时数组public static void sort(int[] a){    int[] temp = new int[a.length];    mergeSort(a,0,a.length-1,temp);}//治的思想public static void merge(int[] a,int left,int mid,int right,int[] temp){    int i = left;    int j = mid + 1;    int k = 0;    while(i &lt;= mid &amp;&amp; j &lt;= right){        if(a[i] &lt; a[j]){            temp[k++] = a[i++];        }else{            temp[k++] = a[j++];        }    }    while (i &lt;= mid){        temp[k++] = a[i++];    }    while (j &lt;= right){        temp[k++] = a[j++];    }    k = 0;    while (left &lt;= right){        a[left++] = temp[k++];    }}//归并排序public static void mergeSort(int[] a,int left,int right,int[] temp){    if(a == null){        throw new RuntimeException(&quot;输入数组&quot;);    }    if(left &lt; 0 || left &gt;= a.length || right &lt; 0 || right &gt;= a.length ){        throw new RuntimeException(&quot;越界&quot;);    }    if(left &gt;= right)        return;    int mid = (left + right)/2;    //分    mergeSort(a,left,mid,temp);    mergeSort(a,mid+1,right,temp);    //治    merge(a,left,mid,right,temp);}public static void main(String[] args){    int[] a = {6,5,4,4,4,3,2,1};    sort(a);    System.out.println(Arrays.toString(a));}}</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6194356.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6194356.html</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;strong&gt;什么叫分治思想？&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://images2015
-      
-    
-    </summary>
-    
-      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>进程和线程分析</title>
-    <link href="http://www.xuchunfa.cn/2018/08/02/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
-    <id>http://www.xuchunfa.cn/2018/08/02/进程和线程的区别/</id>
-    <published>2018-08-02T05:36:27.000Z</published>
-    <updated>2018-08-03T12:40:25.886Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="线程中Blocked-和-Waiting-状态的区别？"><a href="#线程中Blocked-和-Waiting-状态的区别？" class="headerlink" title="线程中Blocked 和 Waiting 状态的区别？"></a>线程中Blocked 和 Waiting 状态的区别？</h4><p><strong>Blocked:</strong>线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。</p><p><strong>Waiting:</strong><br>由于主动调用了以下方法而进入的状态：<br>1.Object.wait()<br>2.Thread.join()<br>3.LockSupport.park()</p><p><strong>Time_waiting:</strong><br>调用了以下方法：<br>1.Thread.sleep<br>2.Object.wait(long)<br>3.Thread.join(long)<br>4.LockSupport.parkNanos<br>5.LockSupport.parkUntil</p><h4 id="同步队列和等待队列的区别？"><a href="#同步队列和等待队列的区别？" class="headerlink" title="同步队列和等待队列的区别？"></a>同步队列和等待队列的区别？</h4><p><strong>同步队列：</strong>存放竞争同步资源的线程的引用。</p><p><strong>等待队列：</strong>存放着等待被唤醒的线程的引用。</p><pre><code>等待/通知的经典范式如下：等待方synchronized(对象){    while(条件不满足){        对象.wait()    }    处理逻辑}通知方synchronized(对象){    改变条件    对象.notifyAll()}</code></pre><hr><pre><code>等待超时模式如下：public synchronized Object get(long mills) throw InterruptedException{if(mills &lt;= 0){    while(result == null){        wait();    }     return result;}else{    long future = System.currentTimeMillis() + mills;    long remaining = mills;    while(result == null &amp;&amp; remaining &gt; 0){        wait(remaining);        remaining = future - System.currentTimeMillis();    }    result == null;    if(result != null){        return result;    }    return result;}</code></pre><h4 id="进程和线程的区别？"><a href="#进程和线程的区别？" class="headerlink" title="进程和线程的区别？"></a>进程和线程的区别？</h4><p><strong>进程：</strong>可以看成是每个运行中的程序。它可以拥有自己独立的资源。</p><p><strong>线程：</strong>操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。</p><p><strong>进程和线程的联系：</strong>一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;线程中Blocked-和-Waiting-状态的区别？&quot;&gt;&lt;a href=&quot;#线程中Blocked-和-Waiting-状态的区别？&quot; class=&quot;headerlink&quot; title=&quot;线程中Blocked 和 Waiting 状态的区别？&quot;&gt;&lt;/a&gt;线程中Bl
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
     
     
   </entry>

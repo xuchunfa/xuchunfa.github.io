@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="求链表中的倒数第k个结点？public class Link {  private ListNode head;  class ListNode{      private int data;      ListNode next;      public ListNode(int data) {         this.data = data;         this.next = null">
+<meta name="description" content="求链表中的倒数第k个结点？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链表中倒数第k个结点">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="求链表中的倒数第k个结点？public class Link {  private ListNode head;  class ListNode{      private int data;      ListNode next;      public ListNode(int data) {         this.data = data;         this.next = null">
+<meta property="og:description" content="求链表中的倒数第k个结点？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-22T11:56:03.226Z">
+<meta property="og:updated_time" content="2018-08-15T11:48:58.742Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表中倒数第k个结点">
-<meta name="twitter:description" content="求链表中的倒数第k个结点？public class Link {  private ListNode head;  class ListNode{      private int data;      ListNode next;      public ListNode(int data) {         this.data = data;         this.next = null">
+<meta name="twitter:description" content="求链表中的倒数第k个结点？">
 
 
 
@@ -399,115 +399,7 @@
       
 
       
-        <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code>public class Link {
-
-private ListNode head;
-
-class ListNode{
-
-    private int data;
-
-    ListNode next;
-
-    public ListNode(int data) {
-        this.data = data;
-        this.next = null;
-    }
-
-    public void addNode(ListNode newNode){
-
-        //相当于尾插法
-        if(this.next == null){
-            this.next = newNode;
-        }else {
-            this.next.addNode(newNode);
-        }
-    }
-
-    public void printNode(){
-        System.out.print(this.data + &quot;--&gt;&quot;);
-        if(this.next != null){
-            this.next.printNode();
-        }
-        }
-    }
-
-    //添加链表节点
-    public void add(int data){
-    ListNode node = new ListNode(data);
-        if(this.head == null){
-            this.head = node;
-        }else {
-            this.head.addNode(node);
-        }
-    }
-
-    //打印链表节点
-        public void print(){
-    if(this.head == null){
-        System.out.println(&quot;链表为空&quot;);
-    }else {
-        this.head.printNode();
-        System.out.println();
-    }
-    }
-
-    //链表中的倒数第 K 个结点
-    public ListNode FindKthToTail(ListNode head,int k){
-    int len = 0;
-    int i = 0;
-    ListNode counter = head;
-    ListNode p = head;
-    ListNode pre = head;
-
-    if(k &lt;= 0){
-        System.out.println(&quot;请输入自然数k！&quot;);
-        //-1代表非正常退出
-        System.exit(-1);
-    }
-
-    if(head == null) {
-        System.out.println(&quot;链表不能为空！&quot;);
-        System.exit(-1);
-    }
-
-    while(counter != null){
-        len++;
-        counter = counter.next;
-    }
-
-    if(k &gt; len){
-        System.out.println(&quot;k值大于了链表长度！&quot;);
-        System.exit(-1);
-    }
-
-    //先走k步
-    while (i &lt; k){
-        pre = pre.next;
-        i++;
-    }
-
-    while (pre != null){
-        p = p.next;
-        pre = pre.next;
-    }
-
-    return p;
-    }
-
-    public static void main(String[] args){
-    Link link = new Link();
-    link.add(1);
-    link.add(2);
-    link.add(3);
-    link.print();
-
-    ListNode node = link.FindKthToTail(link.head,4);
-    node.next = null;
-    node.printNode();
-    }
-    }
-</code></pre>
+        <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4>
       
     </div>
     
@@ -631,7 +523,7 @@ class ListNode{
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
