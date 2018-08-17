@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-16T05:47:39.185Z</updated>
+  <updated>2018-08-17T08:19:20.598Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,163 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>合并两个有序链表</title>
+    <link href="http://www.xuchunfa.cn/2018/08/17/%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/"/>
+    <id>http://www.xuchunfa.cn/2018/08/17/合并两个有序链表/</id>
+    <published>2018-08-17T08:17:36.000Z</published>
+    <updated>2018-08-17T08:19:20.598Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>public class MergeSortedLink {public static ListNode merge(ListNode head1,ListNode head2){    ListNode mergedHead;    if(head1 == null){        return head2;    }    if(head2 == null){        return head1;    }    if(head1.data &lt; head2.data){        mergedHead = head1;        mergedHead.next = merge(head1.next,head2);    }else {        mergedHead = head2;        mergedHead.next = merge(head1,head2.next);    }    return mergedHead;}public static void main(String[] args){    Link link1 = new Link();    Link link2 = new Link();    link1.add(1);    link1.add(3);    link1.add(5);    link2.add(2);    link2.add(4);    link2.add(6);    link2.add(7);    ListNode newHead = MergeSortedLink.merge(link1.head,link2.head);    Link link3 = new Link();    link3.head = newHead;    link3.print();}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;pre&gt;&lt;code&gt;public class MergeSortedLink {
+
+public static ListNode merge(ListNode head1,ListNode head2){
+    ListNode mergedHead;
+
+    if(hea
+      
+    
+    </summary>
+    
+      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>删除链表中的重复结点</title>
+    <link href="http://www.xuchunfa.cn/2018/08/17/%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E7%BB%93%E7%82%B9/"/>
+    <id>http://www.xuchunfa.cn/2018/08/17/删除链表中的重复结点/</id>
+    <published>2018-08-17T07:03:51.000Z</published>
+    <updated>2018-08-17T07:05:18.485Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>public class DeleteDuplicationNode {//例如(1,2,2,2,3) &gt;&gt; (1,2,3)public static void deleteDuplicationNode(ListNode head){    if(head == null){        throw new RuntimeException(&quot;链表不存在&quot;);    }    //默认是增序的(包含所有结点相等的情况)    boolean ascend = true;    ListNode post,p;    p = head;    while(p.next != null){        if(p.data &gt; p.next.data){            ascend = false;//降序        }        p = p.next;    }    p = head;    if(ascend){//链表递增时        while (p.next != null){            if(p.data == p.next.data){                post = p.next;                while(post.next != null){                    if(post.data &lt; post.next.data){                        p.next = post.next;                        break;//结束                    }                    post = post.next;                }                if(post.next == null){                    p.next = post.next;                    break;                }            }            p = p.next;        }    }else {//链表递减        while (p.next != null){            if(p.data == p.next.data){                post = p.next;                while(post.next != null){                    if(post.data &gt; post.next.data){                        p.next = post.next;                        break;                    }                    post = post.next;                }                if(post.next == null){                    p.next = post.next;                    break;                }            }            //break跳到这里,继续遍历            p = p.next;        }    }}//例如(1,2,3,3,4,4,5) &gt;&gt; (1,2,5)public static void DeleteDuplication(ListNode head){    if(head == null){        throw new RuntimeException(&quot;链表不存在&quot;);    }    ListNode pre = null;    ListNode p = head;    ListNode post;    while (p != null){        post = p.next;        boolean needDeleted = false;        if(post != null &amp;&amp; p.data == post.data){            needDeleted = true;        }        if(!needDeleted){            pre = p;            p = p.next;        }else {            int value = p.data;            ListNode toDelete = p;            while (toDelete != null &amp;&amp; toDelete.data == value){                post = toDelete.next;                toDelete = post;            }            if(pre == null){//删除头节点.可能所有结点相等 head = null                Link.head = post;            }else {                pre.next = post;            }            p = post;        }    }}public static void main(String[] args){    Link link = new Link();    link.add(1);    DeleteDuplicationNode.DeleteDuplication(link.head);    link.print();}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;pre&gt;&lt;code&gt;public class DeleteDuplicationNode {
+
+//例如(1,2,2,2,3) &amp;gt;&amp;gt; (1,2,3)
+public static void deleteDuplicationNode(ListNode head){
+
+
+      
+    
+    </summary>
+    
+      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>字符串匹配</title>
+    <link href="http://www.xuchunfa.cn/2018/08/17/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/"/>
+    <id>http://www.xuchunfa.cn/2018/08/17/字符串匹配/</id>
+    <published>2018-08-17T07:00:19.000Z</published>
+    <updated>2018-08-17T07:02:23.654Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="匹配匹配模式为-和-的字符串？"><a href="#匹配匹配模式为-和-的字符串？" class="headerlink" title="匹配匹配模式为. 和 * 的字符串？"></a>匹配匹配模式为. 和 * 的字符串？</h4><pre><code>public class RegularExpression {public static boolean match(String str,String pattern,int strLen,int patternLen,int strIndex,int patternIndex){    if(str == null || pattern == null){        return false;    }    return matchCore(str,pattern,strLen,patternLen,strIndex,patternIndex);}private static boolean matchCore(String str, String pattern,int strLen,int patternLen,int strIndex,int patternIndex) {    if(strIndex == strLen &amp;&amp; patternIndex == patternLen){        return true;    }    //模式匹配完了字符串没匹配完    if(strIndex &lt; strLen &amp;&amp; patternIndex == patternLen){        return  false;    }    //模式的第二个字符为&apos;*&apos;的情况    if(patternIndex+1 &lt; patternLen &amp;&amp; pattern.charAt(patternIndex + 1) == &apos;*&apos;){//注意边界条件最后一个字符,需要判断条件        if(strIndex &lt; strLen &amp;&amp; str.charAt(strIndex) == pattern.charAt(patternIndex) || strIndex &lt; strLen &amp;&amp; pattern.charAt(patternIndex) == &apos;.&apos;){            return matchCore(str,pattern,strLen,patternLen,strIndex+1,patternIndex+2) ||                    matchCore(str,pattern,strLen,patternLen,strIndex+1,patternIndex) ||                    matchCore(str,pattern,strLen,patternLen,strIndex,patternIndex+2);        }else {//字符串匹配完了模式还没匹配完            return matchCore(str,pattern,strLen,patternLen,strIndex,patternIndex+2);        }    }    //模式的第二个字符不为&apos;*&apos;的情况(注意条件 strIndex &lt; strLen )    if(strIndex &lt; strLen &amp;&amp; str.charAt(strIndex) == pattern.charAt(patternIndex) || (strIndex &lt; strLen &amp;&amp; pattern.charAt(patternIndex) == &apos;.&apos;)){        return matchCore(str,pattern,strLen,patternLen,++strIndex,++patternIndex);    }    //包含了str=&quot;ab&quot; pattern=&quot;....&quot;的情况了    return false;}public static void main(String[] args){    String str = &quot;ab&quot;;    String pattern = &quot;....&quot;;    int strLen = str.length();    int patternLen = pattern.length();    System.out.println(RegularExpression.match(str,pattern,strLen,patternLen,0,0));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;匹配匹配模式为-和-的字符串？&quot;&gt;&lt;a href=&quot;#匹配匹配模式为-和-的字符串？&quot; class=&quot;headerlink&quot; title=&quot;匹配匹配模式为. 和 * 的字符串？&quot;&gt;&lt;/a&gt;匹配匹配模式为. 和 * 的字符串？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;publ
+      
+    
+    </summary>
+    
+      <category term="字符串" scheme="http://www.xuchunfa.cn/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>删除链表结点-时间复杂度为常数</title>
+    <link href="http://www.xuchunfa.cn/2018/08/17/%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%BB%93%E7%82%B9-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%BA%E5%B8%B8%E6%95%B0/"/>
+    <id>http://www.xuchunfa.cn/2018/08/17/删除链表结点-时间复杂度为常数/</id>
+    <published>2018-08-17T06:58:10.000Z</published>
+    <updated>2018-08-17T06:58:36.786Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>public class DeleteListNode {public static void deleteListNode(ListNode head,ListNode toDelete){    if(head == null || toDelete == null){        throw new RuntimeException(&quot;没有目标节点删除&quot;);    }    //只有一个头节点,删完后置空    if(head.next == null &amp;&amp; toDelete.next == null){        Link.head = null;//head = null 相当于值传递,无法改变head        toDelete = null;    }else if(head.next != null &amp;&amp; toDelete.next == null){//删除尾结点        ListNode pre = head;        while (pre.next != toDelete){            pre = pre.next;        }        pre.next = null;    }else {//head.next != null &amp;&amp; toDelete.next != null 删除中间结点        toDelete.data = toDelete.next.data;        toDelete.next = toDelete.next.next;    }}public static void main(String[] args){    Link link = new Link();    link.add(1);    ListNode toDelete = link.head;    DeleteListNode.deleteListNode(link.head,toDelete);    link.print();}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;pre&gt;&lt;code&gt;public class DeleteListNode {
+
+public static void deleteListNode(ListNode head,ListNode toDelete){
+
+    if(head == null || toDele
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>链表中环的入口结点</title>
+    <link href="http://www.xuchunfa.cn/2018/08/17/%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E7%BB%93%E7%82%B9/"/>
+    <id>http://www.xuchunfa.cn/2018/08/17/链表中环的入口结点/</id>
+    <published>2018-08-17T06:53:31.000Z</published>
+    <updated>2018-08-17T06:54:47.389Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>public class EnterCycleNode {public static ListNode meetNode(ListNode head){    if(head == null){        throw new RuntimeException(&quot;链表不能为空&quot;);    }    ListNode pre,post;    pre = head;    post = head;    int cycleNodeNum = calcycleNodeNum(head);    if(cycleNodeNum != 0){//有环        for(int i = 0;i&lt;cycleNodeNum;i++){//post先走cycleNodeNum步            pre = pre.next;        }        while(post != pre){//然后两个指针依次先前走一步            pre = pre.next;            post = post.next;        }        return post;    }    return null;}//判断链表是否有环,有的话计算环中一共有多少结点private static int calcycleNodeNum(ListNode head) {    ListNode p,pre;    p = head;    pre = head;    int numOfCycleNode = 0;    while (pre.next != null){        pre = pre.next;//走第一步时判断一下        if (pre != p &amp;&amp; pre.next != null){            p = p.next;            pre = pre.next;//pre先走了两步        }        //走完第二步再判断一下        if(pre == p){//第一个指针追上了第二个指针            numOfCycleNode++;            pre = pre.next;            while (pre != p){//计算环内结点                numOfCycleNode++;                pre = pre.next;            }            break;//跳出循环        }    }    return numOfCycleNode;}public static void main(String[] args){    Link link = new Link();    link.add(1);    link.add(2);    link.add(3);    link.add(4);    ListNode tail = Link.head;    while (tail.next != null){        tail = tail.next;    }    //tail.next = Link.head;    if(EnterCycleNode.meetNode(Link.head) != null){        System.out.println(EnterCycleNode.meetNode(Link.head).data);    }else {        throw new RuntimeException(&quot;不存在环入口节点&quot;);    }}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;pre&gt;&lt;code&gt;public class EnterCycleNode {
+
+public static ListNode meetNode(ListNode head){
+
+    if(head == null){
+        throw new RuntimeEx
+      
+    
+    </summary>
+    
+      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>反转链表</title>
+    <link href="http://www.xuchunfa.cn/2018/08/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8-1/"/>
+    <id>http://www.xuchunfa.cn/2018/08/17/反转链表-1/</id>
+    <published>2018-08-17T06:50:36.000Z</published>
+    <updated>2018-08-17T06:52:27.623Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="就地反转和递归反转？"><a href="#就地反转和递归反转？" class="headerlink" title="就地反转和递归反转？"></a>就地反转和递归反转？</h4><pre><code>public class VerseLink {//直接遍历一遍public static void verseLink(ListNode head){    ListNode previous,current,post;    previous = null;    current = head;    while (current != null){        post = current.next;        if(post == null)            Link.head = current;        current.next = previous;        previous = current;        current = post;    }}//递归反转public static ListNode recursiveVerseLink(ListNode head){    if(head  == null || head.next == null){        return head;    }    ListNode newHead = recursiveVerseLink(head.next);//原链表的最后一个结点    head.next.next = head;//从倒数第二个结点开始回溯,指针发生转向    head.next = null;//断开原来指针    return newHead;}public static void main(String[] args){    Link link = new Link();    link.add(1);    link.add(2);    link.add(3);    link.add(4);    Link.head = VerseLink.recursiveVerseLink(Link.head);    link.print();}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;就地反转和递归反转？&quot;&gt;&lt;a href=&quot;#就地反转和递归反转？&quot; class=&quot;headerlink&quot; title=&quot;就地反转和递归反转？&quot;&gt;&lt;/a&gt;就地反转和递归反转？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class VerseLink {
+
+//直接
+      
+    
+    </summary>
+    
+      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>并行和并发的区别</title>
@@ -47,9 +204,9 @@
     <link href="http://www.xuchunfa.cn/2018/08/15/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/"/>
     <id>http://www.xuchunfa.cn/2018/08/15/java虚拟机垃圾收集器/</id>
     <published>2018-08-15T12:13:35.000Z</published>
-    <updated>2018-08-15T13:35:13.011Z</updated>
+    <updated>2018-08-17T05:25:43.963Z</updated>
     
-    <content type="html"><![CDATA[<blockquote><p>垃圾回收前先标记,标记的方法？</p></blockquote><p>1.引用计数</p><p>给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1.</p><p>2.可达性分析</p><p>不在”GC Roots”引用链上的对象会被标记为将要收集的对象。</p><p><strong>可作为GC Roots的对象：</strong></p><ul><li><p>虚拟机栈（栈中的本地变量表）中引用的对象</p></li><li><p>方法区中类静态属性引用的对象</p></li><li><p>方法区中常量引用的对象</p></li><li><p>本地方法栈（native方法）引用的对象、</p></li></ul><blockquote><p>垃圾收集算法</p></blockquote><ul><li><p>标记-清除算法</p></li><li><p>复制算法</p><p>  1.需要额外的内存空间进行分配担保。不适用于对象存活率较高的老年代。</p></li><li><p>标记-整理算法</p><p>  1.适用于老年代垃圾的回收。</p></li><li><p>分代回收算法</p><p>  1.将内存划分为新生代和老年代，新生代由于“朝生夕死”的特点，即对象的存活率低，可采用复制算法；老年代对象存活率高，没有额外内存空间担保，所以采用标记-清除算法和标记-整理算法较好。</p></li></ul><blockquote><p>垃圾收集器</p></blockquote><ul><li><p>Serial收集器</p><p>  1.在收集垃圾时，必须暂停其它所有工作的线程，直到它收集结束。</p><p>  2.没有线程交互的开销，效率最高的单线程垃圾收集器。</p><p>  3.适用于运行在Client端的虚拟机</p></li><li><p>ParNew收集器</p><p>  1.多线程。</p><p>  2.适用于运行在Server端的虚拟机。</p><p>  3.唯一一个能与CMS收集器（老年代的收集器）配合使用。</p></li></ul>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>垃圾回收前先标记,标记的方法？</p></blockquote><p>1.引用计数</p><p>给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1.</p><p>2.可达性分析</p><p>不在”GC Roots”引用链上的对象会被标记为将要收集的对象。</p><p><strong>可作为GC Roots的对象：</strong></p><ul><li><p>虚拟机栈（栈中的本地变量表）中引用的对象</p></li><li><p>方法区中类静态属性引用的对象</p></li><li><p>方法区中常量引用的对象</p></li><li><p>本地方法栈（native方法）引用的对象、</p></li></ul><blockquote><p>垃圾收集算法</p></blockquote><ul><li><p>标记-清除算法</p></li><li><p>复制算法</p><p>  1.需要额外的内存空间进行分配担保。不适用于对象存活率较高的老年代。</p><p>  2.额外空间可以向老年代借。老年代空间都还不够用的话，”Stop the world”发生Full GC。Full GC的作用是为了让老年代腾出空间来。</p></li><li><p>标记-整理算法</p><p>  1.让所有存活的对象向一端移动，然后直接清理掉端边界以外的内存。</p><p>  2.适用于老年代垃圾的回收。</p></li><li><p>分代回收算法</p><p>  1.将内存划分为新生代和老年代，新生代由于“朝生夕死”的特点，即对象的存活率低，可采用复制算法；老年代对象存活率高，没有额外内存空间担保，所以采用标记-清除算法和标记-整理算法较好。</p></li></ul><blockquote><p>垃圾收集器</p></blockquote><p>默认的垃圾收集器：Serial收集器 / Serial Old 收集器</p><ul><li><p>Serial收集器</p><p>  1.在收集垃圾时，必须暂停其它所有工作的线程，直到它收集结束。</p><p>  2.没有线程交互的开销，效率最高的单线程垃圾收集器。</p><p>  3.适用于运行在Client端的虚拟机</p></li><li><p>ParNew收集器</p><p>  1.多线程。</p><p>  2.适用于运行在Server端的虚拟机。</p><p>  3.唯一一个能与CMS收集器（老年代的收集器）配合使用。</p></li><li><p>Parallel Scavenge 收集器</p><p>  1.吞吐量优先的收集器。</p></li><li><p>Serial Old 收集器</p></li><li><p>Parallel Old 收集器</p><p>  1.在吞吐量和CPU资源敏感的环境下，与Parallel Scavenge配合使用。</p></li><li><p>CMS收集器</p><p>  1.过程：</p><pre><code>a.初始标记b.并发标记c.初始标记d.并发清除</code></pre></li></ul><pre><code>2.初始标记和初始标记依然需要停顿。3.缺点：    a.应用程序变慢,吞吐量变低    b.无法处理浮点动垃圾    c.会产生太多空间碎片</code></pre><ul><li><p>G1 收集器</p><p>  1.使用Region划分内存空间以及有优先级的区域回收。</p><p>  特点：</p><pre><code>a.并行和并发。b.分代收集。c.空间整合。d.可预测的停顿。</code></pre></li></ul>]]></content>
     
     <summary type="html">
     
@@ -86,13 +243,13 @@
   </entry>
   
   <entry>
-    <title>java内存区域</title>
-    <link href="http://www.xuchunfa.cn/2018/08/14/java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
-    <id>http://www.xuchunfa.cn/2018/08/14/java内存区域/</id>
+    <title>java虚拟机内存区域</title>
+    <link href="http://www.xuchunfa.cn/2018/08/14/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
+    <id>http://www.xuchunfa.cn/2018/08/14/java虚拟机内存区域/</id>
     <published>2018-08-14T08:35:17.000Z</published>
-    <updated>2018-08-14T12:42:42.197Z</updated>
+    <updated>2018-08-17T05:31:28.922Z</updated>
     
-    <content type="html"><![CDATA[<blockquote><p>对象创建过程</p></blockquote><p>1.检查类是否已经加载</p><p>2.虚拟机为对象分配内存</p><p>3.将分配到的内存区域初始化</p><blockquote><p>虚拟机常见参数</p></blockquote><p>1.-Xms20M:虚拟机堆内存的最小值</p><p>2.-Xmx20M:虚拟机堆内存的最大值</p><p>3.-Xss1M:每个线程的栈的大小为1M</p><p>4.-Xmn10M:Java Heap Young区的大小为10M</p><p>5.MaxPermSize:方法区最大内存</p><p>6.-XX:PermSize=10M：虚拟机方法区内存最小值</p><p>7.-XX：MaxPermSize=100M:虚拟机方法区内存最大值</p>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>对象创建过程</p></blockquote><p>1.检查类是否已经加载</p><p>2.虚拟机为对象分配内存</p><p>3.将分配到的内存区域初始化</p><blockquote><p>虚拟机常见参数</p></blockquote><p>1.-Xms20M:虚拟机堆内存的最小值</p><p>2.-Xmx20M:虚拟机堆内存的最大值</p><p>3.-Xss1M:每个线程的栈的大小为1M</p><p>4.-Xmn10M:Java Heap Young 新生代的大小为10M</p><p>5.MaxPermSize:方法区最大内存</p><p>6.-XX:PermSize=10M：虚拟机方法区内存最小值</p><p>7.-XX：MaxPermSize=100M:虚拟机方法区内存最大值</p><blockquote><p>内存分配</p></blockquote><p>1.对象主要分配在新生代的Eden区上，新生代包括1个Eden区和两个Survivor区，其中一个Survivor用于分配担保，内存大小默认比例为Eden:Survivor = 8 : 1.</p><p>2.</p><pre><code>2.1  新生代GC(Minor GC):发生在新生代，速度快。什么时候发生呢？只要老年代的连续空间大于新生代对象的总大小或者历次晋升的平均大小。2.2  老年代GC(Major GC / Full GC):发生在老年代，一般比前者慢10倍。</code></pre>]]></content>
     
     <summary type="html">
     
@@ -365,157 +522,6 @@
     </summary>
     
       <category term="位运算" scheme="http://www.xuchunfa.cn/categories/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>动态规划问题集</title>
-    <link href="http://www.xuchunfa.cn/2018/08/06/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E9%97%AE%E9%A2%98%E9%9B%86/"/>
-    <id>http://www.xuchunfa.cn/2018/08/06/动态规划问题集/</id>
-    <published>2018-08-06T07:26:09.000Z</published>
-    <updated>2018-08-06T11:55:05.905Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>动态规划问题的特点</p></blockquote><ul><li><p>大问题可以分解成小问题，每个小问题都存在最优解。</p></li><li><p>整体问题最优解依赖子问题的最优解。</p></li><li><p>小问题之间还会存在相互重叠的更小的问题。</p></li><li><p>从上往下分析问题，从下往上求解问题。</p></li></ul><h4 id="剪绳子把长度为-n-的绳子剪成-m-段-n-gt-1-m-gt-1-所有相乘乘积最小？"><a href="#剪绳子把长度为-n-的绳子剪成-m-段-n-gt-1-m-gt-1-所有相乘乘积最小？" class="headerlink" title="剪绳子把长度为 n 的绳子剪成 m 段(n &gt; 1,m &gt; 1)所有相乘乘积最小？"></a>剪绳子把长度为 n 的绳子剪成 m 段(n &gt; 1,m &gt; 1)所有相乘乘积最小？</h4><pre><code>public class CutStrip {public static int cutStrip(int length){    if(length &lt; 2)        return 0;    if(length == 2)        return 1;    if(length == 3)        return 2;    int[] result = new int[length+1];    result[1] = 1;    result[2] = 2;    result[3] = 3;    for (int i = 4;i&lt;=length;i++){        int max = 0;        for(int j = 1;j&lt;=i/2;j++){            int temp = result[j]*result[i-j];            if(temp &gt; max)                max = temp;        }        result[i] = max;    }    return result[length];}public static void main(String[] args){    System.out.println(CutStrip.cutStrip(10));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;动态规划问题的特点&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;大问题可以分解成小问题，每个小问题都存在最优解。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;整体问题最优解依赖子问题的最优解。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;小问题之间还会
-      
-    
-    </summary>
-    
-      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>矩阵路径</title>
-    <link href="http://www.xuchunfa.cn/2018/08/06/%E7%9F%A9%E9%98%B5%E8%B7%AF%E5%BE%84/"/>
-    <id>http://www.xuchunfa.cn/2018/08/06/矩阵路径/</id>
-    <published>2018-08-06T05:20:10.000Z</published>
-    <updated>2018-08-06T07:13:48.247Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="回溯和递归的理解？"><a href="#回溯和递归的理解？" class="headerlink" title="回溯和递归的理解？"></a>回溯和递归的理解？</h4><p>1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。</p><p>2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。</p><p>3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。</p><ul><li><p>矩阵路径问题？</p><pre><code>public class MatrixPath {public static boolean hasPath(char[][] a,int rows,int cols,String str){    if(a == null || rows &lt; 1 || cols &lt; 1 || str == null)        throw new RuntimeException(&quot;参数非法&quot;);    boolean[][] visited = new boolean[rows][cols];    int pathLength = 0;    for(int row = 0;row &lt; rows;row++){        for(int col = 0;col &lt; cols;col++){            if(hasOnePath(a,row,col,rows,cols,str,pathLength,visited)){                return true;        }    }}    return false;}private static boolean hasOnePath(char[][] a, int row, int col, int rows, int cols, String str,int pathLength,boolean[][] visited) {    boolean result = false;    if(str.length() == pathLength){        return true;    }    if(row &gt;= 0 &amp;&amp; row &lt; rows &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; cols &amp;&amp; a[row][col] == str.charAt(pathLength) &amp;&amp; !visited[row][col]) {        ++pathLength;        visited[row][col] = true;        result = hasOnePath(a, row - 1, col, rows, cols, str, pathLength, visited) ||            hasOnePath(a, row, col - 1, rows, cols, str, pathLength, visited) ||            hasOnePath(a, row + 1, col, rows, cols, str, pathLength, visited) ||            hasOnePath(a, row, col + 1, rows, cols, str, pathLength, visited);        if (!result) {            --pathLength;            visited[row][col] = false;        }    }    return result;}  public static void main(String[] args){/*char[][] a = {{'a','b','t','g'},                    {'c','f','c','s'},                    {'j','d','e','h'}};*/char[][] a = {{'a'},                      {'f'},                      {'g'},                      {'d'}};String str = &quot;gl&quot;;System.out.println(MatrixPath.hasPath(a,4,1,str));}}</code></pre></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;回溯和递归的理解？&quot;&gt;&lt;a href=&quot;#回溯和递归的理解？&quot; class=&quot;headerlink&quot; title=&quot;回溯和递归的理解？&quot;&gt;&lt;/a&gt;回溯和递归的理解？&lt;/h4&gt;&lt;p&gt;1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决
-      
-    
-    </summary>
-    
-      <category term="回溯算法" scheme="http://www.xuchunfa.cn/categories/%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Executors详解</title>
-    <link href="http://www.xuchunfa.cn/2018/08/05/Executors%E8%AF%A6%E8%A7%A3/"/>
-    <id>http://www.xuchunfa.cn/2018/08/05/Executors详解/</id>
-    <published>2018-08-05T07:24:34.000Z</published>
-    <updated>2018-08-06T04:54:47.146Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="Excutors框架的类与接口"><a href="#Excutors框架的类与接口" class="headerlink" title="Excutors框架的类与接口"></a>Excutors框架的类与接口</h4><p><img src="https://i.imgur.com/F7UbYhu.png" alt=""></p><h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p><ul><li><p>FixedThreadPool</p></li><li><p>SingleThreadPool</p></li><li><p>CachedThreadPool</p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;Excutors框架的类与接口&quot;&gt;&lt;a href=&quot;#Excutors框架的类与接口&quot; class=&quot;headerlink&quot; title=&quot;Excutors框架的类与接口&quot;&gt;&lt;/a&gt;Excutors框架的类与接口&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>线程池</title>
-    <link href="http://www.xuchunfa.cn/2018/08/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0/"/>
-    <id>http://www.xuchunfa.cn/2018/08/04/线程池/</id>
-    <published>2018-08-04T12:12:47.000Z</published>
-    <updated>2018-08-05T07:23:29.619Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p><p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p><p>3.提高线程的可管理性。</p><h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p><pre><code>public static void start(){    ServerSocket serverSocket = new ServerSocket(port);    Socket socket = null;    while ((socket = serverSocket.accept() != null)){        thread.execute(new HttpRequestHandler(socket));    }}分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p><p>1.corePoolSize:线程池中线程的基本数量。</p><p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize</p><p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p><p>4.keepAliveTime:工作线程空闲时的存活时间。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;为什么要使用线程池？&quot;&gt;&lt;a href=&quot;#为什么要使用线程池？&quot; class=&quot;headerlink&quot; title=&quot;为什么要使用线程池？&quot;&gt;&lt;/a&gt;为什么要使用线程池？&lt;/h4&gt;&lt;p&gt;1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗ja
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>基数排序</title>
-    <link href="http://www.xuchunfa.cn/2018/08/04/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/"/>
-    <id>http://www.xuchunfa.cn/2018/08/04/基数排序/</id>
-    <published>2018-08-04T06:04:16.000Z</published>
-    <updated>2018-08-04T06:29:30.225Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="桶的思想？"><a href="#桶的思想？" class="headerlink" title="桶的思想？"></a>桶的思想？</h4><p><img src="https://i.imgur.com/5NeTrG5.png" alt=""></p><pre><code>public class RadixSort {public static void radixSort(int[] a,int k){    int[] counter = new int[10];    int[][] container = new int[10][a.length];    int n = 1;    int t = 0;    while (n &lt; k){        for(int num : a){            int radix = (num/n)%10;            container[radix][counter[radix]] = num;            counter[radix]++;        }        for(int i = 0;i &lt; 10;i++){                if(counter[i] != 0){                    for(int j = 0;j&lt;counter[i];j++){                        a[t] = container[i][j];                        t++;                    }                }            counter[i] = 0;        }        t = 0;        n *= 10;    }}public static void main(String[] args){    int[] a = {1,21,32,45,687,89,43,44,95};    RadixSort.radixSort(a,1000);    System.out.println(Arrays.toString(a));}}</code></pre><p><strong>时间复杂度：</strong></p><pre><code>时间复杂度 = [放桶的时间(O(n)) + 取桶里面的元素(O(n))]*位数     = O(d*n) (d为常数)空间复杂度 = O(n * 10 + 10) = O(n)</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;桶的思想？&quot;&gt;&lt;a href=&quot;#桶的思想？&quot; class=&quot;headerlink&quot; title=&quot;桶的思想？&quot;&gt;&lt;/a&gt;桶的思想？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/5NeTrG5.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;pr
-      
-    
-    </summary>
-    
-      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>计数排序</title>
-    <link href="http://www.xuchunfa.cn/2018/08/04/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/"/>
-    <id>http://www.xuchunfa.cn/2018/08/04/计数排序/</id>
-    <published>2018-08-04T04:32:23.000Z</published>
-    <updated>2018-08-04T04:46:07.709Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>核心思想：</strong>哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。</p><pre><code>public class CountSort {//数组数字在0 ~ k之间public static int[] countSort(int[] a,int k){    int[] elementCounter = new int[k+1];    for(int i = 0;i&lt;a.length;i++){        elementCounter[a[i]]++;    }    //构造计数数组(即小于等于该元素的个数)    int preSum = elementCounter[0];    for(int j = 1;j&lt;elementCounter.length;j++){        elementCounter[j] = preSum + elementCounter[j];        preSum = elementCounter[j];    }    int[] result = new int[a.length];    //从原数组末尾开始遍历    for(int i = a.length-1;i&gt;=0;i--){        result[elementCounter[a[i]]-1] = a[i];        elementCounter[a[i]]--;    }    return result;}public static void main(String[] args){    int[] a = {6,5,4,3,2,1};    int[] result = new int[a.length];    result = CountSort.countSort(a,6);    System.out.println(Arrays.toString(result));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;strong&gt;核心思想：&lt;/strong&gt;哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class CountSort {
-
-//数组数字在0 ~ k之间
-public static int[] co
-      
-    
-    </summary>
-    
-      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
     
     
   </entry>

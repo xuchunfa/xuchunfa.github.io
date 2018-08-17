@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="两个有序数组A1和A2，把A2的所有数字插入到A1？  核心思想：从数组末尾开始比较，指针依次往前挪。 //时间复杂度(O(n)) 空间复杂度(O(n)) public static int[] merge(int[] a,int[] b){      if(a==null || b==null){         System.out.println(&amp;quot;输入两个数组&amp;quot;);">
+<meta name="description" content="两个有序数组A1和A2，把A2的所有数字插入到A1？  核心思想：从数组末尾开始比较，指针依次往前挪。 public class MergeSortedArray {  //时间复杂度(O(n)) 空间复杂度(O(n)) 通过归并实现 public static int[] merge(int[] a,int[] b){      if(a==null || b==null){">
 <meta property="og:type" content="article">
 <meta property="og:title" content="合并两个有序数组">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="两个有序数组A1和A2，把A2的所有数字插入到A1？  核心思想：从数组末尾开始比较，指针依次往前挪。 //时间复杂度(O(n)) 空间复杂度(O(n)) public static int[] merge(int[] a,int[] b){      if(a==null || b==null){         System.out.println(&amp;quot;输入两个数组&amp;quot;);">
+<meta property="og:description" content="两个有序数组A1和A2，把A2的所有数字插入到A1？  核心思想：从数组末尾开始比较，指针依次往前挪。 public class MergeSortedArray {  //时间复杂度(O(n)) 空间复杂度(O(n)) 通过归并实现 public static int[] merge(int[] a,int[] b){      if(a==null || b==null){">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-22T05:57:48.317Z">
+<meta property="og:updated_time" content="2018-08-17T08:39:05.810Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="合并两个有序数组">
-<meta name="twitter:description" content="两个有序数组A1和A2，把A2的所有数字插入到A1？  核心思想：从数组末尾开始比较，指针依次往前挪。 //时间复杂度(O(n)) 空间复杂度(O(n)) public static int[] merge(int[] a,int[] b){      if(a==null || b==null){         System.out.println(&amp;quot;输入两个数组&amp;quot;);">
+<meta name="twitter:description" content="两个有序数组A1和A2，把A2的所有数字插入到A1？  核心思想：从数组末尾开始比较，指针依次往前挪。 public class MergeSortedArray {  //时间复杂度(O(n)) 空间复杂度(O(n)) 通过归并实现 public static int[] merge(int[] a,int[] b){      if(a==null || b==null){">
 
 
 
@@ -403,7 +403,9 @@
 <li>两个有序数组A1和A2，把A2的所有数字插入到A1？</li>
 </ul>
 <p><strong>核心思想：</strong>从数组末尾开始比较，指针依次往前挪。</p>
-<pre><code>//时间复杂度(O(n)) 空间复杂度(O(n))
+<pre><code>public class MergeSortedArray {
+
+//时间复杂度(O(n)) 空间复杂度(O(n)) 通过归并实现
 public static int[] merge(int[] a,int[] b){
 
     if(a==null || b==null){
@@ -420,32 +422,31 @@ public static int[] merge(int[] a,int[] b){
     int len2 = b.length;
 
     int[] c = new int[len1+len2];
-    int i = len1 - 1;
-    int j = len2 - 1;
+    int i = 0;
+    int j = 0;
 
-    while(i &gt;= 0 &amp;&amp; j &gt;= 0){
-        if(a[i] &gt; b[j]){
-            c[i+j+1] = a[i];
-            i--;
+    while(i &lt; len1 &amp;&amp; j &lt; len2){//归并的思想
+        if(a[i] &lt; b[j]){
+            c[i+j] = a[i];
+            i++;
         }else{
-            c[i+j+1] = b[j];
-            j--;
+            c[i+j] = b[j];
+            j++;
         }
     }
 
-    while (i &gt;= 0){
+    while (i &lt; len1){
         c[i+j+1] = a[i];
-        i--;
+        i++;
     }
 
-    while(j &gt;= 0){
-        c[i+j+1] = b[j];
-        j--;
+    while(j &lt; len2){
+        c[i+j] = b[j];
+        j++;
     }
 
     return c;
 }
-
 
 //时间复杂度(O(n)) 空间复杂度(O(1)) 直接在第一个数组上操作
 public static void merge1(int[] a,int[] b){
@@ -460,7 +461,7 @@ public static void merge1(int[] a,int[] b){
     int i = len1 - len2 -1;
     int j = len2 - 1;
 
-    while(i &gt;= 0 &amp;&amp; j &gt;= 0){
+    while(i &gt;= 0 &amp;&amp; j &gt;= 0){//从数组最后面的元素开始向前比较
         if(a[i] &gt; b[j]){
             a[i+j+1] = a[i];
             i--;
@@ -474,6 +475,20 @@ public static void merge1(int[] a,int[] b){
         a[i+j+1] = b[j];
         j--;
     }
+
+}
+
+public static void main(String[] args){
+
+    int[] a ={1,4,9};
+    int[] b = {2,3,10,16};
+    int[] c = new int[a.length+b.length];
+
+    c = MergeSortedArray.merge(a,b);
+
+    //打印数组元素
+    System.out.println(Arrays.toString(c));
+}
 }
 </code></pre>
       
@@ -590,7 +605,7 @@ public static void merge1(int[] a,int[] b){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

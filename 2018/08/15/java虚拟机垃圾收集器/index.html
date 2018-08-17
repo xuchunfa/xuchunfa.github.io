@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="垃圾回收前先标记,标记的方法？  1.引用计数 给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1. 2.可达性分析 不在”GC Roots”引用链上的对象会被标记为将要收集的对象。 可作为GC Roots的对象：  虚拟机栈（栈中的本地变量表）中引用的对象  方法区中类静态属性引用的对象  方法区中常量引用的对象  本地方法栈（native方法）引用的对象、    垃圾收集算法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T13:35:13.011Z">
+<meta property="og:updated_time" content="2018-08-17T05:25:43.963Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java虚拟机垃圾收集器">
 <meta name="twitter:description" content="垃圾回收前先标记,标记的方法？  1.引用计数 给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1. 2.可达性分析 不在”GC Roots”引用链上的对象会被标记为将要收集的对象。 可作为GC Roots的对象：  虚拟机栈（栈中的本地变量表）中引用的对象  方法区中类静态属性引用的对象  方法区中常量引用的对象  本地方法栈（native方法）引用的对象、    垃圾收集算法">
@@ -425,9 +425,11 @@
 </li>
 <li><p>复制算法</p>
 <p>  1.需要额外的内存空间进行分配担保。不适用于对象存活率较高的老年代。</p>
+<p>  2.额外空间可以向老年代借。老年代空间都还不够用的话，”Stop the world”发生Full GC。Full GC的作用是为了让老年代腾出空间来。</p>
 </li>
 <li><p>标记-整理算法</p>
-<p>  1.适用于老年代垃圾的回收。</p>
+<p>  1.让所有存活的对象向一端移动，然后直接清理掉端边界以外的内存。</p>
+<p>  2.适用于老年代垃圾的回收。</p>
 </li>
 <li><p>分代回收算法</p>
 <p>  1.将内存划分为新生代和老年代，新生代由于“朝生夕死”的特点，即对象的存活率低，可采用复制算法；老年代对象存活率高，没有额外内存空间担保，所以采用标记-清除算法和标记-整理算法较好。</p>
@@ -436,6 +438,7 @@
 <blockquote>
 <p>垃圾收集器</p>
 </blockquote>
+<p>默认的垃圾收集器：Serial收集器 / Serial Old 收集器</p>
 <ul>
 <li><p>Serial收集器</p>
 <p>  1.在收集垃圾时，必须暂停其它所有工作的线程，直到它收集结束。</p>
@@ -447,6 +450,46 @@
 <p>  2.适用于运行在Server端的虚拟机。</p>
 <p>  3.唯一一个能与CMS收集器（老年代的收集器）配合使用。</p>
 </li>
+<li><p>Parallel Scavenge 收集器</p>
+<p>  1.吞吐量优先的收集器。</p>
+</li>
+<li><p>Serial Old 收集器</p>
+</li>
+<li><p>Parallel Old 收集器</p>
+<p>  1.在吞吐量和CPU资源敏感的环境下，与Parallel Scavenge配合使用。</p>
+</li>
+<li><p>CMS收集器</p>
+<p>  1.过程：</p>
+<pre><code>a.初始标记
+
+b.并发标记
+
+c.初始标记
+
+d.并发清除
+</code></pre></li>
+</ul>
+<pre><code>2.初始标记和初始标记依然需要停顿。
+
+3.缺点：
+
+    a.应用程序变慢,吞吐量变低
+
+    b.无法处理浮点动垃圾
+
+    c.会产生太多空间碎片
+</code></pre><ul>
+<li><p>G1 收集器</p>
+<p>  1.使用Region划分内存空间以及有优先级的区域回收。</p>
+<p>  特点：</p>
+<pre><code>a.并行和并发。
+
+b.分代收集。
+
+c.空间整合。
+
+d.可预测的停顿。
+</code></pre></li>
 </ul>
 
       
@@ -563,7 +606,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
