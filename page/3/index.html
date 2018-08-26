@@ -286,6 +286,804 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/打印从1到最大的n位数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/11/打印从1到最大的n位数/" itemprop="url">打印从1到最大的n位数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T20:23:13+08:00">
+                2018-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/字符串/" itemprop="url" rel="index">
+                    <span itemprop="name">字符串</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/11/打印从1到最大的n位数/" class="leancloud_visitors" data-flag-title="打印从1到最大的n位数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="打印从1到最大的n位数？"><a href="#打印从1到最大的n位数？" class="headerlink" title="打印从1到最大的n位数？"></a>打印从1到最大的n位数？</h4><pre><code>public class Print1ToMaxOfNdigits {
+
+public static void print1ToMaxOfNdigits(int n){
+    if(n &lt;= 0){
+        throw new RuntimeException(&quot;参数非法&quot;);
+    }
+
+    char[] nums = new char[n+1];
+    nums[n] = &apos;\0&apos;;
+
+    for(int i = 0;i&lt;10;i++){
+        nums[0] = (char) (i + &apos;0&apos;);
+        everyBigitRecursive(nums,n,0);
+    }
+}
+
+private static void everyBigitRecursive(char[] nums, int length, int index) {
+
+    if(index == length-1){
+        printNum(nums);
+        return;
+    }
+
+    for(int i = 0;i&lt;10;i++){
+
+        //向个位递进
+        nums[index + 1] = (char) (i + &apos;0&apos;);
+        everyBigitRecursive(nums,length,index+1);
+    }
+}
+
+private static void printNum(char[] nums) {
+
+    boolean isBegin0 = true;
+
+    for(int i = 0;i &lt; nums.length;i++){
+        if(isBegin0 &amp;&amp; nums[i] != &apos;0&apos;)
+            isBegin0 = false;
+
+        if(!isBegin0){
+            System.out.print(nums[i]);
+        }
+    }
+
+    System.out.println();
+}
+
+public static void main(String[] args){
+    Print1ToMaxOfNdigits.print1ToMaxOfNdigits(10);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/指数幂运算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/11/指数幂运算/" itemprop="url">指数幂运算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T14:58:18+08:00">
+                2018-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/位运算/" itemprop="url" rel="index">
+                    <span itemprop="name">位运算</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/11/指数幂运算/" class="leancloud_visitors" data-flag-title="指数幂运算">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><pre><code>public class Pow {
+
+public static double pow(double base,int exp){
+
+    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp == 0){
+        return 0.0;
+    }
+
+    //浮点数的比较
+    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp &lt; 0){
+        throw new RuntimeException(&quot;参数不合法&quot;);
+    }
+
+    double result;
+    int absExp;
+    if(exp &lt; 0){
+        absExp = -exp;
+    }else {
+        absExp = exp;
+    }
+
+    result = calPow(base,absExp);
+    if(exp &lt; 0){
+        result = 1.0/result;
+    }
+
+    return result;
+}
+
+private static double calPow(double base, int exp) {
+
+    if(exp == 0)
+        return 1;
+
+    if(exp == 1)
+        return base;
+
+    //位移运算代替除法
+    double result = calPow(base,exp &gt;&gt; 1);
+    result *= result;
+
+    //与运算代替取余
+    if((exp &amp; 1) == 1){
+        result *= base;
+    }
+
+    return result;
+}
+
+public static void main(String[] args){
+    System.out.println(Pow.pow(0,-4));
+}
+</code></pre><p>}</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/10/背包问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/10/背包问题/" itemprop="url">背包问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T16:06:29+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                    <span itemprop="name">动态规划</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/10/背包问题/" class="leancloud_visitors" data-flag-title="背包问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="https://i.imgur.com/bZL8dQF.png" alt=""></p>
+<p>例如：</p>
+<p>int[] v = {4,2,10,1,2}</p>
+<p>int[] w = {12,1,4,1,2}</p>
+<p>最大价值为：15kg</p>
+<p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p>
+<p>v[i]:第i个物体的价值。</p>
+<p>w[i]:第i个物体的重量。</p>
+<p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p>
+<p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p>
+<blockquote>
+<p>动态规划</p>
+</blockquote>
+<p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p>
+<pre><code>public class ThiefProblem {
+
+static int max(int a, int b) { return (a &gt; b)? a : b; }
+
+//基于递归的解法
+static int knapSack(int W, int wt[], int val[], int n)
+{
+    if (n == 0 || W == 0)
+        return 0;
+
+    // If weight of the nth item is more than Knapsack capacity W, then
+    // this item cannot be included in the optimal solution
+    if (wt[n-1] &gt; W)
+        return knapSack(W, wt, val, n-1);
+
+        // Return the maximum of two cases:
+        // (1) nth item included
+        // (2) not included
+    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),
+            knapSack(W, wt, val, n-1)
+    );
+}
+
+//基于动态规划的解法
+static int maxValue(int W, int wt[], int val[], int n)
+{
+
+   int[][] itemToValue = new int[n+1][W+1];
+
+   for(int i = 0;i&lt;W+1;i++){
+       itemToValue[0][i] = 0;
+   }
+
+   for(int j = 0;j&lt;n+1;j++){
+       itemToValue[j][0] = 0;
+   }
+
+
+   for(int i = 1;i&lt;=n;i++){
+        for(int j = 1;j&lt;=W;j++){
+            int weightPlus = j - wt[i-1];
+            if(weightPlus &lt; 0){
+                itemToValue[i][j] = itemToValue[i-1][j];
+            }else {
+                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);
+            }
+
+        }
+   }
+
+   return itemToValue[n][W];
+}
+
+public static void main(String[] args){
+    int[] value = {6,3,5,4,6};
+    int[] weight = {2,3,6,5,7};
+    int maxWeight = 10;
+    int n = value.length;
+
+    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));
+    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/09/CAS的理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/09/CAS的理解/" itemprop="url">CAS的理解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T16:01:17+08:00">
+                2018-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/09/CAS的理解/" class="leancloud_visitors" data-flag-title="CAS的理解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>原子操作类</p>
+</blockquote>
+<ol>
+<li>原子更新基本类型</li>
+<li>原子更新数组类型</li>
+<li>原子更新引用</li>
+<li>原子更新属性</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1808,721 +2606,6 @@ System.out.println(MatrixPath.hasPath(a,4,1,str));
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/05/Executors详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/05/Executors详解/" itemprop="url">Executors详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-05T15:24:34+08:00">
-                2018-08-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/05/Executors详解/" class="leancloud_visitors" data-flag-title="Executors详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Excutors框架的类与接口"><a href="#Excutors框架的类与接口" class="headerlink" title="Excutors框架的类与接口"></a>Excutors框架的类与接口</h4><p><img src="https://i.imgur.com/F7UbYhu.png" alt=""></p>
-<h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p>
-<ul>
-<li><p>FixedThreadPool</p>
-</li>
-<li><p>SingleThreadPool</p>
-</li>
-<li><p>CachedThreadPool</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/04/线程池/" itemprop="url">线程池</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T20:12:47+08:00">
-                2018-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/04/线程池/" class="leancloud_visitors" data-flag-title="线程池">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
-<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
-<p>3.提高线程的可管理性。</p>
-<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
-<pre><code>public static void start(){
-    ServerSocket serverSocket = new ServerSocket(port);
-    Socket socket = null;
-    while ((socket = serverSocket.accept() != null)){
-        thread.execute(new HttpRequestHandler(socket));
-    }
-}
-分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
-</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
-<p>1.corePoolSize:线程池中线程的基本数量。</p>
-<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize</p>
-<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
-<p>4.keepAliveTime:工作线程空闲时的存活时间。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/基数排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/04/基数排序/" itemprop="url">基数排序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T14:04:16+08:00">
-                2018-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排序/" itemprop="url" rel="index">
-                    <span itemprop="name">排序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/04/基数排序/" class="leancloud_visitors" data-flag-title="基数排序">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="桶的思想？"><a href="#桶的思想？" class="headerlink" title="桶的思想？"></a>桶的思想？</h4><p><img src="https://i.imgur.com/5NeTrG5.png" alt=""></p>
-<pre><code>public class RadixSort {
-
-public static void radixSort(int[] a,int k){
-    int[] counter = new int[10];
-    int[][] container = new int[10][a.length];
-    int n = 1;
-    int t = 0;
-    while (n &lt; k){
-        for(int num : a){
-            int radix = (num/n)%10;
-            container[radix][counter[radix]] = num;
-            counter[radix]++;
-        }
-
-        for(int i = 0;i &lt; 10;i++){
-                if(counter[i] != 0){
-                    for(int j = 0;j&lt;counter[i];j++){
-                        a[t] = container[i][j];
-                        t++;
-                    }
-                }
-            counter[i] = 0;
-        }
-
-        t = 0;
-        n *= 10;
-    }
-}
-
-public static void main(String[] args){
-    int[] a = {1,21,32,45,687,89,43,44,95};
-    RadixSort.radixSort(a,1000);
-    System.out.println(Arrays.toString(a));
-}
-}
-</code></pre><p><strong>时间复杂度：</strong></p>
-<pre><code>时间复杂度 = [放桶的时间(O(n)) + 取桶里面的元素(O(n))]*位数
-
-     = O(d*n) (d为常数)
-
-空间复杂度 = O(n * 10 + 10) = O(n)
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/计数排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/04/计数排序/" itemprop="url">计数排序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T12:32:23+08:00">
-                2018-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排序/" itemprop="url" rel="index">
-                    <span itemprop="name">排序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/04/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>核心思想：</strong>哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。</p>
-<pre><code>public class CountSort {
-
-//数组数字在0 ~ k之间
-public static int[] countSort(int[] a,int k){
-
-    int[] elementCounter = new int[k+1];
-
-    for(int i = 0;i&lt;a.length;i++){
-        elementCounter[a[i]]++;
-    }
-
-    //构造计数数组(即小于等于该元素的个数)
-    int preSum = elementCounter[0];
-    for(int j = 1;j&lt;elementCounter.length;j++){
-        elementCounter[j] = preSum + elementCounter[j];
-        preSum = elementCounter[j];
-    }
-
-
-    int[] result = new int[a.length];
-
-    //从原数组末尾开始遍历
-    for(int i = a.length-1;i&gt;=0;i--){
-        result[elementCounter[a[i]]-1] = a[i];
-        elementCounter[a[i]]--;
-    }
-
-    return result;
-}
-
-public static void main(String[] args){
-    int[] a = {6,5,4,3,2,1};
-    int[] result = new int[a.length];
-    result = CountSort.countSort(a,6);
-    System.out.println(Arrays.toString(result));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2577,7 +2660,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

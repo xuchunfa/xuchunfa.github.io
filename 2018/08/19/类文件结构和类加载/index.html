@@ -89,7 +89,7 @@
 <meta property="og:description" content="类文件结构  1.java方法体中的代码经过javac编译器后，变成字节码存储在方法表的Code属性中。 2.java虚拟机通过对照指令表，将字节码翻译成了机器能够认识的机器指令。 对于2操作的规范化说法如下： java虚拟机的解释器从字节码流取出操作码，执行操作码所定义的操作。  字节码指令集：由一个字节长度的、代表着某种特定操作含义的数字（称为操作码，Opcode）以及跟随其后的零至多个代表">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/fKQXKAa.jpg">
-<meta property="og:updated_time" content="2018-08-23T13:15:33.219Z">
+<meta property="og:updated_time" content="2018-08-25T09:28:27.085Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="类文件结构和类加载">
 <meta name="twitter:description" content="类文件结构  1.java方法体中的代码经过javac编译器后，变成字节码存储在方法表的Code属性中。 2.java虚拟机通过对照指令表，将字节码翻译成了机器能够认识的机器指令。 对于2操作的规范化说法如下： java虚拟机的解释器从字节码流取出操作码，执行操作码所定义的操作。  字节码指令集：由一个字节长度的、代表着某种特定操作含义的数字（称为操作码，Opcode）以及跟随其后的零至多个代表">
@@ -450,7 +450,8 @@
 <li>解析</li>
 </ul>
 <p>1.虚拟机将符号引用替换为直接引用。</p>
-<p>2.针对类或接口、字段、类方法、接口方法、方法类型、方法句柄以及调用点限定符。</p>
+<pre><code>例如：将静态方法、私有方法、实例构造器、父类方法的符号引用直接解析成直接引用。
+</code></pre><p>2.针对类或接口、字段、类方法、接口方法、方法类型、方法句柄以及调用点限定符。</p>
 <ul>
 <li>初始化</li>
 </ul>
@@ -466,13 +467,19 @@
 <li><p>启动类加载器</p>
 <pre><code>1.System.class.getClassLoader()结果为null的原因，这并不表示System这个类没有类加载器，
 而是它的加载器比较特殊，是BootstrapClassLoader.
+
+2.加载存放在JAVA_HOME/lib目录中的类库或被-Xbootclasspath参数指定的路径。
 </code></pre></li>
 </ul>
 <ul>
 <li><p>拓展类加载器</p>
-</li>
+<pre><code>1.加载JAVA_HOME/lib/ext目录或被java.ext.dirs系统变量指定的类库。
+</code></pre></li>
+</ul>
+<ul>
 <li><p>应用程序类加载器(系统类加载器)</p>
-</li>
+<pre><code>1.加载用户类路径（classpath）下的类库。
+</code></pre></li>
 </ul>
 <h4 id="双亲委派模型？"><a href="#双亲委派模型？" class="headerlink" title="双亲委派模型？"></a>双亲委派模型？</h4><p><img src="https://i.imgur.com/fKQXKAa.jpg" alt=""></p>
 <p>1.检查类是否已经加载。</p>
@@ -516,7 +523,9 @@
         return c;
     }
 }
-</code></pre>
+</code></pre><h3 id="类加载过程的总结"><a href="#类加载过程的总结" class="headerlink" title="类加载过程的总结"></a>类加载过程的总结</h3><p>当有触发类加载的条件时，会将java字节码以二进制流的形式装载到java虚拟机内存中去，并且把二进制流按字节码规范解析成jvm内部运行时的数据结构。最终解析完成的结果是生成了类访问的入口对象java.lang.Class,通过该对象可以访问类在方法区的内容。</p>
+<p>然后会去验证和校验二进制流的合法性，接着发生“赋零”的初始化，紧接着就是将常量池中类的符号引用替代成直接引用。最后发生的才是程序指定的初始化内容。</p>
+
       
     </div>
     
@@ -640,7 +649,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -718,7 +727,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#双亲委派模型？"><span class="nav-number">1.</span> <span class="nav-text">双亲委派模型？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#双亲委派模型？"><span class="nav-number">1.</span> <span class="nav-text">双亲委派模型？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类加载过程的总结"><span class="nav-number"></span> <span class="nav-text">类加载过程的总结</span></a></div>
             
 
           </div>

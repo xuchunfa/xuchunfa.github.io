@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="在O(N)时间内寻找最大(或最小)的K个数？   Random Select:  本质上是求第K大或第K小的那个数。 1.如果是求最小的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot小的值，右边比pivot大。  2.如果是求最大的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot大的值，右边比pivot小。 如果数组中整数的取值范围不大的话，可以用哈希表的方法解">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-21T09:10:12.369Z">
+<meta property="og:updated_time" content="2018-08-24T06:42:24.011Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于TopK问题的详解">
 <meta name="twitter:description" content="在O(N)时间内寻找最大(或最小)的K个数？   Random Select:  本质上是求第K大或第K小的那个数。 1.如果是求最小的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot小的值，右边比pivot大。  2.如果是求最大的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot大的值，右边比pivot小。 如果数组中整数的取值范围不大的话，可以用哈希表的方法解">
@@ -432,7 +432,80 @@ return v;
 <li>重复步骤3一直到数据读取完</li>
 <li>将数组中的元素全部相加，得到结果</li>
 </ol>
+<p>代码如下：</p>
+<pre><code>public class TopKProblem {
 
+//时间复杂度:(n-K)*logK 空间复杂度:O(K)
+public static int[] createKtopHeap(int[] num,int k){
+    int length = num.length;
+    int i = 0;
+
+    //通过堆维护Topk元素
+    int[] KNumberHeap = new int[k];
+
+    if(k &gt;= length){
+        k = length;
+        return num;
+    }
+
+    //初始化有k个元素的堆
+    for(; i &lt; k; i++){
+        KNumberHeap[i] = num[i];
+    }
+
+    //构建小顶堆
+    for(int j = KNumberHeap.length/2-1;j &gt;= 0;j--){
+        createMinHeap(KNumberHeap,j,KNumberHeap.length);
+    }
+
+    //从第k+1个元素开始循环,每次都与堆顶元素(K个元素中的最小值)比较,大于就替代然后再调整.
+    for(;i &lt; length;i++){
+        if(num[i] &gt; KNumberHeap[0]){
+            KNumberHeap[0] = num[i];
+            createMinHeap(KNumberHeap,0,KNumberHeap.length);
+        }
+    }
+
+    return KNumberHeap;
+}
+
+private static void createMinHeap(int[] a, int i , int len) {
+    int father = a[i];
+    int j;//j代表子结点坐标 i代表父结点坐标
+
+    while(2*i + 1 &lt; len){//如果i结点在堆顶上的话,需要自顶向下调整
+
+        j = 2*i + 1;
+
+        if(j + 1 &lt; len &amp;&amp; a[j] &gt; a[j+1] )
+            j++;
+
+        if(a[j] &lt; father){
+            a[i] = a[j];
+            i = j;
+        }else {//不用调整的话就不用再向下循环了,子节点都已经调整好了
+            break;
+        }
+    }
+
+    //找到最终位置
+    a[i] = father;
+}
+
+public static void main(String[] args){
+    Random random = new Random();
+    int[] num = new int[15];
+
+    for(int i = 0;i &lt; num.length;i++){
+        num[i] = random.nextInt(50);
+    }
+
+    System.out.println(Arrays.toString(num));
+
+    System.out.println(Arrays.toString(createKtopHeap(num,5)));
+}
+}
+</code></pre>
       
     </div>
     
@@ -547,7 +620,7 @@ return v;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

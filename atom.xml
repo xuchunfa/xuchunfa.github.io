@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-23T07:21:52.172Z</updated>
+  <updated>2018-08-25T10:27:47.880Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -17,13 +17,118 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>字符串匹配算法</title>
+    <link href="http://www.xuchunfa.cn/2018/08/25/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D%E7%AE%97%E6%B3%95/"/>
+    <id>http://www.xuchunfa.cn/2018/08/25/字符串匹配算法/</id>
+    <published>2018-08-25T10:26:54.000Z</published>
+    <updated>2018-08-25T10:27:47.880Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>KMP算法</li></ul><ul><li>BM算法</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;KMP算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;BM算法&lt;/li&gt;
+&lt;/ul&gt;
+
+      
+    
+    </summary>
+    
+      <category term="字符串" scheme="http://www.xuchunfa.cn/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>虚拟机字节码执行引擎</title>
+    <link href="http://www.xuchunfa.cn/2018/08/24/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E/"/>
+    <id>http://www.xuchunfa.cn/2018/08/24/虚拟机字节码执行引擎/</id>
+    <published>2018-08-24T12:48:13.000Z</published>
+    <updated>2018-08-25T12:25:58.362Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>栈帧</p></blockquote><ul><li><p>局部变量表</p><p>  1.一个局部变量定义了但没有赋初值是不可以使用的.</p></li><li><p>操作数栈</p></li><li><p>动态连接</p></li><li><p>方法返回地址</p><p>  1.方法退出等效于当前栈帧出栈.如返回果有值的话,则将返回值压入调用者栈帧的操作数栈中.</p></li><li><p>附加信息</p></li></ul><p>其中动态连接,方法返回地址,附加信息统称为<strong>栈帧信息</strong>.</p><blockquote><p>方法调用</p></blockquote><p>一切方法调用在Class文件里面存储的都是符号引用,不是方法在实际运行时内存布局中的入口地址.</p><ul><li><p>解析</p><pre><code>方法在程序真正运行之前就有一个可确定的调用版本, 并且这个方法的调用版本在运行期间不可改变.符合以上条件的方法:1.静态方法2.私有方法3.实例构造器4.父类方法它们在类加载的时候就会把符号引用解析成直接引用.</code></pre></li></ul><ul><li>分派</li></ul><p>1.静态分派(方法重载)</p><p>重载：“编译期绑定”，也叫编译期多态。方法重载主要是类内部多态性的一个体现。 </p><p>例如:</p><pre><code>public class O{static class A{}static class B extends A{}static class C extends A{}public void a(A a){    System.out.println(&quot;A method&quot;);}public void a(B b){    System.out.println(&quot;B method&quot;);}public void a(C c){    System.out.println(&quot;C method&quot;);}public static void main(String[] args){    O o = new O();    A b = new B();    A c = new C();    o.a(b);    o.a(c);}}</code></pre><p>上述代码的结果:</p><p>A method</p><p>A method</p><p><strong>虚拟机在重载时是通过参数的静态类型而不是实际类型作为判断依据.</strong></p><p>2.动态分派（方法重写）</p><p>重写：“运行期绑定”，也叫运行期多态。方法重写是父类与子类之间多态性的体现。</p><pre><code>在运行期间根据实际类型确定方法执行版本的分派。</code></pre><p>例如：</p><pre><code>class Dog{public void bark(){    System.out.println(&quot;woof &quot;);}}class Hound extends Dog{public void sniff(){    System.out.println(&quot;sniff &quot;);}public void bark(){    System.out.println(&quot;bowl&quot;);}}public class OverridingTest{public static void main(String [] args){    Dog dog = new Hound();    dog.bark();}}    </code></pre><p>输出：bowl</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;栈帧&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;局部变量表&lt;/p&gt;
+&lt;p&gt;  1.一个局部变量定义了但没有赋初值是不可以使用的.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;操作数栈&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;动态连接&lt;/p&gt;
+&lt;/
+      
+    
+    </summary>
+    
+      <category term="java虚拟机" scheme="http://www.xuchunfa.cn/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数组中和为m的所有组合</title>
+    <link href="http://www.xuchunfa.cn/2018/08/24/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%92%8C%E4%B8%BAm%E7%9A%84%E6%89%80%E6%9C%89%E7%BB%84%E5%90%88/"/>
+    <id>http://www.xuchunfa.cn/2018/08/24/数组中和为m的所有组合/</id>
+    <published>2018-08-24T10:09:40.000Z</published>
+    <updated>2018-08-24T10:09:40.239Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>随机版本的快排</title>
+    <link href="http://www.xuchunfa.cn/2018/08/24/%E9%9A%8F%E6%9C%BA%E7%89%88%E6%9C%AC%E7%9A%84%E5%BF%AB%E6%8E%92/"/>
+    <id>http://www.xuchunfa.cn/2018/08/24/随机版本的快排/</id>
+    <published>2018-08-24T04:24:16.000Z</published>
+    <updated>2018-08-24T04:25:37.975Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>public class QuickSort {public static void swap(int[] a,int i,int j){    int temp;    temp = a[i];    a[i] = a[j];    a[j] = temp;}public static int partition(int[] a,int start,int end){    if(a == null || start &lt; 0 || end &gt; a.length-1){        throw new RuntimeException(&quot;参数不合法&quot;);    }    //轴值在[start,end]区间内随机生成,然后把轴值交换到数组中第一位    rand_pivot(a,start,end);    int i = start;    int j = end;    int pivot = a[start];    while (i &lt; j){        while (i &lt; j &amp;&amp; a[j] &gt;= pivot){            j--;        }        //a[i] = a[j];//这种写法时条件不能为a[j] &gt; pivot必须要 &gt;=        swap(a,i,j);        while (i &lt; j &amp;&amp; a[i] &lt;= pivot){            i++;        }        //a[j] = a[i];        swap(a,j,i);    }    //a[i] 或者 a[j]    //a[i] = pivot;    return i;}//随机化的选择主元private static void rand_pivot(int[] a, int start, int end) {    Random random = new Random();    int rand = start + random.nextInt(end - start + 1);//随机函数生成的整数区间在[0,length)    //交换第一个数和随机选出来的数    int temp = a[start];    a[start] = a[rand];    a[rand] = temp;}public static void quickSort(int[] a,int start,int end){    if(start &gt;= end)        return;    int index = partition(a,start,end);    quickSort(a,start,index-1);    quickSort(a,index+1,end);    /*int index;    if(start &lt; end){        index = partition(a,start,end);        quickSort(a,start,index-1);        quickSort(a,index+1,end);    }*/}public static void main(String[] args){    int[] a = {2,4,5,1,1,2,7,6,3};    QuickSort.quickSort(a,0,a.length-1);    System.out.println(Arrays.toString(a));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;pre&gt;&lt;code&gt;public class QuickSort {
+
+public static void swap(int[] a,int i,int j){
+    int temp;
+    temp = a[i];
+    a[i] = a[j];
+    a[j] 
+      
+    
+    </summary>
+    
+      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>java动态绑定</title>
     <link href="http://www.xuchunfa.cn/2018/08/23/java%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/"/>
     <id>http://www.xuchunfa.cn/2018/08/23/java动态绑定/</id>
     <published>2018-08-23T07:04:48.000Z</published>
-    <updated>2018-08-23T07:21:52.172Z</updated>
+    <updated>2018-08-24T13:52:44.349Z</updated>
     
-    <content type="html"><![CDATA[<blockquote><p>动态绑定(后期绑定)和前期绑定？</p></blockquote><p>1.普通的方法我们看new后面的是什么类型；(后期绑定)</p><p>2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定)</p><p>3.final，static，private和构造方法是前期绑定的。</p><p>4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。</p>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>动态绑定(后期绑定)和前期绑定？</p></blockquote><p>1.普通的方法我们看new后面的是什么类型；(后期绑定)</p><p>2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定)</p><p>3.final，static，private和构造方法是前期绑定的。</p><p>4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。</p><pre><code>public class Father {protected String name = &quot;父亲属性&quot;;}public class Son extends Father {    protected String name = &quot;儿子属性&quot;;    public static void main(String[] args) {        Father sample = new Son();        System.out.println(&quot;调用的属性：&quot; + sample.name);}}</code></pre><p>上述代码的运行结果: <strong>父亲属性</strong></p><pre><code>public class Father {protected String name = &quot;父亲属性&quot;;public String getName() {    return name;}}　　public class Son extends Father {protected String name = &quot;儿子属性&quot;;public String getName() {    return name;}public static void main(String[] args) {    Father sample = new Son();    System.out.println(&quot;调用的属性:&quot; + sample.getName());}}</code></pre><p>上述代码的运行结果: <strong>儿子属性</strong></p>]]></content>
     
     <summary type="html">
     
@@ -49,9 +154,9 @@
     <link href="http://www.xuchunfa.cn/2018/08/21/%E5%85%B3%E4%BA%8ETopK%E9%97%AE%E9%A2%98%E7%9A%84%E8%AF%A6%E8%A7%A3/"/>
     <id>http://www.xuchunfa.cn/2018/08/21/关于TopK问题的详解/</id>
     <published>2018-08-21T07:21:19.000Z</published>
-    <updated>2018-08-21T09:10:12.369Z</updated>
+    <updated>2018-08-24T06:42:24.011Z</updated>
     
-    <content type="html"><![CDATA[<blockquote><p>在O(N)时间内寻找最大(或最小)的K个数？</p></blockquote><ul><li>Random Select:</li></ul><p>本质上是求第K大或第K小的那个数。</p><pre><code>1.如果是求最小的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot小的值，右边比pivot大。2.如果是求最大的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot大的值，右边比pivot小。</code></pre><p>如果数组中整数的取值范围不大的话，可以用哈希表的方法解决。</p><p>思路：用一个计数数组来记录每个数字出现的次数。</p><pre><code>时间复杂度：0(n + MAXN)for(sumCount = 0, v = MAXN-1; v &gt;= 0; v--){    sumCount += count[v];    if(sumCount &gt;= K)        break;}return v;</code></pre><ul><li>堆排序解决</li></ul><p>例如：2亿个整数中求最大的100万之和？</p><p>思路：</p><ol><li>首先建立一个容量为100万（Top K）的int数组，从文件读取整数填充。</li><li>利用堆维护该100万条记录（确保堆顶元素为最小值）</li><li>从文件中读取一个整数与堆顶元素比较，如果大于堆顶元素则替换该元素，并调整堆的结构。</li><li>重复步骤3一直到数据读取完</li><li>将数组中的元素全部相加，得到结果</li></ol>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>在O(N)时间内寻找最大(或最小)的K个数？</p></blockquote><ul><li>Random Select:</li></ul><p>本质上是求第K大或第K小的那个数。</p><pre><code>1.如果是求最小的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot小的值，右边比pivot大。2.如果是求最大的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot大的值，右边比pivot小。</code></pre><p>如果数组中整数的取值范围不大的话，可以用哈希表的方法解决。</p><p>思路：用一个计数数组来记录每个数字出现的次数。</p><pre><code>时间复杂度：0(n + MAXN)for(sumCount = 0, v = MAXN-1; v &gt;= 0; v--){    sumCount += count[v];    if(sumCount &gt;= K)        break;}return v;</code></pre><ul><li>堆排序解决</li></ul><p>例如：2亿个整数中求最大的100万之和？</p><p>思路：</p><ol><li>首先建立一个容量为100万（Top K）的int数组，从文件读取整数填充。</li><li>利用堆维护该100万条记录（确保堆顶元素为最小值）</li><li>从文件中读取一个整数与堆顶元素比较，如果大于堆顶元素则替换该元素，并调整堆的结构。</li><li>重复步骤3一直到数据读取完</li><li>将数组中的元素全部相加，得到结果</li></ol><p>代码如下：</p><pre><code>public class TopKProblem {//时间复杂度:(n-K)*logK 空间复杂度:O(K)public static int[] createKtopHeap(int[] num,int k){    int length = num.length;    int i = 0;    //通过堆维护Topk元素    int[] KNumberHeap = new int[k];    if(k &gt;= length){        k = length;        return num;    }    //初始化有k个元素的堆    for(; i &lt; k; i++){        KNumberHeap[i] = num[i];    }    //构建小顶堆    for(int j = KNumberHeap.length/2-1;j &gt;= 0;j--){        createMinHeap(KNumberHeap,j,KNumberHeap.length);    }    //从第k+1个元素开始循环,每次都与堆顶元素(K个元素中的最小值)比较,大于就替代然后再调整.    for(;i &lt; length;i++){        if(num[i] &gt; KNumberHeap[0]){            KNumberHeap[0] = num[i];            createMinHeap(KNumberHeap,0,KNumberHeap.length);        }    }    return KNumberHeap;}private static void createMinHeap(int[] a, int i , int len) {    int father = a[i];    int j;//j代表子结点坐标 i代表父结点坐标    while(2*i + 1 &lt; len){//如果i结点在堆顶上的话,需要自顶向下调整        j = 2*i + 1;        if(j + 1 &lt; len &amp;&amp; a[j] &gt; a[j+1] )            j++;        if(a[j] &lt; father){            a[i] = a[j];            i = j;        }else {//不用调整的话就不用再向下循环了,子节点都已经调整好了            break;        }    }    //找到最终位置    a[i] = father;}public static void main(String[] args){    Random random = new Random();    int[] num = new int[15];    for(int i = 0;i &lt; num.length;i++){        num[i] = random.nextInt(50);    }    System.out.println(Arrays.toString(num));    System.out.println(Arrays.toString(createKtopHeap(num,5)));}}</code></pre>]]></content>
     
     <summary type="html">
     
@@ -79,9 +184,9 @@
     <link href="http://www.xuchunfa.cn/2018/08/20/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%AC%ACk%E5%A4%A7%E7%9A%84%E6%95%B0/"/>
     <id>http://www.xuchunfa.cn/2018/08/20/数组中第k大的数/</id>
     <published>2018-08-20T11:42:39.000Z</published>
-    <updated>2018-08-20T13:49:27.381Z</updated>
+    <updated>2018-08-24T07:21:36.776Z</updated>
     
-    <content type="html"><![CDATA[<blockquote><p>多种解法开拓思路</p></blockquote><p>1.把数组从大到小进行排序，再遍历到第k个元素。</p><pre><code>时间复杂度：O(nlogn+k).</code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p><pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).</code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p><pre><code>时间复杂度：O(n)</code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p><p>5.通过优先队列实现,底层原理基于4方法。</p><pre><code>时间复杂度：O(n)空间复杂度：O(n)</code></pre><h3 id="该题目的变形版本"><a href="#该题目的变形版本" class="headerlink" title="该题目的变形版本?"></a>该题目的变形版本?</h3><blockquote><p>N个数中最大的第K个不同的数？</p></blockquote><p>例如：5，4，4，3 第三大的数是3,而不是4</p><blockquote><p>找第k到第m大的数？</p></blockquote>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>多种解法开拓思路</p></blockquote><p>1.把数组从大到小进行排序，再遍历到第k个元素。</p><pre><code>时间复杂度：O(nlogn+k).</code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p><pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).</code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p><pre><code>时间复杂度：O(n).详细证明见算法导论</code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p><p>5.通过优先队列实现,底层原理基于4方法。</p><pre><code>时间复杂度：O(n)空间复杂度：O(n)</code></pre><h3 id="该题目的变形版本"><a href="#该题目的变形版本" class="headerlink" title="该题目的变形版本?"></a>该题目的变形版本?</h3><blockquote><p>N个数中最大的第K个不同的数？</p></blockquote><p>例如：5，4，4，3 第三大的数是3,而不是4</p><blockquote><p>找第k到第m大的数？</p></blockquote>]]></content>
     
     <summary type="html">
     
@@ -107,9 +212,9 @@
     <link href="http://www.xuchunfa.cn/2018/08/19/%E7%B1%BB%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%92%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD/"/>
     <id>http://www.xuchunfa.cn/2018/08/19/类文件结构和类加载/</id>
     <published>2018-08-19T11:55:10.000Z</published>
-    <updated>2018-08-23T13:15:33.219Z</updated>
+    <updated>2018-08-25T09:28:27.085Z</updated>
     
-    <content type="html"><![CDATA[<blockquote><p>类文件结构</p></blockquote><p>1.java方法体中的代码经过javac编译器后，变成字节码存储在方法表的Code属性中。</p><p>2.java虚拟机通过对照指令表，将字节码翻译成了机器能够认识的机器指令。</p><p>对于2操作的规范化说法如下：</p><pre><code>java虚拟机的解释器从字节码流取出操作码，执行操作码所定义的操作。字节码指令集：由一个字节长度的、代表着某种特定操作含义的数字（称为操作码，Opcode）以及跟随其后的零至多个代表此操作所需参数（称为操作数，Operands）而构成。操作码的长度：1字节。操作码的种数不超过256.</code></pre><blockquote><p>类加载机制</p></blockquote><p>定义：把描述类的数据从class文件加载到内存，并对数据进行校验、转换解析和初始化,最终形成可以被虚拟机直接使用的java类型。</p><p>1.类加载的时机</p><ul><li><p>遇到下面三种情况</p><p>  1.new实例化对象时</p><p>  2.读取或设置一个类的静态字段时</p><p>  3.调用一个类的静态方法时</p></li><li><p>java.lang.reflect包的方法对类进行反射调用时</p></li><li><p>准备初始化子类时会触发父类的初始化</p></li></ul><blockquote><p>类加载过程</p></blockquote><ul><li>加载</li></ul><p>1.获取类的二进制字节流</p><p>2.转化为方法区的运行时数据结构</p><p>3.内存区生成java.lang.Class对象</p><p>连接阶段包括：验证、准备和解析</p><ul><li>验证</li></ul><p>1.是基于二进制字节流进行的</p><ul><li>准备阶段</li></ul><p>1.为类变量(static变量)分配内存以及初始化。</p><ul><li>解析</li></ul><p>1.虚拟机将符号引用替换为直接引用。</p><p>2.针对类或接口、字段、类方法、接口方法、方法类型、方法句柄以及调用点限定符。</p><ul><li>初始化</li></ul><p>1.执行类构造器<clinit>()方法的过程。</clinit></p><p>2.<clinit>()方法由编译器自动收集类中的所有类变量的复制动作和静态语句块。</clinit></p><blockquote><p>类加载器</p></blockquote><p>1.类加载器干啥用的？</p><pre><code>通过一个类的全限定名来获取描述此类的二进制字节流。</code></pre><p>2.类加载器的种类？</p><ul><li><p>启动类加载器</p><pre><code>1.System.class.getClassLoader()结果为null的原因，这并不表示System这个类没有类加载器，而是它的加载器比较特殊，是BootstrapClassLoader.</code></pre></li></ul><ul><li><p>拓展类加载器</p></li><li><p>应用程序类加载器(系统类加载器)</p></li></ul><h4 id="双亲委派模型？"><a href="#双亲委派模型？" class="headerlink" title="双亲委派模型？"></a>双亲委派模型？</h4><p><img src="https://i.imgur.com/fKQXKAa.jpg" alt=""></p><p>1.检查类是否已经加载。</p><p>2.如果没加载就逐层递归到父类。递归结束的条件是parent==null.</p><p>3.如果最上层Bootstrap都还没找到的话，则出栈，一层层调用自己的findclass方法。</p><p>代码如下：</p><pre><code>protected Class&lt;?&gt; loadClass(String name, boolean resolve)    throws ClassNotFoundException{    synchronized (getClassLoadingLock(name)) {        // First, check if the class has already been loaded        Class&lt;?&gt; c = findLoadedClass(name);        if (c == null) {            long t0 = System.nanoTime();            try {                if (parent != null) {                    c = parent.loadClass(name, false);                } else {                    c = findBootstrapClassOrNull(name);                }            } catch (ClassNotFoundException e) {                // ClassNotFoundException thrown if class not found                // from the non-null parent class loader            }            if (c == null) {                // If still not found, then invoke findClass in order                // to find the class.                long t1 = System.nanoTime();                c = findClass(name);                // this is the defining class loader; record the stats                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);                sun.misc.PerfCounter.getFindClasses().increment();            }        }        if (resolve) {            resolveClass(c);        }        return c;    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>类文件结构</p></blockquote><p>1.java方法体中的代码经过javac编译器后，变成字节码存储在方法表的Code属性中。</p><p>2.java虚拟机通过对照指令表，将字节码翻译成了机器能够认识的机器指令。</p><p>对于2操作的规范化说法如下：</p><pre><code>java虚拟机的解释器从字节码流取出操作码，执行操作码所定义的操作。字节码指令集：由一个字节长度的、代表着某种特定操作含义的数字（称为操作码，Opcode）以及跟随其后的零至多个代表此操作所需参数（称为操作数，Operands）而构成。操作码的长度：1字节。操作码的种数不超过256.</code></pre><blockquote><p>类加载机制</p></blockquote><p>定义：把描述类的数据从class文件加载到内存，并对数据进行校验、转换解析和初始化,最终形成可以被虚拟机直接使用的java类型。</p><p>1.类加载的时机</p><ul><li><p>遇到下面三种情况</p><p>  1.new实例化对象时</p><p>  2.读取或设置一个类的静态字段时</p><p>  3.调用一个类的静态方法时</p></li><li><p>java.lang.reflect包的方法对类进行反射调用时</p></li><li><p>准备初始化子类时会触发父类的初始化</p></li></ul><blockquote><p>类加载过程</p></blockquote><ul><li>加载</li></ul><p>1.获取类的二进制字节流</p><p>2.转化为方法区的运行时数据结构</p><p>3.内存区生成java.lang.Class对象</p><p>连接阶段包括：验证、准备和解析</p><ul><li>验证</li></ul><p>1.是基于二进制字节流进行的</p><ul><li>准备阶段</li></ul><p>1.为类变量(static变量)分配内存以及初始化。</p><ul><li>解析</li></ul><p>1.虚拟机将符号引用替换为直接引用。</p><pre><code>例如：将静态方法、私有方法、实例构造器、父类方法的符号引用直接解析成直接引用。</code></pre><p>2.针对类或接口、字段、类方法、接口方法、方法类型、方法句柄以及调用点限定符。</p><ul><li>初始化</li></ul><p>1.执行类构造器<clinit>()方法的过程。</clinit></p><p>2.<clinit>()方法由编译器自动收集类中的所有类变量的复制动作和静态语句块。</clinit></p><blockquote><p>类加载器</p></blockquote><p>1.类加载器干啥用的？</p><pre><code>通过一个类的全限定名来获取描述此类的二进制字节流。</code></pre><p>2.类加载器的种类？</p><ul><li><p>启动类加载器</p><pre><code>1.System.class.getClassLoader()结果为null的原因，这并不表示System这个类没有类加载器，而是它的加载器比较特殊，是BootstrapClassLoader.2.加载存放在JAVA_HOME/lib目录中的类库或被-Xbootclasspath参数指定的路径。</code></pre></li></ul><ul><li><p>拓展类加载器</p><pre><code>1.加载JAVA_HOME/lib/ext目录或被java.ext.dirs系统变量指定的类库。</code></pre></li></ul><ul><li><p>应用程序类加载器(系统类加载器)</p><pre><code>1.加载用户类路径（classpath）下的类库。</code></pre></li></ul><h4 id="双亲委派模型？"><a href="#双亲委派模型？" class="headerlink" title="双亲委派模型？"></a>双亲委派模型？</h4><p><img src="https://i.imgur.com/fKQXKAa.jpg" alt=""></p><p>1.检查类是否已经加载。</p><p>2.如果没加载就逐层递归到父类。递归结束的条件是parent==null.</p><p>3.如果最上层Bootstrap都还没找到的话，则出栈，一层层调用自己的findclass方法。</p><p>代码如下：</p><pre><code>protected Class&lt;?&gt; loadClass(String name, boolean resolve)    throws ClassNotFoundException{    synchronized (getClassLoadingLock(name)) {        // First, check if the class has already been loaded        Class&lt;?&gt; c = findLoadedClass(name);        if (c == null) {            long t0 = System.nanoTime();            try {                if (parent != null) {                    c = parent.loadClass(name, false);                } else {                    c = findBootstrapClassOrNull(name);                }            } catch (ClassNotFoundException e) {                // ClassNotFoundException thrown if class not found                // from the non-null parent class loader            }            if (c == null) {                // If still not found, then invoke findClass in order                // to find the class.                long t1 = System.nanoTime();                c = findClass(name);                // this is the defining class loader; record the stats                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);                sun.misc.PerfCounter.getFindClasses().increment();            }        }        if (resolve) {            resolveClass(c);        }        return c;    }}</code></pre><h3 id="类加载过程的总结"><a href="#类加载过程的总结" class="headerlink" title="类加载过程的总结"></a>类加载过程的总结</h3><p>当有触发类加载的条件时，会将java字节码以二进制流的形式装载到java虚拟机内存中去，并且把二进制流按字节码规范解析成jvm内部运行时的数据结构。最终解析完成的结果是生成了类访问的入口对象java.lang.Class,通过该对象可以访问类在方法区的内容。</p><p>然后会去验证和校验二进制流的合法性，接着发生“赋零”的初始化，紧接着就是将常量池中类的符号引用替代成直接引用。最后发生的才是程序指定的初始化内容。</p>]]></content>
     
     <summary type="html">
     
@@ -431,107 +536,6 @@ public static ListNode meetNode(ListNode head){
     </summary>
     
       <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>打印从1到最大的n位数</title>
-    <link href="http://www.xuchunfa.cn/2018/08/11/%E6%89%93%E5%8D%B0%E4%BB%8E1%E5%88%B0%E6%9C%80%E5%A4%A7%E7%9A%84n%E4%BD%8D%E6%95%B0/"/>
-    <id>http://www.xuchunfa.cn/2018/08/11/打印从1到最大的n位数/</id>
-    <published>2018-08-11T12:23:13.000Z</published>
-    <updated>2018-08-11T12:36:46.083Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="打印从1到最大的n位数？"><a href="#打印从1到最大的n位数？" class="headerlink" title="打印从1到最大的n位数？"></a>打印从1到最大的n位数？</h4><pre><code>public class Print1ToMaxOfNdigits {public static void print1ToMaxOfNdigits(int n){    if(n &lt;= 0){        throw new RuntimeException(&quot;参数非法&quot;);    }    char[] nums = new char[n+1];    nums[n] = &apos;\0&apos;;    for(int i = 0;i&lt;10;i++){        nums[0] = (char) (i + &apos;0&apos;);        everyBigitRecursive(nums,n,0);    }}private static void everyBigitRecursive(char[] nums, int length, int index) {    if(index == length-1){        printNum(nums);        return;    }    for(int i = 0;i&lt;10;i++){        //向个位递进        nums[index + 1] = (char) (i + &apos;0&apos;);        everyBigitRecursive(nums,length,index+1);    }}private static void printNum(char[] nums) {    boolean isBegin0 = true;    for(int i = 0;i &lt; nums.length;i++){        if(isBegin0 &amp;&amp; nums[i] != &apos;0&apos;)            isBegin0 = false;        if(!isBegin0){            System.out.print(nums[i]);        }    }    System.out.println();}public static void main(String[] args){    Print1ToMaxOfNdigits.print1ToMaxOfNdigits(10);}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;打印从1到最大的n位数？&quot;&gt;&lt;a href=&quot;#打印从1到最大的n位数？&quot; class=&quot;headerlink&quot; title=&quot;打印从1到最大的n位数？&quot;&gt;&lt;/a&gt;打印从1到最大的n位数？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class Print1ToM
-      
-    
-    </summary>
-    
-      <category term="字符串" scheme="http://www.xuchunfa.cn/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>指数幂运算</title>
-    <link href="http://www.xuchunfa.cn/2018/08/11/%E6%8C%87%E6%95%B0%E5%B9%82%E8%BF%90%E7%AE%97/"/>
-    <id>http://www.xuchunfa.cn/2018/08/11/指数幂运算/</id>
-    <published>2018-08-11T06:58:18.000Z</published>
-    <updated>2018-08-11T06:59:54.472Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><pre><code>public class Pow {public static double pow(double base,int exp){    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp == 0){        return 0.0;    }    //浮点数的比较    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp &lt; 0){        throw new RuntimeException(&quot;参数不合法&quot;);    }    double result;    int absExp;    if(exp &lt; 0){        absExp = -exp;    }else {        absExp = exp;    }    result = calPow(base,absExp);    if(exp &lt; 0){        result = 1.0/result;    }    return result;}private static double calPow(double base, int exp) {    if(exp == 0)        return 1;    if(exp == 1)        return base;    //位移运算代替除法    double result = calPow(base,exp &gt;&gt; 1);    result *= result;    //与运算代替取余    if((exp &amp; 1) == 1){        result *= base;    }    return result;}public static void main(String[] args){    System.out.println(Pow.pow(0,-4));}</code></pre><p>}</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;计算a的n次幂考虑边界情况？&quot;&gt;&lt;a href=&quot;#计算a的n次幂考虑边界情况？&quot; class=&quot;headerlink&quot; title=&quot;计算a的n次幂考虑边界情况？&quot;&gt;&lt;/a&gt;计算a的n次幂考虑边界情况？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class P
-      
-    
-    </summary>
-    
-      <category term="位运算" scheme="http://www.xuchunfa.cn/categories/%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>背包问题</title>
-    <link href="http://www.xuchunfa.cn/2018/08/10/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/"/>
-    <id>http://www.xuchunfa.cn/2018/08/10/背包问题/</id>
-    <published>2018-08-10T08:06:29.000Z</published>
-    <updated>2018-08-15T11:53:10.738Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="https://i.imgur.com/bZL8dQF.png" alt=""></p><p>例如：</p><p>int[] v = {4,2,10,1,2}</p><p>int[] w = {12,1,4,1,2}</p><p>最大价值为：15kg</p><p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p><p>v[i]:第i个物体的价值。</p><p>w[i]:第i个物体的重量。</p><p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p><p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p><blockquote><p>动态规划</p></blockquote><p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p><pre><code>public class ThiefProblem {static int max(int a, int b) { return (a &gt; b)? a : b; }//基于递归的解法static int knapSack(int W, int wt[], int val[], int n){    if (n == 0 || W == 0)        return 0;    // If weight of the nth item is more than Knapsack capacity W, then    // this item cannot be included in the optimal solution    if (wt[n-1] &gt; W)        return knapSack(W, wt, val, n-1);        // Return the maximum of two cases:        // (1) nth item included        // (2) not included    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),            knapSack(W, wt, val, n-1)    );}//基于动态规划的解法static int maxValue(int W, int wt[], int val[], int n){   int[][] itemToValue = new int[n+1][W+1];   for(int i = 0;i&lt;W+1;i++){       itemToValue[0][i] = 0;   }   for(int j = 0;j&lt;n+1;j++){       itemToValue[j][0] = 0;   }   for(int i = 1;i&lt;=n;i++){        for(int j = 1;j&lt;=W;j++){            int weightPlus = j - wt[i-1];            if(weightPlus &lt; 0){                itemToValue[i][j] = itemToValue[i-1][j];            }else {                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);            }        }   }   return itemToValue[n][W];}public static void main(String[] args){    int[] value = {6,3,5,4,6};    int[] weight = {2,3,6,5,7};    int maxWeight = 10;    int n = value.length;    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;解背包问题？&quot;&gt;&lt;a href=&quot;#解背包问题？&quot; class=&quot;headerlink&quot; title=&quot;解背包问题？&quot;&gt;&lt;/a&gt;解背包问题？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/bZL8dQF.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-      
-    
-    </summary>
-    
-      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>CAS的理解</title>
-    <link href="http://www.xuchunfa.cn/2018/08/09/CAS%E7%9A%84%E7%90%86%E8%A7%A3/"/>
-    <id>http://www.xuchunfa.cn/2018/08/09/CAS的理解/</id>
-    <published>2018-08-09T08:01:17.000Z</published>
-    <updated>2018-08-09T08:27:18.059Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>原子操作类</p></blockquote><ol><li>原子更新基本类型</li><li>原子更新数组类型</li><li>原子更新引用</li><li>原子更新属性</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;原子操作类&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ol&gt;
-&lt;li&gt;原子更新基本类型&lt;/li&gt;
-&lt;li&gt;原子更新数组类型&lt;/li&gt;
-&lt;li&gt;原子更新引用&lt;/li&gt;
-&lt;li&gt;原子更新属性&lt;/li&gt;
-&lt;/ol&gt;
-
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
     
     
   </entry>

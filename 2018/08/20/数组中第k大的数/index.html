@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="多种解法开拓思路  1.把数组从大到小进行排序，再遍历到第k个元素。 时间复杂度：O(nlogn+k). 2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。 时间复杂度：O(n*k).所以最坏情况为O(n^2). 3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Po">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-20T13:49:27.381Z">
+<meta property="og:updated_time" content="2018-08-24T07:21:36.776Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数组中第k大的数">
 <meta name="twitter:description" content="多种解法开拓思路  1.把数组从大到小进行排序，再遍历到第k个元素。 时间复杂度：O(nlogn+k). 2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。 时间复杂度：O(n*k).所以最坏情况为O(n^2). 3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Po">
@@ -407,7 +407,7 @@
 </code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p>
 <pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).
 </code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p>
-<pre><code>时间复杂度：O(n)
+<pre><code>时间复杂度：O(n).详细证明见算法导论
 </code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p>
 <p>5.通过优先队列实现,底层原理基于4方法。</p>
 <pre><code>时间复杂度：O(n)
@@ -544,7 +544,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

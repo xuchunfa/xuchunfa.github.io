@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="动态绑定(后期绑定)和前期绑定？  1.普通的方法我们看new后面的是什么类型；(后期绑定) 2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定) 3.final，static，private和构造方法是前期绑定的。 4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。">
+<meta name="description" content="动态绑定(后期绑定)和前期绑定？  1.普通的方法我们看new后面的是什么类型；(后期绑定) 2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定) 3.final，static，private和构造方法是前期绑定的。 4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。 public class Father { protected String name = &amp;quot;父亲属性&amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java动态绑定">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/23/java动态绑定/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="动态绑定(后期绑定)和前期绑定？  1.普通的方法我们看new后面的是什么类型；(后期绑定) 2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定) 3.final，static，private和构造方法是前期绑定的。 4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。">
+<meta property="og:description" content="动态绑定(后期绑定)和前期绑定？  1.普通的方法我们看new后面的是什么类型；(后期绑定) 2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定) 3.final，static，private和构造方法是前期绑定的。 4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。 public class Father { protected String name = &amp;quot;父亲属性&amp;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-23T07:21:52.172Z">
+<meta property="og:updated_time" content="2018-08-24T13:52:44.349Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java动态绑定">
-<meta name="twitter:description" content="动态绑定(后期绑定)和前期绑定？  1.普通的方法我们看new后面的是什么类型；(后期绑定) 2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定) 3.final，static，private和构造方法是前期绑定的。 4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。">
+<meta name="twitter:description" content="动态绑定(后期绑定)和前期绑定？  1.普通的方法我们看new后面的是什么类型；(后期绑定) 2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定) 3.final，static，private和构造方法是前期绑定的。 4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。 public class Father { protected String name = &amp;quot;父亲属性&amp;">
 
 
 
@@ -406,6 +406,39 @@
 <p>2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定)</p>
 <p>3.final，static，private和构造方法是前期绑定的。</p>
 <p>4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。</p>
+<pre><code>public class Father {
+protected String name = &quot;父亲属性&quot;;
+}
+public class Son extends Father {
+    protected String name = &quot;儿子属性&quot;;
+
+    public static void main(String[] args) {
+        Father sample = new Son();
+        System.out.println(&quot;调用的属性：&quot; + sample.name);
+}
+}
+</code></pre><p>上述代码的运行结果: <strong>父亲属性</strong></p>
+<pre><code>public class Father {
+protected String name = &quot;父亲属性&quot;;
+
+public String getName() {
+    return name;
+}
+}　　
+
+public class Son extends Father {
+protected String name = &quot;儿子属性&quot;;
+
+public String getName() {
+    return name;
+}
+
+public static void main(String[] args) {
+    Father sample = new Son();
+    System.out.println(&quot;调用的属性:&quot; + sample.getName());
+}
+}
+</code></pre><p>上述代码的运行结果: <strong>儿子属性</strong></p>
 
       
     </div>
@@ -439,6 +472,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/24/随机版本的快排/" rel="prev" title="随机版本的快排">
+                随机版本的快排 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -517,7 +554,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
