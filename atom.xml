@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-25T10:27:47.880Z</updated>
+  <updated>2018-08-27T08:35:50.271Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,77 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>最长不含重复字符的子字符串</title>
+    <link href="http://www.xuchunfa.cn/2018/08/27/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    <id>http://www.xuchunfa.cn/2018/08/27/最长不含重复字符的子字符串/</id>
+    <published>2018-08-27T08:34:48.000Z</published>
+    <updated>2018-08-27T08:35:50.271Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="最长不含重复字符的子字符串？"><a href="#最长不含重复字符的子字符串？" class="headerlink" title="最长不含重复字符的子字符串？"></a>最长不含重复字符的子字符串？</h4><pre><code>public class MaxDistinctSubString {//返回字符串长度public static String resolve(String str,int length){    if(str == null || length &lt; 0){        throw new RuntimeException(&quot;参数非法&quot;);    }    int distance = 0;    int currentLen = 0;    int maxLen = 0;    StringBuffer sb = new StringBuffer();    //用来存放字符在字符串中的最近访问的index    int[] judgeExisted = new int[256];    for(int j = 0;j &lt; judgeExisted.length;j++){        judgeExisted[j] = -1;    }     int startIndex = 0;    for(int i = 0;i &lt; length;i++){        //所有字符0~255        int index =str.charAt(i);        //字符没出现过        if(judgeExisted[index] &lt; 0){            currentLen = currentLen + 1;        }else {            distance = i - judgeExisted[index];            if(distance &lt;= currentLen){//字符出现在子串的中间                currentLen = distance;            }else {//d &gt; currentLen                currentLen = currentLen + 1;            }        }        //更新出现字符的坐标        judgeExisted[index] = i;        if(currentLen &gt; maxLen){            maxLen = currentLen;            //如果出现了重复的字符的话,i会一直前进但maxLen不会变,所以满足条件时,startIndex已经跳过了出现重复的字符。            startIndex = i + 1 - maxLen;        }    }    return str.substring(startIndex,startIndex + maxLen);}public static void main(String[] args){    String str = &quot;arabcacfrg&quot;;    System.out.println(MaxDistinctSubString.resolve(str,str.length()));}</code></pre><p>}</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;最长不含重复字符的子字符串？&quot;&gt;&lt;a href=&quot;#最长不含重复字符的子字符串？&quot; class=&quot;headerlink&quot; title=&quot;最长不含重复字符的子字符串？&quot;&gt;&lt;/a&gt;最长不含重复字符的子字符串？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class M
+      
+    
+    </summary>
+    
+      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>最大子数组</title>
+    <link href="http://www.xuchunfa.cn/2018/08/27/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/"/>
+    <id>http://www.xuchunfa.cn/2018/08/27/最大子数组/</id>
+    <published>2018-08-27T08:30:36.000Z</published>
+    <updated>2018-08-27T08:33:04.475Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="连续子数组的最大和"><a href="#连续子数组的最大和" class="headerlink" title="连续子数组的最大和?"></a>连续子数组的最大和?</h4><pre><code>public class MaxSubArraySum {public static int resolve(int[] array,int length){    if(array == null || length &lt; 0){        throw new RuntimeException(&quot;参数不合法&quot;);    }    int maxSub = 0;    int currentSum = 0;    //循环的思想解决动态规划问题    for(int i = 0;i&lt;length;i++){        //如果之前的和小于0的话,那么当前和应该从下一个数开始        if(currentSum &lt;= 0){            currentSum = array[i];        }else {            currentSum = currentSum + array[i];        }        //判断子数组的最大值        if(currentSum &gt; maxSub){            maxSub = currentSum;        }    }    return maxSub;}public static void main(String[] args){    int[] arr = {-1,2,3,-4,5,6,-7,9};    System.out.println(MaxSubArraySum.resolve(arr,arr.length));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;连续子数组的最大和&quot;&gt;&lt;a href=&quot;#连续子数组的最大和&quot; class=&quot;headerlink&quot; title=&quot;连续子数组的最大和?&quot;&gt;&lt;/a&gt;连续子数组的最大和?&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class MaxSubArraySum {
+
+p
+      
+    
+    </summary>
+    
+      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>1到n的数组中和为m的所有组合</title>
+    <link href="http://www.xuchunfa.cn/2018/08/26/1%E5%88%B0n%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%AD%E5%92%8C%E4%B8%BAm%E7%9A%84%E6%89%80%E6%9C%89%E7%BB%84%E5%90%88/"/>
+    <id>http://www.xuchunfa.cn/2018/08/26/1到n的数组中和为m的所有组合/</id>
+    <published>2018-08-26T13:18:06.000Z</published>
+    <updated>2018-08-26T13:21:08.976Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="1到n的数组中和为m的所有组合？"><a href="#1到n的数组中和为m的所有组合？" class="headerlink" title="1到n的数组中和为m的所有组合？"></a>1到n的数组中和为m的所有组合？</h4><pre><code>public class SumOfKnumber {public static void findKNumber(int sum, int n, int[] combine,int index){    //index 最大取到 n    if(index &gt; n || index &gt; sum)        return;    if(index == sum){        combine[index-1] = index;        printResult(combine);        //还可以作为其他组合的元素        combine[index-1] = 0;        return;    }    //选择i    combine[index-1] = index;    findKNumber(sum-index, n, combine, index+1);    //i被放弃    combine[index-1] = 0;    findKNumber(sum,n,combine,index+1);}private static void printResult(int[] combine) {    for(int i = 0;i &lt; combine.length;i++){        if(combine[i] != 0){            System.out.print(combine[i] + &quot; &quot;);        }    }    System.out.println();}public static void main(String[] args){    int[] combine = new int[7];    SumOfKnumber.findKNumber(10,7,combine,1);}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;1到n的数组中和为m的所有组合？&quot;&gt;&lt;a href=&quot;#1到n的数组中和为m的所有组合？&quot; class=&quot;headerlink&quot; title=&quot;1到n的数组中和为m的所有组合？&quot;&gt;&lt;/a&gt;1到n的数组中和为m的所有组合？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public
+      
+    
+    </summary>
+    
+      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>字符串匹配算法</title>
@@ -457,85 +528,6 @@ public static ListNode meetNode(ListNode head){
     <summary type="html">
     
     </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>java虚拟机内存区域</title>
-    <link href="http://www.xuchunfa.cn/2018/08/14/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
-    <id>http://www.xuchunfa.cn/2018/08/14/java虚拟机内存区域/</id>
-    <published>2018-08-14T08:35:17.000Z</published>
-    <updated>2018-08-17T05:31:28.922Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>对象创建过程</p></blockquote><p>1.检查类是否已经加载</p><p>2.虚拟机为对象分配内存</p><p>3.将分配到的内存区域初始化</p><blockquote><p>虚拟机常见参数</p></blockquote><p>1.-Xms20M:虚拟机堆内存的最小值</p><p>2.-Xmx20M:虚拟机堆内存的最大值</p><p>3.-Xss1M:每个线程的栈的大小为1M</p><p>4.-Xmn10M:Java Heap Young 新生代的大小为10M</p><p>5.MaxPermSize:方法区最大内存</p><p>6.-XX:PermSize=10M：虚拟机方法区内存最小值</p><p>7.-XX：MaxPermSize=100M:虚拟机方法区内存最大值</p><blockquote><p>内存分配</p></blockquote><p>1.对象主要分配在新生代的Eden区上，新生代包括1个Eden区和两个Survivor区，其中一个Survivor用于分配担保，内存大小默认比例为Eden:Survivor = 8 : 1.</p><p>2.</p><pre><code>2.1  新生代GC(Minor GC):发生在新生代，速度快。什么时候发生呢？只要老年代的连续空间大于新生代对象的总大小或者历次晋升的平均大小。2.2  老年代GC(Major GC / Full GC):发生在老年代，一般比前者慢10倍。</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;对象创建过程&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;1.检查类是否已经加载&lt;/p&gt;
-&lt;p&gt;2.虚拟机为对象分配内存&lt;/p&gt;
-&lt;p&gt;3.将分配到的内存区域初始化&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;虚拟机常见参数&lt;/p&gt;
-&lt;/blockquo
-      
-    
-    </summary>
-    
-      <category term="java虚拟机" scheme="http://www.xuchunfa.cn/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>红黑树</title>
-    <link href="http://www.xuchunfa.cn/2018/08/14/%E7%BA%A2%E9%BB%91%E6%A0%91/"/>
-    <id>http://www.xuchunfa.cn/2018/08/14/红黑树/</id>
-    <published>2018-08-14T06:14:00.000Z</published>
-    <updated>2018-08-14T07:39:04.394Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="红黑树的定义？"><a href="#红黑树的定义？" class="headerlink" title="红黑树的定义？"></a>红黑树的定义？</h4><p><img src="https://i.imgur.com/y7nMfe8.jpg" alt=""></p><p>红黑树的特点：</p><p> 1.每个节点不是红色就是黑色的；</p><p> 2.根节点总是黑色的；</p><p> 3.如果节点是红色的，则它的子节点必须是黑色的（反之不一定）；</p><p> 4.从根节点到叶节点或空子节点的每条路径，必须包含相同数目的黑色节点（即相同的黑色高度）。 </p><p> 5.每个叶子结点(nil)为黑色。</p><h4 id="插入结点后的红黑树调整？"><a href="#插入结点后的红黑树调整？" class="headerlink" title="插入结点后的红黑树调整？"></a>插入结点后的红黑树调整？</h4><p>分以下三种情况：</p><p>1.插入节点的父节点和其叔叔节点（祖父节点的另一个子节点）均为红色的。</p><p>插入结点4：</p><p><img src="https://i.imgur.com/Z864C7i.png" alt=""></p><p><strong>调整：</strong>将当前节点(4)的父节点(5)和叔叔节点(8)涂黑，将祖父节点(7)涂红，变成下图所示的情况。再将当前节点指向其祖父节点(7)。</p><p><img src="https://i.imgur.com/4he7MLS.png" alt=""></p><p>2.插入节点的父节点是红色，叔叔节点是黑色，且插入节点是其父节点的右子节点。</p><p>情况2的示意图为第一步操作的结果。相当于插入当前结点7.</p><p><strong>调整：</strong>将当前节点(7)的父节点(2)作为新的节点，以(2)为支点做左旋(LR)操作.</p><p><img src="https://i.imgur.com/yoP1mMb.png" alt=""></p><p>3.插入节点的父节点是红色，叔叔节点是黑色，且插入节点是其父节点的左子节点。</p><p>情况3的示意图为第二步操作的结果。相当于插入当前结点2.</p><p><strong>调整：</strong>将当前节点的父节点(7)涂黑，将祖父节点(11)涂红，在祖父节点(11)为支点做右旋操作.</p><p><img src="https://i.imgur.com/QYM4k1S.png" alt=""></p><p><strong>总结：</strong>整个完整的流程是从：变色-左旋-右旋。也可能直接从情况2或3开始。</p><p>参考文档一：<a href="https://blog.csdn.net/eson_15/article/details/51144079" target="_blank" rel="noopener">https://blog.csdn.net/eson_15/article/details/51144079</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;红黑树的定义？&quot;&gt;&lt;a href=&quot;#红黑树的定义？&quot; class=&quot;headerlink&quot; title=&quot;红黑树的定义？&quot;&gt;&lt;/a&gt;红黑树的定义？&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/y7nMfe8.jpg&quot; alt=&quot;&quot;&gt;
-      
-    
-    </summary>
-    
-      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>平衡二叉树</title>
-    <link href="http://www.xuchunfa.cn/2018/08/13/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/"/>
-    <id>http://www.xuchunfa.cn/2018/08/13/平衡二叉树/</id>
-    <published>2018-08-13T13:16:21.000Z</published>
-    <updated>2018-08-14T06:06:51.552Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="什么是平衡二叉树（AVL树）？"><a href="#什么是平衡二叉树（AVL树）？" class="headerlink" title="什么是平衡二叉树（AVL树）？"></a>什么是平衡二叉树（AVL树）？</h4><ol><li>可以为空</li><li>任何一个结点的左子树与右子树都是平衡二叉树，并且高度之差的绝对值不超过1。简单来讲就是任意结点的左右子树的数目基本相同。</li><li>平衡二叉树是二叉查找树的优化，因为二叉查找树适用于无序数据，对于<br>有序数据插入时就是一颗斜树，遍历时的时间复杂度为O(n),已经体现不出了优势了。</li></ol><h4 id="怎么调整平衡二叉树？"><a href="#怎么调整平衡二叉树？" class="headerlink" title="怎么调整平衡二叉树？"></a>怎么调整平衡二叉树？</h4><p>举个LR旋转的例子：</p><p><img src="https://i.imgur.com/jBi58WA.png" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;什么是平衡二叉树（AVL树）？&quot;&gt;&lt;a href=&quot;#什么是平衡二叉树（AVL树）？&quot; class=&quot;headerlink&quot; title=&quot;什么是平衡二叉树（AVL树）？&quot;&gt;&lt;/a&gt;什么是平衡二叉树（AVL树）？&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;可以为空&lt;/li&gt;
-&lt;l
-      
-    
-    </summary>
-    
-      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
     
     
   </entry>
