@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。 锁释放和获得：锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。">
+<meta name="description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 对于2通过DCL理解： public class Singleton {     private volatile static Singleton singleton;     private Singleton (){">
 <meta property="og:type" content="article">
 <meta property="og:title" content="volatile语义理解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/24/volatile语义理解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。 锁释放和获得：锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。">
+<meta property="og:description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 对于2通过DCL理解： public class Singleton {     private volatile static Singleton singleton;     private Singleton (){">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-25T02:54:46.302Z">
+<meta property="og:image" content="https://i.imgur.com/kk1Pn2O.png">
+<meta property="og:updated_time" content="2018-08-28T08:03:54.589Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="volatile语义理解">
-<meta name="twitter:description" content="volatile读：线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。 锁释放和获得：锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。">
+<meta name="twitter:description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 对于2通过DCL理解： public class Singleton {     private volatile static Singleton singleton;     private Singleton (){">
+<meta name="twitter:image" content="https://i.imgur.com/kk1Pn2O.png">
 
 
 
@@ -399,8 +401,77 @@
       
 
       
-        <p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p>
+        <blockquote>
+<p>volatile变量的两层语义</p>
+</blockquote>
+<p>1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的</p>
+<p>2.禁止进行指令重排序。</p>
+<p>对于2通过DCL理解：</p>
+<pre><code>public class Singleton {  
+  private volatile static Singleton singleton;  
+  private Singleton (){
+  }   
+  public static Singleton getInstance() {  
+  if (instance== null) {  
+      synchronized (Singleton.class) {  
+      if (instance== null) {  
+          instance= new Singleton();  
+      }  
+     }  
+ }  
+ return singleton;  
+ }  
+  }  
+</code></pre><p>如果发生重排序的话会出现以下的情况：</p>
+<p><img src="https://i.imgur.com/kk1Pn2O.png" alt=""></p>
+<p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p>
 <p><strong>锁释放和获得：</strong>锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。</p>
+<p><strong>注意：</strong>volatile变量只能保证可见性。不能保证原子性。</p>
+<pre><code>/*
+    解决办法：
+
+    1.synchronize
+
+    2.Lock
+
+    3.AtomicInteger
+*/
+
+public class UnsafeVolatile {
+
+public static volatile int pace = 0;
+
+public static void increase(){
+    pace++;
+}
+
+public static final int COUNT = 10;
+
+public static void main(String[] args){
+    Thread[] threads = new Thread[COUNT];
+
+    for(int i = 0;i &lt; COUNT;i++){
+        threads[i] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int j = 0;j &lt; 50;j++){
+                    increase();
+                }
+            }
+        });
+        threads[i].start();
+    }
+
+    /*while (Thread.activeCount() &gt; 1)
+        Thread.yield();*/
+
+    //按我们所设想的话应该返回500 实际要小于500
+    System.out.println(pace);
+}
+}
+</code></pre><p>原因：</p>
+<p>在执行4时变量的值可能已经不是最新的值了，可能已经被其他线程改变了。</p>
+<p>0：getstatic<br>3: iconst_1<br>4: iadd<br>5: putstatic</p>
 
       
     </div>
@@ -516,7 +587,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

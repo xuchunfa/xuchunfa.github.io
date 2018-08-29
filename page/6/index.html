@@ -286,6 +286,187 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/java内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/java内存模型/" itemprop="url">java内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T20:12:59+08:00">
+                2018-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/23/java内存模型/" class="leancloud_visitors" data-flag-title="java内存模型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Java内存模型示意图</p>
+</blockquote>
+<p><img src="https://i.imgur.com/wRkMYGE.png" alt=""></p>
+<p>1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。</p>
+<p>2.本地内存：相当于虚拟机栈内存区域部分。</p>
+<ul>
+<li><p>happens-before原则：</p>
+<h4 id="怎么理解内存可见性？"><a href="#怎么理解内存可见性？" class="headerlink" title="怎么理解内存可见性？"></a>怎么理解内存可见性？</h4><p>  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。</p>
+<h4 id="happens-before规则有哪些？"><a href="#happens-before规则有哪些？" class="headerlink" title="happens-before规则有哪些？"></a>happens-before规则有哪些？</h4></li>
+</ul>
+<ol>
+<li>程序顺序规则：但线程内，在不改变程序结果的情况下(可能会发生重排序),程序按顺序执行。</li>
+<li>监视器锁规则：对一个锁的解锁(volatile写)优先于锁的加锁(volatile读)。</li>
+<li>volatile变量规则：volatile写优先volatile读。</li>
+<li>传递性：A happens-before B, Bhappens-before C则 A happens-before C。</li>
+<li>start()原则：如果在线程A中执行ThreadB.start(),那么A线程的ThreadB.start()操作要先于线程B中的任意操作。</li>
+<li>join()操作：线程A执行ThreadB.join()操作并成功返回,那么B中的任意操作都先于线程A从ThreadB.join()操作成功返回。</li>
+</ol>
+<p>举个例子：</p>
+<p><img src="https://i.imgur.com/5HFiSBc.png" alt=""></p>
+<p><strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p>
+<p>1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p>
+<p>2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p>
+<p>3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p>
+<p>4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p>
+<p>5.<strong>顺序一致性模型和JMM的比较：</strong></p>
+<pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。
+(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/二叉树的创建和遍历/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2330,182 +2511,11 @@ private int calNum(int[] nums, int len, int start, int end) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/并发编程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/17/并发编程/" itemprop="url">匿名内部类</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T20:47:37+08:00">
-                2018-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/17/并发编程/" class="leancloud_visitors" data-flag-title="匿名内部类">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>匿名内部类？</p>
-<p>  没有名字的内部类，只能使用一次，简化代码编写。</p>
-<p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p>
-<pre><code>interface People {
-public abstract void eat();
-}
-
-public class Demo {
-   public static void main(String[] args) {
-People p = new People() {
-    public void eat() {
-        System.out.println(&quot;I can eat &quot;);
-    }
-};
-p.eat();
-}
-</code></pre></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2555,7 +2565,7 @@ p.eat();
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -81,19 +81,20 @@
 
 
 
-<meta name="description" content="happens-before原则： 怎么理解内存可见性？  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。 happens-before规则有哪些？   程序顺序规则：但线程内，">
+<meta name="description" content="Java内存模型示意图   1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。 2.本地内存：相当于虚拟机栈内存区域部分。  happens-before原则： 怎么理解内存可见性？  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java内存模型">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/23/java内存模型/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="happens-before原则： 怎么理解内存可见性？  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。 happens-before规则有哪些？   程序顺序规则：但线程内，">
+<meta property="og:description" content="Java内存模型示意图   1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。 2.本地内存：相当于虚拟机栈内存区域部分。  happens-before原则： 怎么理解内存可见性？  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/wRkMYGE.png">
 <meta property="og:image" content="https://i.imgur.com/5HFiSBc.png">
-<meta property="og:updated_time" content="2018-07-31T07:37:01.777Z">
+<meta property="og:updated_time" content="2018-08-28T06:52:02.812Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java内存模型">
-<meta name="twitter:description" content="happens-before原则： 怎么理解内存可见性？  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。 happens-before规则有哪些？   程序顺序规则：但线程内，">
-<meta name="twitter:image" content="https://i.imgur.com/5HFiSBc.png">
+<meta name="twitter:description" content="Java内存模型示意图   1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。 2.本地内存：相当于虚拟机栈内存区域部分。  happens-before原则： 怎么理解内存可见性？  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对">
+<meta name="twitter:image" content="https://i.imgur.com/wRkMYGE.png">
 
 
 
@@ -401,7 +402,13 @@
       
 
       
-        <ul>
+        <blockquote>
+<p>Java内存模型示意图</p>
+</blockquote>
+<p><img src="https://i.imgur.com/wRkMYGE.png" alt=""></p>
+<p>1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。</p>
+<p>2.本地内存：相当于虚拟机栈内存区域部分。</p>
+<ul>
 <li><p>happens-before原则：</p>
 <h4 id="怎么理解内存可见性？"><a href="#怎么理解内存可见性？" class="headerlink" title="怎么理解内存可见性？"></a>怎么理解内存可见性？</h4><p>  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。</p>
 <h4 id="happens-before规则有哪些？"><a href="#happens-before规则有哪些？" class="headerlink" title="happens-before规则有哪些？"></a>happens-before规则有哪些？</h4></li>
@@ -548,7 +555,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
