@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-08-28T09:13:08.258Z</updated>
+  <updated>2018-09-03T11:49:04.504Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,132 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>结点的最近祖先</title>
+    <link href="http://www.xuchunfa.cn/2018/09/03/%E7%BB%93%E7%82%B9%E7%9A%84%E6%9C%80%E8%BF%91%E7%A5%96%E5%85%88/"/>
+    <id>http://www.xuchunfa.cn/2018/09/03/结点的最近祖先/</id>
+    <published>2018-09-03T11:46:51.000Z</published>
+    <updated>2018-09-03T11:49:04.504Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="两个结点的最近祖先？"><a href="#两个结点的最近祖先？" class="headerlink" title="两个结点的最近祖先？"></a>两个结点的最近祖先？</h4><pre><code>public class CommonAncestor {//树为二叉搜索树的情况，默认node1 node2已经存在树中public BinaryTreeNode findCommonAncestor(BinaryTreeNode pRoot,int node1,int node2){    if(pRoot.data &gt; node1 &amp;&amp; pRoot.data &lt; node2 || pRoot.data &lt; node1 &amp;&amp; pRoot.data &gt; node2)        return pRoot;    if(node1 &lt; pRoot.data &amp;&amp; node2 &lt; pRoot.data){        return findCommonAncestor(pRoot.left,node1,node2);    }else if(node1 &gt; pRoot.data &amp;&amp; node2 &gt; pRoot.data){        return findCommonAncestor(pRoot.right,node1,node2);    }    return null;}//树为普通二叉树递归解法public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){    //判断两个结点在同一条分支上？？？    if(pRoot == null)        return null;    if(pathIsExisted(pRoot.left,node1)){        if(pathIsExisted(pRoot.right,node2)) {            return pRoot;        }else//两个结点都在左子树中继续向下递归            return findCommonAncestor1(pRoot.left,node1,node2);    }else {        if(pathIsExisted(pRoot.left,node2))            return pRoot;        else//两个结点都在右子树中继续向下递归            return findCommonAncestor1(pRoot.right,node1,node2);    }}//判断路径中是否存在指定结点的值public boolean pathIsExisted(BinaryTreeNode pRoot,int node){    if(pRoot == null)        return false;    if(pRoot.data == node)        return true;    boolean flag = pathIsExisted(pRoot.left,node);    //如果找到了就不用继续递归了    if(!flag){        flag = pathIsExisted(pRoot.right,node);    }    return flag;}//树为普通二叉树非递归解法public BinaryTreeNode findCommonAncestor2(BinaryTreeNode pRoot,int node1,int node2){    //list1和list2保存根节点到目标结点的路径    List&lt;BinaryTreeNode&gt; list1 = new ArrayList&lt;BinaryTreeNode&gt;();    boolean path1 = findPath(pRoot,node1,list1);    List&lt;BinaryTreeNode&gt; list2 = new ArrayList&lt;BinaryTreeNode&gt;();    boolean path2 = findPath(pRoot,node2,list2);    BinaryTreeNode ancestor = null;    Iterator list1Iterator = list1.iterator();    Iterator list2Iterator = list2.iterator();    int diffIndex = -1;//默认没有出现两个不同的节点    int i = 0;    //找到两条路径岔开的那个位置结点，那么前一个结点就是最后一个公共路径上的结点，也就是最近的祖先    if(path1 &amp;&amp; path2){        while (list1Iterator.hasNext() &amp;&amp; list2Iterator.hasNext()){            if(list1Iterator.next() != list2Iterator.next()){                diffIndex = --i;                break;            }            i++;        }    }    if(diffIndex &gt;= 0)        ancestor = list1.get(diffIndex);    //diffIndex = -1 表示node1和node2在同一条路径上    return ancestor;}//保存包含指定节点路径结点的方法public boolean findPath(BinaryTreeNode pRoot, int node, List&lt;BinaryTreeNode&gt; list){    if(pRoot ==  null)        return false;    list.add(pRoot);    if(pRoot.data == node)        return true;    boolean isExisted = findPath(pRoot.left,node,list);    if(!isExisted){        isExisted = findPath(pRoot.right,node,list);    }    if(!isExisted)        list.remove(list.size()-1);    return isExisted;}public static void main(String[] args){    BinaryTree tree = new BinaryTree();    tree.createBinaryTree(tree.getRoot(),8);    tree.createBinaryTree(tree.getRoot(),3);    tree.createBinaryTree(tree.getRoot(),2);    tree.createBinaryTree(tree.getRoot(),5);    tree.createBinaryTree(tree.getRoot(),1);    tree.createBinaryTree(tree.getRoot(),12);    tree.createBinaryTree(tree.getRoot(),9);    CommonAncestor test = new CommonAncestor();    System.out.println(test.findCommonAncestor1(tree.getRoot(),3,2).data);}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;两个结点的最近祖先？&quot;&gt;&lt;a href=&quot;#两个结点的最近祖先？&quot; class=&quot;headerlink&quot; title=&quot;两个结点的最近祖先？&quot;&gt;&lt;/a&gt;两个结点的最近祖先？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class CommonAncestor {
+
+      
+    
+    </summary>
+    
+      <category term="树" scheme="http://www.xuchunfa.cn/categories/%E6%A0%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>丑数</title>
+    <link href="http://www.xuchunfa.cn/2018/09/03/%E4%B8%91%E6%95%B0/"/>
+    <id>http://www.xuchunfa.cn/2018/09/03/丑数/</id>
+    <published>2018-09-03T02:30:46.000Z</published>
+    <updated>2018-09-03T02:33:02.339Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public class UglyNumber {public static int resolve(int index){    if(index &lt;= 0){        throw new RuntimeException(&quot;参数非法&quot;);    }    int[] uglyNumber = new int[index];    uglyNumber[0] = 1;    int indexOf2,indexOf3,indexOf5;    indexOf2 = indexOf3 = indexOf5 = 0;    int uglyNumberIndex = 1;    while (uglyNumberIndex &lt; index){        int min = Min(uglyNumber[indexOf2]*2,uglyNumber[indexOf3]*3,uglyNumber[indexOf5]*5);        uglyNumber[uglyNumberIndex] = min;        //uglyNumber[uglyNumberIndex]代表的是目前数组中最大的丑数        while (uglyNumber[indexOf2]*2 &lt;= uglyNumber[uglyNumberIndex]){            indexOf2++;        }        //下次的uglyNumber[indexOf3]肯定就大于Max uglyNumber        while (uglyNumber[indexOf3]*3 &lt;= uglyNumber[uglyNumberIndex]){            indexOf3++;        }        while (uglyNumber[indexOf5]*5 &lt;= uglyNumber[uglyNumberIndex]){            indexOf5++;        }        uglyNumberIndex++;    }    return uglyNumber[index-1];}private static int Min(int i, int j, int k) {    int min;    return (min = i &lt; j ? i : j) &lt; k ? min : k;}public static void main(String[] args){    System.out.println(UglyNumber.resolve(100));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;求解指定索引的丑数？&quot;&gt;&lt;a href=&quot;#求解指定索引的丑数？&quot; class=&quot;headerlink&quot; title=&quot;求解指定索引的丑数？&quot;&gt;&lt;/a&gt;求解指定索引的丑数？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class UglyNumber {
+
+pub
+      
+    
+    </summary>
+    
+      <category term="策略类" scheme="http://www.xuchunfa.cn/categories/%E7%AD%96%E7%95%A5%E7%B1%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>逆序对的个数</title>
+    <link href="http://www.xuchunfa.cn/2018/09/03/%E9%80%86%E5%BA%8F%E5%AF%B9%E7%9A%84%E4%B8%AA%E6%95%B0/"/>
+    <id>http://www.xuchunfa.cn/2018/09/03/逆序对的个数/</id>
+    <published>2018-09-03T02:28:22.000Z</published>
+    <updated>2018-09-03T02:30:34.090Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="逆序对的个数？"><a href="#逆序对的个数？" class="headerlink" title="逆序对的个数？"></a>逆序对的个数？</h4><pre><code>public class InversePairNum {private int count = 0;private int[] temp;//保存排好序的中间结果，再将结果拷贝到原数组public int resolve(int[] num,int length){    temp = new int[length];    divideSort(num,0,length-1);    return count;}private void divideSort(int[] num, int left, int right) {    if(left &lt; right){        int mid = (left + right)/2;        //分成一个一个元素        divideSort(num,left,mid);        divideSort(num,mid+1,right);        mergeSort(num,left,mid,right);    }}private void mergeSort(int[] num, int left, int mid, int right) {    int leftEnd = mid;    int rightEnd = right;    int tempIndex = right;    //指针从后往前移    while (leftEnd &gt;= left &amp;&amp; rightEnd &gt;= mid + 1) {        if (num[leftEnd] &gt; num[rightEnd]) {            temp[tempIndex--] = num[leftEnd--];            //不是 right - mid 右边的指针是往前挪的            count += rightEnd - mid;        } else {            temp[tempIndex--] = num[rightEnd--];        }    }    //剩余元素    while (leftEnd &gt;= left) {        temp[tempIndex--] = num[leftEnd--];    }    while (rightEnd &gt;= mid + 1) {        temp[tempIndex--] = num[rightEnd--];    }    //利用临时数组temp来使得num数组左右两边都是有序的(递增的)    for (int i = left; i &lt;= right; i++) {        num[i] = temp[i];    }}public static void main(String[] args){    InversePairNum test = new InversePairNum();    int[] num = {4,6,3,1,5,7,2};    System.out.println(test.resolve(num,num.length));}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;逆序对的个数？&quot;&gt;&lt;a href=&quot;#逆序对的个数？&quot; class=&quot;headerlink&quot; title=&quot;逆序对的个数？&quot;&gt;&lt;/a&gt;逆序对的个数？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class InversePairNum {
+
+private int
+      
+    
+    </summary>
+    
+      <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Java笔记</title>
+    <link href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava%E7%AC%94%E8%AE%B0/"/>
+    <id>http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/</id>
+    <published>2018-09-02T07:34:14.000Z</published>
+    <updated>2018-09-02T08:31:39.584Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.有时可以用静态工厂方法来代替构造器。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.有时可以用静态工厂方法来代替构造器。&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="java语言基础" scheme="http://www.xuchunfa.cn/categories/java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Lock详解</title>
+    <link href="http://www.xuchunfa.cn/2018/08/30/Lock%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://www.xuchunfa.cn/2018/08/30/Lock详解/</id>
+    <published>2018-08-30T01:19:08.000Z</published>
+    <updated>2018-08-31T09:14:28.144Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Lock接口</p></blockquote><p>1.lock()：获取锁。</p><p>2.lockInterruptibly():可中断的获取锁，不同于lock(),在锁的获取中可以中断当前线程。</p><p>3.tryLock()：尝试非阻塞的获取锁。</p><p>4.tryLock(long time, TimeUnit unit)：超时获取锁。</p><p>5.unlock()：释放锁。</p><p>6.newCondition()：获取等待通知组件。</p><h4 id="为什么锁的实现中使用组合同步器而不选择继承呢？"><a href="#为什么锁的实现中使用组合同步器而不选择继承呢？" class="headerlink" title="为什么锁的实现中使用组合同步器而不选择继承呢？"></a>为什么锁的实现中使用组合同步器而不选择继承呢？</h4><blockquote><p>队列同步器</p></blockquote><p>1.同步器是实现锁的关键。锁是面象用户的,用户不需要了解其中的底层原理，同步器是面象锁的,是关于锁实现的原理细节。</p><p>2.队列同步器的实现</p><p>独占式同步状态流程图如下：</p><pre><code>//tryAcquire(arg) == false 则获取同步状态失败，线程进入同步队列public final void acquire(int arg) {    if (!tryAcquire(arg) &amp;&amp;        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))        selfInterrupt();}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;Lock接口&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;1.lock()：获取锁。&lt;/p&gt;
+&lt;p&gt;2.lockInterruptibly():可中断的获取锁，不同于lock(),在锁的获取中可以中断当前线程。&lt;/p&gt;
+&lt;p&gt;3.tryLock()：
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>单例模式的不同写法</title>
@@ -410,139 +536,6 @@ public static void deleteDuplicationNode(ListNode head){
     </summary>
     
       <category term="字符串" scheme="http://www.xuchunfa.cn/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>删除链表结点-时间复杂度为常数</title>
-    <link href="http://www.xuchunfa.cn/2018/08/17/%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%BB%93%E7%82%B9-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E4%B8%BA%E5%B8%B8%E6%95%B0/"/>
-    <id>http://www.xuchunfa.cn/2018/08/17/删除链表结点-时间复杂度为常数/</id>
-    <published>2018-08-17T06:58:10.000Z</published>
-    <updated>2018-08-17T06:58:36.786Z</updated>
-    
-    <content type="html"><![CDATA[<pre><code>public class DeleteListNode {public static void deleteListNode(ListNode head,ListNode toDelete){    if(head == null || toDelete == null){        throw new RuntimeException(&quot;没有目标节点删除&quot;);    }    //只有一个头节点,删完后置空    if(head.next == null &amp;&amp; toDelete.next == null){        Link.head = null;//head = null 相当于值传递,无法改变head        toDelete = null;    }else if(head.next != null &amp;&amp; toDelete.next == null){//删除尾结点        ListNode pre = head;        while (pre.next != toDelete){            pre = pre.next;        }        pre.next = null;    }else {//head.next != null &amp;&amp; toDelete.next != null 删除中间结点        toDelete.data = toDelete.next.data;        toDelete.next = toDelete.next.next;    }}public static void main(String[] args){    Link link = new Link();    link.add(1);    ListNode toDelete = link.head;    DeleteListNode.deleteListNode(link.head,toDelete);    link.print();}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;pre&gt;&lt;code&gt;public class DeleteListNode {
-
-public static void deleteListNode(ListNode head,ListNode toDelete){
-
-    if(head == null || toDele
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>链表中环的入口结点</title>
-    <link href="http://www.xuchunfa.cn/2018/08/17/%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E7%BB%93%E7%82%B9/"/>
-    <id>http://www.xuchunfa.cn/2018/08/17/链表中环的入口结点/</id>
-    <published>2018-08-17T06:53:31.000Z</published>
-    <updated>2018-08-17T06:54:47.389Z</updated>
-    
-    <content type="html"><![CDATA[<pre><code>public class EnterCycleNode {public static ListNode meetNode(ListNode head){    if(head == null){        throw new RuntimeException(&quot;链表不能为空&quot;);    }    ListNode pre,post;    pre = head;    post = head;    int cycleNodeNum = calcycleNodeNum(head);    if(cycleNodeNum != 0){//有环        for(int i = 0;i&lt;cycleNodeNum;i++){//post先走cycleNodeNum步            pre = pre.next;        }        while(post != pre){//然后两个指针依次先前走一步            pre = pre.next;            post = post.next;        }        return post;    }    return null;}//判断链表是否有环,有的话计算环中一共有多少结点private static int calcycleNodeNum(ListNode head) {    ListNode p,pre;    p = head;    pre = head;    int numOfCycleNode = 0;    while (pre.next != null){        pre = pre.next;//走第一步时判断一下        if (pre != p &amp;&amp; pre.next != null){            p = p.next;            pre = pre.next;//pre先走了两步        }        //走完第二步再判断一下        if(pre == p){//第一个指针追上了第二个指针            numOfCycleNode++;            pre = pre.next;            while (pre != p){//计算环内结点                numOfCycleNode++;                pre = pre.next;            }            break;//跳出循环        }    }    return numOfCycleNode;}public static void main(String[] args){    Link link = new Link();    link.add(1);    link.add(2);    link.add(3);    link.add(4);    ListNode tail = Link.head;    while (tail.next != null){        tail = tail.next;    }    //tail.next = Link.head;    if(EnterCycleNode.meetNode(Link.head) != null){        System.out.println(EnterCycleNode.meetNode(Link.head).data);    }else {        throw new RuntimeException(&quot;不存在环入口节点&quot;);    }}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;pre&gt;&lt;code&gt;public class EnterCycleNode {
-
-public static ListNode meetNode(ListNode head){
-
-    if(head == null){
-        throw new RuntimeEx
-      
-    
-    </summary>
-    
-      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>反转链表</title>
-    <link href="http://www.xuchunfa.cn/2018/08/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8-1/"/>
-    <id>http://www.xuchunfa.cn/2018/08/17/反转链表-1/</id>
-    <published>2018-08-17T06:50:36.000Z</published>
-    <updated>2018-08-17T06:52:27.623Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="就地反转和递归反转？"><a href="#就地反转和递归反转？" class="headerlink" title="就地反转和递归反转？"></a>就地反转和递归反转？</h4><pre><code>public class VerseLink {//直接遍历一遍public static void verseLink(ListNode head){    ListNode previous,current,post;    previous = null;    current = head;    while (current != null){        post = current.next;        if(post == null)            Link.head = current;        current.next = previous;        previous = current;        current = post;    }}//递归反转public static ListNode recursiveVerseLink(ListNode head){    if(head  == null || head.next == null){        return head;    }    ListNode newHead = recursiveVerseLink(head.next);//原链表的最后一个结点    head.next.next = head;//从倒数第二个结点开始回溯,指针发生转向    head.next = null;//断开原来指针    return newHead;}public static void main(String[] args){    Link link = new Link();    link.add(1);    link.add(2);    link.add(3);    link.add(4);    Link.head = VerseLink.recursiveVerseLink(Link.head);    link.print();}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;就地反转和递归反转？&quot;&gt;&lt;a href=&quot;#就地反转和递归反转？&quot; class=&quot;headerlink&quot; title=&quot;就地反转和递归反转？&quot;&gt;&lt;/a&gt;就地反转和递归反转？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class VerseLink {
-
-//直接
-      
-    
-    </summary>
-    
-      <category term="链表" scheme="http://www.xuchunfa.cn/categories/%E9%93%BE%E8%A1%A8/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>并行和并发的区别</title>
-    <link href="http://www.xuchunfa.cn/2018/08/16/%E5%B9%B6%E8%A1%8C%E5%92%8C%E5%B9%B6%E5%8F%91%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
-    <id>http://www.xuchunfa.cn/2018/08/16/并行和并发的区别/</id>
-    <published>2018-08-16T05:10:53.000Z</published>
-    <updated>2018-08-16T05:47:39.185Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>举个例子：</strong></p><p>桌子上放着一本书，桌子旁坐着四个人，书就相当于cpu资源，并行可以比喻成这四个人打开书同时阅读；而并发可以看成是则这四个人轮流看这本书。</p><blockquote><p>并行（parallelism）</p></blockquote><p>1.物理上同时发生的。</p><p>2.某一时刻能处理多个任务。</p><blockquote><p>并发（concurrency）</p></blockquote><p>1.逻辑上同时发生的。</p><p>2.某一时间间隔内能同时处理多个任务，但是某一时刻就只处理一个任务。</p><p>直观点的示意图：两核CPU创建四个线程的情况</p><p><img src="https://i.imgur.com/MV4eOd9.png" alt=""></p><p>操作1,2,3,4并发执行。</p><p>操作1,5以及2,6都是并行的。</p><p>可以理解现在大多数CPU都是多核的，在执行大量请求时，并行并发一般都是一起发生的。</p><p>参考文档：<a href="https://www.jianshu.com/p/b11e251d3dc7" target="_blank" rel="noopener">https://www.jianshu.com/p/b11e251d3dc7</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;strong&gt;举个例子：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;桌子上放着一本书，桌子旁坐着四个人，书就相当于cpu资源，并行可以比喻成这四个人打开书同时阅读；而并发可以看成是则这四个人轮流看这本书。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;并行（parallelism）&lt;/p
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>java虚拟机垃圾收集器</title>
-    <link href="http://www.xuchunfa.cn/2018/08/15/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/"/>
-    <id>http://www.xuchunfa.cn/2018/08/15/java虚拟机垃圾收集器/</id>
-    <published>2018-08-15T12:13:35.000Z</published>
-    <updated>2018-08-17T05:25:43.963Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>垃圾回收前先标记,标记的方法？</p></blockquote><p>1.引用计数</p><p>给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1.</p><p>2.可达性分析</p><p>不在”GC Roots”引用链上的对象会被标记为将要收集的对象。</p><p><strong>可作为GC Roots的对象：</strong></p><ul><li><p>虚拟机栈（栈中的本地变量表）中引用的对象</p></li><li><p>方法区中类静态属性引用的对象</p></li><li><p>方法区中常量引用的对象</p></li><li><p>本地方法栈（native方法）引用的对象、</p></li></ul><blockquote><p>垃圾收集算法</p></blockquote><ul><li><p>标记-清除算法</p></li><li><p>复制算法</p><p>  1.需要额外的内存空间进行分配担保。不适用于对象存活率较高的老年代。</p><p>  2.额外空间可以向老年代借。老年代空间都还不够用的话，”Stop the world”发生Full GC。Full GC的作用是为了让老年代腾出空间来。</p></li><li><p>标记-整理算法</p><p>  1.让所有存活的对象向一端移动，然后直接清理掉端边界以外的内存。</p><p>  2.适用于老年代垃圾的回收。</p></li><li><p>分代回收算法</p><p>  1.将内存划分为新生代和老年代，新生代由于“朝生夕死”的特点，即对象的存活率低，可采用复制算法；老年代对象存活率高，没有额外内存空间担保，所以采用标记-清除算法和标记-整理算法较好。</p></li></ul><blockquote><p>垃圾收集器</p></blockquote><p>默认的垃圾收集器：Serial收集器 / Serial Old 收集器</p><ul><li><p>Serial收集器</p><p>  1.在收集垃圾时，必须暂停其它所有工作的线程，直到它收集结束。</p><p>  2.没有线程交互的开销，效率最高的单线程垃圾收集器。</p><p>  3.适用于运行在Client端的虚拟机</p></li><li><p>ParNew收集器</p><p>  1.多线程。</p><p>  2.适用于运行在Server端的虚拟机。</p><p>  3.唯一一个能与CMS收集器（老年代的收集器）配合使用。</p></li><li><p>Parallel Scavenge 收集器</p><p>  1.吞吐量优先的收集器。</p></li><li><p>Serial Old 收集器</p></li><li><p>Parallel Old 收集器</p><p>  1.在吞吐量和CPU资源敏感的环境下，与Parallel Scavenge配合使用。</p></li><li><p>CMS收集器</p><p>  1.过程：</p><pre><code>a.初始标记b.并发标记c.初始标记d.并发清除</code></pre></li></ul><pre><code>2.初始标记和初始标记依然需要停顿。3.缺点：    a.应用程序变慢,吞吐量变低    b.无法处理浮点动垃圾    c.会产生太多空间碎片</code></pre><ul><li><p>G1 收集器</p><p>  1.使用Region划分内存空间以及有优先级的区域回收。</p><p>  特点：</p><pre><code>a.并行和并发。b.分代收集。c.空间整合。d.可预测的停顿。</code></pre></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;垃圾回收前先标记,标记的方法？&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;1.引用计数&lt;/p&gt;
-&lt;p&gt;给对象添加一个引用计数器，每一个地方引用它时，计数器值就加1.&lt;/p&gt;
-&lt;p&gt;2.可达性分析&lt;/p&gt;
-&lt;p&gt;不在”GC Roots”引用链上的对象
-      
-    
-    </summary>
-    
-      <category term="java虚拟机" scheme="http://www.xuchunfa.cn/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     
     
   </entry>

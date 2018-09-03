@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/wRkMYGE.png">
 <meta property="og:image" content="https://i.imgur.com/5HFiSBc.png">
-<meta property="og:updated_time" content="2018-08-28T06:52:02.812Z">
+<meta property="og:updated_time" content="2018-08-29T03:11:44.432Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java内存模型">
 <meta name="twitter:description" content="Java内存模型示意图   1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。 2.本地内存：相当于虚拟机栈内存区域部分。  happens-before原则： 怎么理解内存可见性？  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对">
@@ -411,9 +411,16 @@
 <ul>
 <li><p>happens-before原则：</p>
 <h4 id="怎么理解内存可见性？"><a href="#怎么理解内存可见性？" class="headerlink" title="怎么理解内存可见性？"></a>怎么理解内存可见性？</h4><p>  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。</p>
-<h4 id="happens-before规则有哪些？"><a href="#happens-before规则有哪些？" class="headerlink" title="happens-before规则有哪些？"></a>happens-before规则有哪些？</h4></li>
+</li>
 </ul>
-<ol>
+<pre><code>#### 怎么理解happens-before原则？ ####
+
+1.A happens-before B 意味着执行A产生的影响直接对B可见。
+
+2.而以下的规则是天生就存在这种happens-before关系的例子。
+
+#### happens-before规则有哪些？ ####
+</code></pre><ol>
 <li>程序顺序规则：但线程内，在不改变程序结果的情况下(可能会发生重排序),程序按顺序执行。</li>
 <li>监视器锁规则：对一个锁的解锁(volatile写)优先于锁的加锁(volatile读)。</li>
 <li>volatile变量规则：volatile写优先volatile读。</li>
@@ -555,7 +562,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -566,7 +573,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -633,7 +640,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么理解内存可见性？"><span class="nav-number">1.</span> <span class="nav-text">怎么理解内存可见性？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#happens-before规则有哪些？"><span class="nav-number">2.</span> <span class="nav-text">happens-before规则有哪些？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么理解内存可见性？"><span class="nav-number">1.</span> <span class="nav-text">怎么理解内存可见性？</span></a></li></ol></div>
             
 
           </div>

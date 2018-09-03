@@ -286,6 +286,1131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/合并两个有序数组/" itemprop="url">合并两个有序数组</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T13:54:01+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/合并两个有序数组/" class="leancloud_visitors" data-flag-title="合并两个有序数组">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>两个有序数组A1和A2，把A2的所有数字插入到A1？</li>
+</ul>
+<p><strong>核心思想：</strong>从数组末尾开始比较，指针依次往前挪。</p>
+<pre><code>public class MergeSortedArray {
+
+//时间复杂度(O(n)) 空间复杂度(O(n)) 通过归并实现
+public static int[] merge(int[] a,int[] b){
+
+    if(a==null || b==null){
+        System.out.println(&quot;输入两个数组&quot;);
+    }
+
+    if(a.length == 0)
+        return b;
+
+    if(b.length == 0)
+        return a;
+
+    int len1 = a.length;
+    int len2 = b.length;
+
+    int[] c = new int[len1+len2];
+    int i = 0;
+    int j = 0;
+
+    while(i &lt; len1 &amp;&amp; j &lt; len2){//归并的思想
+        if(a[i] &lt; b[j]){
+            c[i+j] = a[i];
+            i++;
+        }else{
+            c[i+j] = b[j];
+            j++;
+        }
+    }
+
+    while (i &lt; len1){
+        c[i+j+1] = a[i];
+        i++;
+    }
+
+    while(j &lt; len2){
+        c[i+j] = b[j];
+        j++;
+    }
+
+    return c;
+}
+
+//时间复杂度(O(n)) 空间复杂度(O(1)) 直接在第一个数组上操作
+public static void merge1(int[] a,int[] b){
+
+    if(a==null || b==null){
+        System.out.println(&quot;输入两个数组&quot;);
+    }
+
+    int len1 = a.length;
+    int len2 = b.length;
+
+    int i = len1 - len2 -1;
+    int j = len2 - 1;
+
+    while(i &gt;= 0 &amp;&amp; j &gt;= 0){//从数组最后面的元素开始向前比较
+        if(a[i] &gt; b[j]){
+            a[i+j+1] = a[i];
+            i--;
+        }else{
+            a[i+j+1] = b[j];
+            j--;
+        }
+    }
+
+    while(j &gt;= 0){
+        a[i+j+1] = b[j];
+        j--;
+    }
+
+}
+
+public static void main(String[] args){
+
+    int[] a ={1,4,9};
+    int[] b = {2,3,10,16};
+    int[] c = new int[a.length+b.length];
+
+    c = MergeSortedArray.merge(a,b);
+
+    //打印数组元素
+    System.out.println(Arrays.toString(c));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/20/替换字符串字符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/20/替换字符串字符/" itemprop="url">替换字符串字符</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T15:45:59+08:00">
+                2018-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/字符串/" itemprop="url" rel="index">
+                    <span itemprop="name">字符串</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/20/替换字符串字符/" class="leancloud_visitors" data-flag-title="替换字符串字符">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>将字符串中的’ ‘替换成”20%”？</li>
+</ul>
+<p><strong>核心思想：</strong></p>
+<p>1.从最后一字符开始从前遍历，最后一个字符是’\0’。</p>
+<p>2.将字符串变为数组时，要在字符串数组后面添加’\0’。</p>
+<pre><code>public class ReplaceChar {
+
+//时间复杂度：O(n) 空间复杂度：O(n)
+public void replace(char[] a,int len){
+
+    //len = 1 时就一个字符&apos;\0&apos;
+    if(a == null || len&lt;2){
+        System.out.println(&quot;输入长度大于0的字符串&quot;);
+        System.exit(-1);
+    }
+
+    int oldLen = 0;
+    int count = 0;
+    int newLen;
+    for(int i = 0;a[i] !=&apos;\0&apos;;i++){
+        if(a[i] == &apos; &apos;)
+            count++;
+        oldLen++;
+    }
+
+    newLen = oldLen + 2*count;
+
+    if(newLen &gt; len)
+        return;
+
+    int i = oldLen;//从&apos;\0&apos;开始
+    int j = newLen;
+
+    while (i &gt;= 0 &amp;&amp; i &lt; j){
+
+        if(a[i] == &apos; &apos;){
+            a[j--] = &apos;0&apos;;
+            a[j--] = &apos;2&apos;;
+            a[j--] = &apos;%&apos;;
+        }else {
+            //注意 j 越界的情况
+            a[j--] = a[i];
+        }
+
+        i--;
+    }
+}
+
+public static void main(String[] args) {
+
+    String s = &quot;abcd&quot;;
+
+    //多了个&apos;\0&apos;
+    char oldChar[] = new char[s.length()+1];
+
+    int counter = 0;
+    for (int i = 0; i&lt;s.length(); i++) {
+        if (s.charAt(i) == &apos; &apos;)
+            counter++;
+        oldChar[i] = s.charAt(i);
+    }
+
+    //字符串结束标志
+    oldChar[s.length()] = &apos;\0&apos;;
+
+    //里面已经包含了&apos;\0&apos;结束符
+    int totalLen = oldChar.length + counter*2;
+
+    //数组扩容
+    char[] newChar = new char[totalLen];
+    for(int i = 0;i&lt;oldChar.length;i++){
+        newChar[i] = oldChar[i];
+    }
+
+    new ReplaceChar().replace(newChar,totalLen);
+
+    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){
+        System.out.print(newChar[i]);
+    }
+
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/19/二维数组的查找/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/19/二维数组的查找/" itemprop="url">二维数组的查找</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-19T22:01:59+08:00">
+                2018-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/19/二维数组的查找/" class="leancloud_visitors" data-flag-title="二维数组的查找">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？"><a href="#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？" class="headerlink" title="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？"></a>二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？</h4><p><strong>核心思想：</strong></p>
+<p>1.右上角的数字与要查找的数字比较。</p>
+<p>2.右上角 &gt; key 去列 否则 去行</p>
+<pre><code>public int findElement(int[][] arr,int n,int m,int search){
+
+    int row = n;
+    int col = m;
+    int key = search;
+    int i = 0;
+
+    if(arr == null){
+        System.out.println(&quot;请输入一个二维数组&quot;);
+        return 0;
+    }
+
+    if(n &lt;= 0 || m &lt;=0){
+        System.out.println(&quot;输入两个自然数&quot;);
+    }
+
+    while(i &lt; row &amp;&amp; col &gt;0){
+        //去列
+        if(arr[i][col-1] &gt; key){
+            col--;
+        }else if(arr[i][col-1] &lt; key){
+            i++;
+        }else {
+            //找到元素
+            return arr[i][col-1];
+        }
+
+        //只剩一行
+        if(i == row-1){
+            for(int j=0;j&lt;col;j++){
+                if(arr[i][j] == key) {
+                    return arr[i][j];
+                }
+            }
+
+            return 0;
+        }
+
+        //只剩一列
+        if(col == 1){
+            for(int j = 0;j&lt;row;j++){
+                if(arr[j][0] == key)
+                    return arr[j][0];
+            }
+
+            return 0;
+        }
+    }
+
+    //不存在
+    return 0;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/18/java并发底层原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/18/java并发底层原理/" itemprop="url">java并发底层原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T21:31:59+08:00">
+                2018-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/18/java并发底层原理/" class="leancloud_visitors" data-flag-title="java并发底层原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>处理器如何实现的原子操作？</p>
+<p>  1.通过总线锁。</p>
+<p>  2.通过缓存锁定。</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/18/数组中的重复数字/" itemprop="url">数组中的重复数字</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T17:20:58+08:00">
+                2018-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/18/数组中的重复数字/" class="leancloud_visitors" data-flag-title="数组中的重复数字">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
+<p>1.数组下标 = 数组元素</p>
+<p>2.目标交换：num[i] = m </p>
+<p>   swap: m <---> num[m] 直到 num[i] == i</---></p>
+<pre><code>public class OptDuplication {
+
+//哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)
+boolean findDup1(int[] nums,int len,int[] duplication){
+
+    if(nums == null || len &lt;= 0){
+        System.out.println(&quot;数组必须存在且不能为空!&quot;);
+        return  false;
+    }
+
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
+            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
+            return false;
+        }
+    }
+
+    //哈希表
+    int[] count = new int[len];
+    for(int i = 0;i&lt;len;i++){
+        if(count[nums[i]] == 1){
+            duplication[0] = nums[i];
+            return true;
+        }
+
+        count[nums[i]]++;
+    }
+
+    return false;
+
+}
+
+boolean findDup(int[] nums,int len,int[] duplication){
+
+    if(nums == null || len &lt;= 0){
+        System.out.println(&quot;数组必须存在且不能为空!&quot;);
+        return  false;
+    }
+
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
+            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
+            return false;
+        }
+    }
+
+    int temp;
+    for(int i = 0;i&lt;len;i++){
+        while (i != nums[i]){
+            //nums[i]=m 说明 m 所在的下标是 i 和 m 所以重复了
+            if(nums[i] == nums[nums[i]]){
+                duplication[0]=nums[i];
+                return true;
+            }else {
+                //交换num[i] 和 num[num[i]]
+                temp = nums[i];
+                nums[i] = nums[nums[i]];
+                nums[temp] = temp;
+            }
+        }
+    }
+
+    System.out.println(&quot;没有重复数字&quot;);
+    return false;
+}
+</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
+<p>1.二分法的运用，加入了统计数字个数的方法</p>
+<p>2.循环结束条件：start == end</p>
+<pre><code>public class DuplicationVersion {
+
+//时间复杂度:O(nlogn) 空间复杂度:O(1)
+boolean findDup(int[] nums,int len,int[] duplication){
+
+    if(nums == null || len &lt;= 0){
+        System.out.println(&quot;数组必须存在且不能为空!&quot;);
+        return  false;
+    }
+
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {
+            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);
+            return false;
+        }
+    }
+
+    int start = 1;
+    int end = len-1;
+    int middle;
+    while(start &lt;=  end){
+
+        middle = (start + end)/2;
+        int number = calNum(nums,len,start,middle);
+
+        //结束条件
+        if(start == end){
+            if(number &gt; 1){
+                duplication[0] = start;
+                return true;
+            }else{
+                break;
+            }
+        }
+
+        if(middle - start + 1 &lt; number){
+            end = middle;
+        }else {
+            start = middle + 1;
+        }
+    }
+
+    System.out.println(&quot;没有重复数字&quot;);
+    return false;
+}
+
+private int calNum(int[] nums, int len, int start, int end) {
+    int count = 0;
+    for(int i = 0;i&lt;len;i++){
+        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){
+            count++;
+        }
+    }
+    return count;
+}
+ }
+</code></pre><p>参考文档：</p>
+<p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/并发编程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1286,842 +2411,6 @@ public static void main(String[] args) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/04/Github/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/04/Github/" itemprop="url">Github常用命令总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T09:55:59+08:00">
-                2018-07-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Github/" itemprop="url" rel="index">
-                    <span itemprop="name">Github</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/04/Github/" class="leancloud_visitors" data-flag-title="Github常用命令总结">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="https://foofish.net/images/github7.png" alt=""></p>
-<ul>
-<li>master: 本地项目</li>
-<li>origin: Fork的远程项目</li>
-<li>upstream: 别人的开源项目</li>
-</ul>
-<hr>
-<p><img src="https://i.imgur.com/teG0F62.png" alt=""></p>
-<h2 id="git-pull-git-fetch-git-merge"><a href="#git-pull-git-fetch-git-merge" class="headerlink" title="git pull = git fetch + git merge"></a>git pull = git fetch + git merge</h2><p>例如：<br>    <code>git pull origin next</code><br>            等价于</p>
-<pre><code>` git fetch origin`
- `git merge origin/next`
-</code></pre><hr>
-<p>常用命令图解：<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png" alt=""></p>
-<ul>
-<li><p>代码提交</p>
-<p>  例如：提交工作区自上次commit之后的变化，直接到仓库区</p>
-<p>  <code>git commit -a</code></p>
-<p>  例如：提交暂存区到仓库区</p>
-<p>  <code>git commit -m [message]</code></p>
-</li>
-<li><p>切换分支</p>
-<p>  例如：切换到指定分支，并更新工作区</p>
-<p>  <code>git checkout [branch-name]</code></p>
-</li>
-<li><p>合并分支</p>
-<p>  例如：合并指定分支到当前分支</p>
-<p>  <code>git merge [branch]</code></p>
-</li>
-<li><p>查看远程仓库</p>
-<pre><code>`git remote -v `
-</code></pre></li>
-<li><p>添加远程仓库</p>
-<pre><code>`git remote add pb https://github.com/paulboone/ticgit`
-</code></pre></li>
-<li><p>从远程仓库中抓取与拉取</p>
-<p>  <code>git fetch [remote-name]</code></p>
-</li>
-<li><p>推送到远程仓库</p>
-<p>  <code>git push [remote-name] [branch-name]</code></p>
-</li>
-<li><p>在origin/master基础上创建一个新分支</p>
-<p>  <code>git checkout -b newBranch origin/master</code></p>
-</li>
-<li><p>在本地分支上合并远程分支</p>
-<p>  <code>git merge origin/master</code></p>
-<pre><code>或者
-</code></pre><p>  <code>git rebase origin/master</code></p>
-</li>
-<li><p>取回远程主机某个分支的更新，再与本地的指定分支合并</p>
-<p>  <code>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></p>
-<p>  例如：</p>
-<pre><code>`git pull origin next:master`
-</code></pre><p>  远程分支与当前分支合并：</p>
-<pre><code>`git pull origin next`
-</code></pre></li>
-<li><p>将本地分支更新，推送到远程主机</p>
-<p>  <code>git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code></p>
-<p>  不要弄混淆了：</p>
-<pre><code>pull 拉取远程分支名
-
-push 推送本地分支名
-</code></pre><p>  例如：将本地的branch1分支推送到origin主机的master分支</p>
-<pre><code>`git push origin branch1`
-</code></pre></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/03/Spark/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/03/Spark/" itemprop="url">Spark完全分布式集群的搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T11:49:49+08:00">
-                2018-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index">
-                    <span itemprop="name">Spark</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/03/Spark/" class="leancloud_visitors" data-flag-title="Spark完全分布式集群的搭建">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/03/test1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/03/test1/" itemprop="url">Hadoop完全分布式集群的搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T11:41:43+08:00">
-                2018-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hadoop/" itemprop="url" rel="index">
-                    <span itemprop="name">Hadoop</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/03/test1/" class="leancloud_visitors" data-flag-title="Hadoop完全分布式集群的搭建">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/03/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/03/test/" itemprop="url">Hadoop完全分布式集群的搭建</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T11:31:33+08:00">
-                2018-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hadoop/" itemprop="url" rel="index">
-                    <span itemprop="name">Hadoop</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/03/test/" class="leancloud_visitors" data-flag-title="Hadoop完全分布式集群的搭建">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/06/24/First/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/24/First/" itemprop="url">Hexo + Github部署网站关键点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T19:01:00+08:00">
-                2018-06-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/24/First/" class="leancloud_visitors" data-flag-title="Hexo + Github部署网站关键点">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><pre><code>安装好Git和node.js,然后配置系统环境变量，我用nvm安装node.js时自动配好了环境变量，记得配Git的环境变量
-</code></pre><p><a href="http://blog.csdn.net/banqgg/article/details/52983827" target="_blank" rel="noopener">请看这里</a></p>
-<h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><pre><code>新建文件夹存放博客内容和相关配置文件，例如在D盘建立Blog文件夹，进到文件夹，右键Git Bash,安装hexo
-npm install -g hexo-cli
-</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><pre><code>hexo的初始化
-hexo init 默认是在当下文件夹，即在D:\Blog\下
-</code></pre><h1 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h1><pre><code>根据package.json文件中的dependencies的配置文件安装依赖
-npm install
-</code></pre><h1 id="第五步"><a href="#第五步" class="headerlink" title="第五步"></a>第五步</h1><pre><code>生成部署文件，启动本地服务
-hexo generate/g 
-hexo server/s 在 http://localhost:4000/查看
-</code></pre><h1 id="第六步"><a href="#第六步" class="headerlink" title="第六步"></a>第六步</h1><pre><code>在Github上建库，库名为username.github.io,其中username是你github账号的用户名，
-</code></pre><h1 id="第七步"><a href="#第七步" class="headerlink" title="第七步"></a>第七步</h1><ul>
-<li><p>生成ssh密钥</p>
-<pre><code>`ssh -keygen -t rsa -C &quot;username@**.com&quot;`
-</code></pre></li>
-<li><p>拷贝密钥<br>  <code>在Git Bash 中查看并拷贝cat ~/.ssh/id_rsa.pub</code></p>
-</li>
-<li><p>添加密钥到Github<br>  <code>[https://github.com/settings/keys](https://github.com/settings/keys)下add new ssh key</code></p>
-</li>
-<li>测试连接<br>  <code>ssh git@github.com</code></li>
-</ul>
-<h1 id="第八步"><a href="#第八步" class="headerlink" title="第八步"></a>第八步</h1><pre><code>修改D:\Blog下的_config.yml配置文件
-deploy:
-    type: git
-    repo: ssh://git@github.com/username/username.github.io
-    branch: master
- 注意冒号后的空格
-</code></pre><h1 id="第九步"><a href="#第九步" class="headerlink" title="第九步"></a>第九步</h1><pre><code>安装Git包
-npm install hexo-deployer-git --save
-如果你是第一次部署的话可能会出现fatal: Not a git repository
-此时初始化 git init
-</code></pre><h1 id="第十步"><a href="#第十步" class="headerlink" title="第十步"></a>第十步</h1><pre><code>部署 hexo deploy/d
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2176,7 +2465,7 @@ npm install hexo-deployer-git --save
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2187,7 +2476,7 @@ npm install hexo-deployer-git --save
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

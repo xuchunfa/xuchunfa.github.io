@@ -286,6 +286,979 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/线程池/" itemprop="url">线程池</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T20:12:47+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/04/线程池/" class="leancloud_visitors" data-flag-title="线程池">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
+<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
+<p>3.提高线程的可管理性。</p>
+<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
+<pre><code>public static void start(){
+    ServerSocket serverSocket = new ServerSocket(port);
+    Socket socket = null;
+    while ((socket = serverSocket.accept() != null)){
+        thread.execute(new HttpRequestHandler(socket));
+    }
+}
+分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
+</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
+<p>1.corePoolSize:线程池中线程的基本数量。</p>
+<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize</p>
+<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
+<p>4.keepAliveTime:工作线程空闲时的存活时间。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/基数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/基数排序/" itemprop="url">基数排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T14:04:16+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/04/基数排序/" class="leancloud_visitors" data-flag-title="基数排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="桶的思想？"><a href="#桶的思想？" class="headerlink" title="桶的思想？"></a>桶的思想？</h4><p><img src="https://i.imgur.com/5NeTrG5.png" alt=""></p>
+<pre><code>public class RadixSort {
+
+public static void radixSort(int[] a,int k){
+    int[] counter = new int[10];
+    int[][] container = new int[10][a.length];
+    int n = 1;
+    int t = 0;
+    while (n &lt; k){
+        for(int num : a){
+            int radix = (num/n)%10;
+            container[radix][counter[radix]] = num;
+            counter[radix]++;
+        }
+
+        for(int i = 0;i &lt; 10;i++){
+                if(counter[i] != 0){
+                    for(int j = 0;j&lt;counter[i];j++){
+                        a[t] = container[i][j];
+                        t++;
+                    }
+                }
+            counter[i] = 0;
+        }
+
+        t = 0;
+        n *= 10;
+    }
+}
+
+public static void main(String[] args){
+    int[] a = {1,21,32,45,687,89,43,44,95};
+    RadixSort.radixSort(a,1000);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre><p><strong>时间复杂度：</strong></p>
+<pre><code>时间复杂度 = [放桶的时间(O(n)) + 取桶里面的元素(O(n))]*位数
+
+     = O(d*n) (d为常数)
+
+空间复杂度 = O(n * 10 + 10) = O(n)
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/计数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/计数排序/" itemprop="url">计数排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T12:32:23+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/04/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>核心思想：</strong>哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。</p>
+<p>计数排序示意图：</p>
+<p><img src="https://i.imgur.com/TsgETfY.png" alt=""></p>
+<pre><code>public class CountSort {
+
+//数组数字在0 ~ k之间
+public static int[] countSort(int[] a,int k){
+
+    int[] elementCounter = new int[k+1];
+
+    for(int i = 0;i&lt;a.length;i++){
+        elementCounter[a[i]]++;
+    }
+
+    //构造计数数组(即小于等于该元素的个数)
+    int preSum = elementCounter[0];
+    for(int j = 1;j&lt;elementCounter.length;j++){
+        elementCounter[j] = preSum + elementCounter[j];
+        preSum = elementCounter[j];
+    }
+
+
+    int[] result = new int[a.length];
+
+    //从原数组末尾开始遍历
+    for(int i = a.length-1;i&gt;=0;i--){
+        result[elementCounter[a[i]]-1] = a[i];
+        elementCounter[a[i]]--;
+    }
+
+    return result;
+}
+
+public static void main(String[] args){
+    int[] a = {6,5,4,3,2,1};
+    int[] result = new int[a.length];
+    result = CountSort.countSort(a,6);
+    System.out.println(Arrays.toString(result));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/03/希尔排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/希尔排序/" itemprop="url">希尔排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T14:46:38+08:00">
+                2018-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/03/希尔排序/" class="leancloud_visitors" data-flag-title="希尔排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="希尔排序示意图"><a href="#希尔排序示意图" class="headerlink" title="希尔排序示意图"></a>希尔排序示意图</h4><p><img src="https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161128110416068-1421707828.png" alt=""></p>
+<pre><code>public class ShellSort {
+
+public static void shellSort(int[] a){
+    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){
+        for(int i = increment;i&lt;a.length;i++){
+            int j = i;
+            while (j - increment &gt;=0  &amp;&amp; a[j-increment] &gt; a[j]){
+                //交换排序
+                swap(a,j,j-increment);
+                j -= increment;
+        }
+        }
+    }
+}
+
+private static void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+
+public static void shellSort1(int[] a){
+    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){
+        for(int i = increment;i&lt;a.length;i++){
+            int j = i;
+            int temp = a[j];
+
+            //直接插入
+            while(j-increment &gt;= 0 &amp;&amp; a[j-increment] &gt; temp){
+                a[j] = a[j-increment];
+                j -= increment;
+            }
+            a[j] = temp;
+        }
+    }
+}
+
+public static void main(String[] args){
+    int[] a = {9,8,7,6,5,4,3,2,1};
+    ShellSort.shellSort1(a);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6104371.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6104371.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/02/归并排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/归并排序/" itemprop="url">归并排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T14:40:42+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/02/归并排序/" class="leancloud_visitors" data-flag-title="归并排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>什么叫分治思想？</strong></p>
+<p>分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之</p>
+<p><img src="https://images2015.cnblogs.com/blog/1024555/201612/1024555-20161218163120151-452283750.png" alt=""></p>
+<pre><code>public class MergeSort {
+
+//临时数组
+public static void sort(int[] a){
+    int[] temp = new int[a.length];
+    mergeSort(a,0,a.length-1,temp);
+}
+
+//治的思想
+public static void merge(int[] a,int left,int mid,int right,int[] temp){
+    int i = left;
+    int j = mid + 1;
+    int k = 0;
+    while(i &lt;= mid &amp;&amp; j &lt;= right){
+        if(a[i] &lt; a[j]){
+            temp[k++] = a[i++];
+        }else{
+            temp[k++] = a[j++];
+        }
+    }
+
+    while (i &lt;= mid){
+        temp[k++] = a[i++];
+    }
+
+    while (j &lt;= right){
+        temp[k++] = a[j++];
+    }
+
+    k = 0;
+    while (left &lt;= right){
+        a[left++] = temp[k++];
+    }
+}
+
+//归并排序
+public static void mergeSort(int[] a,int left,int right,int[] temp){
+
+    if(a == null){
+        throw new RuntimeException(&quot;输入数组&quot;);
+    }
+
+    if(left &lt; 0 || left &gt;= a.length || right &lt; 0 || right &gt;= a.length ){
+        throw new RuntimeException(&quot;越界&quot;);
+    }
+
+    if(left &gt;= right)
+        return;
+
+    int mid = (left + right)/2;
+
+    //分
+    mergeSort(a,left,mid,temp);
+    mergeSort(a,mid+1,right,temp);
+
+    //治
+    merge(a,left,mid,right,temp);
+}
+
+public static void main(String[] args){
+    int[] a = {6,5,4,4,4,3,2,1};
+    sort(a);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6194356.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6194356.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/02/进程和线程的区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1365,1199 +2338,6 @@ O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/斐波拉契数列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/27/斐波拉契数列/" itemprop="url">斐波拉契数列</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T19:43:48+08:00">
-                2018-07-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
-                    <span itemprop="name">策略类</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/27/斐波拉契数列/" class="leancloud_visitors" data-flag-title="斐波拉契数列">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="斐波拉契数列？"><a href="#斐波拉契数列？" class="headerlink" title="斐波拉契数列？"></a>斐波拉契数列？</h4><pre><code>public class Fibonacci {
-
-//效率差
-public static long fibonacci1(int n){
-
-    if(n == 0)
-        return 0;
-
-    if(n == 1)
-        return 1;
-
-    return fibonacci1(n-1) + fibonacci1(n-2);
-
-}
-
-public static long fibonacci(int n){
-
-    if(n == 0)
-        return 0;
-
-    if(n == 1)
-        return 1;
-
-    long one = 0;
-    long two = 1;
-    long three = 0;
-    for(int i = 2;i&lt;=n;i++){
-        three = one + two;
-        one = two;
-        two = three;
-    }
-
-    return three;
-}
-
-public static void main(String[] args){
-    System.out.println(Fibonacci.fibonacci1(50));
-}
-}
-</code></pre><h4 id="青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><a href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？" class="headerlink" title="青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？"></a>青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</h4><pre><code>public class FrogStep {
-
-public static long solution(int n) {
-
-    if (n == 0) {
-        throw new RuntimeException(&quot;输入自然数&quot;);
-    }
-
-    if (n == 1) {
-        return 1;
-    }
-
-    if (n == 2) {
-        return 2;
-    }
-
-    long one = 1;
-    long two = 2;
-    long three = 0;
-    for (int i = 3; i &lt;= n; i++) {
-        three = one + two;
-        one = two;
-        two = three;
-    }
-
-    return three;
-}
-
-public static void main(String[] args){
-    System.out.println(FrogStep.solution(100));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/栈和队列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/27/栈和队列/" itemprop="url">栈和队列</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T19:39:06+08:00">
-                2018-07-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/栈和队列/" itemprop="url" rel="index">
-                    <span itemprop="name">栈和队列</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/27/栈和队列/" class="leancloud_visitors" data-flag-title="栈和队列">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="两个栈实现队列？"><a href="#两个栈实现队列？" class="headerlink" title="两个栈实现队列？"></a>两个栈实现队列？</h4><pre><code>public class StackToQueue&lt;T&gt; {
-
-private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();
-private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();
-
-public void appendTail(T element){
-    stack1.push(element);
-}
-
-public T deleteHead(){
-    if(stack2.size() &lt;= 0){
-        while(!stack1.empty()){
-            T element = stack1.pop();
-            stack2.push(element);
-        }
-    }
-
-    //说明stack1 也没元素了
-    if(stack2.isEmpty()){
-        throw new RuntimeException(&quot;队列为空&quot;);
-    }
-
-    T head = stack2.pop();
-    return head;
-}
-
-public static void main(String[] args){
-    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();
-    queue.appendTail(1);
-    queue.appendTail(2);
-    queue.appendTail(3);
-    Integer a = queue.deleteHead();
-    queue.appendTail(4);
-    Integer b = queue.deleteHead();
-    System.out.println(b);
-}
-}
-</code></pre><h4 id="两个队列实现栈？"><a href="#两个队列实现栈？" class="headerlink" title="两个队列实现栈？"></a>两个队列实现栈？</h4><pre><code>public class StackToQueue&lt;T&gt; {
-
-private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();
-private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();
-
-public void appendTail(T element){
-    stack1.push(element);
-}
-
-public T deleteHead(){
-    if(stack2.size() &lt;= 0){
-        while(!stack1.empty()){
-            T element = stack1.pop();
-            stack2.push(element);
-        }
-    }
-
-    //说明stack1 也没元素了
-    if(stack2.isEmpty()){
-        throw new RuntimeException(&quot;队列为空&quot;);
-    }
-
-    T head = stack2.pop();
-    return head;
-}
-
-public static void main(String[] args){
-    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();
-    queue.appendTail(1);
-    queue.appendTail(2);
-    queue.appendTail(3);
-    Integer a = queue.deleteHead();
-    queue.appendTail(4);
-    Integer b = queue.deleteHead();
-    System.out.println(b);
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/24/二叉树的下一个结点/" itemprop="url">二叉树的下一个结点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T22:16:23+08:00">
-                2018-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/24/二叉树的下一个结点/" class="leancloud_visitors" data-flag-title="二叉树的下一个结点">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public class ParentBinaryTree {
-
-ParentBinaryTreeNode root;
-
-public void createTree(ParentBinaryTreeNode node,int data){
-
-    if(this.root == null){
-        root = new ParentBinaryTreeNode(data);
-    }else {
-        //二叉查找树
-        if(data &lt; node.data){
-            if(node.left == null){
-                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
-                node.left = temp;
-                temp.parent = node;
-            }else {
-                createTree(node.left,data);
-            }
-        }else {
-            if(node.right == null){
-                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
-                node.right = temp;
-                temp.parent = node;
-            }else {
-                createTree(node.right,data);
-            }
-        }
-    }
-}
-
-//中序遍历,递归实现
-public void inOrder(ParentBinaryTreeNode node){
-    if(node == null)
-        return;
-
-    inOrder(node.left);
-    System.out.print(node.data + &quot; &quot;);
-    inOrder(node.right);
-}
-
-//找出中序遍历中的下一个点
-public ParentBinaryTreeNode searchNext(ParentBinaryTreeNode node,int data){
-
-    if(node == null){
-        throw new RuntimeException(&quot;空树&quot;);
-    }
-
-    ParentBinaryTreeNode dataNode = searchData(node,data);
-
-    ParentBinaryTreeNode next = null;
-
-    if(dataNode == null){
-        throw new RuntimeException(&quot;不存在该值&quot;);
-    }else{
-        //有右子树
-        if(dataNode.right != null){
-            ParentBinaryTreeNode temp = dataNode.right;
-            while (temp.left != null){
-                temp = temp.left;
-            }
-            next = temp;
-        }else if(dataNode.parent != null){//等于null说明是根节点
-            ParentBinaryTreeNode current =  dataNode;
-            ParentBinaryTreeNode parent = current.parent;
-            while (parent != null &amp;&amp; parent.right == current){
-                current = parent;
-                parent = parent.parent;
-            }
-            next = parent;//parent有可能为null
-        }
-    }
-    return next;
-}
-
-private ParentBinaryTreeNode searchData(ParentBinaryTreeNode node, int data) {
-
-    if(node == null){
-       return null;
-    }
-
-    if(node.data == data){
-        return node;
-    }else if(searchData(node.left,data) != null){
-        return searchData(node.left,data);
-    }else
-        return searchData(node.right,data);
-}
-
-public static void main(String[] args){
-
-    ParentBinaryTree tree = new ParentBinaryTree();
-
-    //for(int i = 2;i&lt;10;i++){
-    //    tree.createTree(tree.root,i);
-    //}
-
-    tree.createTree(tree.root,9);
-    tree.createTree(tree.root,5);
-    tree.createTree(tree.root,3);
-    tree.createTree(tree.root,7);
-    tree.createTree(tree.root,6);
-    tree.createTree(tree.root,8);
-    tree.createTree(tree.root,12);
-    tree.createTree(tree.root,10);
-    tree.createTree(tree.root,14);
-
-    tree.inOrder(tree.root);
-    System.out.println();
-
-    ParentBinaryTreeNode node = tree.searchNext(tree.root,5);
-    if(node != null){
-        System.out.println(node.data);
-    }else {
-        System.out.println(&quot;最后一个结点&quot;);
-    }
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/volatile语义理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/24/volatile语义理解/" itemprop="url">volatile语义理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T17:05:01+08:00">
-                2018-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/24/volatile语义理解/" class="leancloud_visitors" data-flag-title="volatile语义理解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>volatile变量的两层语义</p>
-</blockquote>
-<p>1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的</p>
-<p>2.禁止进行指令重排序。</p>
-<p>对于2通过DCL理解：</p>
-<pre><code>public class Singleton {  
-  private volatile static Singleton singleton;  
-  private Singleton (){
-  }   
-  public static Singleton getInstance() {  
-  if (instance== null) {  
-      synchronized (Singleton.class) {  
-      if (instance== null) {  
-          instance= new Singleton();  
-      }  
-     }  
- }  
- return singleton;  
- }  
-  }  
-</code></pre><p>如果发生重排序的话会出现以下的情况：</p>
-<p><img src="https://i.imgur.com/kk1Pn2O.png" alt=""></p>
-<p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p>
-<p><strong>锁释放和获得：</strong>锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。</p>
-<p><strong>注意：</strong>volatile变量只能保证可见性。不能保证原子性。</p>
-<pre><code>/*
-    解决办法：
-
-    1.synchronize
-
-    2.Lock
-
-    3.AtomicInteger
-*/
-
-public class UnsafeVolatile {
-
-public static volatile int pace = 0;
-
-public static void increase(){
-    pace++;
-}
-
-public static final int COUNT = 10;
-
-public static void main(String[] args){
-    Thread[] threads = new Thread[COUNT];
-
-    for(int i = 0;i &lt; COUNT;i++){
-        threads[i] = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(int j = 0;j &lt; 50;j++){
-                    increase();
-                }
-            }
-        });
-        threads[i].start();
-    }
-
-    /*while (Thread.activeCount() &gt; 1)
-        Thread.yield();*/
-
-    //按我们所设想的话应该返回500 实际要小于500
-    System.out.println(pace);
-}
-}
-</code></pre><p>原因：</p>
-<p>在执行4时变量的值可能已经不是最新的值了，可能已经被其他线程改变了。</p>
-<p>0：getstatic<br>3: iconst_1<br>4: iadd<br>5: putstatic</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/前序中序后序构建二叉树/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/24/前序中序后序构建二叉树/" itemprop="url">前序中序后序构建二叉树</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T14:58:22+08:00">
-                2018-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/24/前序中序后序构建二叉树/" class="leancloud_visitors" data-flag-title="前序中序后序构建二叉树">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"><a href="#根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？" class="headerlink" title="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"></a>根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？</h4><p><strong>核心思想：</strong>递归创建，更新start和end坐标。</p>
-<pre><code>public class RestructBinaryTree {
-
-private BinaryTreeNode root;
-
-//根据前序和中序构造二叉树
-public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,int[] in,int inStart,int inEnd){
-
-    if(pre == null || in == null || pre.length &lt;= 0 || in.length &lt;= 0){
-        throw new RuntimeException(&quot;序列数组长度需大于0&quot;);
-    }
-
-    if(preEnd &lt; preStart || inEnd &lt; inStart){
-        return null;
-    }
-
-    //第一个结点
-    BinaryTreeNode node = new BinaryTreeNode(pre[preStart]);
-
-    int i = 0;
-    for(;i&lt;in.length;i++){
-        if(node.data == in[i]){
-            node.left = preAndIn(pre,preStart+1,preStart+i-inStart,in,inStart,i-1);
-            node.right = preAndIn(pre,preStart+i-inStart+1,preEnd,in,i+1,inEnd);
-            break;
-        }
-    }
-
-    if(i == in.length){
-        throw new RuntimeException(&quot;两组序列不匹配&quot;);
-    }
-
-    return node;
-}
-
-//根据中序和后序构造二叉树
-public BinaryTreeNode inAndPost(int[] post,int postStart,int postEnd,int[] in,int inStart,int inEnd){
-
-    if(post == null || in == null || post.length &lt;= 0 || in.length &lt;= 0){
-        throw new RuntimeException(&quot;序列数组长度需大于0&quot;);
-    }
-
-    if(postEnd &lt; postStart || inEnd &lt; inStart){
-        return null;
-    }
-
-    //第一个结点
-    BinaryTreeNode node = new BinaryTreeNode(post[postEnd]);
-    int i = 0;
-    for(;i&lt;in.length;i++){
-        if(node.data == in[i]){
-            node.right = inAndPost(post,postEnd-inEnd+i,postEnd-1,in,i+1,inEnd);
-            node.left = inAndPost(post,postStart,postEnd-inEnd+i-1,in,inStart,i-1);
-            break;
-        }
-    }
-
-    if(i == in.length){
-        throw new RuntimeException(&quot;两组序列不匹配&quot;);
-    }
-
-    return node;
-}
-
-//先序遍历,递归实现
-public void preOrder(BinaryTreeNode node){
-    if (node == null)
-        return;
-
-    System.out.print(node.data + &quot; &quot;);
-    preOrder(node.left);
-    preOrder(node.right);
-}
-
-
-//后序遍历
-public void postOrder(BinaryTreeNode node) {
-
-    if (node == null)
-        return;
-    postOrder(node.left);
-    postOrder(node.right);
-    System.out.print(node.data + &quot; &quot;);
-
-}
-
-public static void main(String[] args){
-
-    RestructBinaryTree tree = new RestructBinaryTree();
-    int[] pre = {1,2,3,4};
-    int[] in = {4,3,2,1};
-    int[] post = {7,4,2,5,8,6,3,1};
-
-    //tree.root = tree.inAndPost(post,0,post.length-1,in,0,in.length-1);
-    tree.root = tree.preAndIn(pre,0,pre.length-1,in,0,in.length-1);
-    //tree.preOrder(tree.root);
-    tree.postOrder(tree.root);
-
- }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2612,7 +2392,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2623,7 +2403,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
