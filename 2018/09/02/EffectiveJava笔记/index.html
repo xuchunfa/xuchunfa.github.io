@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="1.有时可以用静态工厂方法来代替构造器。">
+<meta name="description" content="1.有时可以用静态工厂方法来代替构造器。 2.带有私有构造函数的类不能被继承。 3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。 4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。 5.为什么静态方法只能访问静态域">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java笔记">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.有时可以用静态工厂方法来代替构造器。">
+<meta property="og:description" content="1.有时可以用静态工厂方法来代替构造器。 2.带有私有构造函数的类不能被继承。 3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。 4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。 5.为什么静态方法只能访问静态域">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-02T08:31:39.584Z">
+<meta property="og:updated_time" content="2018-09-06T11:51:08.040Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java笔记">
-<meta name="twitter:description" content="1.有时可以用静态工厂方法来代替构造器。">
+<meta name="twitter:description" content="1.有时可以用静态工厂方法来代替构造器。 2.带有私有构造函数的类不能被继承。 3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。 4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。 5.为什么静态方法只能访问静态域">
 
 
 
@@ -400,7 +400,12 @@
 
       
         <p>1.有时可以用静态工厂方法来代替构造器。</p>
-
+<p>2.带有私有构造函数的类不能被继承。</p>
+<p>3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。</p>
+<p>4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。</p>
+<p>5.为什么静态方法只能访问静态域？</p>
+<pre><code>静态域是属于类的，程序在进行编译的时候就会加载到虚拟机内存的方法区，直到程序退出都会一直存在，而非静态域是和对象挂钩的，需要 new 一个对象，实例域才会在堆中分配内存，对象都还没有怎么能访问非静态域呢？
+</code></pre>
       
     </div>
     
@@ -515,7 +520,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">81</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -526,7 +531,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="饿汉模式   1.基于类加载的机制  懒汉模式（线程不安全）    public class Singleton {     private static Singleton instance;     private Singleton (){   }      public static Singleton getInstance() {     if (instance == null)">
+<meta name="description" content="饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getInstance(){ r">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单例模式的不同写法">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/28/单例模式的不同写法/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="饿汉模式   1.基于类加载的机制  懒汉模式（线程不安全）    public class Singleton {     private static Singleton instance;     private Singleton (){   }      public static Singleton getInstance() {     if (instance == null)">
+<meta property="og:description" content="饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getInstance(){ r">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-28T09:13:08.258Z">
+<meta property="og:updated_time" content="2018-09-06T13:39:11.012Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式的不同写法">
-<meta name="twitter:description" content="饿汉模式   1.基于类加载的机制  懒汉模式（线程不安全）    public class Singleton {     private static Singleton instance;     private Singleton (){   }      public static Singleton getInstance() {     if (instance == null)">
+<meta name="twitter:description" content="饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getInstance(){ r">
 
 
 
@@ -400,9 +400,20 @@
 
       
         <ul>
-<li><p>饿汉模式</p>
-<p>  1.基于类加载的机制</p>
+<li><p>饿汉模式（在调用对象之前就已经初始化了）</p>
+<p>  1.基于类加载的机制（是线程安全的！！！）</p>
+<p>  public class Singleton {</p>
+<p>  private static final Singleton INSTANCE = new Singleton();</p>
+<p>  private Singleton(){}</p>
+<p>  public static Singleton getInstance(){</p>
+<pre><code>return INSTANCE;
+</code></pre><p>  }<br>  }</p>
 </li>
+</ul>
+<p>这里加final的意思这么理解：</p>
+<p>final关键字可以禁止指令重排，防止在 INSTANCE 还没完全赋值的情况下被使用.</p>
+<p>为什么线程安全参考静态内部单例模式。</p>
+<ul>
 <li><p>懒汉模式（线程不安全）</p>
 <pre><code>   public class Singleton {  
   private static Singleton instance;  
@@ -417,6 +428,9 @@
 }  
 </code></pre></li>
 </ul>
+<p>这里为什么不能加final:</p>
+<p>1.因为final static 域必须要（直接赋值）或者（通过静态代码块）来赋值，这样就直接初始化了，没有做到延迟初始化。</p>
+<p>2.如果你是final非static成员，必须在构造器、代码块、或者直接定义赋值；</p>
 <ul>
 <li><p>懒汉模式（线程安全）</p>
 <p>  1.同步开销大,效率不高。</p>
@@ -428,21 +442,37 @@
 </li>
 </ul>
 <ul>
-<li>静态内部单例模式</li>
-</ul>
-<pre><code>    public class Singleton { 
-    private Singleton(){
-        }
-      public static Singleton getInstance(){  
-        return SingletonHolder.sInstance;  
-    }  
-    private static class SingletonHolder {  
+<li><p>静态内部单例模式</p>
+<pre><code>public class Singleton { 
+private Singleton(){
+    }
+  public static Singleton getInstance(){  
+    return SingletonHolder.sInstance;  
+}  
+private static class SingletonHolder {  
     private static final Singleton sInstance = new Singleton();  
-    }  
-    } 
+}  
+}
+</code></pre></li>
+</ul>
+<hr>
+<p>1.第一次加载Singleton类不会实例化对象,只有在调用getInstance()方法时才会引起SingletonHolder类加载的理解？？？</p>
+<p>1.1 外部类 Singleton 加载的时候静态内部类 SingletonHolder 不会加载，内部类的加载不需要依附外部类，在使用时才会加载。所以当调用内部类 SingletonHolder 的静态域 sInstance 才会引起内部类的加载以及初始化。</p>
+<p>1.2 不过当只调用外部类的静态变量，静态方法时，是不会让静态内部类的被加载。</p>
+<p><strong>2.为什么是线程安全的？？？</strong></p>
+<p>2.1 首先解释一下<clinit>()方法中包含类中的所有类（static）变量的赋值动作和静态语句块。</clinit></p>
+<p>2.2 虚拟机会保证一个类的类构造器<clinit>()在多线程环境中被正确的加锁、同步，如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的类构造器<clinit>()，其他线程都需要阻塞等待，直到活动线程执行<clinit>()方法完毕。</clinit></clinit></clinit></p>
+<p>特别需要注意的是，在这种情形下，其他线程虽然会被阻塞，但如果执行<clinit>()方法的那条线程退出后，其他线程在唤醒之后不会再次进入/执行<clinit>()方法，因为 在同一个类加载器下，一个类型只会被初始化一次。如果在一个类的<clinit>()方法中有耗时很长的操作，就可能造成多个线程阻塞，在实际应用中这种阻塞往往是隐藏的.</clinit></clinit></clinit></p>
+<pre><code>一句话概括：java虚拟机保证在多线程的环境下类能够被正确加载。
+</code></pre><ul>
+<li><p>枚举单例模式</p>
+<p>  public enum Singleton {</p>
+<pre><code>INSTANCE;
+private Singleton() {}
+</code></pre><p>  }</p>
+</li>
+</ul>
 
-1.第一次加载Singleton类不会实例化对象,只有在调用getInstance()方法时才会引起SingletonHolder类加载，然后再进行实例化。
-</code></pre>
       
     </div>
     
@@ -557,7 +587,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">81</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -568,7 +598,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
