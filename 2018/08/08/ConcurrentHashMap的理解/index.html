@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="JDK1.7源码的参数  参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.segmentMask:默认值15。   4.segmentShift:默认值28。  初始化操作   1.Segment[i] 为每个段桶的数目(必须为2">
+<meta name="description" content="JDK1.7源码的参数 怎么理解 参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.DEFAULT_INITIAL_CAPACITY:默认值16。   4.segmentMask:默认值15。   5.segmentShift:默认">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ConcurrentHashMap的理解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="JDK1.7源码的参数  参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.segmentMask:默认值15。   4.segmentShift:默认值28。  初始化操作   1.Segment[i] 为每个段桶的数目(必须为2">
+<meta property="og:description" content="JDK1.7源码的参数 怎么理解 参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.DEFAULT_INITIAL_CAPACITY:默认值16。   4.segmentMask:默认值15。   5.segmentShift:默认">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-09T05:51:20.901Z">
+<meta property="og:updated_time" content="2018-09-10T14:29:03.060Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ConcurrentHashMap的理解">
-<meta name="twitter:description" content="JDK1.7源码的参数  参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.segmentMask:默认值15。   4.segmentShift:默认值28。  初始化操作   1.Segment[i] 为每个段桶的数目(必须为2">
+<meta name="twitter:description" content="JDK1.7源码的参数 怎么理解 参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.DEFAULT_INITIAL_CAPACITY:默认值16。   4.segmentMask:默认值15。   5.segmentShift:默认">
 
 
 
@@ -400,12 +400,13 @@
 
       
         <p><strong>JDK1.7源码的参数</strong></p>
-<ul>
+<h4 id="怎么理解"><a href="#怎么理解" class="headerlink" title="怎么理解"></a>怎么理解</h4><ul>
 <li><p>参数</p>
 <p>  1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。</p>
 <p>  2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536</p>
-<p>  3.segmentMask:默认值15。</p>
-<p>  4.segmentShift:默认值28。</p>
+<p>  3.DEFAULT_INITIAL_CAPACITY:默认值16。</p>
+<p>  4.segmentMask:默认值15。</p>
+<p>  5.segmentShift:默认值28。</p>
 </li>
 <li><p>初始化操作</p>
 <p>  1.Segment[i] 为每个段桶的数目(必须为2^n)，默认值为2，负载因子是 0.75，得出初始阈值为 1.5，也就是以后插入第一个元素不会触发扩容，插入第二个会进行第一次扩容。</p>
@@ -526,8 +527,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -546,7 +556,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,6 +624,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么理解"><span class="nav-number">1.</span> <span class="nav-text">怎么理解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

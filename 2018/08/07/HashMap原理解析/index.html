@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
+<meta name="description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap原理解析">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/07/HashMap原理解析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
+<meta property="og:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/8h4npik.png">
-<meta property="og:updated_time" content="2018-08-18T08:09:07.408Z">
+<meta property="og:updated_time" content="2018-09-10T14:29:01.174Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap原理解析">
-<meta name="twitter:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？for (Entry&amp;lt;K,V&amp;gt; e = table[i]; e != null; e = e.next)  {e.hash == hash &amp;amp;&amp;amp; ((k = e.key) == key || key.eq">
+<meta name="twitter:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
 <meta name="twitter:image" content="https://i.imgur.com/8h4npik.png">
 
 
@@ -402,9 +402,13 @@
 
       
         <h4 id="哈希表的长度为什么要为2-n"><a href="#哈希表的长度为什么要为2-n" class="headerlink" title="哈希表的长度为什么要为2^n?"></a>哈希表的长度为什么要为2^n?</h4><pre><code>因为当哈希表的长度为2^n次方时，hash &amp; (length-1) == hash % length
-</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next)
+</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&quot;a&quot;和&quot;a&quot;的hashcode相等）
 
-{e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))}//键值包括int和String类型
+2.
+
+for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next)
+
+{e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))}
 </code></pre><h4 id="HashMap怎么处理key为null元素"><a href="#HashMap怎么处理key为null元素" class="headerlink" title="HashMap怎么处理key为null元素"></a>HashMap怎么处理key为null元素</h4><pre><code>所有key为null的元素放在了table[0]的桶里面了。
 private V putForNullKey(V value) {
     for (Entry&lt;K,V&gt; e = table[0]; e != null; e = e.next) {
@@ -951,7 +955,7 @@ final Node&lt;K,V&gt;[] resize() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

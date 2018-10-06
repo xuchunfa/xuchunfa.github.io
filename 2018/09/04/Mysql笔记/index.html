@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.数据类型理解 int(M)： M表示的不是数据的最大长度，只是数据宽度，并不影响存储多少位长度的数据； varchar(M)： M表示的是varchar类型数据在数据库中存储的最大长度，超过则不存； char(N):存放的是字符的个数 2.关键字的执行顺序 （8）SELECT（9）DISTINCT (select_list) （1）FROM (left_table) （3）(join_type">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-09T07:33:05.240Z">
+<meta property="og:updated_time" content="2018-09-15T13:59:02.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql笔记">
 <meta name="twitter:description" content="1.数据类型理解 int(M)： M表示的不是数据的最大长度，只是数据宽度，并不影响存储多少位长度的数据； varchar(M)： M表示的是varchar类型数据在数据库中存储的最大长度，超过则不存； char(N):存放的是字符的个数 2.关键字的执行顺序 （8）SELECT（9）DISTINCT (select_list) （1）FROM (left_table) （3）(join_type">
@@ -483,7 +483,7 @@ SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)
 </blockquote>
 <p>1.B+树索引只能找到某条记录所在的页，需要根据二分查找法来进一步找到记录所在页的具体位置。</p>
 <blockquote>
-<p>InnoDB B+ 树索引(叶结点的data域保存了完整的数据记录)</p>
+<p>InnoDB（Mysql5.5以后，支持事务，是表锁） B+ 树索引(叶结点的data域保存了完整的数据记录)</p>
 </blockquote>
 <ul>
 <li>聚集索引（每页大小16K）</li>
@@ -491,15 +491,48 @@ SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)
 <p>1.根据主键创建的一棵 B+ 树。</p>
 <p>2.叶结点的data域是数据记录。</p>
 <ul>
-<li>辅助索引</li>
+<li>辅助索引（二级索引）</li>
 </ul>
 <p>1.根据索引键（例如：用户信息表，主键是用户ID，这里可以在名字上面建立索引，即根据名字创建了一棵B+树）创建的一棵 B+ 树。</p>
 <p>2.叶结点的data域存放的是主键值。</p>
-<blockquote>
-<p>MyISAM B+ 树索引（索引文件和数据文件实现了分离）</p>
+<pre><code>优点：这样行在面临页分裂时,不需要单独维护二级索引.
+</code></pre><blockquote>
+<p>MyISAM（不支持事务，是表锁） B+ 树索引（索引文件和数据文件实现了分离）</p>
 </blockquote>
 <p>1.叶结点的data域存放的是数据记录的地址。</p>
 <p>2.主索引要求 key 是唯一的，辅助索引的key可以重复。</p>
+<ul>
+<li>联合索引(最左前缀)</li>
+</ul>
+<h4 id="关于回表的理解？"><a href="#关于回表的理解？" class="headerlink" title="关于回表的理解？"></a>关于回表的理解？</h4><pre><code>索引其实也是个表，不过是存放了索引列的列值和主键的Id值rowid的表
+
+如果select子句中，只有索引列，只需访问索引对象即可，不应回表。如果select子句中包含非索引列，就要读取索引存放的对应rowid，然后按照rowid去表中访问对应行的非索引列，就是回表了。
+</code></pre><p>1.对表上多个列进行索引。可以对第二个键值进行排序。</p>
+<p>2.查询条件中出现联合索引第一列,或者全部,则能利用联合索引.即索引不能隔着字段使用。</p>
+<pre><code>create index test_union_k1_k2_k3_k4_k5_index
+on test_union (k1, k2, k3, k4, k5)；
+
+EXPLAIN SELECT * FROM test_union where k1= 1 AND k3 = 1;//这里只使用到了k1索引
+</code></pre><p>3.建复合索引时应该将最常用（频率）作限制条件的列放在最左边，依次递减。</p>
+<ul>
+<li>覆盖索引（使用的标识：Using index）</li>
+</ul>
+<p>1.索引包含所有需要查询的字段的值。</p>
+<p>2.它只扫描索引的数据。</p>
+<p>3.覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询。在所有这些场景中，索引中满足查询的成本一般比查询要小的多。</p>
+<p>4.覆盖索引优化查询的例子</p>
+<pre><code>alter table t1 add index liu(inventory_id,return_date)；
+select tid,return_date from t1 order by inventory_id limit 50000,10;
+</code></pre><ul>
+<li>全文索引（存储引擎MyISAM支持，新版本MYSQL5.6的InnoDB支持全文索引）</li>
+</ul>
+<p>1.支持的字段类型：char、varchar和text。</p>
+<pre><code>例如：
+ALTER TABLE articles ADD FULLTEXT (&apos;title&apos;,&apos;body&apos;);
+SELECT * FROM articles
+WHERE MATCH (title,body) AGAINST (&apos;database&apos;);
+把 title 和 body 字段里有 database 的数据记录全部查询出来
+</code></pre><p>2.不支持中文的全文检索,且对英文检索时忽略大小写</p>
 
       
     </div>
@@ -595,8 +628,17 @@ SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -615,7 +657,7 @@ SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-count">82</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -683,6 +725,22 @@ SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于回表的理解？"><span class="nav-number">1.</span> <span class="nav-text">关于回表的理解？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
