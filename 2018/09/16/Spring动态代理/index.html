@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 public static Object newProxyInsta">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-17T07:21:53.919Z">
+<meta property="og:updated_time" content="2018-10-07T01:04:39.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring动态代理">
 <meta name="twitter:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 public static Object newProxyInsta">
@@ -406,7 +406,7 @@ public Object invoke(Object proxy, Method method, Object[] args) throws Throwabl
 <pre><code>public static Object newProxyInstance(ClassLoader loader,
 Class&lt;?&gt;[] interfaces,InvocationHandler h)
 </code></pre><p>3.通过代理对象调用目标对象接口的方法，这是会跳转到由这个代理对象关联的 Handler 中的invoke方法去执行，而这个 Handler 对象又接受了一个 HelloServiceImpl 类型的参数，表示代理的就是这个真实对象。</p>
-<p>4.通过 Proxy.newProxyInstance 创建的代理对象是在jvm运行时动态生成的一个对象，它并不是我们InvocationHandler类型，也不是我们定义的那组接口的类型，而是在运行是动态生成的一个对象，并且命名方式都是这样的形式，以$开头proxy为中，最后一个数字表示对象的标号。</p>
+<p>4.通过 Proxy.newProxyInstance 创建的代理对象是在jvm运行时动态生成的一个对象，它并不是我们InvocationHandler类型，也不是我们定义的那组接口的类型，而是在运行时动态生成的一个对象，并且命名方式都是这样的形式，以$开头proxy为中，最后一个数字表示对象的标号。</p>
 <p>5.代理类和委托类有同样的接口。</p>
 <p>6.动态代理是代理一个接口下的多个实现类。代理的是接口所以代理类必须实现该接口.</p>
 <p>7.动态代理类的字节码在程序运行时由Java反射机制动态生成.</p>
@@ -474,6 +474,10 @@ CurrentTime = 1446130273735
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/07/Spring源码分析/" rel="prev" title="Spring源码分析">
+                Spring源码分析 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -561,7 +565,7 @@ CurrentTime = 1446130273735
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

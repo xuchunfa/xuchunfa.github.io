@@ -286,6 +286,198 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/23/java动态绑定/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/23/java动态绑定/" itemprop="url">java动态绑定</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T15:04:48+08:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/23/java动态绑定/" class="leancloud_visitors" data-flag-title="java动态绑定">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>动态绑定(后期绑定)和前期绑定？</p>
+</blockquote>
+<p>1.普通的方法我们看new后面的是什么类型；(后期绑定)</p>
+<p>2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定)</p>
+<p>3.final，static，private和构造方法是前期绑定的。</p>
+<p>4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。</p>
+<pre><code>public class Father {
+protected String name = &quot;父亲属性&quot;;
+}
+public class Son extends Father {
+    protected String name = &quot;儿子属性&quot;;
+
+    public static void main(String[] args) {
+        Father sample = new Son();
+        System.out.println(&quot;调用的属性：&quot; + sample.name);
+}
+}
+</code></pre><p>上述代码的运行结果: <strong>父亲属性</strong></p>
+<pre><code>public class Father {
+protected String name = &quot;父亲属性&quot;;
+
+public String getName() {
+    return name;
+}
+}　　
+
+public class Son extends Father {
+protected String name = &quot;儿子属性&quot;;
+
+public String getName() {
+    return name;
+}
+
+public static void main(String[] args) {
+    Father sample = new Son();
+    System.out.println(&quot;调用的属性:&quot; + sample.getName());
+}
+}
+</code></pre><p>上述代码的运行结果: <strong>儿子属性</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/21/关于TopK问题的详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2229,176 +2421,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/16/并行和并发的区别/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/16/并行和并发的区别/" itemprop="url">并行和并发的区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T13:10:53+08:00">
-                2018-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/16/并行和并发的区别/" class="leancloud_visitors" data-flag-title="并行和并发的区别">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>举个例子：</strong></p>
-<p>桌子上放着一本书，桌子旁坐着四个人，书就相当于cpu资源，并行可以比喻成这四个人打开书同时阅读；而并发可以看成是则这四个人轮流看这本书。</p>
-<blockquote>
-<p>并行（parallelism）</p>
-</blockquote>
-<p>1.物理上同时发生的。</p>
-<p>2.某一时刻能处理多个任务。</p>
-<blockquote>
-<p>并发（concurrency）</p>
-</blockquote>
-<p>1.逻辑上同时发生的。</p>
-<p>2.某一时间间隔内能同时处理多个任务，但是某一时刻就只处理一个任务。</p>
-<p>直观点的示意图：两核CPU创建四个线程的情况</p>
-<p><img src="https://i.imgur.com/MV4eOd9.png" alt=""></p>
-<p>操作1,2,3,4并发执行。</p>
-<p>操作1,5以及2,6都是并行的。</p>
-<p>可以理解现在大多数CPU都是多核的，在执行大量请求时，并行并发一般都是一起发生的。</p>
-<p>参考文档：<a href="https://www.jianshu.com/p/b11e251d3dc7" target="_blank" rel="noopener">https://www.jianshu.com/p/b11e251d3dc7</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2453,7 +2475,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
