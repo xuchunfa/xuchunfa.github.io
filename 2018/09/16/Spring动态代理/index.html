@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 public static Object newProxyInsta">
+<meta name="description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 //生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring动态代理">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/09/16/Spring动态代理/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 public static Object newProxyInsta">
+<meta property="og:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 //生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-07T01:04:39.307Z">
+<meta property="og:updated_time" content="2018-10-10T07:21:38.825Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring动态代理">
-<meta name="twitter:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 public static Object newProxyInsta">
+<meta name="twitter:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 //生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口">
 
 
 
@@ -403,13 +403,176 @@
 <pre><code>//该接口中的唯一方法
 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
 </code></pre><p>2.Proxy代理类的newProxyInstance()方法</p>
-<pre><code>public static Object newProxyInstance(ClassLoader loader,
+<pre><code>//生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口、代理类通过
+//InvocationHandler实现对外服务
+
+public static Object newProxyInstance(ClassLoader loader,
 Class&lt;?&gt;[] interfaces,InvocationHandler h)
 </code></pre><p>3.通过代理对象调用目标对象接口的方法，这是会跳转到由这个代理对象关联的 Handler 中的invoke方法去执行，而这个 Handler 对象又接受了一个 HelloServiceImpl 类型的参数，表示代理的就是这个真实对象。</p>
 <p>4.通过 Proxy.newProxyInstance 创建的代理对象是在jvm运行时动态生成的一个对象，它并不是我们InvocationHandler类型，也不是我们定义的那组接口的类型，而是在运行时动态生成的一个对象，并且命名方式都是这样的形式，以$开头proxy为中，最后一个数字表示对象的标号。</p>
 <p>5.代理类和委托类有同样的接口。</p>
 <p>6.动态代理是代理一个接口下的多个实现类。代理的是接口所以代理类必须实现该接口.</p>
-<p>7.动态代理类的字节码在程序运行时由Java反射机制动态生成.</p>
+<pre><code>代理模式 = 接口 + 真实实现类 + 代理类。Spring AOP 要做的事情就是生成这个代理类。
+
+//AbstractAutoProxyCreator.java
+protected Object createProxy(Class&lt;?&gt; beanClass, @Nullable String beanName,
+        @Nullable Object[] specificInterceptors, TargetSource targetSource) {
+....
+
+ProxyFactory proxyFactory = new ProxyFactory();
+
+return proxyFactory.getProxy(getProxyClassLoader());
+
+}
+</code></pre><p>然后进入了ProxyFactory中：</p>
+<pre><code>//ProxyFactory.java
+public Object getProxy(ClassLoader classLoader) {
+
+return createAopProxy().getProxy(classLoader);
+
+}
+</code></pre><p>首先创建一个AopProxy的实例：</p>
+<pre><code>//ProxyCreatorSupport.java
+protected final synchronized AopProxy createAopProxy() {
+if (!this.active) {
+  activate();
+}
+return getAopProxyFactory().createAopProxy(this);
+}
+</code></pre><p>接着来到真正创建Aop代理实例的地方了：</p>
+<pre><code>//DefaultAopProxyFactory.java
+public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
+
+@Override
+
+public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+  // (我也没用过这个optimize，默认false) || (proxy-target-class=true) || (没有接口)
+  if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
+     Class&lt;?&gt; targetClass = config.getTargetClass();
+     if (targetClass == null) {
+        throw new AopConfigException(&quot;TargetSource cannot determine target class: &quot; +
+              &quot;Either an interface or a target is required for proxy creation.&quot;);
+     }
+     // 如果要代理的类本身就是接口，也会用 JDK 动态代理
+     // 我也没用过这个。。。
+     if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
+        return new JdkDynamicAopProxy(config);
+     }
+     return new ObjenesisCglibAopProxy(config);
+  }
+  else {
+     // 如果有接口，会跑到这个分支
+     return new JdkDynamicAopProxy(config);
+  }
+}
+// 判断是否有实现自定义的接口
+private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {
+  Class&lt;?&gt;[] ifcs = config.getProxiedInterfaces();
+  return (ifcs.length == 0 || (ifcs.length == 1 &amp;&amp; SpringProxy.class.isAssignableFrom(ifcs[0])));
+}
+</code></pre><p>再回到原来通过工厂创建AopProxy代理实例的地方：</p>
+<pre><code>createAopProxy().getProxy(classLoader);
+</code></pre><p>看看其中一个实现类 JdkDynamicAopProxy 的 getProxy 方法源码：</p>
+<pre><code>public Object getProxy(@Nullable ClassLoader classLoader) {
+    if (logger.isDebugEnabled()) {
+        logger.debug(&quot;Creating JDK dynamic proxy: target source is &quot; + this.advised.getTargetSource());
+    }
+    Class&lt;?&gt;[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);
+    findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);
+
+    //this 代表 InvocationHandler 实例，因为 JdkDynamicAopProxy 本身实现了
+    //InvocationHandler接口
+    return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
+}
+</code></pre><p>看一下 JdkDynamicAopProxy 源码的invoke方法：</p>
+<pre><code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    MethodInvocation invocation;
+    Object oldProxy = null;
+    boolean setProxyContext = false;
+
+    TargetSource targetSource = this.advised.targetSource;
+    Object target = null;
+
+    try {
+        if (!this.equalsDefined &amp;&amp; AopUtils.isEqualsMethod(method)) {
+            // The target does not implement the equals(Object) method itself.
+            //这个方法 equals 和 hashCode方法都不会产生代理内容
+            return equals(args[0]);
+        }
+        else if (!this.hashCodeDefined &amp;&amp; AopUtils.isHashCodeMethod(method)) {
+            // The target does not implement the hashCode() method itself.
+            return hashCode();
+        }
+        else if (method.getDeclaringClass() == DecoratingProxy.class) {
+            // There is only getDecoratedClass() declared -&gt; dispatch to proxy config.
+            return AopProxyUtils.ultimateTargetClass(this.advised);
+        }
+        else if (!this.advised.opaque &amp;&amp; method.getDeclaringClass().isInterface() &amp;&amp;
+                method.getDeclaringClass().isAssignableFrom(Advised.class)) {
+            // Service invocations on ProxyConfig with the proxy config...
+            return AopUtils.invokeJoinpointUsingReflection(this.advised, method, args);
+        }
+
+        Object retVal;
+
+        if (this.advised.exposeProxy) {
+            // Make invocation available if necessary.
+            oldProxy = AopContext.setCurrentProxy(proxy);
+            setProxyContext = true;
+        }
+
+        // Get as late as possible to minimize the time we &quot;own&quot; the target,
+        // in case it comes from a pool.
+        target = targetSource.getTarget();
+        Class&lt;?&gt; targetClass = (target != null ? target.getClass() : null);
+
+        // Get the interception chain for this method.
+        List&lt;Object&gt; chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+
+        // Check whether we have any advice. If we don&apos;t, we can fallback on direct
+        // reflective invocation of the target, and avoid creating a MethodInvocation.
+        if (chain.isEmpty()) {
+            // We can skip creating a MethodInvocation: just invoke the target directly
+            // Note that the final invoker must be an InvokerInterceptor so we know it does
+            // nothing but a reflective operation on the target, and no hot swapping or fancy proxying.
+            Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
+            retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);
+        }
+        else {
+
+            invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
+            //进行方法的拦截
+            retVal = invocation.proceed();
+        }
+
+        // Massage return value if necessary.
+        Class&lt;?&gt; returnType = method.getReturnType();
+        if (retVal != null &amp;&amp; retVal == target &amp;&amp;
+                returnType != Object.class &amp;&amp; returnType.isInstance(proxy) &amp;&amp;
+                !RawTargetAccess.class.isAssignableFrom(method.getDeclaringClass())) {
+            // Special case: it returned &quot;this&quot; and the return type of the method
+            // is type-compatible. Note that we can&apos;t help if the target sets
+            // a reference to itself in another returned object.
+            retVal = proxy;
+        }
+        else if (retVal == null &amp;&amp; returnType != Void.TYPE &amp;&amp; returnType.isPrimitive()) {
+            throw new AopInvocationException(
+                    &quot;Null return value from advice does not match primitive return type for: &quot; + method);
+        }
+        return retVal;
+    }
+    finally {
+        if (target != null &amp;&amp; !targetSource.isStatic()) {
+            // Must have come from TargetSource.
+            targetSource.releaseTarget(target);
+        }
+        if (setProxyContext) {
+            // Restore old proxy.
+            AopContext.setCurrentProxy(oldProxy);
+        }
+    }
+}
+</code></pre><p>7.动态代理类的字节码在程序运行时由Java反射机制动态生成.</p>
 <p>8.代理类可以为委托类进行消息的预处理.</p>
 <blockquote>
 <p>静态代理类</p>
@@ -441,7 +604,10 @@ Enter HelloWorldImpl1.printHelloWorld()
 Log after method
 CurrentTime = 1446130273735
 </code></pre><p>Spring默认以aspect的定义顺序作为织入顺序.order属性可以改变横切点的顺序.</p>
-
+<hr>
+<p>生成代理的底层原理：</p>
+<pre><code>Bean生成代理的时机：在每个Bean初始化之后,先是AbstractAutowireCapableBeanFactory的initializeBean方法进行初始化。
+</code></pre>
       
     </div>
     
