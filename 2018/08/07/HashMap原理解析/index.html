@@ -89,7 +89,7 @@
 <meta property="og:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/8h4npik.png">
-<meta property="og:updated_time" content="2018-09-10T14:29:01.174Z">
+<meta property="og:updated_time" content="2018-10-17T11:33:29.693Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap原理解析">
 <meta name="twitter:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
@@ -408,7 +408,14 @@
 
 for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next)
 
-{e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))}
+{
+    //因为散列值相等的键值不一定相等(冲突)
+    //散列值不等的键值肯定不等，排除一大批元素
+    e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))
+}
+</code></pre><p>在这里引申出来一个问题：</p>
+<h4 id="HashMap为什么常用String类型作为key？"><a href="#HashMap为什么常用String类型作为key？" class="headerlink" title="HashMap为什么常用String类型作为key？"></a>HashMap为什么常用String类型作为key？</h4><p>两个对象的散列码不等，那么两个对象equals()时不等。</p>
+<pre><code>设计 hashCode() 时最重要的因素就是对同一个对象调用 hashCode() 都应该产生相同值。String 类型的对象对这个条件有着很好的支持，因为 String 对象的 hashCode() 值是根据 String 对象的内容计算的，并不是根据对象的地址计算。
 </code></pre><h4 id="HashMap怎么处理key为null元素"><a href="#HashMap怎么处理key为null元素" class="headerlink" title="HashMap怎么处理key为null元素"></a>HashMap怎么处理key为null元素</h4><pre><code>所有key为null的元素放在了table[0]的桶里面了。
 private V putForNullKey(V value) {
     for (Entry&lt;K,V&gt; e = table[0]; e != null; e = e.next) {
@@ -955,7 +962,7 @@ final Node&lt;K,V&gt;[] resize() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -966,7 +973,7 @@ final Node&lt;K,V&gt;[] resize() {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1033,7 +1040,7 @@ final Node&lt;K,V&gt;[] resize() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表的长度为什么要为2-n"><span class="nav-number">1.</span> <span class="nav-text">哈希表的长度为什么要为2^n?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找到哈希表中元素的条件？"><span class="nav-number">2.</span> <span class="nav-text">查找到哈希表中元素的条件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap怎么处理key为null元素"><span class="nav-number">3.</span> <span class="nav-text">HashMap怎么处理key为null元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashTable和HashMap的区别"><span class="nav-number">4.</span> <span class="nav-text">HashTable和HashMap的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK1-8-HashMap源码中方法的理解？"><span class="nav-number">5.</span> <span class="nav-text">JDK1.8 HashMap源码中方法的理解？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表的长度为什么要为2-n"><span class="nav-number">1.</span> <span class="nav-text">哈希表的长度为什么要为2^n?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找到哈希表中元素的条件？"><span class="nav-number">2.</span> <span class="nav-text">查找到哈希表中元素的条件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap为什么常用String类型作为key？"><span class="nav-number">3.</span> <span class="nav-text">HashMap为什么常用String类型作为key？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap怎么处理key为null元素"><span class="nav-number">4.</span> <span class="nav-text">HashMap怎么处理key为null元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashTable和HashMap的区别"><span class="nav-number">5.</span> <span class="nav-text">HashTable和HashMap的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK1-8-HashMap源码中方法的理解？"><span class="nav-number">6.</span> <span class="nav-text">JDK1.8 HashMap源码中方法的理解？</span></a></li></ol></div>
             
 
           </div>

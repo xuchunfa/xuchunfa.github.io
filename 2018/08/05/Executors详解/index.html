@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="Excutors框架的类与接口 Executors的作用？1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。  FixedThreadPool  SingleThreadPool  CachedThreadPool">
+<meta name="description" content="Excutors框架的类与接口  Callable  一般是配合ExecutorService使用。 public interface Callable&amp;lt;V&amp;gt; {      V call() throws Exception; }  //ExecutorService.java &amp;lt;T&amp;gt; Future&amp;lt;T&amp;gt; submit(Callable&amp;lt;T&amp;gt; tas">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Executors详解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/05/Executors详解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="Excutors框架的类与接口 Executors的作用？1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。  FixedThreadPool  SingleThreadPool  CachedThreadPool">
+<meta property="og:description" content="Excutors框架的类与接口  Callable  一般是配合ExecutorService使用。 public interface Callable&amp;lt;V&amp;gt; {      V call() throws Exception; }  //ExecutorService.java &amp;lt;T&amp;gt; Future&amp;lt;T&amp;gt; submit(Callable&amp;lt;T&amp;gt; tas">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/F7UbYhu.png">
-<meta property="og:updated_time" content="2018-08-06T04:54:47.146Z">
+<meta property="og:updated_time" content="2018-11-05T01:31:29.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Executors详解">
-<meta name="twitter:description" content="Excutors框架的类与接口 Executors的作用？1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。  FixedThreadPool  SingleThreadPool  CachedThreadPool">
+<meta name="twitter:description" content="Excutors框架的类与接口  Callable  一般是配合ExecutorService使用。 public interface Callable&amp;lt;V&amp;gt; {      V call() throws Exception; }  //ExecutorService.java &amp;lt;T&amp;gt; Future&amp;lt;T&amp;gt; submit(Callable&amp;lt;T&amp;gt; tas">
 <meta name="twitter:image" content="https://i.imgur.com/F7UbYhu.png">
 
 
@@ -402,7 +402,46 @@
 
       
         <h4 id="Excutors框架的类与接口"><a href="#Excutors框架的类与接口" class="headerlink" title="Excutors框架的类与接口"></a>Excutors框架的类与接口</h4><p><img src="https://i.imgur.com/F7UbYhu.png" alt=""></p>
-<h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p>
+<ul>
+<li>Callable</li>
+</ul>
+<p>一般是配合ExecutorService使用。</p>
+<pre><code>public interface Callable&lt;V&gt; {
+
+    V call() throws Exception;
+}
+
+//ExecutorService.java
+&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);
+&lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);
+Future&lt;?&gt; submit(Runnable task);
+</code></pre><ul>
+<li>Future</li>
+</ul>
+<p>对于具体的Runnable或者Callable任务的执行结果进行取消、查询是否完成、获取结果.</p>
+<pre><code>public interface Future&lt;V&gt; {
+    boolean cancel(boolean mayInterruptIfRunning);
+    boolean isCancelled();
+    boolean isDone();
+    V get() throws InterruptedException, ExecutionException;
+    V get(long timeout, TimeUnit unit)
+        throws InterruptedException, ExecutionException, TimeoutException;
+}
+</code></pre><ul>
+<li><p>RunnableFuture</p>
+<p>  public interface RunnableFuture<v> extends Runnable, Future<v> {</v></v></p>
+<pre><code>void run();
+</code></pre><p>  }</p>
+</li>
+<li><p>FutureTask</p>
+</li>
+</ul>
+<p>提供的两个构造函数：</p>
+<pre><code>public FutureTask(Callable&lt;V&gt; callable) {
+}
+public FutureTask(Runnable runnable, V result) {
+}
+</code></pre><h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p>
 <ul>
 <li><p>FixedThreadPool</p>
 </li>
@@ -411,7 +450,29 @@
 <li><p>CachedThreadPool</p>
 </li>
 </ul>
+<p>具体的实现：</p>
+<pre><code>//创建固定容量大小的缓冲池
+public static ExecutorService newFixedThreadPool(int nThreads) {
+return new ThreadPoolExecutor(nThreads, nThreads,
+                              0L, TimeUnit.MILLISECONDS,
+                              new LinkedBlockingQueue&lt;Runnable&gt;());
+}
 
+//创建容量为1的缓冲池
+public static ExecutorService newSingleThreadExecutor() {
+return new FinalizableDelegatedExecutorService
+    (new ThreadPoolExecutor(1, 1,
+                            0L, TimeUnit.MILLISECONDS,
+                            new LinkedBlockingQueue&lt;Runnable&gt;()));
+}
+
+//创建一个缓冲池，缓冲池容量大小为Integer.MAX_VALUE
+public static ExecutorService newCachedThreadPool() {
+return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                              60L, TimeUnit.SECONDS,
+                              new SynchronousQueue&lt;Runnable&gt;());
+}
+</code></pre>
       
     </div>
     
@@ -535,7 +596,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -546,7 +607,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

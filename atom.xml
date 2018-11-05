@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-10-08T13:51:34.443Z</updated>
+  <updated>2018-11-04T14:02:29.761Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,245 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CountDownLatch详解</title>
+    <link href="http://www.xuchunfa.cn/2018/11/04/CountDownLatch%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://www.xuchunfa.cn/2018/11/04/CountDownLatch详解/</id>
+    <published>2018-11-04T13:15:07.000Z</published>
+    <updated>2018-11-04T14:02:29.761Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="与CyclicBarrier的区别？"><a href="#与CyclicBarrier的区别？" class="headerlink" title="与CyclicBarrier的区别？"></a>与CyclicBarrier的区别？</h4><pre><code>1.CyclicBarrier主要用于一组线程之间的相互等待，而CountDownLatch一般用于一组线程等待另一组些线程。2.即 CountDownLatch中的countDown()+await() = CyclicBarrier中的await()。注意：在一个线程中先调用countDown()，然后调用await()。</code></pre><p>CyclicBarrier可以重复使用，CountDownLatch不能，原因在CyclicBarrier中：</p><pre><code> public void reset() {    final ReentrantLock lock = this.lock;    lock.lock();    try {        breakBarrier();   // break the current generation        nextGeneration(); // start a new generation    } finally {        lock.unlock();    }}</code></pre><ul><li>CountDownLatch</li></ul><p>等待其他线程都执行完后，主线程才继续往下执行。</p><p>构造函数：</p><pre><code>public CountDownLatch(int count) {    if (count &lt; 0) throw new IllegalArgumentException(&quot;count &lt; 0&quot;);    this.sync = new Sync(count);}</code></pre><p>内部类Sync：</p><pre><code>private static final class Sync extends AbstractQueuedSynchronizer {    private static final long serialVersionUID = 4982264981922014374L;    //AbstractQueuedSynchronizer.java 同步器    //private volatile int state;    Sync(int count) {        setState(count);    }    int getCount() {        return getState();    }    protected int tryAcquireShared(int acquires) {        return (getState() == 0) ? 1 : -1;    }    protected boolean tryReleaseShared(int releases) {        // Decrement count; signal when transition to zero        for (;;) {            int c = getState();            if (c == 0)                return false;            int nextc = c-1;            //如果state为c，则更新state为nextc.            //防止在getState()方法和compareAndSetState()方法调用之间对state进行了更改            if (compareAndSetState(c, nextc))                return nextc == 0;        }    }}</code></pre><p>重要方法：await()</p><pre><code>//CountDownLatch.javapublic void await() throws InterruptedException {    //调用上述的tryAcquireShared()    //state为0：表示调用该方法的线程可以继续往下执行    //state不为0: 表示该线程阻塞    sync.acquireSharedInterruptibly(1);}</code></pre><p>重要方法:countDown()</p><pre><code>public void countDown() {    sync.releaseShared(1);}</code></pre><p>首先进入：</p><pre><code>public final boolean releaseShared(int arg) {    if (tryReleaseShared(arg)) {        //由最后一个执行countDown()方法的线程唤醒调用await()方法的线程        //这里唤醒的线程可能是多个        doReleaseShared();        return true;    }    return false;}</code></pre><p>再看看重要的：</p><pre><code>//AbstractQueuedSynchronizer.java//唤醒等待线程private void doReleaseShared() {    for (;;) {        Node h = head;        //在等待队列中，头节点中并没有保存正在等待的线程，其只是一个空的Node对象，真正等待的线程是从头节点的下一个节点开始存放的，        因而会有对头结点是否等于尾节点的判断        if (h != null &amp;&amp; h != tail) {            int ws = h.waitStatus;            if (ws == Node.SIGNAL) {                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))                    continue;            // loop to recheck cases                unparkSuccessor(h);            }            else if (ws == 0 &amp;&amp;                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))                continue;                // loop on failed CAS        }        if (h == head)                   // loop if head changed            break;    }}</code></pre><p>最后看一眼：</p><pre><code>//AbstractQueuedSynchronizer.javaprivate void unparkSuccessor(Node node) {    int ws = node.waitStatus;    if (ws &lt; 0)        compareAndSetWaitStatus(node, ws, 0);    Node s = node.next;    if (s == null || s.waitStatus &gt; 0) {        s = null;        for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)            if (t.waitStatus &lt;= 0)//没有结束，继续向前。                s = t;    }    if (s != null)        LockSupport.unpark(s.thread); //唤醒离传入节点最近的处于等待状态的节点线程}</code></pre><p>最后调用    countDown() 的线程会触发所有调用await()阻塞的线程。</p><p>分析：</p><pre><code>public void await() throws InterruptedException {    sync.acquireSharedInterruptibly(1);}</code></pre><p>进入：</p><pre><code>//AbstractQueuedSynchronizer.javapublic final void acquireSharedInterruptibly(int arg)        throws InterruptedException {    if (Thread.interrupted())        throw new InterruptedException();    if (tryAcquireShared(arg) &lt; 0)//自己Sync重写的方法        doAcquireSharedInterruptibly(arg);}</code></pre><p>重要方法:</p><pre><code>private void doAcquireSharedInterruptibly(int arg)    throws InterruptedException {    final Node node = addWaiter(Node.SHARED);    boolean failed = true;    try {        for (;;) {            final Node p = node.predecessor();            if (p == head) {                //唤醒后，tryAcquireShared(arg)将会大于0                int r = tryAcquireShared(arg);                if (r &gt;= 0) {                    setHeadAndPropagate(node, r);//当前节点设置为头节点，继续唤醒后面的节点                    p.next = null; // help GC                    failed = false;                    return;                }            }            //所有线程阻塞的地方            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;                parkAndCheckInterrupt())                throw new InterruptedException();        }    } finally {        if (failed)            cancelAcquire(node);    }}</code></pre><p>最后简单看一下：</p><pre><code>private void setHeadAndPropagate(Node node, int propagate) {    Node h = head; // Record old head for check below    setHead(node);    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||        (h = head) == null || h.waitStatus &lt; 0) {        Node s = node.next;        if (s == null || s.isShared())            doReleaseShared();//继续唤醒下一个    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;与CyclicBarrier的区别？&quot;&gt;&lt;a href=&quot;#与CyclicBarrier的区别？&quot; class=&quot;headerlink&quot; title=&quot;与CyclicBarrier的区别？&quot;&gt;&lt;/a&gt;与CyclicBarrier的区别？&lt;/h4&gt;&lt;pre&gt;&lt;cod
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>适配器模式</title>
+    <link href="http://www.xuchunfa.cn/2018/10/31/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/10/31/适配器模式/</id>
+    <published>2018-10-31T02:09:23.000Z</published>
+    <updated>2018-10-31T10:43:22.238Z</updated>
+    
+    <content type="html"><![CDATA[<p>贴个UML图：</p><p><img src="https://i.imgur.com/0yrww9E.png" alt=""></p><p>适配器模式分三种：</p><ul><li><p>类适配器模式</p></li><li><p>对象适配器模式</p></li><li><p>特殊的缺省适配模式</p></li></ul><p>详解见博客：</p><p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;贴个UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/0yrww9E.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;适配器模式分三种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;类适配器模式&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;对象适配器模式&lt;/p&gt;
+&lt;/
+      
+    
+    </summary>
+    
+      <category term="Java设计模式" scheme="http://www.xuchunfa.cn/categories/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>装饰者模式</title>
+    <link href="http://www.xuchunfa.cn/2018/10/30/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/10/30/装饰者模式/</id>
+    <published>2018-10-30T13:45:15.000Z</published>
+    <updated>2018-10-31T01:57:19.319Z</updated>
+    
+    <content type="html"><![CDATA[<p>UML类图：</p><p><img src="https://i.imgur.com/4VrgAqN.jpg" alt=""></p><p>1.Component接口(也可以是抽象类)</p><pre><code>public interface Component {    void method()；}</code></pre><p>2.待装饰的对象:</p><pre><code>public class ConcreteComponent implements Component{public void method() {    System.out.println(&quot;原来的方法&quot;);}}</code></pre><p>3.抽象装饰器父类（并不是必须的）</p><pre><code>public abstract class Decorator implements Component{protected Component component;//组合待装饰的接口或者抽象类，更加灵活public Decorator(Component component) {    super();    this.component = component;}public void method() {    component.method();}}</code></pre><p>4.具体的装饰类：</p><pre><code>package com.decorator;public class ConcreteDecoratorA extends Decorator{public ConcreteDecoratorA(Component component) {    super(component);}public void methodA(){    System.out.println(&quot;被装饰器A扩展的功能&quot;);}public void method(){    System.out.println(&quot;针对该方法加一层A包装&quot;);    super.method();    System.out.println(&quot;A包装结束&quot;);}}</code></pre><ul><li>JAVA中的IO就是装饰者模式的具体应用：</li></ul><p><img src="https://i.imgur.com/RxUg3EW.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;UML类图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/4VrgAqN.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;1.Component接口(也可以是抽象类)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public interface Component 
+      
+    
+    </summary>
+    
+      <category term="Java设计模式" scheme="http://www.xuchunfa.cn/categories/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>观察者模式</title>
+    <link href="http://www.xuchunfa.cn/2018/10/30/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/10/30/观察者模式/</id>
+    <published>2018-10-30T09:10:33.000Z</published>
+    <updated>2018-10-30T12:50:13.744Z</updated>
+    
+    <content type="html"><![CDATA[<p>举个公众号订阅-发布消息的例子：</p><p>1.抽象观察者：</p><pre><code>public interface Observer{    public void update (String message);}</code></pre><p>2.具体观察者：</p><pre><code>public class User implements Observer {    private String name;    public User(String name) {        this.name = name;    }    @override    public void update (String message){           System.out.println(this.name + &quot;收到通知-&quot; + message);    }}</code></pre><p>3.抽象被观察者：</p><pre><code>public interface Subject{    public void addObserver (Observer Observer);    public void removeObserver (Observer Observer);    public void notify(String message);}</code></pre><p>4.具体被观察者：</p><pre><code>public class ConcreteSubject implements Subject {private List&lt;Observer&gt; usersList = new ArrayList&lt;Observer&gt;();@Overridepublic void addObserver (Observer observer) {    usersList.add(observer);}@Overridepublic void removeObserver (Observer observer) {    usersList.remove(observer);}@Overridepublic void notify(String message) {    for (Observer observer : usersList) {        observer.update(message);    }}}</code></pre><ul><li>下面是JDK1.8的观察者模式</li></ul><p>观察者：</p><pre><code>//每一个观察者都必须实现这个接口    public interface Observer {//第一个代表被观察者void update(Observable o, Object arg);}</code></pre><p>被观察者：</p><pre><code>public class Observable {    private boolean changed = false;    private Vector&lt;Observer&gt; obs;    public Observable() {        obs = new Vector&lt;&gt;();    }public synchronized void addObserver(Observer o) {    if (o == null)        throw new NullPointerException();    if (!obs.contains(o)) {        obs.addElement(o);    }}public synchronized void deleteObserver(Observer o) {    obs.removeElement(o);}public void notifyObservers() {    notifyObservers(null);}public void notifyObservers(Object arg) {    //一个临时的数组，用于并发访问被观察者时，留住观察者列表的当前状态    Object[] arrLocal;    //注意这个同步块，它表示在获取观察者列表时，该对象是被锁定的    //也就是说，在我获取到观察者列表之前，不允许其他线程改变观察者列表    synchronized (this) {        if (!changed)            return;        arrLocal = obs.toArray();        //将改变标识重新置回未改变        clearChanged();    }    //注意这个for循环没有在同步块，此时已经释放了被观察者的锁，其他线程可以改变观察者列表    //但是这并不影响我们当前进行的操作，因为我们已经将观察者列表复制到临时数组    //在通知时我们只通知数组中的观察者，当前删除和添加观察者，都不会影响我们通知的对象    for (int i = arrLocal.length-1; i&gt;=0; i--)        ((Observer)arrLocal[i]).update(this, arg);}</code></pre><p>再举个别人的例子：读者和作者的例子，多对多的关系。</p><p>实现观察者：</p><pre><code>//读者类，要实现观察者接口public class Reader implements Observer{private String name;public Reader(String name) {    super();    this.name = name;}public String getName() {    return name;}//读者可以关注某一位作者，关注则代表把自己加到作者的观察者列表里public void subscribe(String writerName)    //订阅的时候添加观察者    WriterManager.getInstance().getWriter(writerName).addObserver(this);}//读者可以取消关注某一位作者，取消关注则代表把自己从作者的观察者列表里删除public void unsubscribe(String writerName){    //取消订阅的时候添加观察者    WriterManager.getInstance().getWriter(writerName).deleteObserver(this);}//当关注的作者发表新小说时，会通知读者去看public void update(Observable o, Object obj) {    if (o instanceof Writer) {        Writer writer = (Writer) o;        System.out.println(name+&quot;知道&quot; + writer.getName() + &quot;发布了新书《&quot; + writer.getLastNovel() + &quot;》，非要去看！&quot;);    }}   }</code></pre><p>实现被观察者：</p><pre><code>//作者类，要继承自被观察者类public class Writer extends Observable{private String name;//作者的名称private String lastNovel;//记录作者最新发布的小说public Writer(String name) {    super();    this.name = name;    WriterManager.getInstance().add(this);}//作者发布新小说了，要通知所有关注自己的读者public void addNovel(String novel) {    System.out.println(name + &quot;发布了新书《&quot; + novel + &quot;》！&quot;);    lastNovel = novel;    setChanged();//被观察者状态的改变    notifyObservers();//通知观察者}public String getLastNovel() {    return lastNovel;}public String getName() {    return name;}}    </code></pre><p>作者管理器：单例模式实现。</p><pre><code>//管理器，保持一份独有的作者列表public class WriterManager{private Map&lt;String, Writer&gt; writerMap = new HashMap&lt;String, Writer&gt;();//添加作者public void add(Writer writer){    writerMap.put(writer.getName(), writer);}//根据作者姓名获取作者public Writer getWriter(String name){    return writerMap.get(name);}//单例private WriterManager(){}//静态内部类实现延迟初始化的单例模式public static WriterManager getInstance(){    return WriterManagerInstance.instance;}private static class WriterManagerInstance{    private static final WriterManager instance = new WriterManager();}}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;举个公众号订阅-发布消息的例子：&lt;/p&gt;
+&lt;p&gt;1.抽象观察者：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public interface Observer{
+    public void update (String message);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;2.具
+      
+    
+    </summary>
+    
+      <category term="Java设计模式" scheme="http://www.xuchunfa.cn/categories/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>工厂方法模式</title>
+    <link href="http://www.xuchunfa.cn/2018/10/30/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%E5%92%8C%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/10/30/工厂方法模式和抽象工厂模式/</id>
+    <published>2018-10-30T03:32:40.000Z</published>
+    <updated>2018-10-30T08:42:45.959Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>模式分类</li></ul><p><img src="https://i.imgur.com/Hdg4Ylc.png" alt=""></p><p>举个生产手机的例子增加印象：</p><p>1.抽象产品类：</p><pre><code>public abstract class Phone {//两种手机都可以打电话public void Call() {   //公共方法的实现}//两种手机都有品牌,但是品牌不同，所以是抽象的public abstract void PhoneBrand();}</code></pre><p>2.具体产品类：</p><pre><code>public class HUAWEIPhone extends Phone {   //品牌   @Override   public void PhoneBrand() {   Log.e(&quot;qzs&quot;,&quot;我的品牌是华为&quot;);   }}public class MIPhone extends Phone {  //品牌  @Override  public void PhoneBrand() {   Log.e(&quot;qzs&quot;,&quot;我的品牌是小米&quot;);   }}</code></pre><p>3.抽象工厂类：</p><pre><code>public abstract class PhoneFactory  {       public abstract &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c);}</code></pre><p>4.具体工厂类：</p><pre><code>public class ConcretePhoneFactory extends PhoneFactory {  @Override   public &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {   Phone phone=null;   try{       phone =(Phone)Class.forName(c.getName()).newInstance();       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);       phone.PhoneBrand();   }catch (Exception e){   }   return (T) phone;   }}</code></pre><p>调用：</p><pre><code>PhoneFactory phoneFactory=new ConcretePhoneFactory();Phone huaiweiphone=phoneFactory.createPhone(HUAWEIPhone.class);Phone miphone=phoneFactory.createPhone(MIPhone.class);</code></pre><ul><li>工厂方法的延申</li></ul><p>1.简单工厂模式</p><p>去掉工厂抽象类，具体工厂类的方法上加上static.</p><pre><code>public class ConcretePhoneFactory {   public  static &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {   Phone phone=null;   try{       phone =(Phone)Class.forName(c.getName()).newInstance();       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);       phone.PhoneBrand();   }catch (Exception e){   }   return (T) phone;   }}</code></pre><p>2.多工厂方法模式</p><p>每个产品都有自己的工厂，抽象工厂的方法不用再传参了。</p><p>抽象工厂类：</p><pre><code>public abstract class PhoneFactory  {    public abstract  Phone createPhone();}</code></pre><p>具体工厂类：</p><pre><code>public class ConcreteHUAWEIFactory extends PhoneFactory {   @Override   public Phone createPhone() {   Log.e(&quot;qzs&quot;,&quot;生产了一个华为手机&quot;);   return new HUAWEIPhone();   }}public class ConcreteMIFactory extends PhoneFactory {   @Override   public Phone createPhone() {        Log.e(&quot;qzs&quot;,&quot;生产了一个小米手机&quot;);   return new MIPhone();   }}</code></pre><p>3.工厂方法模式实现单例模式</p><p>单例类：</p><pre><code>public class Singleton {     private Singleton() {     }     public void doSomething() {     System.out.println(&quot;具体逻辑&quot;);     }  }</code></pre><p>单例工厂类：</p><pre><code>public class SingletonFactory {     private static Singleton singleton;     static {     try {         Class clazz = Class.forName(Singleton.class.getName());         Constructor constructor = clazz.getDeclaredConstructor();         constructor.setAccessible(true);         singleton = (Singleton) constructor.newInstance();     } catch (Exception e) {     }    }     public static Singleton getSingleton() {         return singleton;     }  }</code></pre><p>特点：</p><ul><li>在工厂方法模式中，客户端不需要知道具体产品类的类名，只需要知道所对应的工厂即可；</li></ul><p>优点：</p><ul><li><p>更符合开-闭原则。新增一种产品时，只需要增加相应的具体产品类和相应的工厂子类即可。例如增加苹果手机，增加一个IPhone具体类和一个IPhoneFactory类即可。</p></li><li><p>符合单一职责原则。每个具体工厂类只负责创建对应的产品。</p></li></ul><p>缺点：</p><ul><li>添加新产品时，系统类的个数会成倍增加，增加了额外的开销。</li></ul><hr><h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>工厂方法模式在增加一个具体产品的时候，都要增加对应的工厂。但是抽象工厂模式只有在新增一个类型的具体产品时才需要新增工厂。例如跑车、商务车、越野车是不同的类型。抽象工厂模式中的具体工厂生产的是：一种类型的具体产品。</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;模式分类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Hdg4Ylc.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;举个生产手机的例子增加印象：&lt;/p&gt;
+&lt;p&gt;1.抽象产品类：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public a
+      
+    
+    </summary>
+    
+      <category term="Java设计模式" scheme="http://www.xuchunfa.cn/categories/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>CopyOnWrite容器</title>
+    <link href="http://www.xuchunfa.cn/2018/10/29/CopyOnWrite%E5%AE%B9%E5%99%A8/"/>
+    <id>http://www.xuchunfa.cn/2018/10/29/CopyOnWrite容器/</id>
+    <published>2018-10-29T06:14:34.000Z</published>
+    <updated>2018-10-29T07:34:38.050Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h4><p>即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。</p><pre><code>相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被阻塞，性能又提升了。不同点：读写锁：读线程任何时候都是获取到最新的数据，满足数据实时性。原因在于--为了实现数据实时性，在写锁被获取后，读线程会等待或者当读锁被获取后，写线程会等待，从而解决“脏读”等问题。COW: 牺牲数据实时性满足数据的最终一致性。即读线程对数据的更新是延时感知的，因此读线程不会存在等待的情况。相同点：1. 两者都是通过读写分离的思想实现。2. 读线程间是互不阻塞的。</code></pre><ul><li>CopyOnWriteArrayList<e>：</e></li></ul><p>写操作：需要加锁。</p><pre><code>//CopyOnWriteArrayList.javapublic boolean add(E e) {    final ReentrantLock lock = this.lock;    lock.lock();    try {        Object[] elements = getArray();        int len = elements.length;        Object[] newElements = Arrays.copyOf(elements, len + 1);        newElements[len] = e;        setArray(newElements);//原引用指向新的容器        return true;    } finally {        lock.unlock();    }}//注意：private transient volatile Object[] array//volatile保证可见性，在进行写时看到的已经是最新的数据的，但是只读的话就有可能是未更新的数据。final void setArray(Object[] a) {    array = a;}</code></pre><p>读操作：不需要加锁，存在并发读，读到的可能是旧数据。</p><pre><code>public E get(int index) {    return get(getArray(), index);}</code></pre><h4 id="适用场景："><a href="#适用场景：" class="headerlink" title="适用场景："></a>适用场景：</h4><ul><li>CopyOnWriteArrayList适合使用在读操作远远大于写操作的场景里，比如缓存。</li></ul><h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><pre><code>1.内存占用问题。2.数据一致性问题。</code></pre><p>- </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;含义：&quot;&gt;&lt;a href=&quot;#含义：&quot; class=&quot;headerlink&quot; title=&quot;含义：&quot;&gt;&lt;/a&gt;含义：&lt;/h4&gt;&lt;p&gt;即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添
+      
+    
+    </summary>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Redis基础</title>
+    <link href="http://www.xuchunfa.cn/2018/10/25/Redis%E5%9F%BA%E7%A1%80/"/>
+    <id>http://www.xuchunfa.cn/2018/10/25/Redis基础/</id>
+    <published>2018-10-25T11:43:16.000Z</published>
+    <updated>2018-10-26T02:26:21.270Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p>Redis 命令</p><p>  1.expire key seconds ：为key指定过期时间，单位是秒。</p><p>  2.ttl key ：返回设置了过期时间的key的剩余过期秒数。</p></li></ul><pre><code>**String类型：**3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。4.incrby/decrby key integer : 加减指定值。**List类型：就是一个每个子元素都是string类型的双向链表。**5.lpush/rpush key string : 在key对应list的头部/尾部添加字符串元素。6.llen key : 返回key对应list的长度。7.lrange key start end ：返回指定区间内的元素，下标从0开始，负值表示从后面计算，-1表示倒数第一个元素。8.ltrim key start end : 让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。**Set类型：**8.sadd key member ：添加一个string元素到key对应的set集合中。9.smembers key ：返回key对应set的所有元素，结果是无序的。10.srem key member : 从key对应set中移除给定元素。11.srandmember key : 随机取set中的一个元素，但是不删除元素(spop会删除)。12.scard key ：返回set的元素个数。13.sismember key member ：判断member是否在set中。14.sinter key1 key2...keyN : 返回所有给定key的交集。15.sinterstore dstkey key1...keyN ：同sinter，但是会同时将交集存到dstkey下。可以推荐别人的共同好友给你。16.sunion key1 key2...keyN ：返回所有给定key的并集。17.sdiff key1 key2...keyN ：返回所有给定key的差集。18.sdiffstore dstkey key1...keyN ：同sdiff，并同时保存差集到dstkey下。**Zset类型：**19.zadd key score member ：添加元素到集合，元素在集合中存在则更新对应score。20.zincrby key incr member ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。21.zrank key member ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。22.zrevrank key member ：同上,但是集合中元素是按score从大到小排序。23.zrange/zrevrange key start end ：从集合中取指定区间的元素。返回的是有序结果，按score有序/逆序。24.zrangebyscore key min max ：返回集合中score在给定区间的元素。结果按score从小到大排序。25.zcount key min max ：返回集合中score在给定区间的数量。26.zcard key ：返回集合中元素个数。27.zscore key element ：返回给定元素对应的score。28.zremrangebyrank/zremrangebyscore key min max ：删除集合中排名/Score在给定区间的元素。**Hash类型：**29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。30.hget key field ：获取指定的hash field。31.hincrby key field integer ：增加hash域的值。</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Redis 命令&lt;/p&gt;
+&lt;p&gt;  1.expire key seconds ：为key指定过期时间，单位是秒。&lt;/p&gt;
+&lt;p&gt;  2.ttl key ：返回设置了过期时间的key的剩余过期秒数。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;**
+      
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://www.xuchunfa.cn/categories/Redis/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Kafka基础</title>
+    <link href="http://www.xuchunfa.cn/2018/10/24/Kafka%E5%9F%BA%E7%A1%80/"/>
+    <id>http://www.xuchunfa.cn/2018/10/24/Kafka基础/</id>
+    <published>2018-10-24T08:21:58.000Z</published>
+    <updated>2018-10-24T11:57:08.636Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li><p>消息只能被消费组里面的一个消费者消费，如果被多个消费者消费，这些消费者必须在不同的消费组里面。</p></li><li><p>Kafka需要维持的元数据只有一个offset值，Consumer每消费一个消息，offset就会加1，消息的状态完全是由Consumer控制的，Consumer可以跟踪和重设这个offset值，这样的话Consumer就可以读取任意位置的消息。</p></li></ul><ul><li><p>replication-factor是以partition为单位的，只有一个partition的副本会被选举成leader作为读写用.</p></li><li><p>Producer在发送消息后，会得到一个响应，出现了一个重要的参数：默认值好像是0，在Producer中配置。</p><pre><code>acks = 0 : 表示producer不会等待broker的响应.acks = 1 : 表示producer会在leader partition收到消息时得到broker的一个确认.acks = -1 : producer会在所有备份的partition收到消息时得到broker的确认.</code></pre></li><li><p>Consumers的示意图：</p></li></ul><p><img src="https://i.imgur.com/Zz6TdbW.png" alt=""></p><ul><li><p>消息可靠性的保障</p><p>  Producer端：等待broker成功接收到消息的反馈。</p><p>  Consumer端：Broker记录了partition中的一个offset值,可以通过这个offset值重新找到上一个出错消息，再重新进行处理。</p></li><li><p>Producer Config的重要参数</p><pre><code>1.metadata.broker.list：启动时producer查询brokers的列表，可以是集群中所有brokers的一个子集。格式：host1:port1,host2:port2。2.request.required.acks：见上面的详解。3.request.timeout.ms：等待 Broker ack的超时时间，若等待时间超过此值，会返回客户端错误信息。4.producer.type：async表示异步，sync表示同步。如果设置成异步模式，可以允许生产者以batch的形式push数据，这样会极大的提高broker性能，推荐设置为异步</code></pre></li><li><p>Consumer Config的重要参数</p><pre><code>1.group.id：消费组id.2.zookeeper.connect:Consumer的zookeeper连接串，要和broker的配置一致.3.consumer.id : 默认为null,设置会自动生成。4.auto.commit.enable:默认值为true.Consumer会周期性的把当前消费的offset值保存到zookeeper。当consumer失败重启之后将会使用此值作为新开始消费的值。5.auto.commit.interval.ms:上述操作更新的频率。Consumer提交offset值到zookeeper的周期。</code></pre></li></ul><p>这里补充一下offset更新的方式：</p><pre><code>1.自动提交：设置enable.auto.commit=true，更新的频率根据参数【auto.commit.interval.ms】来定。这种方式也被称为【at most once】，“最多一次”fetch到消息后就可以更新offset，无论是否消费成功。2.手动提交：设置enable.auto.commit=false，这种方式称为【at least once】。“最少一次”fetch到消息后，等消费完成再调用方法【consumer.commitSync()】，手动更新offset；如果消费失败，则offset也不会更新，此条消息会被重复消费一次。</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;&lt;p&gt;消息只能被消费组里面的一个消费者消费，如果被多个消费者消费，这些消费者必须在不同的消费组里面。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Kafka需要维持的元数据只有一个offset值，Consumer每消费一个消息，offset就会加1，消息的状态完全是由Co
+      
+    
+    </summary>
+    
+      <category term="大数据基础" scheme="http://www.xuchunfa.cn/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Storm基础</title>
+    <link href="http://www.xuchunfa.cn/2018/10/11/Storm%E5%9F%BA%E7%A1%80/"/>
+    <id>http://www.xuchunfa.cn/2018/10/11/Storm基础/</id>
+    <published>2018-10-11T01:26:53.000Z</published>
+    <updated>2018-10-25T07:34:13.200Z</updated>
+    
+    <content type="html"><![CDATA[<p>1.元组（tuple）: 元组中的多个值将以逗号的形式分隔。一个元组是一个有序的数值列表，每个数组都被赋予一个命名。</p><p>2.GlobalGrouping ：所有的 tuple 都分发到 task ID最小的task实例上。</p><p>3.默认情况下，parallelism_hint将同时设置执行器和任务，可以自己修改任务数。</p><pre><code>builder.setSpout(&quot;wordSpout&quot;,new WordSpout(),4).setNumTasks(5)</code></pre><p>4.Storm的消息保障机制</p><ul><li><p>为了保障消息能被有效的处理，必须使用一个可以支持元组回放的可靠数据源(Kafka、RabbitMQspout等)</p></li><li><p>支持可靠性的三个重要因子</p><pre><code>1.具有可靠的spout数据源2.提供锚定元组的数据源3.具备知晓元组执行结果并且能通报错误的拓扑</code></pre></li><li><p>Spout发射锚定元组</p><pre><code>public abstract class BaseRichSpout extends BaseComponent implements IRichSpout {    @Override    public void ack(Object msgId) {    }    @Override    public void fail(Object msgId) {    }}</code></pre></li></ul><ul><li><p>Bolt隐式锚定、应答和容错</p><pre><code>BaseBasicBolt:自动提供了线程的锚定和应答功能。(BaseBasicBolt)注意：如果出现这种情况，处理聚合和合并的bolt往往要处理一大堆的tuple之后才能被ack，而这类tuple通常都是多输入的tuple，此时就应该使用下面的Bolt.</code></pre></li><li><p>Bolt显示锚定、应答和容错</p><pre><code>锚定：_collector.emit(tuple, new Values(word));应答：_collector.ack(tuple);容错：_collector.fail(tuple);</code></pre></li><li><p>Tuple树中的锚定</p><pre><code>//在BaseBasicBolt中发出的元组自动锚定到输入的元组（隐式的锚定）public void execute(Tuple tuple) {    String sentence = tuple.getString(0);    for(String word: sentence.split(&quot; &quot;)) {        //在BaseRichBolt中的显式锚定        //构建以spout元组作为根结点的消息树        _collector.emit(tuple, new Values(word));    }    _collector.ack(tuple);}</code></pre></li><li><p>Storm的asker任务</p><p>  作用是：保持对元组树的跟踪，检测一个spout元组是否经历了完整的处理过程，asker任务发现一棵元组树执行完成时，<br>  会发射一个消息到最初发射该元组的spout,此时spout会调用ask方法。（调用的是产生这个元组的Spout任务）。</p><p>  配置：Storm默认TOPOLOGY_ACKER_EXECUTORS和拓扑中配置的Worker的数量相同。可以配置TOPOLOGY_ACKER_EXECUTORS。</p></li><li><p>回放语义</p><pre><code>1.最多一次处理：不会发生任何重放事务。例如使用BaseBasicBolt时，把元组从spout发射出来时，不对元组增加锚定。2.至少一次处理：对单一元组进行多次重放，直至成功。3.仅一次处理：</code></pre></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;1.元组（tuple）: 元组中的多个值将以逗号的形式分隔。一个元组是一个有序的数值列表，每个数组都被赋予一个命名。&lt;/p&gt;
+&lt;p&gt;2.GlobalGrouping ：所有的 tuple 都分发到 task ID最小的task实例上。&lt;/p&gt;
+&lt;p&gt;3.默认情况下，para
+      
+    
+    </summary>
+    
+      <category term="Storm" scheme="http://www.xuchunfa.cn/categories/Storm/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Spring源码分析</title>
@@ -46,17 +285,15 @@ public void refresh() thro
     <link href="http://www.xuchunfa.cn/2018/09/16/Spring%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/"/>
     <id>http://www.xuchunfa.cn/2018/09/16/Spring动态代理/</id>
     <published>2018-09-16T08:24:56.000Z</published>
-    <updated>2018-10-10T07:21:38.825Z</updated>
+    <updated>2018-10-10T12:42:56.434Z</updated>
     
-    <content type="html"><![CDATA[<p>1.每一个动态代理类都必须要实现InvocationHandler这个接口.</p><pre><code>//该接口中的唯一方法public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;</code></pre><p>2.Proxy代理类的newProxyInstance()方法</p><pre><code>//生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口、代理类通过//InvocationHandler实现对外服务public static Object newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h)</code></pre><p>3.通过代理对象调用目标对象接口的方法，这是会跳转到由这个代理对象关联的 Handler 中的invoke方法去执行，而这个 Handler 对象又接受了一个 HelloServiceImpl 类型的参数，表示代理的就是这个真实对象。</p><p>4.通过 Proxy.newProxyInstance 创建的代理对象是在jvm运行时动态生成的一个对象，它并不是我们InvocationHandler类型，也不是我们定义的那组接口的类型，而是在运行时动态生成的一个对象，并且命名方式都是这样的形式，以$开头proxy为中，最后一个数字表示对象的标号。</p><p>5.代理类和委托类有同样的接口。</p><p>6.动态代理是代理一个接口下的多个实现类。代理的是接口所以代理类必须实现该接口.</p><pre><code>代理模式 = 接口 + 真实实现类 + 代理类。Spring AOP 要做的事情就是生成这个代理类。//AbstractAutoProxyCreator.javaprotected Object createProxy(Class&lt;?&gt; beanClass, @Nullable String beanName,        @Nullable Object[] specificInterceptors, TargetSource targetSource) {....ProxyFactory proxyFactory = new ProxyFactory();return proxyFactory.getProxy(getProxyClassLoader());}</code></pre><p>然后进入了ProxyFactory中：</p><pre><code>//ProxyFactory.javapublic Object getProxy(ClassLoader classLoader) {return createAopProxy().getProxy(classLoader);}</code></pre><p>首先创建一个AopProxy的实例：</p><pre><code>//ProxyCreatorSupport.javaprotected final synchronized AopProxy createAopProxy() {if (!this.active) {  activate();}return getAopProxyFactory().createAopProxy(this);}</code></pre><p>接着来到真正创建Aop代理实例的地方了：</p><pre><code>//DefaultAopProxyFactory.javapublic class DefaultAopProxyFactory implements AopProxyFactory, Serializable {@Overridepublic AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {  // (我也没用过这个optimize，默认false) || (proxy-target-class=true) || (没有接口)  if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {     Class&lt;?&gt; targetClass = config.getTargetClass();     if (targetClass == null) {        throw new AopConfigException(&quot;TargetSource cannot determine target class: &quot; +              &quot;Either an interface or a target is required for proxy creation.&quot;);     }     // 如果要代理的类本身就是接口，也会用 JDK 动态代理     // 我也没用过这个。。。     if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {        return new JdkDynamicAopProxy(config);     }     return new ObjenesisCglibAopProxy(config);  }  else {     // 如果有接口，会跑到这个分支     return new JdkDynamicAopProxy(config);  }}// 判断是否有实现自定义的接口private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {  Class&lt;?&gt;[] ifcs = config.getProxiedInterfaces();  return (ifcs.length == 0 || (ifcs.length == 1 &amp;&amp; SpringProxy.class.isAssignableFrom(ifcs[0])));}</code></pre><p>再回到原来通过工厂创建AopProxy代理实例的地方：</p><pre><code>createAopProxy().getProxy(classLoader);</code></pre><p>看看其中一个实现类 JdkDynamicAopProxy 的 getProxy 方法源码：</p><pre><code>public Object getProxy(@Nullable ClassLoader classLoader) {    if (logger.isDebugEnabled()) {        logger.debug(&quot;Creating JDK dynamic proxy: target source is &quot; + this.advised.getTargetSource());    }    Class&lt;?&gt;[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);    findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);    //this 代表 InvocationHandler 实例，因为 JdkDynamicAopProxy 本身实现了    //InvocationHandler接口    return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);}</code></pre><p>看一下 JdkDynamicAopProxy 源码的invoke方法：</p><pre><code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {    MethodInvocation invocation;    Object oldProxy = null;    boolean setProxyContext = false;    TargetSource targetSource = this.advised.targetSource;    Object target = null;    try {        if (!this.equalsDefined &amp;&amp; AopUtils.isEqualsMethod(method)) {            // The target does not implement the equals(Object) method itself.            //这个方法 equals 和 hashCode方法都不会产生代理内容            return equals(args[0]);        }        else if (!this.hashCodeDefined &amp;&amp; AopUtils.isHashCodeMethod(method)) {            // The target does not implement the hashCode() method itself.            return hashCode();        }        else if (method.getDeclaringClass() == DecoratingProxy.class) {            // There is only getDecoratedClass() declared -&gt; dispatch to proxy config.            return AopProxyUtils.ultimateTargetClass(this.advised);        }        else if (!this.advised.opaque &amp;&amp; method.getDeclaringClass().isInterface() &amp;&amp;                method.getDeclaringClass().isAssignableFrom(Advised.class)) {            // Service invocations on ProxyConfig with the proxy config...            return AopUtils.invokeJoinpointUsingReflection(this.advised, method, args);        }        Object retVal;        if (this.advised.exposeProxy) {            // Make invocation available if necessary.            oldProxy = AopContext.setCurrentProxy(proxy);            setProxyContext = true;        }        // Get as late as possible to minimize the time we &quot;own&quot; the target,        // in case it comes from a pool.        target = targetSource.getTarget();        Class&lt;?&gt; targetClass = (target != null ? target.getClass() : null);        // Get the interception chain for this method.        List&lt;Object&gt; chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);        // Check whether we have any advice. If we don&apos;t, we can fallback on direct        // reflective invocation of the target, and avoid creating a MethodInvocation.        if (chain.isEmpty()) {            // We can skip creating a MethodInvocation: just invoke the target directly            // Note that the final invoker must be an InvokerInterceptor so we know it does            // nothing but a reflective operation on the target, and no hot swapping or fancy proxying.            Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);            retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);        }        else {            invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);            //进行方法的拦截            retVal = invocation.proceed();        }        // Massage return value if necessary.        Class&lt;?&gt; returnType = method.getReturnType();        if (retVal != null &amp;&amp; retVal == target &amp;&amp;                returnType != Object.class &amp;&amp; returnType.isInstance(proxy) &amp;&amp;                !RawTargetAccess.class.isAssignableFrom(method.getDeclaringClass())) {            // Special case: it returned &quot;this&quot; and the return type of the method            // is type-compatible. Note that we can&apos;t help if the target sets            // a reference to itself in another returned object.            retVal = proxy;        }        else if (retVal == null &amp;&amp; returnType != Void.TYPE &amp;&amp; returnType.isPrimitive()) {            throw new AopInvocationException(                    &quot;Null return value from advice does not match primitive return type for: &quot; + method);        }        return retVal;    }    finally {        if (target != null &amp;&amp; !targetSource.isStatic()) {            // Must have come from TargetSource.            targetSource.releaseTarget(target);        }        if (setProxyContext) {            // Restore old proxy.            AopContext.setCurrentProxy(oldProxy);        }    }}</code></pre><p>7.动态代理类的字节码在程序运行时由Java反射机制动态生成.</p><p>8.代理类可以为委托类进行消息的预处理.</p><blockquote><p>静态代理类</p></blockquote><p>1.代理类和实现类都实现了要代理的接口.</p><p>2.将实现类的对象传到代理类中(通过构造方法),实际上就是调用要代理对象的方法.</p><hr><h4 id="什么叫切面"><a href="#什么叫切面" class="headerlink" title="什么叫切面?"></a>什么叫切面?</h4><pre><code>所谓&quot;切面&quot;，简单说就是那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块之间的耦合度，并有利于未来的可操作性和可维护性。</code></pre><h4 id="多个切面的情况"><a href="#多个切面的情况" class="headerlink" title="多个切面的情况"></a>多个切面的情况</h4><pre><code>&lt;aop:config&gt;    //timeHandler相当于实现 InvocationHandler 接口的调用器,最后调用的是真实对象的方法(invoke方法实现)    &lt;aop:aspect id=&quot;time&quot; ref=&quot;timeHandler&quot; order=&quot;1&quot;&gt;        &lt;aop:pointcut id=&quot;addTime&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.print*(..))&quot; /&gt;        //抽取出来的业务模块的共同方法        &lt;aop:before method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;        &lt;aop:after method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;    &lt;/aop:aspect&gt;    &lt;aop:aspect id=&quot;log&quot; ref=&quot;logHandler&quot; order=&quot;2&quot;&gt;        &lt;aop:pointcut id=&quot;printLog&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.do*(..))&quot; /&gt;        &lt;aop:before method=&quot;LogBefore&quot; pointcut-ref=&quot;printLog&quot; /&gt;        &lt;aop:after method=&quot;LogAfter&quot; pointcut-ref=&quot;printLog&quot; /&gt;    &lt;/aop:aspect&gt;&lt;/aop:config&gt;</code></pre><p>输出:</p><pre><code>CurrentTime = 1446130273734Log before methodEnter HelloWorldImpl1.printHelloWorld()Log after methodCurrentTime = 1446130273735</code></pre><p>Spring默认以aspect的定义顺序作为织入顺序.order属性可以改变横切点的顺序.</p><hr><p>生成代理的底层原理：</p><pre><code>Bean生成代理的时机：在每个Bean初始化之后,先是AbstractAutowireCapableBeanFactory的initializeBean方法进行初始化。</code></pre>]]></content>
+    <content type="html"><![CDATA[<h4 id="关于动态代理的需要注意的问题？"><a href="#关于动态代理的需要注意的问题？" class="headerlink" title="关于动态代理的需要注意的问题？"></a>关于动态代理的需要注意的问题？</h4><pre><code>如果是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，这样就不会把自己的代码织入到约定的流程中去。</code></pre><p>举个书上的例子：</p><pre><code>public class UserServiceImpl implements UserService {@Autowiredprivate UserDao userDao = null;//这里@Transactional会失效，每次调用不会都产生一个新事务@Override@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)public int insertUsers(List&lt;User&gt; userList){    int count = 0;    for(User : user){        count += insertUser(user);    }}@Override@Transactional(isolation = Isolation.READ_COMMITTED)public int insertUser(User user) {    return userDao.insertUser(user);}}</code></pre><p>解决办法如下：</p><pre><code>public class UserServiceImpl implements UserService，ApplicationContextAware {@Autowiredprivate UserDao userDao = null;private ApplicationContext applicationContext = null;@Overridevoid setApplicationContext(ApplicationContext applicationContext) throws BeansException{    this.applicationContext = applicationContext;}//这里@Transactional会失效，每次调用不会都产生一个新事务@Override@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)public int insertUsers(List&lt;User&gt; userList){    int count = 0;    UserService userService = applicationContext.getBean(UserService.class);    for(User : user){        count += insertUser(user);    }}@Override@Transactional(isolation = Isolation.READ_COMMITTED)public int insertUser(User user) {    return userDao.insertUser(user);}}    </code></pre><p>1.每一个动态代理类都必须要实现InvocationHandler这个接口.</p><pre><code>//该接口中的唯一方法public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;</code></pre><p>2.Proxy代理类的newProxyInstance()方法</p><pre><code>//生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口、代理类通过//InvocationHandler实现对外服务public static Object newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h)</code></pre><p>3.通过代理对象调用目标对象接口的方法，这是会跳转到由这个代理对象关联的 Handler 中的invoke方法去执行，而这个 Handler 对象又接受了一个 HelloServiceImpl 类型的参数，表示代理的就是这个真实对象。</p><p>4.通过 Proxy.newProxyInstance 创建的代理对象是在jvm运行时动态生成的一个对象，它并不是我们InvocationHandler类型，也不是我们定义的那组接口的类型，而是在运行时动态生成的一个对象，并且命名方式都是这样的形式，以$开头proxy为中，最后一个数字表示对象的标号。</p><p>5.代理类和委托类有同样的接口。</p><p>6.动态代理是代理一个接口下的多个实现类。代理的是接口所以代理类必须实现该接口.</p><pre><code>代理模式 = 接口 + 真实实现类 + 代理类。Spring AOP 要做的事情就是生成这个代理类。//AbstractAutoProxyCreator.javaprotected Object createProxy(Class&lt;?&gt; beanClass, @Nullable String beanName,        @Nullable Object[] specificInterceptors, TargetSource targetSource) {....ProxyFactory proxyFactory = new ProxyFactory();return proxyFactory.getProxy(getProxyClassLoader());}</code></pre><p>然后进入了ProxyFactory中：</p><pre><code>//ProxyFactory.javapublic Object getProxy(ClassLoader classLoader) {return createAopProxy().getProxy(classLoader);}</code></pre><p>首先创建一个AopProxy的实例：</p><pre><code>//ProxyCreatorSupport.javaprotected final synchronized AopProxy createAopProxy() {if (!this.active) {  activate();}return getAopProxyFactory().createAopProxy(this);}</code></pre><p>接着来到真正创建Aop代理实例的地方了：</p><pre><code>//DefaultAopProxyFactory.javapublic class DefaultAopProxyFactory implements AopProxyFactory, Serializable {@Overridepublic AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {  // (我也没用过这个optimize，默认false) || (proxy-target-class=true) || (没有接口)  if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {     Class&lt;?&gt; targetClass = config.getTargetClass();     if (targetClass == null) {        throw new AopConfigException(&quot;TargetSource cannot determine target class: &quot; +              &quot;Either an interface or a target is required for proxy creation.&quot;);     }     // 如果要代理的类本身就是接口，也会用 JDK 动态代理     // 我也没用过这个。。。     if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {        return new JdkDynamicAopProxy(config);     }     return new ObjenesisCglibAopProxy(config);  }  else {     // 如果有接口，会跑到这个分支     return new JdkDynamicAopProxy(config);  }}// 判断是否有实现自定义的接口private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {  Class&lt;?&gt;[] ifcs = config.getProxiedInterfaces();  return (ifcs.length == 0 || (ifcs.length == 1 &amp;&amp; SpringProxy.class.isAssignableFrom(ifcs[0])));}</code></pre><p>再回到原来通过工厂创建AopProxy代理实例的地方：</p><pre><code>createAopProxy().getProxy(classLoader);</code></pre><p>看看其中一个实现类 JdkDynamicAopProxy 的 getProxy 方法源码：</p><pre><code>public Object getProxy(@Nullable ClassLoader classLoader) {    if (logger.isDebugEnabled()) {        logger.debug(&quot;Creating JDK dynamic proxy: target source is &quot; + this.advised.getTargetSource());    }    Class&lt;?&gt;[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);    findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);    //this 代表 InvocationHandler 实例，因为 JdkDynamicAopProxy 本身实现了    //InvocationHandler接口    return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);}</code></pre><p>看一下 JdkDynamicAopProxy 源码的invoke方法：</p><pre><code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {    MethodInvocation invocation;    Object oldProxy = null;    boolean setProxyContext = false;    TargetSource targetSource = this.advised.targetSource;    Object target = null;    try {        if (!this.equalsDefined &amp;&amp; AopUtils.isEqualsMethod(method)) {            // The target does not implement the equals(Object) method itself.            //这个方法 equals 和 hashCode方法都不会产生代理内容            return equals(args[0]);        }        else if (!this.hashCodeDefined &amp;&amp; AopUtils.isHashCodeMethod(method)) {            // The target does not implement the hashCode() method itself.            return hashCode();        }        else if (method.getDeclaringClass() == DecoratingProxy.class) {            // There is only getDecoratedClass() declared -&gt; dispatch to proxy config.            return AopProxyUtils.ultimateTargetClass(this.advised);        }        else if (!this.advised.opaque &amp;&amp; method.getDeclaringClass().isInterface() &amp;&amp;                method.getDeclaringClass().isAssignableFrom(Advised.class)) {            // Service invocations on ProxyConfig with the proxy config...            return AopUtils.invokeJoinpointUsingReflection(this.advised, method, args);        }        Object retVal;        if (this.advised.exposeProxy) {            // Make invocation available if necessary.            oldProxy = AopContext.setCurrentProxy(proxy);            setProxyContext = true;        }        // Get as late as possible to minimize the time we &quot;own&quot; the target,        // in case it comes from a pool.        target = targetSource.getTarget();        Class&lt;?&gt; targetClass = (target != null ? target.getClass() : null);        // Get the interception chain for this method.        List&lt;Object&gt; chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);        // Check whether we have any advice. If we don&apos;t, we can fallback on direct        // reflective invocation of the target, and avoid creating a MethodInvocation.        if (chain.isEmpty()) {            // We can skip creating a MethodInvocation: just invoke the target directly            // Note that the final invoker must be an InvokerInterceptor so we know it does            // nothing but a reflective operation on the target, and no hot swapping or fancy proxying.            Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);            retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);        }        else {            invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);            //进行方法的拦截            retVal = invocation.proceed();        }        // Massage return value if necessary.        Class&lt;?&gt; returnType = method.getReturnType();        if (retVal != null &amp;&amp; retVal == target &amp;&amp;                returnType != Object.class &amp;&amp; returnType.isInstance(proxy) &amp;&amp;                !RawTargetAccess.class.isAssignableFrom(method.getDeclaringClass())) {            // Special case: it returned &quot;this&quot; and the return type of the method            // is type-compatible. Note that we can&apos;t help if the target sets            // a reference to itself in another returned object.            retVal = proxy;        }        else if (retVal == null &amp;&amp; returnType != Void.TYPE &amp;&amp; returnType.isPrimitive()) {            throw new AopInvocationException(                    &quot;Null return value from advice does not match primitive return type for: &quot; + method);        }        return retVal;    }    finally {        if (target != null &amp;&amp; !targetSource.isStatic()) {            // Must have come from TargetSource.            targetSource.releaseTarget(target);        }        if (setProxyContext) {            // Restore old proxy.            AopContext.setCurrentProxy(oldProxy);        }    }}</code></pre><p>7.动态代理类的字节码在程序运行时由Java反射机制动态生成.</p><p>8.代理类可以为委托类进行消息的预处理.</p><blockquote><p>静态代理类</p></blockquote><p>1.代理类和实现类都实现了要代理的接口.</p><p>2.将实现类的对象传到代理类中(通过构造方法),实际上就是调用要代理对象的方法.</p><hr><h4 id="什么叫切面"><a href="#什么叫切面" class="headerlink" title="什么叫切面?"></a>什么叫切面?</h4><pre><code>所谓&quot;切面&quot;，简单说就是那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块之间的耦合度，并有利于未来的可操作性和可维护性。</code></pre><h4 id="多个切面的情况"><a href="#多个切面的情况" class="headerlink" title="多个切面的情况"></a>多个切面的情况</h4><pre><code>&lt;aop:config&gt;    //timeHandler相当于实现 InvocationHandler 接口的调用器,最后调用的是真实对象的方法(invoke方法实现)    &lt;aop:aspect id=&quot;time&quot; ref=&quot;timeHandler&quot; order=&quot;1&quot;&gt;        &lt;aop:pointcut id=&quot;addTime&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.print*(..))&quot; /&gt;        //抽取出来的业务模块的共同方法        &lt;aop:before method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;        &lt;aop:after method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;    &lt;/aop:aspect&gt;    &lt;aop:aspect id=&quot;log&quot; ref=&quot;logHandler&quot; order=&quot;2&quot;&gt;        &lt;aop:pointcut id=&quot;printLog&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.do*(..))&quot; /&gt;        &lt;aop:before method=&quot;LogBefore&quot; pointcut-ref=&quot;printLog&quot; /&gt;        &lt;aop:after method=&quot;LogAfter&quot; pointcut-ref=&quot;printLog&quot; /&gt;    &lt;/aop:aspect&gt;&lt;/aop:config&gt;</code></pre><p>输出:</p><pre><code>CurrentTime = 1446130273734Log before methodEnter HelloWorldImpl1.printHelloWorld()Log after methodCurrentTime = 1446130273735</code></pre><p>Spring默认以aspect的定义顺序作为织入顺序.order属性可以改变横切点的顺序.</p><hr><p>生成代理的底层原理：</p><pre><code>Bean生成代理的时机：在每个Bean初始化之后,先是AbstractAutowireCapableBeanFactory的initializeBean方法进行初始化。</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;1.每一个动态代理类都必须要实现InvocationHandler这个接口.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;//该接口中的唯一方法
-public Object invoke(Object proxy, Method method, Object[] args) throws
+        &lt;h4 id=&quot;关于动态代理的需要注意的问题？&quot;&gt;&lt;a href=&quot;#关于动态代理的需要注意的问题？&quot; class=&quot;headerlink&quot; title=&quot;关于动态代理的需要注意的问题？&quot;&gt;&lt;/a&gt;关于动态代理的需要注意的问题？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;如果是类自身的调用，
       
     
     </summary>
@@ -280,239 +517,6 @@ private int
     </summary>
     
       <category term="java语言基础" scheme="http://www.xuchunfa.cn/categories/java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Lock详解</title>
-    <link href="http://www.xuchunfa.cn/2018/08/30/Lock%E8%AF%A6%E8%A7%A3/"/>
-    <id>http://www.xuchunfa.cn/2018/08/30/Lock详解/</id>
-    <published>2018-08-30T01:19:08.000Z</published>
-    <updated>2018-08-31T09:14:28.144Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>Lock接口</p></blockquote><p>1.lock()：获取锁。</p><p>2.lockInterruptibly():可中断的获取锁，不同于lock(),在锁的获取中可以中断当前线程。</p><p>3.tryLock()：尝试非阻塞的获取锁。</p><p>4.tryLock(long time, TimeUnit unit)：超时获取锁。</p><p>5.unlock()：释放锁。</p><p>6.newCondition()：获取等待通知组件。</p><h4 id="为什么锁的实现中使用组合同步器而不选择继承呢？"><a href="#为什么锁的实现中使用组合同步器而不选择继承呢？" class="headerlink" title="为什么锁的实现中使用组合同步器而不选择继承呢？"></a>为什么锁的实现中使用组合同步器而不选择继承呢？</h4><blockquote><p>队列同步器</p></blockquote><p>1.同步器是实现锁的关键。锁是面象用户的,用户不需要了解其中的底层原理，同步器是面象锁的,是关于锁实现的原理细节。</p><p>2.队列同步器的实现</p><p>独占式同步状态流程图如下：</p><pre><code>//tryAcquire(arg) == false 则获取同步状态失败，线程进入同步队列public final void acquire(int arg) {    if (!tryAcquire(arg) &amp;&amp;        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))        selfInterrupt();}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;Lock接口&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;1.lock()：获取锁。&lt;/p&gt;
-&lt;p&gt;2.lockInterruptibly():可中断的获取锁，不同于lock(),在锁的获取中可以中断当前线程。&lt;/p&gt;
-&lt;p&gt;3.tryLock()：
-      
-    
-    </summary>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>单例模式的不同写法</title>
-    <link href="http://www.xuchunfa.cn/2018/08/28/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E4%B8%8D%E5%90%8C%E5%86%99%E6%B3%95/"/>
-    <id>http://www.xuchunfa.cn/2018/08/28/单例模式的不同写法/</id>
-    <published>2018-08-28T08:41:34.000Z</published>
-    <updated>2018-09-10T11:55:41.728Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li><p>饿汉模式（在调用对象之前就已经初始化了）</p><p>  1.基于类加载的机制（是线程安全的！！！）</p><p>  public class Singleton {</p><p>  private static final Singleton INSTANCE = new Singleton();</p><p>  private Singleton(){}</p><p>  public static Singleton getInstance(){</p><pre><code>return INSTANCE;</code></pre><p>  }<br>  }</p></li></ul><p>这里加final的意思这么理解：</p><p>final关键字可以禁止指令重排，防止在 INSTANCE 还没完全赋值的情况下被使用.</p><p>为什么线程安全参考静态内部单例模式。</p><ul><li><p>懒汉模式（线程不安全）</p><pre><code>   public class Singleton {    private static Singleton instance;    private Singleton (){  }     public static Singleton getInstance() {    if (instance == null) {            instance = new Singleton();    }    return instance;    }  }  </code></pre></li></ul><p>这里为什么不能加final:</p><p>1.因为final static 域必须要（直接赋值）或者（通过静态代码块）来赋值，这样就直接初始化了，没有做到延迟初始化。</p><p>2.如果你是final非static成员，必须在构造器、代码块、或者直接定义赋值；</p><ul><li><p>懒汉模式（线程安全）</p><p>  1.同步开销大,效率不高。</p></li></ul><ul><li><p>双重检查模式（DCL）</p><p>  1.还是会在某些情况下出现DCL失效的情况。</p></li></ul><ul><li><p>静态内部单例模式</p><pre><code>public class Singleton { private Singleton(){    }  public static Singleton getInstance(){      return SingletonHolder.sInstance;  }  private static class SingletonHolder {      private static final Singleton sInstance = new Singleton();  }  }</code></pre></li></ul><hr><p>1.第一次加载Singleton类不会实例化对象,只有在调用getInstance()方法时才会引起SingletonHolder类加载的理解？？？</p><p>1.1 外部类 Singleton 加载的时候静态内部类 SingletonHolder 不会加载，内部类的加载不需要依附外部类，在使用时才会加载。所以当调用内部类 SingletonHolder 的静态域 sInstance 才会引起内部类的加载以及初始化。</p><p>1.2 不过当只调用外部类的静态变量，静态方法时，是不会让静态内部类的被加载。</p><p><strong>2.为什么是线程安全的？？？</strong></p><p>2.1 首先解释一下clinit()方法中包含类中的所有类（static）变量的赋值动作和静态语句块。</p><p>2.2 虚拟机会保证一个类的类构造器clinit()在多线程环境中被正确的加锁、同步，如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的类构造器clinit()，其他线程都需要阻塞等待，直到活动线程执行clinit()方法完毕。</p><p>特别需要注意的是，在这种情形下，其他线程虽然会被阻塞，但如果执行clinit()方法的那条线程退出后，其他线程在唤醒之后不会再次进入执行clinit()方法，因为 在同一个类加载器下，一个类型只会被初始化一次。如果在一个类的clinit()方法中有耗时很长的操作，就可能造成多个线程阻塞，在实际应用中这种阻塞往往是隐藏的.</p><pre><code>一句话概括：java虚拟机保证在多线程的环境下类能够被正确加载。</code></pre><ul><li><p>枚举单例模式</p><p>  public enum Singleton {</p><pre><code>INSTANCE;private Singleton() {}</code></pre><p>  }</p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;饿汉模式（在调用对象之前就已经初始化了）&lt;/p&gt;
-&lt;p&gt;  1.基于类加载的机制（是线程安全的！！！）&lt;/p&gt;
-&lt;p&gt;  public class Singleton {&lt;/p&gt;
-&lt;p&gt;  private static final Singleton IN
-      
-    
-    </summary>
-    
-      <category term="Java设计模式" scheme="http://www.xuchunfa.cn/categories/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>最长不含重复字符的子字符串</title>
-    <link href="http://www.xuchunfa.cn/2018/08/27/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    <id>http://www.xuchunfa.cn/2018/08/27/最长不含重复字符的子字符串/</id>
-    <published>2018-08-27T08:34:48.000Z</published>
-    <updated>2018-08-27T08:35:50.271Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="最长不含重复字符的子字符串？"><a href="#最长不含重复字符的子字符串？" class="headerlink" title="最长不含重复字符的子字符串？"></a>最长不含重复字符的子字符串？</h4><pre><code>public class MaxDistinctSubString {//返回字符串长度public static String resolve(String str,int length){    if(str == null || length &lt; 0){        throw new RuntimeException(&quot;参数非法&quot;);    }    int distance = 0;    int currentLen = 0;    int maxLen = 0;    StringBuffer sb = new StringBuffer();    //用来存放字符在字符串中的最近访问的index    int[] judgeExisted = new int[256];    for(int j = 0;j &lt; judgeExisted.length;j++){        judgeExisted[j] = -1;    }     int startIndex = 0;    for(int i = 0;i &lt; length;i++){        //所有字符0~255        int index =str.charAt(i);        //字符没出现过        if(judgeExisted[index] &lt; 0){            currentLen = currentLen + 1;        }else {            distance = i - judgeExisted[index];            if(distance &lt;= currentLen){//字符出现在子串的中间                currentLen = distance;            }else {//d &gt; currentLen                currentLen = currentLen + 1;            }        }        //更新出现字符的坐标        judgeExisted[index] = i;        if(currentLen &gt; maxLen){            maxLen = currentLen;            //如果出现了重复的字符的话,i会一直前进但maxLen不会变,所以满足条件时,startIndex已经跳过了出现重复的字符。            startIndex = i + 1 - maxLen;        }    }    return str.substring(startIndex,startIndex + maxLen);}public static void main(String[] args){    String str = &quot;arabcacfrg&quot;;    System.out.println(MaxDistinctSubString.resolve(str,str.length()));}</code></pre><p>}</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;最长不含重复字符的子字符串？&quot;&gt;&lt;a href=&quot;#最长不含重复字符的子字符串？&quot; class=&quot;headerlink&quot; title=&quot;最长不含重复字符的子字符串？&quot;&gt;&lt;/a&gt;最长不含重复字符的子字符串？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class M
-      
-    
-    </summary>
-    
-      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>最大子数组</title>
-    <link href="http://www.xuchunfa.cn/2018/08/27/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/"/>
-    <id>http://www.xuchunfa.cn/2018/08/27/最大子数组/</id>
-    <published>2018-08-27T08:30:36.000Z</published>
-    <updated>2018-08-27T08:33:04.475Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="连续子数组的最大和"><a href="#连续子数组的最大和" class="headerlink" title="连续子数组的最大和?"></a>连续子数组的最大和?</h4><pre><code>public class MaxSubArraySum {public static int resolve(int[] array,int length){    if(array == null || length &lt; 0){        throw new RuntimeException(&quot;参数不合法&quot;);    }    int maxSub = 0;    int currentSum = 0;    //循环的思想解决动态规划问题    for(int i = 0;i&lt;length;i++){        //如果之前的和小于0的话,那么当前和应该从下一个数开始        if(currentSum &lt;= 0){            currentSum = array[i];        }else {            currentSum = currentSum + array[i];        }        //判断子数组的最大值        if(currentSum &gt; maxSub){            maxSub = currentSum;        }    }    return maxSub;}public static void main(String[] args){    int[] arr = {-1,2,3,-4,5,6,-7,9};    System.out.println(MaxSubArraySum.resolve(arr,arr.length));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;连续子数组的最大和&quot;&gt;&lt;a href=&quot;#连续子数组的最大和&quot; class=&quot;headerlink&quot; title=&quot;连续子数组的最大和?&quot;&gt;&lt;/a&gt;连续子数组的最大和?&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public class MaxSubArraySum {
-
-p
-      
-    
-    </summary>
-    
-      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>1到n的数组中和为m的所有组合</title>
-    <link href="http://www.xuchunfa.cn/2018/08/26/1%E5%88%B0n%E7%9A%84%E6%95%B0%E7%BB%84%E4%B8%AD%E5%92%8C%E4%B8%BAm%E7%9A%84%E6%89%80%E6%9C%89%E7%BB%84%E5%90%88/"/>
-    <id>http://www.xuchunfa.cn/2018/08/26/1到n的数组中和为m的所有组合/</id>
-    <published>2018-08-26T13:18:06.000Z</published>
-    <updated>2018-09-06T11:18:06.390Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="1到n的数组中和为m的所有组合？"><a href="#1到n的数组中和为m的所有组合？" class="headerlink" title="1到n的数组中和为m的所有组合？"></a>1到n的数组中和为m的所有组合？</h4><pre><code>public class SumOfKnumber {public static void findKNumber(int sum, int n, int[] combine,int index){    //index 最大取到 n    if(index &gt; n || index &gt; sum)        return;    if(index == sum){        combine[index-1] = index;        printResult(combine);        //还可以作为其他组合的元素        combine[index-1] = 0;        return;    }    //选择i    combine[index-1] = index;    findKNumber(sum-index, n, combine, index+1);    //i被放弃    combine[index-1] = 0;    findKNumber(sum,n,combine,index+1);}private static void printResult(int[] combine) {    for(int i = 0;i &lt; combine.length;i++){        if(combine[i] != 0){            System.out.print(combine[i] + &quot; &quot;);        }    }    System.out.println();}public static void main(String[] args){    int[] combine = new int[7];    SumOfKnumber.findKNumber(10,7,combine,1);}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;1到n的数组中和为m的所有组合？&quot;&gt;&lt;a href=&quot;#1到n的数组中和为m的所有组合？&quot; class=&quot;headerlink&quot; title=&quot;1到n的数组中和为m的所有组合？&quot;&gt;&lt;/a&gt;1到n的数组中和为m的所有组合？&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;public
-      
-    
-    </summary>
-    
-      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>字符串匹配算法</title>
-    <link href="http://www.xuchunfa.cn/2018/08/25/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D%E7%AE%97%E6%B3%95/"/>
-    <id>http://www.xuchunfa.cn/2018/08/25/字符串匹配算法/</id>
-    <published>2018-08-25T10:26:54.000Z</published>
-    <updated>2018-08-25T10:27:47.880Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>KMP算法</li></ul><ul><li>BM算法</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;KMP算法&lt;/li&gt;
-&lt;/ul&gt;
-&lt;ul&gt;
-&lt;li&gt;BM算法&lt;/li&gt;
-&lt;/ul&gt;
-
-      
-    
-    </summary>
-    
-      <category term="字符串" scheme="http://www.xuchunfa.cn/categories/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>虚拟机字节码执行引擎</title>
-    <link href="http://www.xuchunfa.cn/2018/08/24/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E/"/>
-    <id>http://www.xuchunfa.cn/2018/08/24/虚拟机字节码执行引擎/</id>
-    <published>2018-08-24T12:48:13.000Z</published>
-    <updated>2018-08-28T03:52:34.489Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>栈帧</p></blockquote><ul><li><p>局部变量表</p><p>  1.一个局部变量定义了但没有赋初值是不可以使用的.</p></li><li><p>操作数栈</p></li><li><p>动态连接</p></li><li><p>方法返回地址</p><p>  1.方法退出等效于当前栈帧出栈.如返回果有值的话,则将返回值压入调用者栈帧的操作数栈中.</p></li><li><p>附加信息</p></li></ul><p>其中动态连接,方法返回地址,附加信息统称为<strong>栈帧信息</strong>.</p><blockquote><p>方法调用</p></blockquote><p>一切方法调用在Class文件里面存储的都是符号引用,不是方法在实际运行时内存布局中的入口地址.</p><ul><li><p>解析</p><pre><code>方法在程序真正运行之前就有一个可确定的调用版本, 并且这个方法的调用版本在运行期间不可改变.符合以上条件的方法:1.静态方法2.私有方法3.实例构造器4.父类方法它们在类加载的时候就会把符号引用解析成直接引用.</code></pre></li></ul><ul><li>分派</li></ul><p>1.静态分派(方法重载)</p><p>1.1 java语言中的返回值不参与重载选择。</p><p>重载：“编译期绑定”，也叫编译期多态。方法重载主要是类内部多态性的一个体现。 </p><p>例如:</p><pre><code>public class O{static class A{}static class B extends A{}static class C extends A{}public void a(A a){    System.out.println(&quot;A method&quot;);}public void a(B b){    System.out.println(&quot;B method&quot;);}public void a(C c){    System.out.println(&quot;C method&quot;);}public static void main(String[] args){    O o = new O();    A b = new B();    A c = new C();    o.a(b);    o.a(c);}}</code></pre><p>上述代码的结果:</p><p>A method</p><p>A method</p><p><strong>虚拟机在重载时是通过参数的静态类型而不是实际类型作为判断依据.</strong></p><p>2.动态分派（方法重写）</p><p>重写：“运行期绑定”，也叫运行期多态。方法重写是父类与子类之间多态性的体现。</p><pre><code>在运行期间根据实际类型确定方法执行版本的分派。</code></pre><p>例如：</p><pre><code>class Dog{public void bark(){    System.out.println(&quot;woof &quot;);}}class Hound extends Dog{public void sniff(){    System.out.println(&quot;sniff &quot;);}public void bark(){    System.out.println(&quot;bowl&quot;);}}public class OverridingTest{public static void main(String [] args){    Dog dog = new Hound();    dog.bark();}}    </code></pre><p>输出：bowl</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;栈帧&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;局部变量表&lt;/p&gt;
-&lt;p&gt;  1.一个局部变量定义了但没有赋初值是不可以使用的.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;操作数栈&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;动态连接&lt;/p&gt;
-&lt;/
-      
-    
-    </summary>
-    
-      <category term="java虚拟机" scheme="http://www.xuchunfa.cn/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>数组中和为m的所有组合</title>
-    <link href="http://www.xuchunfa.cn/2018/08/24/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%92%8C%E4%B8%BAm%E7%9A%84%E6%89%80%E6%9C%89%E7%BB%84%E5%90%88/"/>
-    <id>http://www.xuchunfa.cn/2018/08/24/数组中和为m的所有组合/</id>
-    <published>2018-08-24T10:09:40.000Z</published>
-    <updated>2018-09-09T08:50:42.720Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="动态规划" scheme="http://www.xuchunfa.cn/categories/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>随机版本的快排</title>
-    <link href="http://www.xuchunfa.cn/2018/08/24/%E9%9A%8F%E6%9C%BA%E7%89%88%E6%9C%AC%E7%9A%84%E5%BF%AB%E6%8E%92/"/>
-    <id>http://www.xuchunfa.cn/2018/08/24/随机版本的快排/</id>
-    <published>2018-08-24T04:24:16.000Z</published>
-    <updated>2018-08-24T04:25:37.975Z</updated>
-    
-    <content type="html"><![CDATA[<pre><code>public class QuickSort {public static void swap(int[] a,int i,int j){    int temp;    temp = a[i];    a[i] = a[j];    a[j] = temp;}public static int partition(int[] a,int start,int end){    if(a == null || start &lt; 0 || end &gt; a.length-1){        throw new RuntimeException(&quot;参数不合法&quot;);    }    //轴值在[start,end]区间内随机生成,然后把轴值交换到数组中第一位    rand_pivot(a,start,end);    int i = start;    int j = end;    int pivot = a[start];    while (i &lt; j){        while (i &lt; j &amp;&amp; a[j] &gt;= pivot){            j--;        }        //a[i] = a[j];//这种写法时条件不能为a[j] &gt; pivot必须要 &gt;=        swap(a,i,j);        while (i &lt; j &amp;&amp; a[i] &lt;= pivot){            i++;        }        //a[j] = a[i];        swap(a,j,i);    }    //a[i] 或者 a[j]    //a[i] = pivot;    return i;}//随机化的选择主元private static void rand_pivot(int[] a, int start, int end) {    Random random = new Random();    int rand = start + random.nextInt(end - start + 1);//随机函数生成的整数区间在[0,length)    //交换第一个数和随机选出来的数    int temp = a[start];    a[start] = a[rand];    a[rand] = temp;}public static void quickSort(int[] a,int start,int end){    if(start &gt;= end)        return;    int index = partition(a,start,end);    quickSort(a,start,index-1);    quickSort(a,index+1,end);    /*int index;    if(start &lt; end){        index = partition(a,start,end);        quickSort(a,start,index-1);        quickSort(a,index+1,end);    }*/}public static void main(String[] args){    int[] a = {2,4,5,1,1,2,7,6,3};    QuickSort.quickSort(a,0,a.length-1);    System.out.println(Arrays.toString(a));}}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;pre&gt;&lt;code&gt;public class QuickSort {
-
-public static void swap(int[] a,int i,int j){
-    int temp;
-    temp = a[i];
-    a[i] = a[j];
-    a[j] 
-      
-    
-    </summary>
-    
-      <category term="排序" scheme="http://www.xuchunfa.cn/categories/%E6%8E%92%E5%BA%8F/"/>
     
     
   </entry>

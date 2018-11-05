@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="线程中Blocked 和 Waiting 状态的区别？Blocked:线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。 Waiting:由于主动调用了以下方法而进入的状态：1.Object.wait()2.Thread.join()3.LockSuppo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-16T05:36:54.305Z">
+<meta property="og:updated_time" content="2018-10-17T11:51:50.277Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程和线程分析">
 <meta name="twitter:description" content="线程中Blocked 和 Waiting 状态的区别？Blocked:线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。 Waiting:由于主动调用了以下方法而进入的状态：1.Object.wait()2.Thread.join()3.LockSuppo">
@@ -439,8 +439,8 @@ if(mills &lt;= 0){
     }
     return result;
 }
-</code></pre><h4 id="进程和线程的区别？"><a href="#进程和线程的区别？" class="headerlink" title="进程和线程的区别？"></a>进程和线程的区别？</h4><p><strong>进程：</strong>资源分配的最小单位。可以看成是每个运行中的程序。它可以拥有自己独立的资源。</p>
-<p><strong>线程：</strong>操作系统调度的最小单元。线程是进程的一个实体，它们可以访问共享的内存变量。</p>
+</code></pre><h4 id="进程和线程的区别？"><a href="#进程和线程的区别？" class="headerlink" title="进程和线程的区别？"></a>进程和线程的区别？</h4><p><strong>进程：</strong>资源分配的最小单位。可以看成是每个运行中的程序。它可以拥有自己独立的资源。有自己的内存空间。</p>
+<p><strong>线程：</strong>操作系统调度的最小单元。线程是进程的一个实体，这些线程共同享有进程占有的资源和内存空间。</p>
 <p><strong>进程和线程的联系：</strong>一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。</p>
 <p><strong>进程和线程的区别：</strong></p>
 <p>1.进程之间是相互独立的，不共享内存和数据，线程之间的内存和数据是公用的。</p>
@@ -569,7 +569,7 @@ if(mills &lt;= 0){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -580,7 +580,7 @@ if(mills &lt;= 0){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

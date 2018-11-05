@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 //生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口">
+<meta name="description" content="关于动态代理的需要注意的问题？如果是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，这样就不会把自己的代码织入到约定 的流程中去。 举个书上的例子： public class UserServiceImpl implements UserService {  @Autowired private UserDao userDao = null;  //这里@Transactional会失效">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring动态代理">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/09/16/Spring动态代理/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 //生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口">
+<meta property="og:description" content="关于动态代理的需要注意的问题？如果是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，这样就不会把自己的代码织入到约定 的流程中去。 举个书上的例子： public class UserServiceImpl implements UserService {  @Autowired private UserDao userDao = null;  //这里@Transactional会失效">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-10T07:21:38.825Z">
+<meta property="og:updated_time" content="2018-10-10T12:42:56.434Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring动态代理">
-<meta name="twitter:description" content="1.每一个动态代理类都必须要实现InvocationHandler这个接口. //该接口中的唯一方法 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable; 2.Proxy代理类的newProxyInstance()方法 //生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口">
+<meta name="twitter:description" content="关于动态代理的需要注意的问题？如果是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，这样就不会把自己的代码织入到约定 的流程中去。 举个书上的例子： public class UserServiceImpl implements UserService {  @Autowired private UserDao userDao = null;  //这里@Transactional会失效">
 
 
 
@@ -399,7 +399,62 @@
       
 
       
-        <p>1.每一个动态代理类都必须要实现InvocationHandler这个接口.</p>
+        <h4 id="关于动态代理的需要注意的问题？"><a href="#关于动态代理的需要注意的问题？" class="headerlink" title="关于动态代理的需要注意的问题？"></a>关于动态代理的需要注意的问题？</h4><pre><code>如果是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，这样就不会把自己的代码织入到约定
+的流程中去。
+</code></pre><p>举个书上的例子：</p>
+<pre><code>public class UserServiceImpl implements UserService {
+
+@Autowired
+private UserDao userDao = null;
+
+//这里@Transactional会失效，每次调用不会都产生一个新事务
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+public int insertUsers(List&lt;User&gt; userList){
+    int count = 0;
+    for(User : user){
+        count += insertUser(user);
+    }
+}
+
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED)
+public int insertUser(User user) {
+    return userDao.insertUser(user);
+}
+}
+</code></pre><p>解决办法如下：</p>
+<pre><code>public class UserServiceImpl implements UserService，ApplicationContextAware {
+
+@Autowired
+private UserDao userDao = null;
+
+private ApplicationContext applicationContext = null;
+
+@Override
+void setApplicationContext(ApplicationContext applicationContext) 
+throws BeansException{
+    this.applicationContext = applicationContext;
+}
+
+//这里@Transactional会失效，每次调用不会都产生一个新事务
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+public int insertUsers(List&lt;User&gt; userList){
+    int count = 0;
+    UserService userService = applicationContext.getBean(UserService.class);
+    for(User : user){
+        count += insertUser(user);
+    }
+}
+
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED)
+public int insertUser(User user) {
+    return userDao.insertUser(user);
+}
+}    
+</code></pre><p>1.每一个动态代理类都必须要实现InvocationHandler这个接口.</p>
 <pre><code>//该接口中的唯一方法
 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
 </code></pre><p>2.Proxy代理类的newProxyInstance()方法</p>
@@ -731,7 +786,7 @@ CurrentTime = 1446130273735
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -742,7 +797,7 @@ CurrentTime = 1446130273735
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -809,7 +864,7 @@ CurrentTime = 1446130273735
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么叫切面"><span class="nav-number">1.</span> <span class="nav-text">什么叫切面?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个切面的情况"><span class="nav-number">2.</span> <span class="nav-text">多个切面的情况</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于动态代理的需要注意的问题？"><span class="nav-number">1.</span> <span class="nav-text">关于动态代理的需要注意的问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么叫切面"><span class="nav-number">2.</span> <span class="nav-text">什么叫切面?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多个切面的情况"><span class="nav-number">3.</span> <span class="nav-text">多个切面的情况</span></a></li></ol></div>
             
 
           </div>

@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 对于2通过DCL理解： public class Singleton {     private volatile static Singleton singleton;     private Singleton (){">
+<meta name="description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；   x = 2;        //语句1 y = 0;        /">
 <meta property="og:type" content="article">
 <meta property="og:title" content="volatile语义理解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/24/volatile语义和final语义的理解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 对于2通过DCL理解： public class Singleton {     private volatile static Singleton singleton;     private Singleton (){">
+<meta property="og:description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；   x = 2;        //语句1 y = 0;        /">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/kk1Pn2O.png">
-<meta property="og:updated_time" content="2018-08-29T03:03:30.488Z">
+<meta property="og:updated_time" content="2018-10-28T09:03:15.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="volatile语义理解">
-<meta name="twitter:description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 对于2通过DCL理解： public class Singleton {     private volatile static Singleton singleton;     private Singleton (){">
+<meta name="twitter:description" content="volatile变量的两层语义  1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的 2.禁止进行指令重排序。 当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；   x = 2;        //语句1 y = 0;        /">
 <meta name="twitter:image" content="https://i.imgur.com/kk1Pn2O.png">
 
 
@@ -406,7 +406,26 @@
 </blockquote>
 <p>1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的</p>
 <p>2.禁止进行指令重排序。</p>
-<p>对于2通过DCL理解：</p>
+<pre><code>当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；
+
+
+x = 2;        //语句1
+y = 0;        //语句2
+volatile flag = true;  //语句3
+x = 4;         //语句4
+y = -1;       //语句5
+
+volatile关键字能保证，执行到语句3时，语句1和语句2必定是执行完毕了的，且语句1和语句2的执行结果对语句3、语句4、语句5是可见的。
+</code></pre><p>再举new 一个对像的例子：</p>
+<pre><code>volatile A a;
+a = new A();
+
+1.在堆中申请内存空间。
+2.初始化
+3.赋值：a = new A();
+
+volatile修饰的a会禁止2、3步重排。
+</code></pre><p>volatile场景一：DCL</p>
 <pre><code>public class Singleton {  
   private volatile static Singleton singleton;  
   private Singleton (){
@@ -414,17 +433,29 @@
   public static Singleton getInstance() {  
   if (instance== null) {  
       synchronized (Singleton.class) {  
-      if (instance== null) {  
+      if (instance == null) {  
           instance= new Singleton();  
       }  
      }  
  }  
  return singleton;  
  }  
-  }  
+ }  
 </code></pre><p>如果发生重排序的话会出现以下的情况：</p>
 <p><img src="https://i.imgur.com/kk1Pn2O.png" alt=""></p>
-<p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p>
+<p>volatile的使用场景二：状态标记量</p>
+<pre><code>volatile boolean inited = false;
+
+//线程1:
+context = loadContext();  
+inited = true;            
+
+//线程2:
+while(!inited ){
+    sleep()
+}
+doSomethingwithconfig(context);
+</code></pre><p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p>
 <p><strong>锁释放和获得：</strong>锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。</p>
 <p><strong>注意：</strong>volatile变量只能保证可见性。不能保证原子性。</p>
 <pre><code>/*
@@ -592,7 +623,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -603,7 +634,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
