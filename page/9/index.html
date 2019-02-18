@@ -286,6 +286,1811 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/java内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/java内存模型/" itemprop="url">java内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T20:12:59+08:00">
+                2018-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/23/java内存模型/" class="leancloud_visitors" data-flag-title="java内存模型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Java内存模型示意图</p>
+</blockquote>
+<p><img src="https://i.imgur.com/wRkMYGE.png" alt=""></p>
+<p>1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。</p>
+<p>2.本地内存：相当于虚拟机栈内存区域部分。</p>
+<ul>
+<li><p>happens-before原则：</p>
+<h4 id="怎么理解内存可见性？"><a href="#怎么理解内存可见性？" class="headerlink" title="怎么理解内存可见性？"></a>怎么理解内存可见性？</h4><p>  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。</p>
+</li>
+</ul>
+<pre><code>#### 怎么理解happens-before原则？ ####
+
+1.A happens-before B 意味着执行A产生的影响直接对B可见。
+
+2.而以下的规则是天生就存在这种happens-before关系的例子。
+
+#### happens-before规则有哪些？ ####
+</code></pre><ol>
+<li>程序顺序规则：但线程内，在不改变程序结果的情况下(可能会发生重排序),程序按顺序执行。</li>
+<li>监视器锁规则：对一个锁的解锁(volatile写)优先于锁的加锁(volatile读)。</li>
+<li>volatile变量规则：volatile写优先volatile读。</li>
+<li>传递性：A happens-before B, Bhappens-before C则 A happens-before C。</li>
+<li>start()原则：如果在线程A中执行ThreadB.start(),那么A线程的ThreadB.start()操作要先于线程B中的任意操作。</li>
+<li>join()操作：线程A执行ThreadB.join()操作并成功返回,那么B中的任意操作都先于线程A从ThreadB.join()操作成功返回。</li>
+</ol>
+<p>举个例子：</p>
+<p><img src="https://i.imgur.com/5HFiSBc.png" alt=""></p>
+<p><strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p>
+<p>1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p>
+<p>2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p>
+<p>3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p>
+<p>4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p>
+<p>5.<strong>顺序一致性模型和JMM的比较：</strong></p>
+<pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。
+(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/二叉树的创建和遍历/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/二叉树的创建和遍历/" itemprop="url">二叉树的创建和遍历</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T15:57:04+08:00">
+                2018-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/23/二叉树的创建和遍历/" class="leancloud_visitors" data-flag-title="二叉树的创建和遍历">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="前序、中序和后序递归与非递归的遍历二叉树？"><a href="#前序、中序和后序递归与非递归的遍历二叉树？" class="headerlink" title="前序、中序和后序递归与非递归的遍历二叉树？"></a>前序、中序和后序递归与非递归的遍历二叉树？</h4><pre><code>public class BinaryTree {
+
+private BinaryTreeNode root;
+
+public boolean isEmpty(){
+    if(this.root == null)
+        return true;
+
+    return false;
+}
+
+public BinaryTreeNode getRoot() {
+    return root;
+}
+
+public void createBinaryTree(BinaryTreeNode node, int data){
+    if(root == null){
+        this.root = new BinaryTreeNode(data);
+    }else{
+
+        //创建二叉查找树
+        if(data &lt; node.data){
+            //构建左子树
+            if(node.left == null){
+                node.left = new BinaryTreeNode(data);
+            }else {
+                createBinaryTree(node.left,data);
+            }
+        }else {
+            //构建右子树
+            if(node.right == null){
+                node.right = new BinaryTreeNode(data);
+            }else {
+                createBinaryTree(node.right,data);
+            }
+        }
+    }
+
+}
+
+//先序遍历,递归实现
+public void preOrder(BinaryTreeNode node){
+    if (node == null)
+        return;
+
+    System.out.print(node.data + &quot; &quot;);
+    preOrder(node.left);
+    preOrder(node.right);
+}
+
+//先序遍历,非递归实现
+public void cyclePreOrder(BinaryTreeNode node){
+
+    BinaryTreeNode p = node;
+    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();
+
+    if(p == null){
+        System.out.println(&quot;二叉树为空&quot;);
+    }
+
+    //根节点出栈后栈空了但 p != null
+    while (p != null || !stack.isEmpty()){
+        while (p != null){
+            System.out.print(p.data + &quot; &quot;);
+            stack.push(p);
+            p = p.left;
+        }
+
+        if(!stack.isEmpty()){
+            p = stack.pop();
+            p = p.right;
+        }
+    }
+
+}
+
+//中序遍历,递归实现
+public void inOrder(BinaryTreeNode node){
+    if(node == null)
+        return;
+
+    inOrder(node.left);
+    System.out.print(node.data + &quot; &quot;);
+    inOrder(node.right);
+}
+
+//中序遍历,非递归实现
+public void cycleInOrder(BinaryTreeNode node){
+    BinaryTreeNode p = node;
+    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();
+
+    if(p == null){
+        System.out.println(&quot;二叉树为空&quot;);
+    }
+
+    //根节点出栈后栈空了但 p != null
+    while (p != null || !stack.isEmpty()){
+        while (p != null){
+            stack.push(p);
+            p = p.left;
+        }
+
+        if(!stack.isEmpty()){
+            p = stack.pop();
+            System.out.print(p.data + &quot; &quot;);
+            p = p.right;
+        }
+    }
+}
+
+//后序遍历,递归实现
+public void postOrder(BinaryTreeNode node) {
+
+    if (node == null)
+        return;
+    postOrder(node.left);
+    postOrder(node.right);
+    System.out.print(node.data + &quot; &quot;);
+
+}
+
+//后序遍历,非递归实现
+public void cyclePostOrder(BinaryTreeNode node){
+    BinaryTreeNode current;
+    BinaryTreeNode visited = null;
+    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();
+
+    s.push(node);
+
+    while (!s.isEmpty()){
+
+        //还不能出栈
+        current = s.peek();
+        if((current.left == null &amp;&amp; current.right == null) || (visited != null &amp;&amp; (current.left == visited || current.right == visited)) ){
+            current = s.pop();
+            System.out.print(current.data + &quot; &quot;);
+            visited = current;
+        }else {
+            if(current.right != null){
+                s.push(current.right);
+            }
+
+            if(current.left != null){
+                s.push(current.left);
+            }
+        }
+    }
+}
+
+
+public static void main(String[] args){
+    BinaryTree bt = new BinaryTree();
+    Random random = new Random();
+
+    //10个结点
+    for(int i = 0;i&lt;6;i++){
+        bt.createBinaryTree(bt.root,random.nextInt(10));
+    }
+
+    bt.postOrder(bt.root);
+    System.out.println();
+    bt.cyclePostOrder(bt.root);
+
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/反转链表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/反转链表/" itemprop="url">反转链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T19:44:48+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/反转链表/" class="leancloud_visitors" data-flag-title="反转链表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="反转链表？"><a href="#反转链表？" class="headerlink" title="反转链表？"></a>反转链表？</h4><pre><code>public class VerseLinkPrint {
+
+private ListNode head;
+
+    private ListNode q;
+
+//添加链表节点
+   public void add(int data){
+    ListNode node = new ListNode(data);
+    if(this.head == null){
+        this.head = node;
+    }else {
+        this.head.addNode(node);
+    }
+}
+
+//从头到尾打印链表节点
+    public void print(){
+    if(this.head == null){
+        System.out.println(&quot;链表为空&quot;);
+    }else {
+        this.head.printNode();
+        System.out.println();
+    }
+}
+
+//非递归实现反转链表
+   public void versePrint(){
+
+if(head == null){
+    System.out.println(&quot;链表为空&quot;);
+    return;
+}
+
+//已经改变的链表的结构
+ListNode p = head.next;
+ListNode q = null;
+head.next = null;
+
+while (p != null){
+    q = p.next;
+    p.next = head;
+    head = p;
+    p = q;
+}
+print();
+}
+
+//递归实现反转链表
+   public void verseRecursive(ListNode p){
+
+if(p == null)
+    return;
+
+verseRecursive(p.next);
+
+if(p.next == null){
+    head = p;
+    q = p;
+}
+
+p.next = null;
+q.next = p;
+q = q.next;
+}
+
+public static void main(String[] args){
+    VerseLinkPrint link = new VerseLinkPrint();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.verseRecursive(link.head);
+    link.print();
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/从尾到头打印链表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/从尾到头打印链表/" itemprop="url">从尾到头打印链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T18:53:03+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/从尾到头打印链表/" class="leancloud_visitors" data-flag-title="从尾到头打印链表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="从尾到头打印链表？"><a href="#从尾到头打印链表？" class="headerlink" title="从尾到头打印链表？"></a>从尾到头打印链表？</h4><p><strong>核心思想：</strong>栈和递归。</p>
+<pre><code>public class VerseLink {
+
+private ListNode head;
+
+//添加链表节点
+public void add(int data){
+    ListNode node = new ListNode(data);
+    if(this.head == null){
+        this.head = node;
+    }else {
+        this.head.addNode(node);
+    }
+}
+
+//从头到尾打印链表节点
+public void print(){
+    if(this.head == null){
+        System.out.println(&quot;链表为空&quot;);
+    }else {
+        this.head.printNode();
+        System.out.println();
+    }
+}
+
+//从尾到头打印链表节点(常规方法) 时间复杂度(O(n)) 空间复杂度(O(1))
+public void versePrint(){
+
+    if(head == null){
+        System.out.println(&quot;链表为空&quot;);
+        return;
+    }
+
+    ListNode p = head.next;
+    ListNode q = null;
+    head.next = null;
+
+    while (p != null){
+        q = p.next;
+        p.next = head;
+        head = p;
+        p = q;
+    }
+    print();
+}
+
+//栈实现 时间复杂度:O(n) 空间复杂度:O(n)
+public void versePrint1(){
+    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
+
+    ListNode p = head;
+    if(p == null){
+        System.out.println(&quot;链表为空&quot;);
+        return;
+    }
+
+    while (p != null){
+        stack.push(p.data);
+        p = p.next;
+    }
+
+    while (!stack.empty()){
+        System.out.print(stack.pop()+&quot;--&gt;&quot;);
+    }
+}
+
+//递归实现
+public void versePrint2(ListNode p){
+    if(p == null){
+        return;
+    }
+    versePrint2(p.next);
+    System.out.print(p.data+&quot;--&gt;&quot;);
+}
+
+
+public static void main(String[] args){
+    VerseLink link = new VerseLink();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.versePrint2(link.head);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/链表中倒数第k个结点/" itemprop="url">链表中倒数第k个结点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T14:29:00+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/链表中倒数第k个结点/" class="leancloud_visitors" data-flag-title="链表中倒数第k个结点">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/合并两个有序数组/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/合并两个有序数组/" itemprop="url">合并两个有序数组</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T13:54:01+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/合并两个有序数组/" class="leancloud_visitors" data-flag-title="合并两个有序数组">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>两个有序数组A1和A2，把A2的所有数字插入到A1？</li>
+</ul>
+<p><strong>核心思想：</strong>从数组末尾开始比较，指针依次往前挪。</p>
+<pre><code>public class MergeSortedArray {
+
+//时间复杂度(O(n)) 空间复杂度(O(n)) 通过归并实现
+public static int[] merge(int[] a,int[] b){
+
+    if(a==null || b==null){
+        System.out.println(&quot;输入两个数组&quot;);
+    }
+
+    if(a.length == 0)
+        return b;
+
+    if(b.length == 0)
+        return a;
+
+    int len1 = a.length;
+    int len2 = b.length;
+
+    int[] c = new int[len1+len2];
+    int i = 0;
+    int j = 0;
+
+    while(i &lt; len1 &amp;&amp; j &lt; len2){//归并的思想
+        if(a[i] &lt; b[j]){
+            c[i+j] = a[i];
+            i++;
+        }else{
+            c[i+j] = b[j];
+            j++;
+        }
+    }
+
+    while (i &lt; len1){
+        c[i+j+1] = a[i];
+        i++;
+    }
+
+    while(j &lt; len2){
+        c[i+j] = b[j];
+        j++;
+    }
+
+    return c;
+}
+
+//时间复杂度(O(n)) 空间复杂度(O(1)) 直接在第一个数组上操作
+public static void merge1(int[] a,int[] b){
+
+    if(a==null || b==null){
+        System.out.println(&quot;输入两个数组&quot;);
+    }
+
+    int len1 = a.length;
+    int len2 = b.length;
+
+    int i = len1 - len2 -1;
+    int j = len2 - 1;
+
+    while(i &gt;= 0 &amp;&amp; j &gt;= 0){//从数组最后面的元素开始向前比较
+        if(a[i] &gt; b[j]){
+            a[i+j+1] = a[i];
+            i--;
+        }else{
+            a[i+j+1] = b[j];
+            j--;
+        }
+    }
+
+    while(j &gt;= 0){
+        a[i+j+1] = b[j];
+        j--;
+    }
+
+}
+
+public static void main(String[] args){
+
+    int[] a ={1,4,9};
+    int[] b = {2,3,10,16};
+    int[] c = new int[a.length+b.length];
+
+    c = MergeSortedArray.merge(a,b);
+
+    //打印数组元素
+    System.out.println(Arrays.toString(c));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/20/替换字符串字符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/20/替换字符串字符/" itemprop="url">替换字符串字符</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T15:45:59+08:00">
+                2018-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/字符串/" itemprop="url" rel="index">
+                    <span itemprop="name">字符串</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/20/替换字符串字符/" class="leancloud_visitors" data-flag-title="替换字符串字符">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>将字符串中的’ ‘替换成”20%”？</li>
+</ul>
+<p><strong>核心思想：</strong></p>
+<p>1.从最后一字符开始从前遍历，最后一个字符是’\0’。</p>
+<p>2.将字符串变为数组时，要在字符串数组后面添加’\0’。</p>
+<pre><code>public class ReplaceChar {
+
+//时间复杂度：O(n) 空间复杂度：O(n)
+public void replace(char[] a,int len){
+
+    //len = 1 时就一个字符&apos;\0&apos;
+    if(a == null || len&lt;2){
+        System.out.println(&quot;输入长度大于0的字符串&quot;);
+        System.exit(-1);
+    }
+
+    int oldLen = 0;
+    int count = 0;
+    int newLen;
+    for(int i = 0;a[i] !=&apos;\0&apos;;i++){
+        if(a[i] == &apos; &apos;)
+            count++;
+        oldLen++;
+    }
+
+    newLen = oldLen + 2*count;
+
+    if(newLen &gt; len)
+        return;
+
+    int i = oldLen;//从&apos;\0&apos;开始
+    int j = newLen;
+
+    while (i &gt;= 0 &amp;&amp; i &lt; j){
+
+        if(a[i] == &apos; &apos;){
+            a[j--] = &apos;0&apos;;
+            a[j--] = &apos;2&apos;;
+            a[j--] = &apos;%&apos;;
+        }else {
+            //注意 j 越界的情况
+            a[j--] = a[i];
+        }
+
+        i--;
+    }
+}
+
+public static void main(String[] args) {
+
+    String s = &quot;abcd&quot;;
+
+    //多了个&apos;\0&apos;
+    char oldChar[] = new char[s.length()+1];
+
+    int counter = 0;
+    for (int i = 0; i&lt;s.length(); i++) {
+        if (s.charAt(i) == &apos; &apos;)
+            counter++;
+        oldChar[i] = s.charAt(i);
+    }
+
+    //字符串结束标志
+    oldChar[s.length()] = &apos;\0&apos;;
+
+    //里面已经包含了&apos;\0&apos;结束符
+    int totalLen = oldChar.length + counter*2;
+
+    //数组扩容
+    char[] newChar = new char[totalLen];
+    for(int i = 0;i&lt;oldChar.length;i++){
+        newChar[i] = oldChar[i];
+    }
+
+    new ReplaceChar().replace(newChar,totalLen);
+
+    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){
+        System.out.print(newChar[i]);
+    }
+
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/19/二维数组的查找/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/19/二维数组的查找/" itemprop="url">二维数组的查找</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-19T22:01:59+08:00">
+                2018-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/19/二维数组的查找/" class="leancloud_visitors" data-flag-title="二维数组的查找">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？"><a href="#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？" class="headerlink" title="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？"></a>二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？</h4><p><strong>核心思想：</strong></p>
+<p>1.右上角的数字与要查找的数字比较。</p>
+<p>2.右上角 &gt; key 去列 否则 去行</p>
+<pre><code>public int findElement(int[][] arr,int n,int m,int search){
+
+    int row = n;
+    int col = m;
+    int key = search;
+    int i = 0;
+
+    if(arr == null){
+        System.out.println(&quot;请输入一个二维数组&quot;);
+        return 0;
+    }
+
+    if(n &lt;= 0 || m &lt;=0){
+        System.out.println(&quot;输入两个自然数&quot;);
+    }
+
+    while(i &lt; row &amp;&amp; col &gt;0){
+        //去列
+        if(arr[i][col-1] &gt; key){
+            col--;
+        }else if(arr[i][col-1] &lt; key){
+            i++;
+        }else {
+            //找到元素
+            return arr[i][col-1];
+        }
+
+        //只剩一行
+        if(i == row-1){
+            for(int j=0;j&lt;col;j++){
+                if(arr[i][j] == key) {
+                    return arr[i][j];
+                }
+            }
+
+            return 0;
+        }
+
+        //只剩一列
+        if(col == 1){
+            for(int j = 0;j&lt;row;j++){
+                if(arr[j][0] == key)
+                    return arr[j][0];
+            }
+
+            return 0;
+        }
+    }
+
+    //不存在
+    return 0;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/18/java并发底层原理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -713,1676 +2518,11 @@ private int calNum(int[] nums, int len, int start, int end) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/线程间协作和通信/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/17/线程间协作和通信/" itemprop="url">线程协作通信</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T20:47:37+08:00">
-                2018-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/17/线程间协作和通信/" class="leancloud_visitors" data-flag-title="线程协作通信">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>匿名内部类？</p>
-<p>  没有名字的内部类，只能使用一次，简化代码编写。</p>
-<p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p>
-<pre><code>interface People {
-public abstract void eat();
-}
-
-public class Demo {
-   public static void main(String[] args) {
-People p = new People() {
-    public void eat() {
-        System.out.println(&quot;I can eat &quot;);
-    }
-};
-p.eat();
-}
-</code></pre></li>
-<li><p>阻塞队列</p>
-<pre><code>阻塞队列会对当前线程产生阻塞，比如一个线程从一个空的阻塞队列中取元素，此时线程会被阻塞直到阻塞队列中有了元素。
-当队列中有元素后，被阻塞的线程会自动被唤醒（不需要我们编写代码去唤醒）。这样提供了极大的方便性。
-</code></pre></li>
-<li><p>wait()、notify()和notifyAll()</p>
-<pre><code>1.如果调用某个对象的 wait()/notify() 方法，当前线程必须拥有这个对象的monitor（即锁），因此调用 wait()/notify()
-方法必须在同步块或者同步方法中进行（synchronized块或者synchronized方法)。
-
-2.调用某个对象的wait()方法，相当于让当前线程交出此对象的monitor，然后进入等待状态，等待后续再次获得此对象的锁。（而sleep不会释放该对象的锁）
-
-3.notifyAll() 唤醒所有正在等待该对象的monitor的线程。
-
-4.一个线程被唤醒不代表立即获取了对象的monitor，只有等调用完notify()或者notifyAll()并退出synchronized块，释放对象锁后，其余线程才可获得锁执行。
-</code></pre></li>
-<li><p>Condition</p>
-</li>
-</ul>
-<p>它用来替代传统的Object的wait()、notify()实现线程间的协作,更加安全和高效。</p>
-<pre><code>1.Condition依赖于Lock接口，生成一个Condition的基本代码是lock.newCondition()。
-
-2.调用Condition的await()和signal()方法，都必须在lock保护之内，就是说必须在lock.lock()和lock.unlock之间才可以使用。
-
-3.
-    Conditon中的await()对应Object的wait()；
-    Condition中的signal()对应Object的notify()；
-    Condition中的signalAll()对应Object的notifyAll()。
-</code></pre><p>java.util.concurrent下的三个常用类：</p>
-<ul>
-<li>CyclicBarrier</li>
-</ul>
-<p>CyclicBarrier强调的是n个线程，大家相互等待，只要有一个没完成，所有人都得等着。</p>
-<p>重要字段：</p>
-<pre><code>private static class Generation {
-    boolean broken = false;
-}
-
-private final ReentrantLock lock = new ReentrantLock();
-
-private final Condition trip = lock.newCondition();//和锁一起使用
-
-private final int parties;//需要相互等待的线程数
-
-private final Runnable barrierCommand;
-
-private Generation generation = new Generation();
-
-private int count;//需要等待的线程的数量
-</code></pre><p>重要方法：</p>
-<pre><code>//CyclicBarrier.java
-public int await() throws InterruptedException, BrokenBarrierException {
-    try {
-        return dowait(false, 0L);
-    } catch (TimeoutException toe) {
-        throw new Error(toe); // cannot happen
-    }
-}
-</code></pre><p>进入：</p>
-<pre><code>private int dowait(boolean timed, long nanos)
-    throws InterruptedException, BrokenBarrierException,
-           TimeoutException {
-    final ReentrantLock lock = this.lock;
-    lock.lock();
-    try {
-        final Generation g = generation;
-
-        if (g.broken)
-            throw new BrokenBarrierException();
-
-        if (Thread.interrupted()) {
-            breakBarrier();
-            throw new InterruptedException();
-        }
-
-        int index = --count;
-        if (index == 0) {  // tripped
-            boolean ranAction = false;
-            try {
-                final Runnable command = barrierCommand;
-                if (command != null)
-                    command.run();//调用构造函数中的Runnable实现
-                ranAction = true;
-                nextGeneration();//唤醒所有阻塞的线程
-                return 0;
-            } finally {
-                if (!ranAction)
-                    breakBarrier();
-            }
-        }
-
-
-        for (;;) {
-            try {
-                if (!timed)
-                    trip.await();//线程还没到齐就一直阻塞
-                else if (nanos &gt; 0L)
-                    nanos = trip.awaitNanos(nanos);
-            } catch (InterruptedException ie) {
-                if (g == generation &amp;&amp; ! g.broken) {
-                    breakBarrier();
-                    throw ie;
-                } else {
-                    // We&apos;re about to finish waiting even if we had not
-                    // been interrupted, so this interrupt is deemed to
-                    // &quot;belong&quot; to subsequent execution.
-                    Thread.currentThread().interrupt();
-                }
-            }
-
-            if (g.broken)
-                throw new BrokenBarrierException();
-
-            if (g != generation)
-                return index;
-
-            if (timed &amp;&amp; nanos &lt;= 0L) {
-                breakBarrier();
-                throw new TimeoutException();
-            }
-        }
-    } finally {
-        lock.unlock();
-    }
-}
-</code></pre><p>看一眼唤醒的方法：</p>
-<pre><code>private void nextGeneration() {
-    // signal completion of last generation
-    trip.signalAll();
-    // set up next generation
-    count = parties;
-    generation = new Generation();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/单例模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/17/单例模式/" itemprop="url">单例模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T11:32:12+08:00">
-                2018-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/17/单例模式/" class="leancloud_visitors" data-flag-title="单例模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>单例模式指？</p>
-<p>  只生成一个对象，避免重复创建对象。</p>
-<p>  <img src="https://i.imgur.com/MkkHyU0.png" alt=""></p>
-</li>
-<li><p>instance为什么要加static关键字？</p>
-<p>  因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.</p>
-</li>
-<li><p>单例模式中构造函数为什么私有化？</p>
-<p>  1.构造函数私有化后，那么只能通过这个类的内部函数才能构造这个类的对象。</p>
-<p>  2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。</p>
-</li>
-<li><p>单例模式中volatile变量的作用？</p>
-<p>  首先分析 instance = new Singleton() 的本质：</p>
-<p>  1.为对象分配内存空间</p>
-<p>  2.对象初始化</p>
-<p>  3.将对象的引用指向对应的内存地址。</p>
-</li>
-</ul>
-<p>但是在单线程内2和3可能会发生重排序，于是发生了如下情况：<br><img src="https://i.imgur.com/EXnDWsp.png" alt=""></p>
-<p>此时线程B访问的是没有经过初始化的对象，会报错，所以使用volatile的根源在于：<strong>禁止A2和A3的重排序</strong>。</p>
-<ul>
-<li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
-<p>  因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。我们只需要在实例还没有创建之前添加加锁操作。</p>
-</li>
-<li><p>线程安全的延迟初始化？</p>
-<p>  1.基于volatile</p>
-<p>  2.基于类初始化</p>
-<p> 对于2举个例子：</p>
-<p>  private static class Holder{</p>
-<pre><code>private static Singleton instance =  new Singleton();
-</code></pre><p>  }</p>
-<p>  public static Singleton getInstance(int i){</p>
-<pre><code>return Holder.instance;
-</code></pre><p>  }</p>
-</li>
-<li><p>静态内部类方法创建单例模式的好处？</p>
-<p>  按需创建实例（饿汉式模式：在类加载时就完成了初始化），提高了内存的利用效率。</p>
-<p>  <code>这种方式的特点是：Singleton类被装载了，instance不一定被初始化，只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。</code></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/Java变量/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/13/Java变量/" itemprop="url">成员变量和局部变量</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T13:29:01+08:00">
-                2018-07-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/变量/" itemprop="url" rel="index">
-                    <span itemprop="name">变量</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/13/Java变量/" class="leancloud_visitors" data-flag-title="成员变量和局部变量">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><h4 id="栈内存和堆内存的比较？"><a href="#栈内存和堆内存的比较？" class="headerlink" title="栈内存和堆内存的比较？"></a>栈内存和堆内存的比较？</h4><p>  <img src="https://img-blog.csdn.net/20170430132812242?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWFydmVsX19EZWFk/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-</li>
-</ul>
-<pre><code>**堆内存存的内容：**数组元素、类对象、类中的非静态成员变量（实例变量）、包装类数据(Integer等)、
-
-**栈内存内容：**
-
-1.方法中声明的变量(因为方法执行时，被分配的内存就在栈中,即方法栈)：分基本数据类型变量和引用变量，前者的变量名和值都存在方法栈中，后者声明的变量存放在栈中，所指的对象放在堆中。
-
-2.对象的引用
-
-**方法区：**线程共享的内存区域。类里面的静态成员和静态方法、
-
-**常量池：**方法区的一块内存。
-
-**静态域：**方法区的一块内存。存放类中的静态成员变量
-</code></pre><ul>
-<li><p>局部变量保存在栈内存中，随方法的消失而消失;成员变量存储在堆中的对象里，由垃圾回收器负责回收。</p>
-</li>
-<li><p>包装类数据Integer、String等等存在于堆中。</p>
-</li>
-<li><p>JAVA的自动装箱拆箱</p>
-<p>  装箱：</p>
-<pre><code>Integer a = 99;
-(实际执行Integer.valueof(a))
-</code></pre><p>  拆箱：</p>
-<pre><code>int b = a;(实际执行a.intValue())
-</code></pre><p>  对于Integer:</p>
-<pre><code>在(-128,+128]之间有固定的256个值是为了避免多次创建对象，如果值在这个范围里就直接返回Integer对象
-</code></pre></li>
-</ul>
-<pre><code>参考文档一：[https://blog.csdn.net/Marvel__Dead/article/details/69220153](https://blog.csdn.net/Marvel__Dead/article/details/69220153)
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/string/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/13/string/" itemprop="url">字符串引用、字符串常量池以及比较</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T13:09:00+08:00">
-                2018-07-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/字符串/" itemprop="url" rel="index">
-                    <span itemprop="name">字符串</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/13/string/" class="leancloud_visitors" data-flag-title="字符串引用、字符串常量池以及比较">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>String s1 = “xuchunfa” 这个对象存放在常量池中</li>
-<li>Stirng s2 = new String(“xuchunfa”) 这个对象存放在堆里面。具体过程：<br>  <code>先去常量池去找，看有没有&quot;xuchunfa&quot;对象，如果没有则在常量池里面创建一个对象，如果有的话则在堆里面再创建&quot;xuchunfa&quot;对象的拷贝对象</code></li>
-<li><p>即equls()相同的字符串，在常量池中只有一份，在堆中可以有多份</p>
-</li>
-<li><p>String s1 = “xuchunfa”的理解：</p>
-<p>  <code>不能肯定的说创建了一个&quot;xuchunfa&quot;的对象，因为常量池中可能已经存在。只能肯定的说创建了指向&quot;xuchunfa&quot;对象的引用变量。new() 方法才是显示地创建一个对象</code></p>
-</li>
-</ul>
-<h2 id="字符串对象的不可变性"><a href="#字符串对象的不可变性" class="headerlink" title="字符串对象的不可变性"></a>字符串对象的不可变性</h2><ul>
-<li>当字符串在堆中被分配内容时，它就是不可变的，任何String的方法无法改变字符串本身。但是它创建的引用变量可以指向新的String对象。如图：</li>
-</ul>
-<p><img src="https://i.imgur.com/k6qoZRx.png" alt=""></p>
-<ul>
-<li><p>字符串不可变的原因？</p>
-<p>  <code>String s1 = &quot;as&quot;;
-   String s2 = &quot;as&quot;两句话创建了一个&quot;as&quot;对象，两个引用。如果s1指向的&quot;as&quot;对象发生了变化，那么s2原本指向的对象就会找不到了。</code></p>
-</li>
-<li><p>案例分析</p>
-<p>  String a = “hello”</p>
-<p>  a.toUpper()</p>
-<p>  <strong>分析：</strong>在执行第二句的时候，首先会创建一个String的实例，而不会改变 a 的值，此时常量池中会存在 “hello” 和 “HELLO” 对象。</p>
-</li>
-</ul>
-<p>参考文档一：<a href="https://www.cnblogs.com/xiohao/p/4296088.html" title="参考文档一" target="_blank" rel="noopener">https://www.cnblogs.com/xiohao/p/4296088.html</a></p>
-<p>参考文档二：<a href="https://blog.csdn.net/qunzer/article/details/25157309" target="_blank" rel="noopener">https://blog.csdn.net/qunzer/article/details/25157309</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/12/Algorithm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/12/Algorithm/" itemprop="url">字符串转整型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-12T20:06:59+08:00">
-                2018-07-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/字符串/" itemprop="url" rel="index">
-                    <span itemprop="name">字符串</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/12/Algorithm/" class="leancloud_visitors" data-flag-title="字符串转整型">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="需要考虑的临界条件"><a href="#需要考虑的临界条件" class="headerlink" title="需要考虑的临界条件"></a>需要考虑的临界条件</h2><ul>
-<li>Integer的范围-2的31次方 到 +2的31次方减1</li>
-<li>整型可以从最小2进制到最大36进制</li>
-<li>字符串为空时抛异常</li>
-<li>字符串有非数字字符时抛异常</li>
-<li>字符串有正负号</li>
-<li>字符串就只有正负号，即长度为1抛出异常</li>
-</ul>
-<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ul>
-<li><p>怎么判断第一个字符是非数字符？</p>
-<p>   <code>就只考虑firstChar &lt; &#39;0&#39; 的情况，如果符合条件，说明一定有正负号，否则抛非法字符的异常，i++
-如果firstChar &gt; &#39;0&#39; 那么while循环从第一个开始(i=0)</code></p>
-</li>
-<li><p>怎么实现’1’-&gt; 1 的转换？</p>
-<p>   <code>ch-&#39;0&#39;实现</code></p>
-</li>
-<li><p>怎么设置limit?</p>
-<p>  错误：</p>
-<p>  正号时：limit = Integer.MAX_VALUE；</p>
-<p>  负号时：limit = -Integer.MIN_VALUE；</p>
-<p>  条件：result*10 + digit &gt; limit</p>
-<p>  计算：result = result*10 + digit</p>
-<p>  <strong>limit的类型为int,越界了！！！</strong></p>
-</li>
-</ul>
-<pre><code>正确：
-
-正号时：limit = -Integer.MAX_VALUE；
-
-负号时：limit = Integer.MIN_VALUE；
-
-条件：result*10 - digit &lt; limit 为true时 越界
-
-计算：result = result*10 - digit
-</code></pre><ul>
-<li><p>容易忽略的地方？</p>
-<p>  例如：str = “21474836471”</p>
-<p>  方法：</p>
-<p>  int flag = limit/radix;</p>
-<p>  if(result &lt; flag){</p>
-<pre><code>越界
-</code></pre><p>  }</p>
-<p>  result = result*radix;</p>
-</li>
-</ul>
-<hr>
-<pre><code>public class StringToInteger {
-
-public static int vary(String s) {
-
-    int i = 0;
-    int len = s.length();
-    int result = 0;
-    int radix = 10;
-    boolean negative = false;//默认正数
-    int limit = -Integer.MAX_VALUE;//-2147483647
-
-   /* if(s == null){
-        System.out.println(&quot;null&quot;);
-        return -1;
-    }*/
-
-    if (s == null || s.length() == 0) {
-        System.out.println(&quot;字符串不能为空!&quot;);
-        return -1;
-    }
-
-    if (len &gt; 0) {
-        char firstChar = s.charAt(i);
-
-        //判断第一个字符是不是正负号
-
-            if (firstChar &lt; &apos;0&apos;) {
-            if (firstChar == &apos;-&apos;) {
-                limit = Integer.MIN_VALUE;//-2147483648
-                negative = true;
-            } else if (firstChar != &apos;+&apos;) {
-                System.out.println(&quot;非法字符!&quot;);
-                return -1;
-            }
-
-            if (len == 1) {
-                System.out.println(&quot;非法格式&quot;);
-                return -1;
-            }
-            i++;
-        }
-
-        //用于判断result &lt; Integer.MIN_VALUE 的情况!!!
-        int flag = limit/radix;
-
-
-        //接着开始循环
-        while (i &lt; len) {
-            char ch = s.charAt(i);
-            if (ch &gt;= &apos;0&apos; &amp;&amp; ch &lt;= &apos;9&apos;) {
-                int digit = ch - &apos;0&apos;;
-
-                if(result &lt; flag){
-                    System.out.println(&quot;越界!&quot;);
-                    return -1;
-                }
-                //这里result定义的为int型,有可能越界
-                result = result * radix;
-                if (result - digit &lt; limit) {
-                    System.out.println(&quot;越界!&quot;);
-                    return -1;
-                }
-                result -= digit;
-
-            } else {
-                System.out.println(&quot;非法字符!&quot;);
-                return -1;
-            }
-            i++;
-        }
-    }
-    //结束 if(len &gt; 0)
-    return negative ? result : -result;
-}
-
-public static void main(String[] args) {
-    String s = &quot;&quot;;
-    //String s = &quot;&quot;;
-    //String s = &quot;123aaa&quot;;
-    //String s = &quot;2147483647&quot;;
-    //String s = &quot;2147483648&quot;;
-    //String s = &quot;2147483641222&quot;;
-    //String s = &quot;21474&quot;;
-    //String s = &quot;-1&quot;;
-    //String s = &quot;-2147483648&quot;;
-    //String s = &quot;-2147483649&quot;;
-    //String s = &quot;-2147483641&quot;;
-
-    System.out.println(StringToInteger.vary(s));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/04/Github/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/04/Github/" itemprop="url">Github常用命令总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T09:55:59+08:00">
-                2018-07-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Github/" itemprop="url" rel="index">
-                    <span itemprop="name">Github</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/04/Github/" class="leancloud_visitors" data-flag-title="Github常用命令总结">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="https://foofish.net/images/github7.png" alt=""></p>
-<ul>
-<li>master: 本地项目</li>
-<li>origin: Fork的远程项目</li>
-<li>upstream: 别人的开源项目</li>
-</ul>
-<hr>
-<p><img src="https://i.imgur.com/teG0F62.png" alt=""></p>
-<h2 id="git-pull-git-fetch-git-merge"><a href="#git-pull-git-fetch-git-merge" class="headerlink" title="git pull = git fetch + git merge"></a>git pull = git fetch + git merge</h2><p>例如：<br>    <code>git pull origin next</code><br>            等价于</p>
-<pre><code>` git fetch origin`
- `git merge origin/next`
-</code></pre><hr>
-<p>常用命令图解：<br><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png" alt=""></p>
-<ul>
-<li><p>代码提交</p>
-<p>  例如：提交工作区自上次commit之后的变化，直接到仓库区</p>
-<p>  <code>git commit -a</code></p>
-<p>  例如：提交暂存区到仓库区</p>
-<p>  <code>git commit -m [message]</code></p>
-</li>
-<li><p>切换分支</p>
-<p>  例如：切换到指定分支，并更新工作区</p>
-<p>  <code>git checkout [branch-name]</code></p>
-</li>
-<li><p>合并分支</p>
-<p>  例如：合并指定分支到当前分支</p>
-<p>  <code>git merge [branch]</code></p>
-</li>
-<li><p>查看远程仓库</p>
-<pre><code>`git remote -v `
-</code></pre></li>
-<li><p>添加远程仓库</p>
-<pre><code>`git remote add pb https://github.com/paulboone/ticgit`
-</code></pre></li>
-<li><p>从远程仓库中抓取与拉取</p>
-<p>  <code>git fetch [remote-name]</code></p>
-</li>
-<li><p>推送到远程仓库</p>
-<p>  <code>git push [remote-name] [branch-name]</code></p>
-</li>
-<li><p>在origin/master基础上创建一个新分支</p>
-<p>  <code>git checkout -b newBranch origin/master</code></p>
-</li>
-<li><p>在本地分支上合并远程分支</p>
-<p>  <code>git merge origin/master</code></p>
-<pre><code>或者
-</code></pre><p>  <code>git rebase origin/master</code></p>
-</li>
-<li><p>取回远程主机某个分支的更新，再与本地的指定分支合并</p>
-<p>  <code>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</code></p>
-<p>  例如：</p>
-<pre><code>`git pull origin next:master`
-</code></pre><p>  远程分支与当前分支合并：</p>
-<pre><code>`git pull origin next`
-</code></pre></li>
-<li><p>将本地分支更新，推送到远程主机</p>
-<p>  <code>git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code></p>
-<p>  不要弄混淆了：</p>
-<pre><code>pull 拉取远程分支名
-
-push 推送本地分支名
-</code></pre><p>  例如：将本地的branch1分支推送到origin主机的master分支</p>
-<pre><code>`git push origin branch1`
-</code></pre></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/06/24/First/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/24/First/" itemprop="url">Hexo + Github部署网站关键点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T19:01:00+08:00">
-                2018-06-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/24/First/" class="leancloud_visitors" data-flag-title="Hexo + Github部署网站关键点">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h1><pre><code>安装好Git和node.js,然后配置系统环境变量，我用nvm安装node.js时自动配好了环境变量，记得配Git的环境变量
-</code></pre><p><a href="http://blog.csdn.net/banqgg/article/details/52983827" target="_blank" rel="noopener">请看这里</a></p>
-<h1 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h1><pre><code>新建文件夹存放博客内容和相关配置文件，例如在D盘建立Blog文件夹，进到文件夹，右键Git Bash,安装hexo
-npm install -g hexo-cli
-</code></pre><h1 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h1><pre><code>hexo的初始化
-hexo init 默认是在当下文件夹，即在D:\Blog\下
-</code></pre><h1 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h1><pre><code>根据package.json文件中的dependencies的配置文件安装依赖
-npm install
-</code></pre><h1 id="第五步"><a href="#第五步" class="headerlink" title="第五步"></a>第五步</h1><pre><code>生成部署文件，启动本地服务
-hexo generate/g 
-hexo server/s 在 http://localhost:4000/查看
-</code></pre><h1 id="第六步"><a href="#第六步" class="headerlink" title="第六步"></a>第六步</h1><pre><code>在Github上建库，库名为username.github.io,其中username是你github账号的用户名，
-</code></pre><h1 id="第七步"><a href="#第七步" class="headerlink" title="第七步"></a>第七步</h1><ul>
-<li><p>生成ssh密钥</p>
-<pre><code>`ssh -keygen -t rsa -C &quot;username@**.com&quot;`
-</code></pre></li>
-<li><p>拷贝密钥<br>  <code>在Git Bash 中查看并拷贝cat ~/.ssh/id_rsa.pub</code></p>
-</li>
-<li><p>添加密钥到Github<br>  <code>[https://github.com/settings/keys](https://github.com/settings/keys)下add new ssh key</code></p>
-</li>
-<li>测试连接<br>  <code>ssh git@github.com</code></li>
-</ul>
-<h1 id="第八步"><a href="#第八步" class="headerlink" title="第八步"></a>第八步</h1><pre><code>修改D:\Blog下的_config.yml配置文件
-deploy:
-    type: git
-    repo: ssh://git@github.com/username/username.github.io
-    branch: master
- 注意冒号后的空格
-</code></pre><h1 id="第九步"><a href="#第九步" class="headerlink" title="第九步"></a>第九步</h1><pre><code>安装Git包
-npm install hexo-deployer-git --save
-如果你是第一次部署的话可能会出现fatal: Not a git repository
-此时初始化 git init
-</code></pre><h1 id="第十步"><a href="#第十步" class="headerlink" title="第十步"></a>第十步</h1><pre><code>部署 hexo deploy/d
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/06/24/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/24/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T18:33:37+08:00">
-                2018-06-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/06/24/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2432,7 +2572,7 @@ npm install hexo-deployer-git --save
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">90</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2443,7 +2583,7 @@ npm install hexo-deployer-git --save
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
