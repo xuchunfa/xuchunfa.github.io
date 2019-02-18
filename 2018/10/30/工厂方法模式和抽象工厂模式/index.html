@@ -89,7 +89,7 @@
 <meta property="og:description" content="模式分类   举个生产手机的例子增加印象： 1.抽象产品类： public abstract class Phone {  //两种手机都可以打电话 public void Call() {    //公共方法的实现 }  //两种手机都有品牌,但是品牌不同，所以是抽象的 public abstract void PhoneBrand(); } 2.具体产品类： public class HUA">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/Hdg4Ylc.png">
-<meta property="og:updated_time" content="2018-10-30T08:42:45.959Z">
+<meta property="og:updated_time" content="2018-11-14T10:48:15.591Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工厂方法模式">
 <meta name="twitter:description" content="模式分类   举个生产手机的例子增加印象： 1.抽象产品类： public abstract class Phone {  //两种手机都可以打电话 public void Call() {    //公共方法的实现 }  //两种手机都有品牌,但是品牌不同，所以是抽象的 public abstract void PhoneBrand(); } 2.具体产品类： public class HUA">
@@ -460,7 +460,7 @@ Phone miphone=phoneFactory.createPhone(MIPhone.class);
 </code></pre><ul>
 <li>工厂方法的延申</li>
 </ul>
-<p>1.简单工厂模式</p>
+<p>1.简单工厂模式（静态工厂模式）</p>
 <p>去掉工厂抽象类，具体工厂类的方法上加上static.</p>
 <pre><code>public class ConcretePhoneFactory {
 
@@ -672,7 +672,7 @@ public class ConcreteMIFactory extends PhoneFactory {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -683,7 +683,7 @@ public class ConcreteMIFactory extends PhoneFactory {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -771,7 +771,7 @@ public class ConcreteMIFactory extends PhoneFactory {
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

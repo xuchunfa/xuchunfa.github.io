@@ -286,6 +286,533 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/07/Spring源码分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/07/Spring源码分析/" itemprop="url">Spring源码分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-07T09:05:37+08:00">
+                2018-10-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/07/Spring源码分析/" class="leancloud_visitors" data-flag-title="Spring源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()：</p>
+<pre><code>//AbstractApplicationContext.java
+public void refresh() throws BeansException, IllegalStateException {
+    synchronized (this.startupShutdownMonitor) {
+        // 准备工作，记录下容器的启动时间、标记“已启动”状态、处理配置文件中的占位符
+        prepareRefresh();
+
+        //解析XML中的&lt;bean&gt;,将最后得到的beanDefinition注册到DefaultListableBeanFactory中去
+        ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+        // 设置 BeanFactory 的类加载器，添加几个 BeanPostProcessor，手动注册几个特殊的 bean
+        prepareBeanFactory(beanFactory);
+
+        try {
+            // 【这里需要知道 BeanFactoryPostProcessor 这个知识点，Bean 如果实现了此接口，
+             // 那么在容器初始化以后，Spring 会负责调用里面的 postProcessBeanFactory 方法。】
+
+            // 这里是提供给子类的扩展点，到这里的时候，所有的 Bean 都加载、注册完成了，但是都还没有初始化
+             // 具体的子类可以在这步的时候添加一些特殊的 BeanFactoryPostProcessor 的实现类或做点什么事
+            postProcessBeanFactory(beanFactory);
+
+            // 调用 BeanFactoryPostProcessor 各个实现类的 postProcessBeanFactory(factory) 方法
+            invokeBeanFactoryPostProcessors(beanFactory);
+
+            // 注册 BeanPostProcessor 的实现类，注意看和 BeanFactoryPostProcessor 的区别
+             // 此接口两个方法: postProcessBeforeInitialization 和 postProcessAfterInitialization
+             // 两个方法分别在 Bean 初始化之前和初始化之后得到执行。注意，到这里 Bean 还没初始化
+            registerBeanPostProcessors(beanFactory);
+
+            // Initialize message source for this context.
+            initMessageSource();
+
+            // Initialize event multicaster for this context.
+            initApplicationEventMulticaster();
+
+            // Initialize other special beans in specific context subclasses.
+            onRefresh();
+
+            // Check for listener beans and register them.
+            registerListeners();
+
+            // 重点，重点，重点
+             // 初始化所有的 singleton beans
+             //（lazy-init 的除外）
+            finishBeanFactoryInitialization(beanFactory);
+
+            // Last step: publish corresponding event.
+            finishRefresh();
+        }
+</code></pre><p>里面做了比较重要的事情：注册加载bean的定义信息，这里有两个重要的接口出现了，按先后顺序：</p>
+<pre><code>//加载Bean的定义信息，包括属性啥的，但是此时还没有实例化Bean
+public interface BeanFactoryPostProcessor {
+
+void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException;
+
+}
+</code></pre><p>接下来：</p>
+<pre><code>public interface BeanPostProcessor {
+
+//Bean 初始化之前执行的方法
+@Nullable
+default Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+    return bean;
+}
+
+//Bean 初始化之后执行的方法
+@Nullable
+default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+    return bean;
+}
+}
+</code></pre><p>详细分析一下AbstractApplicationContext中的refresh()方法，按先后顺序挑重点看：</p>
+<p>1.第一个重要方法：</p>
+<pre><code>//AbstractApplicationContext.java
+ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+</code></pre><p>里面涉及到了下面过程的分析。</p>
+<p>在里面调用了重要方法：</p>
+<pre><code>//AbstractRefreshableApplicationContext.java它是AbstractApplicationContext的子类
+refreshBeanFactory(){
+
+    DefaultListableBeanFactory beanFactory = createBeanFactory();
+    beanFactory.setSerializationId(getId());
+    customizeBeanFactory(beanFactory);
+    loadBeanDefinitions(beanFactory);
+}
+</code></pre><p>在这里容器中出现了比较重要的实例：DefaultListableBeanFactory。先看一下结构图：</p>
+<p><img src="https://i.imgur.com/2mEAJAA.png" alt=""></p>
+<p>然后调用了方法：</p>
+<pre><code>//AbstractXmlApplicationContext.java
+//根据配置加载各个Bean 到 BeanFactory中去
+protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
+
+    XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+
+    beanDefinitionReader.setEnvironment(this.getEnvironment());
+    beanDefinitionReader.setResourceLoader(this);
+    beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
+
+    //加载XML文件
+    initBeanDefinitionReader(beanDefinitionReader);
+    loadBeanDefinitions(beanDefinitionReader);
+}
+</code></pre><p>其中加载各个Bean主要通过XmlBeanDefinitionReader实例完成。</p>
+<p>然后经过一系列的巴拉巴拉操作将XML文件中的Bean进行解析，一个Bean解析成一个BeanDefinitionHolder实例：</p>
+<pre><code>//BeanDefinitionHolder.java
+public class BeanDefinitionHolder implements BeanMetadataElement {
+
+private final BeanDefinition beanDefinition;
+
+private final String beanName;
+
+@Nullable
+private final String[] aliases;
+
+.....}
+</code></pre><p>然后开始了注册Bean的重头戏,其实就是将BeanDefinition放到beanDefinitionMap中去。</p>
+<pre><code>//DefaultBeanDefinitionDocumentReader.java
+protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
+    BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
+    if (bdHolder != null) {
+        bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
+        try {
+            //从这里开始注册
+            BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
+        }
+    }
+}
+</code></pre><p>接着来到：</p>
+<pre><code>//BeanDefinitionReaderUtils.java
+public static void registerBeanDefinition(
+        BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
+        throws BeanDefinitionStoreException {
+    String beanName = definitionHolder.getBeanName();
+
+    //真正开始注册
+    registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
+
+    String[] aliases = definitionHolder.getAliases();
+    if (aliases != null) {
+        for (String alias : aliases) {
+            registry.registerAlias(beanName, alias);
+        }
+    }
+}
+</code></pre><p>最后进入：</p>
+<pre><code>//DefaultListableBeanFactory.java
+public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
+        throws BeanDefinitionStoreException {
+
+......
+
+    this.beanDefinitionMap.put(beanName, beanDefinition);
+    this.beanDefinitionNames.add(beanName);
+    this.manualSingletonNames.remove(beanName);
+
+......
+
+}
+</code></pre><p>至此为止，refresh()方法中的第一个方法obtainFreshBeanFactory()分析完毕。</p>
+<hr>
+<p>在执行到第二个重要方法之前已经完成的事：、</p>
+<pre><code>BeanFactory 已经创建完成，并且所有的实现了 BeanFactoryPostProcessor 接口的 Bean 都已经初始化，并且其中的 
+postProcessBeanFactory(factory) 方法已经得到执行了。所有实现了 BeanPostProcessor 接口的 Bean 也都完成了初始化。
+
+剩下的就是初始化其他还没被初始化的 singleton beans 了，我们知道它们是单例的，如果没有设置懒加载，那么 Spring 会在接下来初始化所有的 singleton beans。
+</code></pre><p>第二个重要的方法：</p>
+<pre><code>//AbstractApplicationContext.java
+protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
+    // Initialize conversion service for this context.
+    if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &amp;&amp;
+            beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
+        beanFactory.setConversionService(
+                beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
+    }
+
+    // Register a default embedded value resolver if no bean post-processor
+    // (such as a PropertyPlaceholderConfigurer bean) registered any before:
+    // at this point, primarily for resolution in annotation attribute values.
+    if (!beanFactory.hasEmbeddedValueResolver()) {
+        beanFactory.addEmbeddedValueResolver(strVal -&gt; getEnvironment().resolvePlaceholders(strVal));
+    }
+
+    // Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
+    String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
+    for (String weaverAwareName : weaverAwareNames) {
+        getBean(weaverAwareName);
+    }
+
+    // Stop using the temporary ClassLoader for type matching.
+    beanFactory.setTempClassLoader(null);
+
+    // Allow for caching all bean definition metadata, not expecting further changes.
+    beanFactory.freezeConfiguration();
+
+    // Instantiate all remaining (non-lazy-init) singletons.
+    // 开始初始化未设置懒加载的单例Bean
+    beanFactory.preInstantiateSingletons();
+}
+</code></pre><p>一大波准备工作后，进入到初始化的方法：</p>
+<pre><code>//DefaultListableBeanFactory.java
+public void preInstantiateSingletons() throws BeansException {
+
+    ......
+    // 准备实例化单例Bean/FactoryBean
+    for (String beanName : beanNames) {
+        RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+        if (!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()) {
+            if (isFactoryBean(beanName)) {
+                Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
+                if (bean instanceof FactoryBean) {
+                    final FactoryBean&lt;?&gt; factory = (FactoryBean&lt;?&gt;) bean;
+                    boolean isEagerInit;
+                    if (System.getSecurityManager() != null &amp;&amp; factory instanceof SmartFactoryBean) {
+                        isEagerInit = AccessController.doPrivileged((PrivilegedAction&lt;Boolean&gt;)
+                                        ((SmartFactoryBean&lt;?&gt;) factory)::isEagerInit,
+                                getAccessControlContext());
+                    }
+                    else {
+                        isEagerInit = (factory instanceof SmartFactoryBean &amp;&amp;
+                                ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit());
+                    }
+                    if (isEagerInit) {
+                        getBean(beanName);
+                    }
+                }
+            }
+            else {
+                //正常的话，创建单例Bean的入口
+                getBean(beanName);
+            }
+        }
+
+    ......
+}
+</code></pre><p>然后进入getBean方法：</p>
+<pre><code>//AbstractBeanFactory.java
+public Object getBean(String name) throws BeansException {
+    return doGetBean(name, null, null, false);
+}
+</code></pre><p>接下来继续调用：</p>
+<pre><code>//AbstractBeanFactory.java
+protected &lt;T&gt; T doGetBean(final String name, @Nullable final Class&lt;T&gt; requiredType,
+        @Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
+
+一系列巴拉巴拉：
+判断是不是sharedInstance、检查Bean是不是已经创建过、注册依赖Bean
+
+//创建单例Bean
+if (mbd.isSingleton()) {
+            sharedInstance = getSingleton(beanName, () -&gt; {
+                try {
+                    //真正创建Bean了
+                    return createBean(beanName, mbd, args);
+                }
+                catch (BeansException ex) {
+                        destroySingleton(beanName);
+                        throw ex;
+                    }
+                });
+            bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+        }
+......
+
+}
+</code></pre><p>来看看createBean方法做了哪些事情：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
+throws BeanCreationException {
+
+......
+
+try {
+        //这里好像开始使用BeanPostProcessor接口的方法
+        Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+        if (bean != null) {
+            return bean;
+        }
+    }
+.....
+//继续进入创建Bean的方法
+Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+
+.....
+
+// Initialize the bean instance.
+   Object exposedObject = bean;
+   try {
+  // 这一步也是非常关键的，这一步负责属性装配，因为前面的实例只是实例化了，并没有设值，这里就是设值
+  populateBean(beanName, mbd, instanceWrapper);
+  if (exposedObject != null) {
+     // 还记得 init-method 吗？还有 InitializingBean 接口？还有 BeanPostProcessor 接口？
+     // 这里就是处理 bean 初始化完成后的各种回调
+     exposedObject = initializeBean(beanName, exposedObject, mbd);
+  }
+
+......
+
+}
+</code></pre><p>继续干吧：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+rotected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) throws BeanCreationException {
+
+if (instanceWrapper == null) {
+        //终于创建了!!!!
+        instanceWrapper = createBeanInstance(beanName, mbd, args);
+    }
+.....
+
+}
+</code></pre><p>继续进入方法：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) {
+
+巴拉巴拉的采用工厂方法创建Bean实例
+
+......
+}
+</code></pre><p>然后里面还可以继续深入到：</p>
+<pre><code>//SimpleInstantiationStrategy.java
+//这是通过构造方法实例化的，当然也可以使用工厂方法实例化
+public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner) { 
+
+//利用构造方法进行实例化
+BeanUtils.instantiateClass(constructorToUse);
+
+}
+</code></pre><p>到此为止，实例化完成了。。。。。但是属性还没注入。属性是在populateBean方法中注入的：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
+
+.....
+
+ InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+ // 这里有个非常有用的 BeanPostProcessor 进到这里: AutowiredAnnotationBeanPostProcessor
+ // 对采用 @Autowired、@Value 注解的依赖进行设值，这里的内容也是非常丰富的，不过本文不会展开说了，感兴趣的读者请自行研究
+ pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+ if (pvs == null) {
+     return;
+ }
+
+......
+
+}
+</code></pre><p>最后一步initializeBean，处理各种回调：</p>
+<pre><code>protected Object initializeBean(final String beanName, final Object bean, RootBeanDefinition mbd){
+
+else {
+  // 如果 bean 实现了 BeanNameAware、BeanClassLoaderAware 或 BeanFactoryAware 接口，回调
+  invokeAwareMethods(beanName, bean);
+}
+
+Object wrappedBean = bean;
+if (mbd == null || !mbd.isSynthetic()) {
+  // BeanPostProcessor 的 postProcessBeforeInitialization 回调
+  wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
+}
+
+try {
+  // 处理 bean 中定义的 init-method，
+  // 或者如果 bean 实现了 InitializingBean 接口，调用 afterPropertiesSet() 方法
+  invokeInitMethods(beanName, wrappedBean, mbd);
+}
+catch (Throwable ex) {
+  throw new BeanCreationException(
+        (mbd != null ? mbd.getResourceDescription() : null),
+        beanName, &quot;Invocation of init method failed&quot;, ex);
+}
+if (mbd == null || !mbd.isSynthetic()) {
+  //BeanPostProcessor 的 postProcessAfterInitialization 回调
+  wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
+}
+return wrappedBean;
+}
+</code></pre><p>最后贴一张Spring Bean 的生命周期图：</p>
+<p><img src="https://i.imgur.com/4OETcMX.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/16/Spring动态代理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1602,6 +2129,12 @@ WHERE COUNT(customers_id) &gt; 1
 <li>IN引导的子句只能返回一个字段而 EXIST 可以返回多个。</li>
 <li>EXIST 子句不在乎返回什么，而是在乎是不是有结果集返回。用于检查子查询是否至少会返回一行数据，该子查询实际上并不返回任何数据，而是返回值True或False.</li>
 </ul>
+<p><strong>9.DISTINCT</strong></p>
+<ul>
+<li><p>distinct必须放在开头</p>
+<pre><code>select id, distinct name from A;   --会提示错误，因为distinct必须放在开头
+</code></pre></li>
+</ul>
 <hr>
 <blockquote>
 <p>Mysql函数总结</p>
@@ -2404,164 +2937,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/02/EffectiveJava笔记/" itemprop="url">Java笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T15:34:14+08:00">
-                2018-09-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java语言基础/" itemprop="url" rel="index">
-                    <span itemprop="name">java语言基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/02/EffectiveJava笔记/" class="leancloud_visitors" data-flag-title="Java笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.有时可以用静态工厂方法来代替构造器。</p>
-<p>2.带有私有构造函数的类不能被继承。</p>
-<p>3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。</p>
-<p>4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。</p>
-<p>5.为什么静态方法只能访问静态域？</p>
-<pre><code>静态域是属于类的，程序在进行编译的时候就会加载到虚拟机内存的方法区，直到程序退出都会一直存在，而非静态域是和对象挂钩的，需要 new 一个对象，实例域才会在堆中分配内存，对象都还没有怎么能访问非静态域呢？
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2616,7 +2991,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2627,7 +3002,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2699,7 +3074,7 @@ public static void main(String[] args){
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

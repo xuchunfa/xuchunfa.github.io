@@ -89,7 +89,7 @@
 <meta property="og:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/8h4npik.png">
-<meta property="og:updated_time" content="2018-10-17T11:33:29.693Z">
+<meta property="og:updated_time" content="2018-12-03T11:23:28.913Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap原理解析">
 <meta name="twitter:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
@@ -433,6 +433,13 @@ private V putForNullKey(V value) {
 </code></pre><h4 id="HashTable和HashMap的区别"><a href="#HashTable和HashMap的区别" class="headerlink" title="HashTable和HashMap的区别"></a>HashTable和HashMap的区别</h4><pre><code>1.前者线程安全的,但是效率低。
 
 2.前者的键和值都不允许为空，而后者的key和value都允许为空。
+
+3.为什么HashTable的key不允许为null?
+
+    HashTable起初是为并发环境设计。如果get一个null键返回的结果是null，那么有两种可能: 
+    1.hashtable中存放了一个(null, null)键值对。 
+    2.hashtable中不存在null这个key。 这就要求使用者用containsKey()方法来做进一步确认。但是在这两个操作中间很可能发生并发修改导致结果出错。
+    所以一开始就禁止了null键或null值。
 </code></pre><blockquote>
 <p>JDK1.8的源码注释总结</p>
 </blockquote>
@@ -962,7 +969,7 @@ final Node&lt;K,V&gt;[] resize() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -973,7 +980,7 @@ final Node&lt;K,V&gt;[] resize() {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1061,7 +1068,7 @@ final Node&lt;K,V&gt;[] resize() {
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

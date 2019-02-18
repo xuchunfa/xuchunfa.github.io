@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2018-11-04T14:02:29.761Z</updated>
+  <updated>2018-11-13T12:25:00.560Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>代理模式</title>
+    <link href="http://www.xuchunfa.cn/2018/11/08/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://www.xuchunfa.cn/2018/11/08/代理模式/</id>
+    <published>2018-11-08T11:15:37.000Z</published>
+    <updated>2018-11-13T12:25:00.560Z</updated>
+    
+    <content type="html"><![CDATA[<p>代理模式分很多种，下面一一简单总结介绍：</p><p>详细内容见博客：</p><p><a href="https://www.cnblogs.com/zuoxiaolong/p/pattern3.html" target="_blank" rel="noopener">左潇龙讲代理模式</a></p><ul><li><p>静态代理</p><pre><code>1.采用静态代理我们通常会使用组合的方式。2.代理类一般要持有一个被代理的对象的引用。3.对于我们不关心的方法，全部委托给被代理的对象处理。4.自己处理我们关心的方法。</code></pre></li><li><p>动态代理</p><pre><code>1.代理一系列类的某一些方法。</code></pre></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;代理模式分很多种，下面一一简单总结介绍：&lt;/p&gt;
+&lt;p&gt;详细内容见博客：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/zuoxiaolong/p/pattern3.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="Java设计模式" scheme="http://www.xuchunfa.cn/categories/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>CountDownLatch详解</title>
@@ -44,22 +69,18 @@
     <link href="http://www.xuchunfa.cn/2018/10/31/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2018/10/31/适配器模式/</id>
     <published>2018-10-31T02:09:23.000Z</published>
-    <updated>2018-10-31T10:43:22.238Z</updated>
+    <updated>2018-11-08T02:19:01.749Z</updated>
     
-    <content type="html"><![CDATA[<p>贴个UML图：</p><p><img src="https://i.imgur.com/0yrww9E.png" alt=""></p><p>适配器模式分三种：</p><ul><li><p>类适配器模式</p></li><li><p>对象适配器模式</p></li><li><p>特殊的缺省适配模式</p></li></ul><p>详解见博客：</p><p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>]]></content>
+    <content type="html"><![CDATA[<p>类适配器UML图：</p><p><img src="https://i.imgur.com/0yrww9E.png" alt=""></p><p>对象适配器UML图：</p><p><img src="https://i.imgur.com/Q9tMtJ5.png" alt=""></p><p>适配器模式分三种：</p><ul><li><p>类适配器模式</p></li><li><p>对象适配器模式</p></li><li><p>特殊的缺省适配模式</p></li></ul><p>详解见博客：</p><p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;贴个UML图：&lt;/p&gt;
+        &lt;p&gt;类适配器UML图：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/0yrww9E.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;适配器模式分三种：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;类适配器模式&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;对象适配器模式&lt;/p&gt;
-&lt;/
+&lt;p&gt;对象适配器UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Q9tMtJ5.png&quot; a
       
     
     </summary>
@@ -74,9 +95,9 @@
     <link href="http://www.xuchunfa.cn/2018/10/30/%E8%A3%85%E9%A5%B0%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2018/10/30/装饰者模式/</id>
     <published>2018-10-30T13:45:15.000Z</published>
-    <updated>2018-10-31T01:57:19.319Z</updated>
+    <updated>2018-11-08T06:42:39.776Z</updated>
     
-    <content type="html"><![CDATA[<p>UML类图：</p><p><img src="https://i.imgur.com/4VrgAqN.jpg" alt=""></p><p>1.Component接口(也可以是抽象类)</p><pre><code>public interface Component {    void method()；}</code></pre><p>2.待装饰的对象:</p><pre><code>public class ConcreteComponent implements Component{public void method() {    System.out.println(&quot;原来的方法&quot;);}}</code></pre><p>3.抽象装饰器父类（并不是必须的）</p><pre><code>public abstract class Decorator implements Component{protected Component component;//组合待装饰的接口或者抽象类，更加灵活public Decorator(Component component) {    super();    this.component = component;}public void method() {    component.method();}}</code></pre><p>4.具体的装饰类：</p><pre><code>package com.decorator;public class ConcreteDecoratorA extends Decorator{public ConcreteDecoratorA(Component component) {    super(component);}public void methodA(){    System.out.println(&quot;被装饰器A扩展的功能&quot;);}public void method(){    System.out.println(&quot;针对该方法加一层A包装&quot;);    super.method();    System.out.println(&quot;A包装结束&quot;);}}</code></pre><ul><li>JAVA中的IO就是装饰者模式的具体应用：</li></ul><p><img src="https://i.imgur.com/RxUg3EW.jpg" alt=""></p>]]></content>
+    <content type="html"><![CDATA[<p>UML类图：</p><p><img src="https://i.imgur.com/4VrgAqN.jpg" alt=""></p><p>1.Component接口(也可以是抽象类)</p><pre><code>public interface Component {    void method()；}</code></pre><p>2.待装饰的对象:</p><pre><code>public class ConcreteComponent implements Component{public void method() {    System.out.println(&quot;原来的方法&quot;);}}</code></pre><p>3.抽象装饰器父类（并不是必须的）</p><pre><code>public abstract class Decorator implements Component{protected Component component;//组合待装饰的接口或者抽象类，更加灵活public Decorator(Component component) {    super();    this.component = component;}public void method() {    component.method();}}</code></pre><p>4.具体的装饰类：</p><pre><code>package com.decorator;public class ConcreteDecoratorA extends Decorator{public ConcreteDecoratorA(Component component) {    super(component);}public void methodA(){    System.out.println(&quot;被装饰器A扩展的功能&quot;);}public void method(){    System.out.println(&quot;针对该方法加一层A包装&quot;);    super.method();    System.out.println(&quot;A包装结束&quot;);}}</code></pre><ul><li>JAVA中的IO就是装饰者模式的具体应用：</li></ul><p><img src="https://i.imgur.com/RxUg3EW.jpg" alt=""></p><p>总结：</p><pre><code>装饰者模式能够很好的解决了，因为需求的变化需要重复添加功能相似的代码，即代码冗余；这种结构也能很好的解决“类爆炸”的情况。</code></pre>]]></content>
     
     <summary type="html">
     
@@ -128,9 +149,9 @@
     <link href="http://www.xuchunfa.cn/2018/10/30/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F%E5%92%8C%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2018/10/30/工厂方法模式和抽象工厂模式/</id>
     <published>2018-10-30T03:32:40.000Z</published>
-    <updated>2018-10-30T08:42:45.959Z</updated>
+    <updated>2018-11-14T10:48:15.591Z</updated>
     
-    <content type="html"><![CDATA[<ul><li>模式分类</li></ul><p><img src="https://i.imgur.com/Hdg4Ylc.png" alt=""></p><p>举个生产手机的例子增加印象：</p><p>1.抽象产品类：</p><pre><code>public abstract class Phone {//两种手机都可以打电话public void Call() {   //公共方法的实现}//两种手机都有品牌,但是品牌不同，所以是抽象的public abstract void PhoneBrand();}</code></pre><p>2.具体产品类：</p><pre><code>public class HUAWEIPhone extends Phone {   //品牌   @Override   public void PhoneBrand() {   Log.e(&quot;qzs&quot;,&quot;我的品牌是华为&quot;);   }}public class MIPhone extends Phone {  //品牌  @Override  public void PhoneBrand() {   Log.e(&quot;qzs&quot;,&quot;我的品牌是小米&quot;);   }}</code></pre><p>3.抽象工厂类：</p><pre><code>public abstract class PhoneFactory  {       public abstract &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c);}</code></pre><p>4.具体工厂类：</p><pre><code>public class ConcretePhoneFactory extends PhoneFactory {  @Override   public &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {   Phone phone=null;   try{       phone =(Phone)Class.forName(c.getName()).newInstance();       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);       phone.PhoneBrand();   }catch (Exception e){   }   return (T) phone;   }}</code></pre><p>调用：</p><pre><code>PhoneFactory phoneFactory=new ConcretePhoneFactory();Phone huaiweiphone=phoneFactory.createPhone(HUAWEIPhone.class);Phone miphone=phoneFactory.createPhone(MIPhone.class);</code></pre><ul><li>工厂方法的延申</li></ul><p>1.简单工厂模式</p><p>去掉工厂抽象类，具体工厂类的方法上加上static.</p><pre><code>public class ConcretePhoneFactory {   public  static &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {   Phone phone=null;   try{       phone =(Phone)Class.forName(c.getName()).newInstance();       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);       phone.PhoneBrand();   }catch (Exception e){   }   return (T) phone;   }}</code></pre><p>2.多工厂方法模式</p><p>每个产品都有自己的工厂，抽象工厂的方法不用再传参了。</p><p>抽象工厂类：</p><pre><code>public abstract class PhoneFactory  {    public abstract  Phone createPhone();}</code></pre><p>具体工厂类：</p><pre><code>public class ConcreteHUAWEIFactory extends PhoneFactory {   @Override   public Phone createPhone() {   Log.e(&quot;qzs&quot;,&quot;生产了一个华为手机&quot;);   return new HUAWEIPhone();   }}public class ConcreteMIFactory extends PhoneFactory {   @Override   public Phone createPhone() {        Log.e(&quot;qzs&quot;,&quot;生产了一个小米手机&quot;);   return new MIPhone();   }}</code></pre><p>3.工厂方法模式实现单例模式</p><p>单例类：</p><pre><code>public class Singleton {     private Singleton() {     }     public void doSomething() {     System.out.println(&quot;具体逻辑&quot;);     }  }</code></pre><p>单例工厂类：</p><pre><code>public class SingletonFactory {     private static Singleton singleton;     static {     try {         Class clazz = Class.forName(Singleton.class.getName());         Constructor constructor = clazz.getDeclaredConstructor();         constructor.setAccessible(true);         singleton = (Singleton) constructor.newInstance();     } catch (Exception e) {     }    }     public static Singleton getSingleton() {         return singleton;     }  }</code></pre><p>特点：</p><ul><li>在工厂方法模式中，客户端不需要知道具体产品类的类名，只需要知道所对应的工厂即可；</li></ul><p>优点：</p><ul><li><p>更符合开-闭原则。新增一种产品时，只需要增加相应的具体产品类和相应的工厂子类即可。例如增加苹果手机，增加一个IPhone具体类和一个IPhoneFactory类即可。</p></li><li><p>符合单一职责原则。每个具体工厂类只负责创建对应的产品。</p></li></ul><p>缺点：</p><ul><li>添加新产品时，系统类的个数会成倍增加，增加了额外的开销。</li></ul><hr><h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>工厂方法模式在增加一个具体产品的时候，都要增加对应的工厂。但是抽象工厂模式只有在新增一个类型的具体产品时才需要新增工厂。例如跑车、商务车、越野车是不同的类型。抽象工厂模式中的具体工厂生产的是：一种类型的具体产品。</code></pre>]]></content>
+    <content type="html"><![CDATA[<ul><li>模式分类</li></ul><p><img src="https://i.imgur.com/Hdg4Ylc.png" alt=""></p><p>举个生产手机的例子增加印象：</p><p>1.抽象产品类：</p><pre><code>public abstract class Phone {//两种手机都可以打电话public void Call() {   //公共方法的实现}//两种手机都有品牌,但是品牌不同，所以是抽象的public abstract void PhoneBrand();}</code></pre><p>2.具体产品类：</p><pre><code>public class HUAWEIPhone extends Phone {   //品牌   @Override   public void PhoneBrand() {   Log.e(&quot;qzs&quot;,&quot;我的品牌是华为&quot;);   }}public class MIPhone extends Phone {  //品牌  @Override  public void PhoneBrand() {   Log.e(&quot;qzs&quot;,&quot;我的品牌是小米&quot;);   }}</code></pre><p>3.抽象工厂类：</p><pre><code>public abstract class PhoneFactory  {       public abstract &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c);}</code></pre><p>4.具体工厂类：</p><pre><code>public class ConcretePhoneFactory extends PhoneFactory {  @Override   public &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {   Phone phone=null;   try{       phone =(Phone)Class.forName(c.getName()).newInstance();       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);       phone.PhoneBrand();   }catch (Exception e){   }   return (T) phone;   }}</code></pre><p>调用：</p><pre><code>PhoneFactory phoneFactory=new ConcretePhoneFactory();Phone huaiweiphone=phoneFactory.createPhone(HUAWEIPhone.class);Phone miphone=phoneFactory.createPhone(MIPhone.class);</code></pre><ul><li>工厂方法的延申</li></ul><p>1.简单工厂模式（静态工厂模式）</p><p>去掉工厂抽象类，具体工厂类的方法上加上static.</p><pre><code>public class ConcretePhoneFactory {   public  static &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {   Phone phone=null;   try{       phone =(Phone)Class.forName(c.getName()).newInstance();       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);       phone.PhoneBrand();   }catch (Exception e){   }   return (T) phone;   }}</code></pre><p>2.多工厂方法模式</p><p>每个产品都有自己的工厂，抽象工厂的方法不用再传参了。</p><p>抽象工厂类：</p><pre><code>public abstract class PhoneFactory  {    public abstract  Phone createPhone();}</code></pre><p>具体工厂类：</p><pre><code>public class ConcreteHUAWEIFactory extends PhoneFactory {   @Override   public Phone createPhone() {   Log.e(&quot;qzs&quot;,&quot;生产了一个华为手机&quot;);   return new HUAWEIPhone();   }}public class ConcreteMIFactory extends PhoneFactory {   @Override   public Phone createPhone() {        Log.e(&quot;qzs&quot;,&quot;生产了一个小米手机&quot;);   return new MIPhone();   }}</code></pre><p>3.工厂方法模式实现单例模式</p><p>单例类：</p><pre><code>public class Singleton {     private Singleton() {     }     public void doSomething() {     System.out.println(&quot;具体逻辑&quot;);     }  }</code></pre><p>单例工厂类：</p><pre><code>public class SingletonFactory {     private static Singleton singleton;     static {     try {         Class clazz = Class.forName(Singleton.class.getName());         Constructor constructor = clazz.getDeclaredConstructor();         constructor.setAccessible(true);         singleton = (Singleton) constructor.newInstance();     } catch (Exception e) {     }    }     public static Singleton getSingleton() {         return singleton;     }  }</code></pre><p>特点：</p><ul><li>在工厂方法模式中，客户端不需要知道具体产品类的类名，只需要知道所对应的工厂即可；</li></ul><p>优点：</p><ul><li><p>更符合开-闭原则。新增一种产品时，只需要增加相应的具体产品类和相应的工厂子类即可。例如增加苹果手机，增加一个IPhone具体类和一个IPhoneFactory类即可。</p></li><li><p>符合单一职责原则。每个具体工厂类只负责创建对应的产品。</p></li></ul><p>缺点：</p><ul><li>添加新产品时，系统类的个数会成倍增加，增加了额外的开销。</li></ul><hr><h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>工厂方法模式在增加一个具体产品的时候，都要增加对应的工厂。但是抽象工厂模式只有在新增一个类型的具体产品时才需要新增工厂。例如跑车、商务车、越野车是不同的类型。抽象工厂模式中的具体工厂生产的是：一种类型的具体产品。</code></pre>]]></content>
     
     <summary type="html">
     
@@ -400,9 +421,9 @@ boolean isLeaf = pRoot.left == null &amp;amp;&amp;amp; pRoot.right == null;
     <link href="http://www.xuchunfa.cn/2018/09/04/Mysql%E7%AC%94%E8%AE%B0/"/>
     <id>http://www.xuchunfa.cn/2018/09/04/Mysql笔记/</id>
     <published>2018-09-04T03:26:20.000Z</published>
-    <updated>2018-09-15T13:59:02.540Z</updated>
+    <updated>2018-11-06T02:27:33.823Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>1.数据类型理解</strong></p><p>int(M)： M表示的不是数据的最大长度，只是数据宽度，并不影响存储多少位长度的数据；</p><p>varchar(M)： M表示的是varchar类型数据在数据库中存储的最大长度，超过则不存；</p><p>char(N):存放的是字符的个数</p><p><strong>2.关键字的执行顺序</strong></p><p>（8）SELECT（9）DISTINCT (select_list)</p><p>（1）FROM (left_table)</p><p>（3）(join_type) JOIN (right_table)</p><p>（2）ON (join_condition)</p><p>（4）WHERE (where_condition)</p><p>（5）GROUP BY (group_by_list)</p><p>（6）WITH {CUTE|ROLLUP}</p><p>（7）HAVING (having_condition)</p><p>（10）ORDER BY (order_by_list)</p><p>（11）LIMIT (limit_number)</p><p><strong>3.LEFT JOIN 和 RIGHT JOIN 的区别</strong></p><ul><li><p>CROSS JOIN: 返回两个表的笛卡儿积。</p><p>  返回结果集的行号：<br>  set @mycnt = 0;<br>  select (@mycnt := @mycnt + 1) as ROWNUM,c.customers_id,o.order_id from customers AS c,orders AS o<br>  WHERE c.customers_id = o.customers_id </p></li></ul><ul><li><p>LEFT JOIN：以左表为基础的，左表的记录将会全部表示出来,而右表只会显示符合搜索条件的记录(例子中为: A.aID = B.bID).右表记录不足的地方均为NULL.（必须指定 ON 子句）</p></li><li><p>RIGHT JOIN：与上面的情况相反。</p></li><li><p>INNER JOIN: INNER可以省略，直接写成 JOIN 。并不以谁为基础,它只显示符合条件的记录.产生A和B的交集。INNER JOIN中的 WHERE 的过滤条件可以写在 ON 子句中。</p><pre><code>select c.customers_id,o.order_id,c.city from customers AS c JOIN orders AS o ON c.customers_id = o.customers_id AND c.customers_id = &apos;14&apos;或者使用 USING 关键字来简化 ON 子句：select c.customers_id,o.order_id,c.city from customers AS c JOIN orders AS o USING(customers_id) WHERE c.customers_id = &apos;14&apos;</code></pre></li></ul><p>当没有ON语句的时候会将 INNER JOIN 理解成 CROSS JOIN</p><p><strong>4.WHERE过滤器常见错误</strong></p><ul><li><p>在ON条件过滤器后还是会添加保留表中被ON过滤掉的记录,而WHERE条件是永久的过滤。</p></li><li><p>在WHERE条件中使用列别名,不能使用Select中的列别名，因为Select比 Where 晚执行，但是可以使用 From中列别名。</p><pre><code>错误：SELECT customers_id AS c,order_id AS o FROM orders WHERE c = &apos;aa&apos;</code></pre></li><li><p>在WHERE条件中使用统计的过滤</p><pre><code>错误：SELECT COUNT(customers_id) ,order_id  FROM orders WHERE COUNT(customers_id) &gt; 1</code></pre></li></ul><p><strong>5.COUNT容易犯的错误</strong></p><ul><li>COUNT(*)会把通过 OUTER JOIN 添加的行统计入内。而 COUNT(column_name) 函数返回指定列的值的数目（NULL 不会计入在内）</li></ul><p><strong>6.ORDER BY </strong></p><ul><li>NULL值在 ORDER BY 中被视为最小。</li></ul><p><strong>8.Having</strong></p><p>1.Having 通常于 Group by 一起使用。</p><p>2.弥补了WHERE关键字不能与聚合函数联合使用的不足。</p><p><strong>7.LIMIT</strong></p><ul><li>LIMIT n,m : 表示从第 n 条记录开始选择 m 条记录。对于数据量非常大的情景该执行语句的效率比较低。n = 0 代表第一行，limit 0,5 等价于 limit 5 都是返回前5行。</li></ul><p><strong>8.IN</strong></p><ul><li>IN引导的子句只能返回一个字段而 EXIST 可以返回多个。</li><li>EXIST 子句不在乎返回什么，而是在乎是不是有结果集返回。用于检查子查询是否至少会返回一行数据，该子查询实际上并不返回任何数据，而是返回值True或False.</li></ul><hr><blockquote><p>Mysql函数总结</p></blockquote><p>1.MOD(N,M)：表示 N 除以 M 的余数。</p><p>2.DATEDIFF(datepart,startdate,enddate)：返回两个日期之间的时间。</p><p>3.DATEADD(datepart,number,date)：在日期中添加或减去指定的时间间隔。</p><pre><code>eg:计算当前月的一天SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)</code></pre><p>4.IFNULL（expr1，expr2）：在 expr1 的值不为 NULL的情况下都返回 expr1，否则返回 expr2。</p><hr><blockquote><p>Mysql索引的数据结构</p></blockquote><p>1.B+树索引只能找到某条记录所在的页，需要根据二分查找法来进一步找到记录所在页的具体位置。</p><blockquote><p>InnoDB（Mysql5.5以后，支持事务，是表锁） B+ 树索引(叶结点的data域保存了完整的数据记录)</p></blockquote><ul><li>聚集索引（每页大小16K）</li></ul><p>1.根据主键创建的一棵 B+ 树。</p><p>2.叶结点的data域是数据记录。</p><ul><li>辅助索引（二级索引）</li></ul><p>1.根据索引键（例如：用户信息表，主键是用户ID，这里可以在名字上面建立索引，即根据名字创建了一棵B+树）创建的一棵 B+ 树。</p><p>2.叶结点的data域存放的是主键值。</p><pre><code>优点：这样行在面临页分裂时,不需要单独维护二级索引.</code></pre><blockquote><p>MyISAM（不支持事务，是表锁） B+ 树索引（索引文件和数据文件实现了分离）</p></blockquote><p>1.叶结点的data域存放的是数据记录的地址。</p><p>2.主索引要求 key 是唯一的，辅助索引的key可以重复。</p><ul><li>联合索引(最左前缀)</li></ul><h4 id="关于回表的理解？"><a href="#关于回表的理解？" class="headerlink" title="关于回表的理解？"></a>关于回表的理解？</h4><pre><code>索引其实也是个表，不过是存放了索引列的列值和主键的Id值rowid的表如果select子句中，只有索引列，只需访问索引对象即可，不应回表。如果select子句中包含非索引列，就要读取索引存放的对应rowid，然后按照rowid去表中访问对应行的非索引列，就是回表了。</code></pre><p>1.对表上多个列进行索引。可以对第二个键值进行排序。</p><p>2.查询条件中出现联合索引第一列,或者全部,则能利用联合索引.即索引不能隔着字段使用。</p><pre><code>create index test_union_k1_k2_k3_k4_k5_indexon test_union (k1, k2, k3, k4, k5)；EXPLAIN SELECT * FROM test_union where k1= 1 AND k3 = 1;//这里只使用到了k1索引</code></pre><p>3.建复合索引时应该将最常用（频率）作限制条件的列放在最左边，依次递减。</p><ul><li>覆盖索引（使用的标识：Using index）</li></ul><p>1.索引包含所有需要查询的字段的值。</p><p>2.它只扫描索引的数据。</p><p>3.覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询。在所有这些场景中，索引中满足查询的成本一般比查询要小的多。</p><p>4.覆盖索引优化查询的例子</p><pre><code>alter table t1 add index liu(inventory_id,return_date)；select tid,return_date from t1 order by inventory_id limit 50000,10;</code></pre><ul><li>全文索引（存储引擎MyISAM支持，新版本MYSQL5.6的InnoDB支持全文索引）</li></ul><p>1.支持的字段类型：char、varchar和text。</p><pre><code>例如：ALTER TABLE articles ADD FULLTEXT (&apos;title&apos;,&apos;body&apos;);SELECT * FROM articlesWHERE MATCH (title,body) AGAINST (&apos;database&apos;);把 title 和 body 字段里有 database 的数据记录全部查询出来</code></pre><p>2.不支持中文的全文检索,且对英文检索时忽略大小写</p>]]></content>
+    <content type="html"><![CDATA[<p><strong>1.数据类型理解</strong></p><p>int(M)： M表示的不是数据的最大长度，只是数据宽度，并不影响存储多少位长度的数据；</p><p>varchar(M)： M表示的是varchar类型数据在数据库中存储的最大长度，超过则不存；</p><p>char(N):存放的是字符的个数</p><p><strong>2.关键字的执行顺序</strong></p><p>（8）SELECT（9）DISTINCT (select_list)</p><p>（1）FROM (left_table)</p><p>（3）(join_type) JOIN (right_table)</p><p>（2）ON (join_condition)</p><p>（4）WHERE (where_condition)</p><p>（5）GROUP BY (group_by_list)</p><p>（6）WITH {CUTE|ROLLUP}</p><p>（7）HAVING (having_condition)</p><p>（10）ORDER BY (order_by_list)</p><p>（11）LIMIT (limit_number)</p><p><strong>3.LEFT JOIN 和 RIGHT JOIN 的区别</strong></p><ul><li><p>CROSS JOIN: 返回两个表的笛卡儿积。</p><p>  返回结果集的行号：<br>  set @mycnt = 0;<br>  select (@mycnt := @mycnt + 1) as ROWNUM,c.customers_id,o.order_id from customers AS c,orders AS o<br>  WHERE c.customers_id = o.customers_id </p></li></ul><ul><li><p>LEFT JOIN：以左表为基础的，左表的记录将会全部表示出来,而右表只会显示符合搜索条件的记录(例子中为: A.aID = B.bID).右表记录不足的地方均为NULL.（必须指定 ON 子句）</p></li><li><p>RIGHT JOIN：与上面的情况相反。</p></li><li><p>INNER JOIN: INNER可以省略，直接写成 JOIN 。并不以谁为基础,它只显示符合条件的记录.产生A和B的交集。INNER JOIN中的 WHERE 的过滤条件可以写在 ON 子句中。</p><pre><code>select c.customers_id,o.order_id,c.city from customers AS c JOIN orders AS o ON c.customers_id = o.customers_id AND c.customers_id = &apos;14&apos;或者使用 USING 关键字来简化 ON 子句：select c.customers_id,o.order_id,c.city from customers AS c JOIN orders AS o USING(customers_id) WHERE c.customers_id = &apos;14&apos;</code></pre></li></ul><p>当没有ON语句的时候会将 INNER JOIN 理解成 CROSS JOIN</p><p><strong>4.WHERE过滤器常见错误</strong></p><ul><li><p>在ON条件过滤器后还是会添加保留表中被ON过滤掉的记录,而WHERE条件是永久的过滤。</p></li><li><p>在WHERE条件中使用列别名,不能使用Select中的列别名，因为Select比 Where 晚执行，但是可以使用 From中列别名。</p><pre><code>错误：SELECT customers_id AS c,order_id AS o FROM orders WHERE c = &apos;aa&apos;</code></pre></li><li><p>在WHERE条件中使用统计的过滤</p><pre><code>错误：SELECT COUNT(customers_id) ,order_id  FROM orders WHERE COUNT(customers_id) &gt; 1</code></pre></li></ul><p><strong>5.COUNT容易犯的错误</strong></p><ul><li>COUNT(*)会把通过 OUTER JOIN 添加的行统计入内。而 COUNT(column_name) 函数返回指定列的值的数目（NULL 不会计入在内）</li></ul><p><strong>6.ORDER BY </strong></p><ul><li>NULL值在 ORDER BY 中被视为最小。</li></ul><p><strong>8.Having</strong></p><p>1.Having 通常于 Group by 一起使用。</p><p>2.弥补了WHERE关键字不能与聚合函数联合使用的不足。</p><p><strong>7.LIMIT</strong></p><ul><li>LIMIT n,m : 表示从第 n 条记录开始选择 m 条记录。对于数据量非常大的情景该执行语句的效率比较低。n = 0 代表第一行，limit 0,5 等价于 limit 5 都是返回前5行。</li></ul><p><strong>8.IN</strong></p><ul><li>IN引导的子句只能返回一个字段而 EXIST 可以返回多个。</li><li>EXIST 子句不在乎返回什么，而是在乎是不是有结果集返回。用于检查子查询是否至少会返回一行数据，该子查询实际上并不返回任何数据，而是返回值True或False.</li></ul><p><strong>9.DISTINCT</strong></p><ul><li><p>distinct必须放在开头</p><pre><code>select id, distinct name from A;   --会提示错误，因为distinct必须放在开头</code></pre></li></ul><hr><blockquote><p>Mysql函数总结</p></blockquote><p>1.MOD(N,M)：表示 N 除以 M 的余数。</p><p>2.DATEDIFF(datepart,startdate,enddate)：返回两个日期之间的时间。</p><p>3.DATEADD(datepart,number,date)：在日期中添加或减去指定的时间间隔。</p><pre><code>eg:计算当前月的一天SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)</code></pre><p>4.IFNULL（expr1，expr2）：在 expr1 的值不为 NULL的情况下都返回 expr1，否则返回 expr2。</p><hr><blockquote><p>Mysql索引的数据结构</p></blockquote><p>1.B+树索引只能找到某条记录所在的页，需要根据二分查找法来进一步找到记录所在页的具体位置。</p><blockquote><p>InnoDB（Mysql5.5以后，支持事务，是表锁） B+ 树索引(叶结点的data域保存了完整的数据记录)</p></blockquote><ul><li>聚集索引（每页大小16K）</li></ul><p>1.根据主键创建的一棵 B+ 树。</p><p>2.叶结点的data域是数据记录。</p><ul><li>辅助索引（二级索引）</li></ul><p>1.根据索引键（例如：用户信息表，主键是用户ID，这里可以在名字上面建立索引，即根据名字创建了一棵B+树）创建的一棵 B+ 树。</p><p>2.叶结点的data域存放的是主键值。</p><pre><code>优点：这样行在面临页分裂时,不需要单独维护二级索引.</code></pre><blockquote><p>MyISAM（不支持事务，是表锁） B+ 树索引（索引文件和数据文件实现了分离）</p></blockquote><p>1.叶结点的data域存放的是数据记录的地址。</p><p>2.主索引要求 key 是唯一的，辅助索引的key可以重复。</p><ul><li>联合索引(最左前缀)</li></ul><h4 id="关于回表的理解？"><a href="#关于回表的理解？" class="headerlink" title="关于回表的理解？"></a>关于回表的理解？</h4><pre><code>索引其实也是个表，不过是存放了索引列的列值和主键的Id值rowid的表如果select子句中，只有索引列，只需访问索引对象即可，不应回表。如果select子句中包含非索引列，就要读取索引存放的对应rowid，然后按照rowid去表中访问对应行的非索引列，就是回表了。</code></pre><p>1.对表上多个列进行索引。可以对第二个键值进行排序。</p><p>2.查询条件中出现联合索引第一列,或者全部,则能利用联合索引.即索引不能隔着字段使用。</p><pre><code>create index test_union_k1_k2_k3_k4_k5_indexon test_union (k1, k2, k3, k4, k5)；EXPLAIN SELECT * FROM test_union where k1= 1 AND k3 = 1;//这里只使用到了k1索引</code></pre><p>3.建复合索引时应该将最常用（频率）作限制条件的列放在最左边，依次递减。</p><ul><li>覆盖索引（使用的标识：Using index）</li></ul><p>1.索引包含所有需要查询的字段的值。</p><p>2.它只扫描索引的数据。</p><p>3.覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询。在所有这些场景中，索引中满足查询的成本一般比查询要小的多。</p><p>4.覆盖索引优化查询的例子</p><pre><code>alter table t1 add index liu(inventory_id,return_date)；select tid,return_date from t1 order by inventory_id limit 50000,10;</code></pre><ul><li>全文索引（存储引擎MyISAM支持，新版本MYSQL5.6的InnoDB支持全文索引）</li></ul><p>1.支持的字段类型：char、varchar和text。</p><pre><code>例如：ALTER TABLE articles ADD FULLTEXT (&apos;title&apos;,&apos;body&apos;);SELECT * FROM articlesWHERE MATCH (title,body) AGAINST (&apos;database&apos;);把 title 和 body 字段里有 database 的数据记录全部查询出来</code></pre><p>2.不支持中文的全文检索,且对英文检索时忽略大小写</p>]]></content>
     
     <summary type="html">
     
@@ -491,32 +512,6 @@ private int
     </summary>
     
       <category term="数组" scheme="http://www.xuchunfa.cn/categories/%E6%95%B0%E7%BB%84/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Java笔记</title>
-    <link href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava%E7%AC%94%E8%AE%B0/"/>
-    <id>http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/</id>
-    <published>2018-09-02T07:34:14.000Z</published>
-    <updated>2018-09-06T11:51:08.040Z</updated>
-    
-    <content type="html"><![CDATA[<p>1.有时可以用静态工厂方法来代替构造器。</p><p>2.带有私有构造函数的类不能被继承。</p><p>3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。</p><p>4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。</p><p>5.为什么静态方法只能访问静态域？</p><pre><code>静态域是属于类的，程序在进行编译的时候就会加载到虚拟机内存的方法区，直到程序退出都会一直存在，而非静态域是和对象挂钩的，需要 new 一个对象，实例域才会在堆中分配内存，对象都还没有怎么能访问非静态域呢？</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;1.有时可以用静态工厂方法来代替构造器。&lt;/p&gt;
-&lt;p&gt;2.带有私有构造函数的类不能被继承。&lt;/p&gt;
-&lt;p&gt;3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-      <category term="java语言基础" scheme="http://www.xuchunfa.cn/categories/java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
     
     
   </entry>

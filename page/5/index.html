@@ -286,6 +286,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/16/并行和并发的区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/16/并行和并发的区别/" itemprop="url">并行和并发的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T13:10:53+08:00">
+                2018-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/16/并行和并发的区别/" class="leancloud_visitors" data-flag-title="并行和并发的区别">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>举个例子：</strong></p>
+<p>桌子上放着一本书，桌子旁坐着四个人，书就相当于cpu资源，并行可以比喻成这四个人打开书同时阅读；而并发可以看成是则这四个人轮流看这本书。</p>
+<blockquote>
+<p>并行（parallelism）</p>
+</blockquote>
+<p>1.物理上同时发生的。</p>
+<p>2.某一时刻能处理多个任务。</p>
+<blockquote>
+<p>并发（concurrency）</p>
+</blockquote>
+<p>1.逻辑上同时发生的。</p>
+<p>2.某一时间间隔内能同时处理多个任务，但是某一时刻就只处理一个任务。</p>
+<p>直观点的示意图：两核CPU创建四个线程的情况</p>
+<p><img src="https://i.imgur.com/MV4eOd9.png" alt=""></p>
+<p>操作1,2,3,4并发执行。</p>
+<p>操作1,5以及2,6都是并行的。</p>
+<p>可以理解现在大多数CPU都是多核的，在执行大量请求时，并行并发一般都是一起发生的。</p>
+<p>参考文档：<a href="https://www.jianshu.com/p/b11e251d3dc7" target="_blank" rel="noopener">https://www.jianshu.com/p/b11e251d3dc7</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/15/java虚拟机垃圾收集器及回收算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1966,191 +2136,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/08/ConcurrentHashMap的理解/" itemprop="url">ConcurrentHashMap的理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T19:47:32+08:00">
-                2018-08-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/08/ConcurrentHashMap的理解/" class="leancloud_visitors" data-flag-title="ConcurrentHashMap的理解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>JDK1.7源码的参数</strong></p>
-<h4 id="怎么理解"><a href="#怎么理解" class="headerlink" title="怎么理解"></a>怎么理解</h4><ul>
-<li><p>参数</p>
-<p>  1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。</p>
-<p>  2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536</p>
-<p>  3.DEFAULT_INITIAL_CAPACITY:默认值16。</p>
-<p>  4.segmentMask:默认值15。</p>
-<p>  5.segmentShift:默认值28。</p>
-</li>
-<li><p>初始化操作</p>
-<p>  1.Segment[i] 为每个段桶的数目(必须为2^n)，默认值为2，负载因子是 0.75，得出初始阈值为 1.5，也就是以后插入第一个元素不会触发扩容，插入第二个会进行第一次扩容。</p>
-<p>  2.</p>
-</li>
-<li><p>定位Segment的散列算法</p>
-<p>  1.(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask：即让hash值的高4位与掩码做与运算。</p>
-</li>
-<li><p>定位HashEntry的散列算法</p>
-<p>  int index = (tab.length - 1) &amp; hash;</p>
-</li>
-</ul>
-<ul>
-<li>Put操作流程</li>
-</ul>
-<p>1.定位到Segment</p>
-<p>2.初始化segment的某一段，ensureSegment(int k)。</p>
-<p>3.获取锁，scanAndLockForPut(key, hash, value);</p>
-<p>5.如果需要的话，进行扩容。segment数组是不能扩容的，扩容的对象是HashEntry数组，该方法不需要考虑并发的，因为此时segment分段锁被独占的。</p>
-<blockquote>
-<p>Segment&lt;K,V&gt;的理解</p>
-</blockquote>
-<p>1.HashEntry&lt;K,V&gt;[] table：每个segment有一个HashEntry数组。</p>
-<p>2.count：</p>
-<p>3.HashEntry&lt;K,V&gt;：一个四元组，next被声明成final,所以每次插入元素都只能头插。node&lt;K,V&gt;的next域呢？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2205,7 +2190,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2216,7 +2201,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2288,7 +2273,7 @@ public static void main(String[] args){
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
