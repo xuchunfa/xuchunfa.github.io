@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="Java类初始化顺序？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ JVM GC复制算法是怎么实现的？ Object object = new Object(); 初始化的顺序是什么在JVM各区域做了什么？">
+<meta name="description" content="Java类初始化顺序？ Java new一个对象的过程中发生了什么？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ 答：3个。  JVM GC复制算法/GC算法是怎么实现的？  Java内存结构？      JVM内存溢出情况：  ![](https://i.imgur.com/FFDc1GQ.png)       1.线程共享：方法区（">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结-Java虚拟机">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="Java类初始化顺序？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ JVM GC复制算法是怎么实现的？ Object object = new Object(); 初始化的顺序是什么在JVM各区域做了什么？">
+<meta property="og:description" content="Java类初始化顺序？ Java new一个对象的过程中发生了什么？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ 答：3个。  JVM GC复制算法/GC算法是怎么实现的？  Java内存结构？      JVM内存溢出情况：  ![](https://i.imgur.com/FFDc1GQ.png)       1.线程共享：方法区（">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-18T12:30:05.599Z">
+<meta property="og:image" content="https://i.imgur.com/SwBcYyJ.png">
+<meta property="og:updated_time" content="2019-02-25T12:29:57.256Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java虚拟机">
-<meta name="twitter:description" content="Java类初始化顺序？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ JVM GC复制算法是怎么实现的？ Object object = new Object(); 初始化的顺序是什么在JVM各区域做了什么？">
+<meta name="twitter:description" content="Java类初始化顺序？ Java new一个对象的过程中发生了什么？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ 答：3个。  JVM GC复制算法/GC算法是怎么实现的？  Java内存结构？      JVM内存溢出情况：  ![](https://i.imgur.com/FFDc1GQ.png)       1.线程共享：方法区（">
+<meta name="twitter:image" content="https://i.imgur.com/SwBcYyJ.png">
 
 
 
@@ -412,10 +414,57 @@
       
         <ol>
 <li>Java类初始化顺序？</li>
+<li>Java new一个对象的过程中发生了什么？</li>
 <li>对方法区和永久区解的理以及它们之间关系的理解？</li>
-<li>一个java文件有3个类，编译后有几个class文件？</li>
-<li>JVM GC复制算法是怎么实现的？</li>
-<li>Object object = new Object(); 初始化的顺序是什么在JVM各区域做了什么？</li>
+<li><p>一个java文件有3个类，编译后有几个class文件？</p>
+<pre><code>答：3个。
+</code></pre></li>
+<li><p>JVM GC复制算法/GC算法是怎么实现的？</p>
+</li>
+<li><p>Java内存结构？ </p>
+<p> <img src="https://i.imgur.com/SwBcYyJ.png" alt=""></p>
+</li>
+</ol>
+<pre><code>JVM内存溢出情况：
+
+![](https://i.imgur.com/FFDc1GQ.png)
+
+
+    1.线程共享：方法区（永久代）和堆区。
+
+    2.线程私有：虚拟机栈（栈内存）、程序计数器和本地方法栈（native方法）。
+
+    3.堆内存存放内容：java对象、数组。
+
+    4.方法区存放内容：常量、静态变量、虚拟机加载的类信息和即时编译器编译后的代码。
+
+    注：
+
+    4.1 运行时常量池（常量池）是方法区的一部分。
+
+    4.2 Class文件内容组成：类的版本、字段、方法、接口等描述信息和常量池；常量池放编译期生成的(.class文件)各种字面量和符号引用。
+
+    5.对象的内存布局：对象头、实例数据和对齐填充。对象头包括：哈希码、GC分代年龄、锁状态标志、线程持有的锁等。
+</code></pre><ol start="6">
+<li><p>Object object = new Object(); 初始化的顺序是什么？在JVM各区域做了什么？</p>
+<p> <a href="https://blog.csdn.net/Rainnnbow/article/details/52149586https://blog.csdn.net/Rainnnbow/article/details/52149586" target="_blank" rel="noopener">new之后JVM都做了什么？</a></p>
+<pre><code>步骤：
+
+1.检查类加载
+
+2.堆中分配内存，初始化为零（除对象头）
+
+3.设置对象对象头信息
+
+4.程序中自定义的数据
+</code></pre></li>
+<li><p>加载器双亲委派模型及破坏？</p>
+</li>
+<li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p>
+<p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p>
+</li>
+<li><p>syn锁，jvm里面分成偏向锁、轻量级锁、重量级锁，其之间的转换过程是怎么样的，各自适用场景是什么样的，偏向锁情况产生竞争一定会膨胀成轻量级锁吗，为什么只能单向转换，比如偏向锁变成轻量级锁变成重量级锁之后不会在竞争消失之后在回到偏向锁，必须要重启jvm才行，是出于什么情况考虑的？</p>
+</li>
 </ol>
 
       
@@ -532,7 +581,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -543,7 +592,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

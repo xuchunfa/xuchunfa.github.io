@@ -286,6 +286,948 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/07/Spring源码分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/07/Spring源码分析/" itemprop="url">Spring源码分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-07T09:05:37+08:00">
+                2018-10-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/07/Spring源码分析/" class="leancloud_visitors" data-flag-title="Spring源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()：</p>
+<pre><code>//AbstractApplicationContext.java
+public void refresh() throws BeansException, IllegalStateException {
+    synchronized (this.startupShutdownMonitor) {
+        // 准备工作，记录下容器的启动时间、标记“已启动”状态、处理配置文件中的占位符
+        prepareRefresh();
+
+        //解析XML中的&lt;bean&gt;,将最后得到的beanDefinition注册到DefaultListableBeanFactory中去
+        ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+        // 设置 BeanFactory 的类加载器，添加几个 BeanPostProcessor，手动注册几个特殊的 bean
+        prepareBeanFactory(beanFactory);
+
+        try {
+            // 【这里需要知道 BeanFactoryPostProcessor 这个知识点，Bean 如果实现了此接口，
+             // 那么在容器初始化以后，Spring 会负责调用里面的 postProcessBeanFactory 方法。】
+
+            // 这里是提供给子类的扩展点，到这里的时候，所有的 Bean 都加载、注册完成了，但是都还没有初始化
+             // 具体的子类可以在这步的时候添加一些特殊的 BeanFactoryPostProcessor 的实现类或做点什么事
+            postProcessBeanFactory(beanFactory);
+
+            // 调用 BeanFactoryPostProcessor 各个实现类的 postProcessBeanFactory(factory) 方法
+            invokeBeanFactoryPostProcessors(beanFactory);
+
+            // 注册 BeanPostProcessor 的实现类，注意看和 BeanFactoryPostProcessor 的区别
+             // 此接口两个方法: postProcessBeforeInitialization 和 postProcessAfterInitialization
+             // 两个方法分别在 Bean 初始化之前和初始化之后得到执行。注意，到这里 Bean 还没初始化
+            registerBeanPostProcessors(beanFactory);
+
+            // Initialize message source for this context.
+            initMessageSource();
+
+            // Initialize event multicaster for this context.
+            initApplicationEventMulticaster();
+
+            // Initialize other special beans in specific context subclasses.
+            onRefresh();
+
+            // Check for listener beans and register them.
+            registerListeners();
+
+            // 重点，重点，重点
+             // 初始化所有的 singleton beans
+             //（lazy-init 的除外）
+            finishBeanFactoryInitialization(beanFactory);
+
+            // Last step: publish corresponding event.
+            finishRefresh();
+        }
+</code></pre><p>里面做了比较重要的事情：注册加载bean的定义信息，这里有两个重要的接口出现了，按先后顺序：</p>
+<pre><code>//加载Bean的定义信息，包括属性啥的，但是此时还没有实例化Bean
+public interface BeanFactoryPostProcessor {
+
+void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException;
+
+}
+</code></pre><p>接下来：</p>
+<pre><code>public interface BeanPostProcessor {
+
+//Bean 初始化之前执行的方法
+@Nullable
+default Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+    return bean;
+}
+
+//Bean 初始化之后执行的方法
+@Nullable
+default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+    return bean;
+}
+}
+</code></pre><p>详细分析一下AbstractApplicationContext中的refresh()方法，按先后顺序挑重点看：</p>
+<p>1.第一个重要方法：</p>
+<pre><code>//AbstractApplicationContext.java
+ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+</code></pre><p>里面涉及到了下面过程的分析。</p>
+<p>在里面调用了重要方法：</p>
+<pre><code>//AbstractRefreshableApplicationContext.java它是AbstractApplicationContext的子类
+refreshBeanFactory(){
+
+    DefaultListableBeanFactory beanFactory = createBeanFactory();
+    beanFactory.setSerializationId(getId());
+    customizeBeanFactory(beanFactory);
+    loadBeanDefinitions(beanFactory);
+}
+</code></pre><p>在这里容器中出现了比较重要的实例：DefaultListableBeanFactory。先看一下结构图：</p>
+<p><img src="https://i.imgur.com/2mEAJAA.png" alt=""></p>
+<p>然后调用了方法：</p>
+<pre><code>//AbstractXmlApplicationContext.java
+//根据配置加载各个Bean 到 BeanFactory中去
+protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
+
+    XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
+
+    beanDefinitionReader.setEnvironment(this.getEnvironment());
+    beanDefinitionReader.setResourceLoader(this);
+    beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
+
+    //加载XML文件
+    initBeanDefinitionReader(beanDefinitionReader);
+    loadBeanDefinitions(beanDefinitionReader);
+}
+</code></pre><p>其中加载各个Bean主要通过XmlBeanDefinitionReader实例完成。</p>
+<p>然后经过一系列的巴拉巴拉操作将XML文件中的Bean进行解析，一个Bean解析成一个BeanDefinitionHolder实例：</p>
+<pre><code>//BeanDefinitionHolder.java
+public class BeanDefinitionHolder implements BeanMetadataElement {
+
+private final BeanDefinition beanDefinition;
+
+private final String beanName;
+
+@Nullable
+private final String[] aliases;
+
+.....}
+</code></pre><p>然后开始了注册Bean的重头戏,其实就是将BeanDefinition放到beanDefinitionMap中去。</p>
+<pre><code>//DefaultBeanDefinitionDocumentReader.java
+protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
+    BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
+    if (bdHolder != null) {
+        bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
+        try {
+            //从这里开始注册
+            BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
+        }
+    }
+}
+</code></pre><p>接着来到：</p>
+<pre><code>//BeanDefinitionReaderUtils.java
+public static void registerBeanDefinition(
+        BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
+        throws BeanDefinitionStoreException {
+    String beanName = definitionHolder.getBeanName();
+
+    //真正开始注册
+    registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
+
+    String[] aliases = definitionHolder.getAliases();
+    if (aliases != null) {
+        for (String alias : aliases) {
+            registry.registerAlias(beanName, alias);
+        }
+    }
+}
+</code></pre><p>最后进入：</p>
+<pre><code>//DefaultListableBeanFactory.java
+public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
+        throws BeanDefinitionStoreException {
+
+......
+
+    this.beanDefinitionMap.put(beanName, beanDefinition);
+    this.beanDefinitionNames.add(beanName);
+    this.manualSingletonNames.remove(beanName);
+
+......
+
+}
+</code></pre><p>至此为止，refresh()方法中的第一个方法obtainFreshBeanFactory()分析完毕。</p>
+<hr>
+<p>在执行到第二个重要方法之前已经完成的事：、</p>
+<pre><code>BeanFactory 已经创建完成，并且所有的实现了 BeanFactoryPostProcessor 接口的 Bean 都已经初始化，并且其中的 
+postProcessBeanFactory(factory) 方法已经得到执行了。所有实现了 BeanPostProcessor 接口的 Bean 也都完成了初始化。
+
+剩下的就是初始化其他还没被初始化的 singleton beans 了，我们知道它们是单例的，如果没有设置懒加载，那么 Spring 会在接下来初始化所有的 singleton beans。
+</code></pre><p>第二个重要的方法：</p>
+<pre><code>//AbstractApplicationContext.java
+protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
+    // Initialize conversion service for this context.
+    if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &amp;&amp;
+            beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
+        beanFactory.setConversionService(
+                beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
+    }
+
+    // Register a default embedded value resolver if no bean post-processor
+    // (such as a PropertyPlaceholderConfigurer bean) registered any before:
+    // at this point, primarily for resolution in annotation attribute values.
+    if (!beanFactory.hasEmbeddedValueResolver()) {
+        beanFactory.addEmbeddedValueResolver(strVal -&gt; getEnvironment().resolvePlaceholders(strVal));
+    }
+
+    // Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
+    String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
+    for (String weaverAwareName : weaverAwareNames) {
+        getBean(weaverAwareName);
+    }
+
+    // Stop using the temporary ClassLoader for type matching.
+    beanFactory.setTempClassLoader(null);
+
+    // Allow for caching all bean definition metadata, not expecting further changes.
+    beanFactory.freezeConfiguration();
+
+    // Instantiate all remaining (non-lazy-init) singletons.
+    // 开始初始化未设置懒加载的单例Bean
+    beanFactory.preInstantiateSingletons();
+}
+</code></pre><p>一大波准备工作后，进入到初始化的方法：</p>
+<pre><code>//DefaultListableBeanFactory.java
+public void preInstantiateSingletons() throws BeansException {
+
+    ......
+    // 准备实例化单例Bean/FactoryBean
+    for (String beanName : beanNames) {
+        RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+        if (!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()) {
+            if (isFactoryBean(beanName)) {
+                Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
+                if (bean instanceof FactoryBean) {
+                    final FactoryBean&lt;?&gt; factory = (FactoryBean&lt;?&gt;) bean;
+                    boolean isEagerInit;
+                    if (System.getSecurityManager() != null &amp;&amp; factory instanceof SmartFactoryBean) {
+                        isEagerInit = AccessController.doPrivileged((PrivilegedAction&lt;Boolean&gt;)
+                                        ((SmartFactoryBean&lt;?&gt;) factory)::isEagerInit,
+                                getAccessControlContext());
+                    }
+                    else {
+                        isEagerInit = (factory instanceof SmartFactoryBean &amp;&amp;
+                                ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit());
+                    }
+                    if (isEagerInit) {
+                        getBean(beanName);
+                    }
+                }
+            }
+            else {
+                //正常的话，创建单例Bean的入口
+                getBean(beanName);
+            }
+        }
+
+    ......
+}
+</code></pre><p>然后进入getBean方法：</p>
+<pre><code>//AbstractBeanFactory.java
+public Object getBean(String name) throws BeansException {
+    return doGetBean(name, null, null, false);
+}
+</code></pre><p>接下来继续调用：</p>
+<pre><code>//AbstractBeanFactory.java
+protected &lt;T&gt; T doGetBean(final String name, @Nullable final Class&lt;T&gt; requiredType,
+        @Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
+
+一系列巴拉巴拉：
+判断是不是sharedInstance、检查Bean是不是已经创建过、注册依赖Bean
+
+//创建单例Bean
+if (mbd.isSingleton()) {
+            sharedInstance = getSingleton(beanName, () -&gt; {
+                try {
+                    //真正创建Bean了
+                    return createBean(beanName, mbd, args);
+                }
+                catch (BeansException ex) {
+                        destroySingleton(beanName);
+                        throw ex;
+                    }
+                });
+            bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
+        }
+......
+
+}
+</code></pre><p>来看看createBean方法做了哪些事情：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
+throws BeanCreationException {
+
+......
+
+try {
+        //这里好像开始使用BeanPostProcessor接口的方法
+        Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+        if (bean != null) {
+            return bean;
+        }
+    }
+.....
+//继续进入创建Bean的方法
+Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+
+.....
+
+// Initialize the bean instance.
+   Object exposedObject = bean;
+   try {
+  // 这一步也是非常关键的，这一步负责属性装配，因为前面的实例只是实例化了，并没有设值，这里就是设值
+  populateBean(beanName, mbd, instanceWrapper);
+  if (exposedObject != null) {
+     // 还记得 init-method 吗？还有 InitializingBean 接口？还有 BeanPostProcessor 接口？
+     // 这里就是处理 bean 初始化完成后的各种回调
+     exposedObject = initializeBean(beanName, exposedObject, mbd);
+  }
+
+......
+
+}
+</code></pre><p>继续干吧：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+rotected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) throws BeanCreationException {
+
+if (instanceWrapper == null) {
+        //终于创建了!!!!
+        instanceWrapper = createBeanInstance(beanName, mbd, args);
+    }
+.....
+
+}
+</code></pre><p>继续进入方法：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) {
+
+巴拉巴拉的采用工厂方法创建Bean实例
+
+......
+}
+</code></pre><p>然后里面还可以继续深入到：</p>
+<pre><code>//SimpleInstantiationStrategy.java
+//这是通过构造方法实例化的，当然也可以使用工厂方法实例化
+public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner) { 
+
+//利用构造方法进行实例化
+BeanUtils.instantiateClass(constructorToUse);
+
+}
+</code></pre><p>到此为止，实例化完成了。。。。。但是属性还没注入。属性是在populateBean方法中注入的：</p>
+<pre><code>//AbstractAutowireCapableBeanFactory.java
+protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
+
+.....
+
+ InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+ // 这里有个非常有用的 BeanPostProcessor 进到这里: AutowiredAnnotationBeanPostProcessor
+ // 对采用 @Autowired、@Value 注解的依赖进行设值，这里的内容也是非常丰富的，不过本文不会展开说了，感兴趣的读者请自行研究
+ pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+ if (pvs == null) {
+     return;
+ }
+
+......
+
+}
+</code></pre><p>最后一步initializeBean，处理各种回调：</p>
+<pre><code>protected Object initializeBean(final String beanName, final Object bean, RootBeanDefinition mbd){
+
+else {
+  // 如果 bean 实现了 BeanNameAware、BeanClassLoaderAware 或 BeanFactoryAware 接口，回调
+  invokeAwareMethods(beanName, bean);
+}
+
+Object wrappedBean = bean;
+if (mbd == null || !mbd.isSynthetic()) {
+  // BeanPostProcessor 的 postProcessBeforeInitialization 回调
+  wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
+}
+
+try {
+  // 处理 bean 中定义的 init-method，
+  // 或者如果 bean 实现了 InitializingBean 接口，调用 afterPropertiesSet() 方法
+  invokeInitMethods(beanName, wrappedBean, mbd);
+}
+catch (Throwable ex) {
+  throw new BeanCreationException(
+        (mbd != null ? mbd.getResourceDescription() : null),
+        beanName, &quot;Invocation of init method failed&quot;, ex);
+}
+if (mbd == null || !mbd.isSynthetic()) {
+  //BeanPostProcessor 的 postProcessAfterInitialization 回调
+  wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
+}
+return wrappedBean;
+}
+</code></pre><p>最后贴一张Spring Bean 的生命周期图：</p>
+<p><img src="https://i.imgur.com/4OETcMX.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/16/Spring动态代理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/16/Spring动态代理/" itemprop="url">Spring动态代理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T16:24:56+08:00">
+                2018-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/16/Spring动态代理/" class="leancloud_visitors" data-flag-title="Spring动态代理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="关于动态代理的需要注意的问题？"><a href="#关于动态代理的需要注意的问题？" class="headerlink" title="关于动态代理的需要注意的问题？"></a>关于动态代理的需要注意的问题？</h4><pre><code>如果是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，这样就不会把自己的代码织入到约定
+的流程中去。
+</code></pre><p>举个书上的例子：</p>
+<pre><code>public class UserServiceImpl implements UserService {
+
+@Autowired
+private UserDao userDao = null;
+
+//这里@Transactional会失效，每次调用不会都产生一个新事务
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+public int insertUsers(List&lt;User&gt; userList){
+    int count = 0;
+    for(User : user){
+        count += insertUser(user);
+    }
+}
+
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED)
+public int insertUser(User user) {
+    return userDao.insertUser(user);
+}
+}
+</code></pre><p>解决办法如下：</p>
+<pre><code>public class UserServiceImpl implements UserService，ApplicationContextAware {
+
+@Autowired
+private UserDao userDao = null;
+
+private ApplicationContext applicationContext = null;
+
+@Override
+void setApplicationContext(ApplicationContext applicationContext) 
+throws BeansException{
+    this.applicationContext = applicationContext;
+}
+
+//这里@Transactional会失效，每次调用不会都产生一个新事务
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
+public int insertUsers(List&lt;User&gt; userList){
+    int count = 0;
+    UserService userService = applicationContext.getBean(UserService.class);
+    for(User : user){
+        count += insertUser(user);
+    }
+}
+
+@Override
+@Transactional(isolation = Isolation.READ_COMMITTED)
+public int insertUser(User user) {
+    return userDao.insertUser(user);
+}
+}    
+</code></pre><p>1.每一个动态代理类都必须要实现InvocationHandler这个接口.</p>
+<pre><code>//该接口中的唯一方法
+public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
+</code></pre><p>2.Proxy代理类的newProxyInstance()方法</p>
+<pre><code>//生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口、代理类通过
+//InvocationHandler实现对外服务
+
+public static Object newProxyInstance(ClassLoader loader,
+Class&lt;?&gt;[] interfaces,InvocationHandler h)
+</code></pre><p>3.通过代理对象调用目标对象接口的方法，这是会跳转到由这个代理对象关联的 Handler 中的invoke方法去执行，而这个 Handler 对象又接受了一个 HelloServiceImpl 类型的参数，表示代理的就是这个真实对象。</p>
+<p>4.通过 Proxy.newProxyInstance 创建的代理对象是在jvm运行时动态生成的一个对象，它并不是我们InvocationHandler类型，也不是我们定义的那组接口的类型，而是在运行时动态生成的一个对象，并且命名方式都是这样的形式，以$开头proxy为中，最后一个数字表示对象的标号。</p>
+<p>5.代理类和委托类有同样的接口。</p>
+<p>6.动态代理是代理一个接口下的多个实现类。代理的是接口所以代理类必须实现该接口.</p>
+<pre><code>代理模式 = 接口 + 真实实现类 + 代理类。Spring AOP 要做的事情就是生成这个代理类。
+
+//AbstractAutoProxyCreator.java
+protected Object createProxy(Class&lt;?&gt; beanClass, @Nullable String beanName,
+        @Nullable Object[] specificInterceptors, TargetSource targetSource) {
+....
+
+ProxyFactory proxyFactory = new ProxyFactory();
+
+return proxyFactory.getProxy(getProxyClassLoader());
+
+}
+</code></pre><p>然后进入了ProxyFactory中：</p>
+<pre><code>//ProxyFactory.java
+public Object getProxy(ClassLoader classLoader) {
+
+return createAopProxy().getProxy(classLoader);
+
+}
+</code></pre><p>首先创建一个AopProxy的实例：</p>
+<pre><code>//ProxyCreatorSupport.java
+protected final synchronized AopProxy createAopProxy() {
+if (!this.active) {
+  activate();
+}
+return getAopProxyFactory().createAopProxy(this);
+}
+</code></pre><p>接着来到真正创建Aop代理实例的地方了：</p>
+<pre><code>//DefaultAopProxyFactory.java
+public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
+
+@Override
+
+public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+  // (我也没用过这个optimize，默认false) || (proxy-target-class=true) || (没有接口)
+  if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
+     Class&lt;?&gt; targetClass = config.getTargetClass();
+     if (targetClass == null) {
+        throw new AopConfigException(&quot;TargetSource cannot determine target class: &quot; +
+              &quot;Either an interface or a target is required for proxy creation.&quot;);
+     }
+     // 如果要代理的类本身就是接口，也会用 JDK 动态代理
+     // 我也没用过这个。。。
+     if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
+        return new JdkDynamicAopProxy(config);
+     }
+     return new ObjenesisCglibAopProxy(config);
+  }
+  else {
+     // 如果有接口，会跑到这个分支
+     return new JdkDynamicAopProxy(config);
+  }
+}
+// 判断是否有实现自定义的接口
+private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {
+  Class&lt;?&gt;[] ifcs = config.getProxiedInterfaces();
+  return (ifcs.length == 0 || (ifcs.length == 1 &amp;&amp; SpringProxy.class.isAssignableFrom(ifcs[0])));
+}
+</code></pre><p>再回到原来通过工厂创建AopProxy代理实例的地方：</p>
+<pre><code>createAopProxy().getProxy(classLoader);
+</code></pre><p>看看其中一个实现类 JdkDynamicAopProxy 的 getProxy 方法源码：</p>
+<pre><code>public Object getProxy(@Nullable ClassLoader classLoader) {
+    if (logger.isDebugEnabled()) {
+        logger.debug(&quot;Creating JDK dynamic proxy: target source is &quot; + this.advised.getTargetSource());
+    }
+    Class&lt;?&gt;[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);
+    findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);
+
+    //this 代表 InvocationHandler 实例，因为 JdkDynamicAopProxy 本身实现了
+    //InvocationHandler接口
+    return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
+}
+</code></pre><p>看一下 JdkDynamicAopProxy 源码的invoke方法：</p>
+<pre><code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    MethodInvocation invocation;
+    Object oldProxy = null;
+    boolean setProxyContext = false;
+
+    TargetSource targetSource = this.advised.targetSource;
+    Object target = null;
+
+    try {
+        if (!this.equalsDefined &amp;&amp; AopUtils.isEqualsMethod(method)) {
+            // The target does not implement the equals(Object) method itself.
+            //这个方法 equals 和 hashCode方法都不会产生代理内容
+            return equals(args[0]);
+        }
+        else if (!this.hashCodeDefined &amp;&amp; AopUtils.isHashCodeMethod(method)) {
+            // The target does not implement the hashCode() method itself.
+            return hashCode();
+        }
+        else if (method.getDeclaringClass() == DecoratingProxy.class) {
+            // There is only getDecoratedClass() declared -&gt; dispatch to proxy config.
+            return AopProxyUtils.ultimateTargetClass(this.advised);
+        }
+        else if (!this.advised.opaque &amp;&amp; method.getDeclaringClass().isInterface() &amp;&amp;
+                method.getDeclaringClass().isAssignableFrom(Advised.class)) {
+            // Service invocations on ProxyConfig with the proxy config...
+            return AopUtils.invokeJoinpointUsingReflection(this.advised, method, args);
+        }
+
+        Object retVal;
+
+        if (this.advised.exposeProxy) {
+            // Make invocation available if necessary.
+            oldProxy = AopContext.setCurrentProxy(proxy);
+            setProxyContext = true;
+        }
+
+        // Get as late as possible to minimize the time we &quot;own&quot; the target,
+        // in case it comes from a pool.
+        target = targetSource.getTarget();
+        Class&lt;?&gt; targetClass = (target != null ? target.getClass() : null);
+
+        // Get the interception chain for this method.
+        List&lt;Object&gt; chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
+
+        // Check whether we have any advice. If we don&apos;t, we can fallback on direct
+        // reflective invocation of the target, and avoid creating a MethodInvocation.
+        if (chain.isEmpty()) {
+            // We can skip creating a MethodInvocation: just invoke the target directly
+            // Note that the final invoker must be an InvokerInterceptor so we know it does
+            // nothing but a reflective operation on the target, and no hot swapping or fancy proxying.
+            Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
+            retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);
+        }
+        else {
+
+            invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
+            //进行方法的拦截
+            retVal = invocation.proceed();
+        }
+
+        // Massage return value if necessary.
+        Class&lt;?&gt; returnType = method.getReturnType();
+        if (retVal != null &amp;&amp; retVal == target &amp;&amp;
+                returnType != Object.class &amp;&amp; returnType.isInstance(proxy) &amp;&amp;
+                !RawTargetAccess.class.isAssignableFrom(method.getDeclaringClass())) {
+            // Special case: it returned &quot;this&quot; and the return type of the method
+            // is type-compatible. Note that we can&apos;t help if the target sets
+            // a reference to itself in another returned object.
+            retVal = proxy;
+        }
+        else if (retVal == null &amp;&amp; returnType != Void.TYPE &amp;&amp; returnType.isPrimitive()) {
+            throw new AopInvocationException(
+                    &quot;Null return value from advice does not match primitive return type for: &quot; + method);
+        }
+        return retVal;
+    }
+    finally {
+        if (target != null &amp;&amp; !targetSource.isStatic()) {
+            // Must have come from TargetSource.
+            targetSource.releaseTarget(target);
+        }
+        if (setProxyContext) {
+            // Restore old proxy.
+            AopContext.setCurrentProxy(oldProxy);
+        }
+    }
+}
+</code></pre><p>7.动态代理类的字节码在程序运行时由Java反射机制动态生成.</p>
+<p>8.代理类可以为委托类进行消息的预处理.</p>
+<blockquote>
+<p>静态代理类</p>
+</blockquote>
+<p>1.代理类和实现类都实现了要代理的接口.</p>
+<p>2.将实现类的对象传到代理类中(通过构造方法),实际上就是调用要代理对象的方法.</p>
+<hr>
+<h4 id="什么叫切面"><a href="#什么叫切面" class="headerlink" title="什么叫切面?"></a>什么叫切面?</h4><pre><code>所谓&quot;切面&quot;，简单说就是那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块之间的耦合度，并有利于未来的可操作性和可维护性。
+</code></pre><h4 id="多个切面的情况"><a href="#多个切面的情况" class="headerlink" title="多个切面的情况"></a>多个切面的情况</h4><pre><code>&lt;aop:config&gt;
+
+    //timeHandler相当于实现 InvocationHandler 接口的调用器,最后调用的是真实对象的方法(invoke方法实现)
+    &lt;aop:aspect id=&quot;time&quot; ref=&quot;timeHandler&quot; order=&quot;1&quot;&gt;
+        &lt;aop:pointcut id=&quot;addTime&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.print*(..))&quot; /&gt;
+
+        //抽取出来的业务模块的共同方法
+        &lt;aop:before method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;
+        &lt;aop:after method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;
+    &lt;/aop:aspect&gt;
+    &lt;aop:aspect id=&quot;log&quot; ref=&quot;logHandler&quot; order=&quot;2&quot;&gt;
+        &lt;aop:pointcut id=&quot;printLog&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.do*(..))&quot; /&gt;
+        &lt;aop:before method=&quot;LogBefore&quot; pointcut-ref=&quot;printLog&quot; /&gt;
+        &lt;aop:after method=&quot;LogAfter&quot; pointcut-ref=&quot;printLog&quot; /&gt;
+    &lt;/aop:aspect&gt;
+&lt;/aop:config&gt;
+</code></pre><p>输出:</p>
+<pre><code>CurrentTime = 1446130273734
+Log before method
+Enter HelloWorldImpl1.printHelloWorld()
+Log after method
+CurrentTime = 1446130273735
+</code></pre><p>Spring默认以aspect的定义顺序作为织入顺序.order属性可以改变横切点的顺序.</p>
+<hr>
+<p>生成代理的底层原理：</p>
+<pre><code>Bean生成代理的时机：在每个Bean初始化之后,先是AbstractAutowireCapableBeanFactory的initializeBean方法进行初始化。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/09/Linux基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1995,337 +2937,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/02/EffectiveJava笔记/" itemprop="url">Java笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T15:34:14+08:00">
-                2018-09-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java语言基础/" itemprop="url" rel="index">
-                    <span itemprop="name">java语言基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/02/EffectiveJava笔记/" class="leancloud_visitors" data-flag-title="Java笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.有时可以用静态工厂方法来代替构造器。</p>
-<p>2.带有私有构造函数的类不能被继承。</p>
-<p>3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。</p>
-<p>4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。</p>
-<p>5.为什么静态方法只能访问静态域？</p>
-<pre><code>静态域是属于类的，程序在进行编译的时候就会加载到虚拟机内存的方法区，直到程序退出都会一直存在，而非静态域是和对象挂钩的，需要 new 一个对象，实例域才会在堆中分配内存，对象都还没有怎么能访问非静态域呢？
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/30/Lock详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/30/Lock详解/" itemprop="url">Lock详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T09:19:08+08:00">
-                2018-08-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/30/Lock详解/" class="leancloud_visitors" data-flag-title="Lock详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>Lock接口</p>
-</blockquote>
-<p>1.lock()：获取锁。</p>
-<p>2.lockInterruptibly():可中断的获取锁，不同于lock(),在锁的获取中可以中断当前线程。</p>
-<p>3.tryLock()：尝试非阻塞的获取锁。</p>
-<p>4.tryLock(long time, TimeUnit unit)：超时获取锁。</p>
-<p>5.unlock()：释放锁。</p>
-<p>6.newCondition()：获取等待通知组件。</p>
-<h4 id="为什么锁的实现中使用组合同步器而不选择继承呢？"><a href="#为什么锁的实现中使用组合同步器而不选择继承呢？" class="headerlink" title="为什么锁的实现中使用组合同步器而不选择继承呢？"></a>为什么锁的实现中使用组合同步器而不选择继承呢？</h4><blockquote>
-<p>队列同步器</p>
-</blockquote>
-<p>1.同步器是实现锁的关键。锁是面象用户的,用户不需要了解其中的底层原理，同步器是面象锁的,是关于锁实现的原理细节。</p>
-<p>2.队列同步器的实现</p>
-<p>独占式同步状态流程图如下：</p>
-<pre><code>//tryAcquire(arg) == false 则获取同步状态失败，线程进入同步队列
-public final void acquire(int arg) {
-    if (!tryAcquire(arg) &amp;&amp;
-        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-        selfInterrupt();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2380,7 +2991,7 @@ public final void acquire(int arg) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2391,7 +3002,7 @@ public final void acquire(int arg) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

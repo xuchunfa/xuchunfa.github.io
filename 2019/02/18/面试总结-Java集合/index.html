@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？">
+<meta name="description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java集合">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java集合/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？">
+<meta property="og:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-18T12:29:14.209Z">
+<meta property="og:updated_time" content="2019-02-23T06:25:38.901Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
-<meta name="twitter:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？">
+<meta name="twitter:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
 
 
 
@@ -413,9 +413,42 @@
         <ol>
 <li>可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</li>
 <li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
-<li></li>
+<li>ArrayList以及LinkedList？</li>
+<li>HashMap线程不安全的原因？</li>
 </ol>
+<p>参考文献：</p>
+<p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a><br>注：最后一步 next=null </p>
+<p>不安全原因在于多线程发生扩容时：</p>
+<pre><code>void resize(int newCapacity) {
+    Entry[] oldTable = table;
+    int oldCapacity = oldTable.length;
+    if (oldCapacity == MAXIMUM_CAPACITY) {
+        threshold = Integer.MAX_VALUE;
+        return;
+    }
 
+    Entry[] newTable = new Entry[newCapacity];
+    transfer(newTable, initHashSeedAsNeeded(newCapacity));
+    table = newTable;
+    threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
+}
+
+//多线程会形成循环链表
+void transfer(Entry[] newTable, boolean rehash) {
+    int newCapacity = newTable.length;
+    for (Entry&lt;K,V&gt; e : table) {
+        while(null != e) {
+            Entry&lt;K,V&gt; next = e.next;
+            if (rehash) {
+                e.hash = null == e.key ? 0 : hash(e.key);
+            }
+            int i = indexFor(e.hash, newCapacity);
+            e.next = newTable[i];//头插法时间复杂度低，但由于会反序导致线程不安全
+            newTable[i] = e;
+            e = next;
+        }
+    }
+</code></pre>
       
     </div>
     
@@ -530,7 +563,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -541,7 +574,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

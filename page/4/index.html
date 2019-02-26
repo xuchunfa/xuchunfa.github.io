@@ -286,6 +286,337 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/02/EffectiveJava笔记/" itemprop="url">Java笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T15:34:14+08:00">
+                2018-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java语言基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java语言基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/02/EffectiveJava笔记/" class="leancloud_visitors" data-flag-title="Java笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.有时可以用静态工厂方法来代替构造器。</p>
+<p>2.带有私有构造函数的类不能被继承。</p>
+<p>3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。</p>
+<p>4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。</p>
+<p>5.为什么静态方法只能访问静态域？</p>
+<pre><code>静态域是属于类的，程序在进行编译的时候就会加载到虚拟机内存的方法区，直到程序退出都会一直存在，而非静态域是和对象挂钩的，需要 new 一个对象，实例域才会在堆中分配内存，对象都还没有怎么能访问非静态域呢？
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/30/Lock详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/30/Lock详解/" itemprop="url">Lock详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T09:19:08+08:00">
+                2018-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/30/Lock详解/" class="leancloud_visitors" data-flag-title="Lock详解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Lock接口</p>
+</blockquote>
+<p>1.lock()：获取锁。</p>
+<p>2.lockInterruptibly():可中断的获取锁，不同于lock(),在锁的获取中可以中断当前线程。</p>
+<p>3.tryLock()：尝试非阻塞的获取锁。</p>
+<p>4.tryLock(long time, TimeUnit unit)：超时获取锁。</p>
+<p>5.unlock()：释放锁。</p>
+<p>6.newCondition()：获取等待通知组件。</p>
+<h4 id="为什么锁的实现中使用组合同步器而不选择继承呢？"><a href="#为什么锁的实现中使用组合同步器而不选择继承呢？" class="headerlink" title="为什么锁的实现中使用组合同步器而不选择继承呢？"></a>为什么锁的实现中使用组合同步器而不选择继承呢？</h4><blockquote>
+<p>队列同步器</p>
+</blockquote>
+<p>1.同步器是实现锁的关键。锁是面象用户的,用户不需要了解其中的底层原理，同步器是面象锁的,是关于锁实现的原理细节。</p>
+<p>2.队列同步器的实现</p>
+<p>独占式同步状态流程图如下：</p>
+<pre><code>//tryAcquire(arg) == false 则获取同步状态失败，线程进入同步队列
+public final void acquire(int arg) {
+    if (!tryAcquire(arg) &amp;&amp;
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+        selfInterrupt();
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/28/单例模式的不同写法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1874,456 +2205,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/23/java动态绑定/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/java动态绑定/" itemprop="url">java动态绑定</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T15:04:48+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java基础/" itemprop="url" rel="index">
-                    <span itemprop="name">java基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/23/java动态绑定/" class="leancloud_visitors" data-flag-title="java动态绑定">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>动态绑定(后期绑定)和前期绑定？</p>
-</blockquote>
-<p>1.普通的方法我们看new后面的是什么类型；(后期绑定)</p>
-<p>2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定)</p>
-<p>3.final，static，private和构造方法是前期绑定的。</p>
-<p>4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。</p>
-<pre><code>public class Father {
-protected String name = &quot;父亲属性&quot;;
-}
-public class Son extends Father {
-    protected String name = &quot;儿子属性&quot;;
-
-    public static void main(String[] args) {
-        Father sample = new Son();
-        System.out.println(&quot;调用的属性：&quot; + sample.name);
-}
-}
-</code></pre><p>上述代码的运行结果: <strong>父亲属性</strong></p>
-<pre><code>public class Father {
-protected String name = &quot;父亲属性&quot;;
-
-public String getName() {
-    return name;
-}
-}　　
-
-public class Son extends Father {
-protected String name = &quot;儿子属性&quot;;
-
-public String getName() {
-    return name;
-}
-
-public static void main(String[] args) {
-    Father sample = new Son();
-    System.out.println(&quot;调用的属性:&quot; + sample.getName());
-}
-}
-</code></pre><p>上述代码的运行结果: <strong>儿子属性</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/21/关于TopK问题的详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/21/关于TopK问题的详解/" itemprop="url">关于TopK问题的详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T15:21:19+08:00">
-                2018-08-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/21/关于TopK问题的详解/" class="leancloud_visitors" data-flag-title="关于TopK问题的详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>在O(N)时间内寻找最大(或最小)的K个数？</p>
-</blockquote>
-<ul>
-<li>Random Select:</li>
-</ul>
-<p>本质上是求第K大或第K小的那个数。</p>
-<pre><code>1.如果是求最小的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot小的值，右边比pivot大。
-
-2.如果是求最大的K个数，则找到坐标为 k-1 的Pivot.左边放是比pivot大的值，右边比pivot小。
-</code></pre><p>如果数组中整数的取值范围不大的话，可以用哈希表的方法解决。</p>
-<p>思路：用一个计数数组来记录每个数字出现的次数。</p>
-<pre><code>时间复杂度：0(n + MAXN)
-
-for(sumCount = 0, v = MAXN-1; v &gt;= 0; v--)
-{
-    sumCount += count[v];
-    if(sumCount &gt;= K)
-        break;
-}
-return v;
-</code></pre><ul>
-<li>堆排序解决</li>
-</ul>
-<p>例如：2亿个整数中求最大的100万之和？</p>
-<p>思路：</p>
-<ol>
-<li>首先建立一个容量为100万（Top K）的int数组，从文件读取整数填充。</li>
-<li>利用堆维护该100万条记录（确保堆顶元素为最小值）</li>
-<li>从文件中读取一个整数与堆顶元素比较，如果大于堆顶元素则替换该元素，并调整堆的结构。</li>
-<li>重复步骤3一直到数据读取完</li>
-<li>将数组中的元素全部相加，得到结果</li>
-</ol>
-<p>代码如下：</p>
-<pre><code>public class TopKProblem {
-
-//时间复杂度:(n-K)*logK 空间复杂度:O(K)
-public static int[] createKtopHeap(int[] num,int k){
-    int length = num.length;
-    int i = 0;
-
-    //通过堆维护Topk元素
-    int[] KNumberHeap = new int[k];
-
-    if(k &gt;= length){
-        k = length;
-        return num;
-    }
-
-    //初始化有k个元素的堆
-    for(; i &lt; k; i++){
-        KNumberHeap[i] = num[i];
-    }
-
-    //构建小顶堆
-    for(int j = KNumberHeap.length/2-1;j &gt;= 0;j--){
-        createMinHeap(KNumberHeap,j,KNumberHeap.length);
-    }
-
-    //从第k+1个元素开始循环,每次都与堆顶元素(K个元素中的最小值)比较,大于就替代然后再调整.
-    for(;i &lt; length;i++){
-        if(num[i] &gt; KNumberHeap[0]){
-            KNumberHeap[0] = num[i];
-            createMinHeap(KNumberHeap,0,KNumberHeap.length);
-        }
-    }
-
-    return KNumberHeap;
-}
-
-private static void createMinHeap(int[] a, int i , int len) {
-    int father = a[i];
-    int j;//j代表子结点坐标 i代表父结点坐标
-
-    while(2*i + 1 &lt; len){//如果i结点在堆顶上的话,需要自顶向下调整
-
-        j = 2*i + 1;
-
-        if(j + 1 &lt; len &amp;&amp; a[j] &gt; a[j+1] )
-            j++;
-
-        if(a[j] &lt; father){
-            a[i] = a[j];
-            i = j;
-        }else {//不用调整的话就不用再向下循环了,子节点都已经调整好了
-            break;
-        }
-    }
-
-    //找到最终位置
-    a[i] = father;
-}
-
-public static void main(String[] args){
-    Random random = new Random();
-    int[] num = new int[15];
-
-    for(int i = 0;i &lt; num.length;i++){
-        num[i] = random.nextInt(50);
-    }
-
-    System.out.println(Arrays.toString(num));
-
-    System.out.println(Arrays.toString(createKtopHeap(num,5)));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2378,7 +2259,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2389,7 +2270,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

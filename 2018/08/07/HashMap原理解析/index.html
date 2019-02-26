@@ -89,7 +89,7 @@
 <meta property="og:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/8h4npik.png">
-<meta property="og:updated_time" content="2018-12-03T11:23:28.913Z">
+<meta property="og:updated_time" content="2019-02-20T11:50:14.947Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap原理解析">
 <meta name="twitter:description" content="哈希表的长度为什么要为2^n?因为当哈希表的长度为2^n次方时，hash &amp;amp; (length-1) == hash % length 查找到哈希表中元素的条件？1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&amp;quot;a&amp;quot;和&amp;quot;a&amp;quot;的hashcode相等）  2.  for (Entry&amp;lt;K,V&amp;gt; e = table">
@@ -470,12 +470,15 @@ private V putForNullKey(V value) {
 </code></pre><p>2.将1步得到的值进行取模运算(取模哈希桶的长度，长度为2^n)，而方法采用的是高效的与运算。咋证明的呢？？？</p>
 <pre><code>i = (table.length - 1) &amp; hash
 </code></pre><p>3.jdk1.8中的rehash的理解。</p>
-<p>在确定元素在新数组的下标时，我们只需要检测元素的hash值与oldCap作与操作的结果是否为0：</p>
+<pre><code>rehash是很耗性能的，所以如果我们知道hashmap元素个数为N，可以计算默认容量，Capacity*0.75 &gt; N
+
+这里的Capacity取2^n次方，直接这样初始化：new HashMap(Capacity)
+</code></pre><p>在确定元素在新数组的下标时，我们只需要检测元素的hash值与oldCap作与操作的结果是否为0：</p>
 <p>为0，那么下标还是原来的下标。</p>
 <p>为1，那么下标等于原来下标加上旧数组长度。</p>
-<pre><code>为0的情况由loHead和loTail这组指针维护。
+<pre><code>为0的情况由loHead和loTail这组指针维护。维护的是旧桶的index在新表中保持不变。
 
-为1的情况由hiHead和hiTail这组指针维护。
+为1的情况由hiHead和hiTail这组指针维护。维护的是旧桶的index在新表中发生改变，变为 newTab[j + oldCap] = hiHead。
 </code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p>
 <h4 id="JDK1-8-HashMap源码中方法的理解？"><a href="#JDK1-8-HashMap源码中方法的理解？" class="headerlink" title="JDK1.8 HashMap源码中方法的理解？"></a>JDK1.8 HashMap源码中方法的理解？</h4><p>1.get(Object key)方法：</p>
 <pre><code>//获取链表中的结点
@@ -554,13 +557,13 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
         Node&lt;K,V&gt; e; K k;
         if (p.hash == hash &amp;&amp;
                 ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
-            e = p;//目标结点直接替代
+            e = p;//目标key已经存在，目标结点直接替代
         else if (p instanceof TreeNode)
             e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
         else {
             for (int binCount = 0; ; ++binCount) {
                 if ((e = p.next) == null) {
-                    p.next = newNode(hash, key, value, null);
+                    p.next = newNode(hash, key, value, null);//尾插法
                     if (binCount &gt;= TREEIFY_THRESHOLD - 1) //插入第7个结点后将链表转化成树
                         treeifyBin(tab, hash);//形成树结点
                     break;
@@ -969,7 +972,7 @@ final Node&lt;K,V&gt;[] resize() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -980,7 +983,7 @@ final Node&lt;K,V&gt;[] resize() {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
