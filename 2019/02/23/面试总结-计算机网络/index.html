@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP面向非连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。  TCP的特点： 可靠、稳定、慢、效率低、占用系统资源高。  UD">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-16T13:47:48.890Z">
+<meta property="og:updated_time" content="2019-03-17T08:32:50.861Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--计算机网络">
 <meta name="twitter:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP面向非连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。  TCP的特点： 可靠、稳定、慢、效率低、占用系统资源高。  UD">
@@ -437,7 +437,27 @@
 </code></pre></li>
 </ol>
 <ol start="3">
-<li>输入URL浏览器发生了什么？</li>
+<li><p>输入URL浏览器发生了什么？</p>
+<pre><code>1.DNS域名解析找到IP地址；
+
+2.TCP连接服务端和客户端；
+
+3.发送HTTP请求；
+
+4.服务器处理请求；
+
+5.返回响应结果；
+
+6.关闭TCP连接（长连接的时候不关闭）；
+
+7.浏览器解析HTML;
+
+8.浏览器布局渲染。
+</code></pre><p> 3.HTTP协议和TCP/IP协议区别？</p>
+<pre><code>1.HTTP协议是应用层协议，主要解决如何包装数据；TCP/IP协议是运输层协议解决数据如何在网络中传输。
+</code></pre></li>
+</ol>
+<ol start="4">
 <li><p>进程和线程的区别？</p>
 <pre><code>1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。
 
@@ -450,7 +470,7 @@
 </ol>
 <ol start="5">
 <li><p>进程的通信方式？</p>
-<pre><code>1.管道：半双工、数据单向流动、具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程同信。
+<pre><code>1.管道：半双工、数据单向流动、具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程通信。
 2.信号量：计数器、控制多个进程访问共享资源。
 3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。
 4.信号：通知接受事件发生。
@@ -463,7 +483,7 @@
 
 2.第二次握手：检查并设置标志位ACK=1 SYN=1和发送确认序号ack number=i+1 server_sequence=j,服务端SYN_RECV状态；
 
-3.第三次握手：检查标志位ACK=1和发送确认序号ack=j+1,ESTABLISH.(这里要是出现ack丢失的情况不会重传没有数据的ack,而是重传第二次握手时的数据)
+3.第三次握手：检查标志位ACK=1和发送确认序号ack=j+1,客户端进入ESTABLISH状态.(这里要是出现ack丢失的情况不会重传没有数据的ack,而是重传第二次握手时的数据)
 
 4.第一次挥手: FIN=i,客户端FIN_WAIT1状态；
 
@@ -473,15 +493,21 @@
 
 7.第四次挥手：发送ACK=j+1，客户端进入TIME_WAIT状态（关闭客户端读通道），服务器收到ACK后（关闭服务器写通道）；
 </code></pre><p> 注：</p>
-<pre><code>1.TIME_WAIT=2MSL(Maximum Segment Lifetime)的原因？
+<pre><code>1.TIME_WAIT=2MSL(Maximum Segment Lifetime最长报文寿命)的原因？
 
     1.1 保证全双工的TCP连接能够可靠关闭。因为万一服务端没收到ACK，则会重新发送FIN，但是客户端已经关闭了也就找不到与FIN对应的连接了。
 
-    1.2 保证这次连接的重复数据从网络中消失。新连接的端口号可能与旧端口号一致，导致新建立的TCP连接出现脏数据。
+    1.2 保证这次连接的重复数据（残留报文）从网络中消失（因为可能重传报文都收到了，但原始报文还在路上）。新连接的端口号可能与旧端口号一致，导致新建立的TCP连接出现脏数据。
+
+    1.3 作用是为了重传最后一个ACK报文。
 
 2.为什么是4次挥手？
 
     这里把ACK报文和FIN报文分开发是为了确保数据能完整得到传输。当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即可能你还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了。
+
+3.TCP第三次握手ACK丢失后的处理？
+
+    ACK丢失，服务端的TCP连接的撞状态为SYN_RECV，等待3s、6s、12s后重新发送SYN+ACK包，其中服务端重新发送SYN+ACK的次数默认值是5，如果仍未收到ACK,一段时间后服务端自动关闭这个连接，但是Client认为这个连接已经建立，如果Client端向Server写数据，Server端将以RST包(用于强制关闭tcp连接)响应，方能感知到Server的错误。
 </code></pre></li>
 </ol>
 <p>参考文献：</p>
@@ -513,15 +539,37 @@
 
     状态码：
 
-        1.200 OK:处理成功；
+        成功状态码：
 
-        2.303 See Other:重定向其他页面;
+            1.1 200 OK:处理成功；
 
-        3.304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;
+            1.2 204 No Content:请求处理成功，但没有资源返回；
 
-        4.404 Not Found:页面不存在；
+        重定向状态码：
 
-        5.500 Internal Server Error：服务器内部发生错误；
+            2.1 301 Moved Permanently:永久重定向；
+
+            2.2 302 Found:临时性重定向；
+
+            2.3 303 See Other:重定向其他页面;
+
+            2.4 304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;
+
+        客户端错误状态码：
+
+            4.1 400 Bad Request:请求报文中存在语法错误；
+
+            4.2 401 Unauthorized：需要有通过Http认证的认证信息；
+
+            4.3 403 Forbidden:访问被拒绝；
+
+            4.4 404 Not Found:页面不存在（无法找到请求资源）；
+
+        服务器错误状态码：
+
+            5.1 500 Internal Server Error：服务器内部发生错误；
+
+            5.2 503 Service Unavailable：服务器处于超负荷或者正在停机维护；
 
     2.2 响应头
 
@@ -531,18 +579,61 @@
 
     1.生成针对目标Web服务器的HTTP请求报文；
 
-    2.http协议是无状态的协议，服务器不会记录客户端的信息，解放了服务器但可能会传输大量重复信息。通过Cookie来维系客户端和服务器之间的状态。
+    2.http协议是无状态的协议，服务器不会记录客户端的信息，解放了服务器但可能会传输大量重复信息。通过Cookie来维系客户端和服务器之间的状态。、
+
+4.http和https区别
+
+     1.HTTPS协议由HTTP+SSL(Secure Sockets Layer)协议构建的可进行加密传输数据、身份认证的网络协议。
+
+    2.HTTP端口号80，HTTPS端口号443;
+
+5.HTTPS工作原理
+
+    1.客户端发起HTTPS请求，三次握手；
+
+    2.服务端配置。配置数字证书，即公钥和密钥；
+
+    3.服务端传送证书。即传送公钥给客户端；
+
+    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；
+
+    5.传输加密信息。浏览器随机生成一个对称加密的密钥k（临时会话密钥），密钥k是在客户端和服务端共享的，用证书中的公钥加密k,得到密文k&apos;；
+
+    6.服务端解密信息。用私钥拿到k，并使用密钥k加密传输的数据；
+
+    7.传输服务端加密后的信息；
+
+    8.客户端解密信息。使用共享密钥k解密数据。
 </code></pre><p>参考文献：</p>
 <p><a href="https://blog.csdn.net/u010256388/article/details/68491509" target="_blank" rel="noopener">HTTP请求行、请求头、请求体详解</a>    </p>
 <ol start="8">
-<li>Get请求和Post请求有什么区别？</li>
+<li><p>Get请求和Post请求有什么区别？</p>
+<pre><code>1.Get请求的数据会附在URI之后，Post把提交的数据放在HTTP请求体中；
+
+2.Get的长度受受限于浏览器URI的长度(2K个字节)，所以一般来说，GET请求传递的数据要比POST请求少；
+
+3.POST比GET安全性高。
+
+4.GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会保留；
+
+5.GET只接受ASCII字符，POST没有限制；
+
+6.GET产生一个数据包：对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据
+
+  POST请求产生二个数据包：浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 OK（返回数据）
+</code></pre></li>
+</ol>
+<ol start="9">
 <li><p>Session和Cookie的区别？</p>
-<pre><code>Session:服务器端保存的数据结构；可以放在内存、数据库、文件中等；
+<pre><code>Session:服务器端保存的数据结构；可以放在内存、数据库、文件中等；Session的实现对客户端Cookie有依赖关系。
 
-Cookie:客户端保存用户信息的机制，实现Session的一种方式，如果Cookie被禁用会通过
-URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；
+Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实现Session的一种方式，如果Cookie被禁用会通过URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；
 
-总结:cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存，是针对某一次会话而言；
+总结:
+
+1.cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存，是针对某一次会话而言；
+
+2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
 </code></pre></li>
 </ol>
 
