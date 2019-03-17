@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet中的filter? Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？">
+<meta name="description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet创建的过程？ Servlet中的filter？ Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？ Ser">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Spring框架基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Spring框架基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet中的filter? Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？">
+<meta property="og:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet创建的过程？ Servlet中的filter？ Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？ Ser">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-23T02:09:59.651Z">
+<meta property="og:updated_time" content="2019-03-16T13:58:25.367Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Spring框架基础">
-<meta name="twitter:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet中的filter? Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？">
+<meta name="twitter:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet创建的过程？ Servlet中的filter？ Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？ Ser">
 
 
 
@@ -418,8 +418,10 @@
 <li>Spring的入口？</li>
 <li>SpringMVC 的 Controller 中返回值有哪些？</li>
 <li>Servlet 和 JSP 的区别？</li>
-<li>Servlet中的filter?</li>
+<li>Servlet创建的过程？</li>
+<li>Servlet中的filter？</li>
 <li>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</li>
+<li>Servlet中的变量是否需要加锁？</li>
 </ol>
 
       

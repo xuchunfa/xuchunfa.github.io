@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ AQS和CAS原理？ synchronized底层实现原理？ synchronized和lock的区别？ volatile作用，指令重排相关？ Re">
+<meta name="description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？ synchronized底层实现原理？ synchronized">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java并发编程">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ AQS和CAS原理？ synchronized底层实现原理？ synchronized和lock的区别？ volatile作用，指令重排相关？ Re">
+<meta property="og:description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？ synchronized底层实现原理？ synchronized">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-23T01:57:32.986Z">
+<meta property="og:updated_time" content="2019-03-16T05:48:53.959Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
-<meta name="twitter:description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ AQS和CAS原理？ synchronized底层实现原理？ synchronized和lock的区别？ volatile作用，指令重排相关？ Re">
+<meta name="twitter:description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？ synchronized底层实现原理？ synchronized">
 
 
 
@@ -418,13 +418,14 @@
 <li>死锁的产生的原因以及怎么预防？ </li>
 <li>int a = 1; 是原子性操作吗？</li>
 <li>新的任务提交到线程池，线程池是怎样处理？</li>
+<li>线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？</li>
 <li>AQS和CAS原理？</li>
 <li>synchronized底层实现原理？</li>
 <li>synchronized和lock的区别？</li>
 <li>volatile作用，指令重排相关？</li>
 <li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
 <li>线程执行过程中遇到异常会发生什么，怎样处理？</li>
-<li>进程和线程的区别？</li>
+<li>java创建线程的方式？</li>
 </ol>
 
       

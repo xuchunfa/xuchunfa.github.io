@@ -81,19 +81,21 @@
 
 
 
-<meta name="description" content="Java类初始化顺序？ Java new一个对象的过程中发生了什么？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ 答：3个。  JVM GC复制算法/GC算法是怎么实现的？  Java内存结构？      JVM内存溢出情况：  ![](https://i.imgur.com/FFDc1GQ.png)       1.线程共享：方法区（">
+<meta name="description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结-Java虚拟机">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="Java类初始化顺序？ Java new一个对象的过程中发生了什么？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ 答：3个。  JVM GC复制算法/GC算法是怎么实现的？  Java内存结构？      JVM内存溢出情况：  ![](https://i.imgur.com/FFDc1GQ.png)       1.线程共享：方法区（">
+<meta property="og:description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/4mNb2Rd.png">
+<meta property="og:image" content="https://i.imgur.com/aM4TR6l.png">
 <meta property="og:image" content="https://i.imgur.com/SwBcYyJ.png">
-<meta property="og:updated_time" content="2019-02-25T12:29:57.256Z">
+<meta property="og:updated_time" content="2019-03-05T13:57:03.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java虚拟机">
-<meta name="twitter:description" content="Java类初始化顺序？ Java new一个对象的过程中发生了什么？ 对方法区和永久区解的理以及它们之间关系的理解？ 一个java文件有3个类，编译后有几个class文件？ 答：3个。  JVM GC复制算法/GC算法是怎么实现的？  Java内存结构？      JVM内存溢出情况：  ![](https://i.imgur.com/FFDc1GQ.png)       1.线程共享：方法区（">
-<meta name="twitter:image" content="https://i.imgur.com/SwBcYyJ.png">
+<meta name="twitter:description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
+<meta name="twitter:image" content="https://i.imgur.com/4mNb2Rd.png">
 
 
 
@@ -413,14 +415,213 @@
 
       
         <ol>
-<li>Java类初始化顺序？</li>
-<li>Java new一个对象的过程中发生了什么？</li>
+<li><p>Java类加载以及类初始化顺序？</p>
+<pre><code>1.类加载的生命周期：
+
+加载、连接（验证、准备、解析）、初始化、使用、卸载。
+
+2.类初始化（类加载）的时机：
+
+    2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);
+
+    2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;
+
+    2.3 初始化父类；(接口初始化不会初始化父类)
+
+    2.4 main方法所属类；
+
+3.细分一下加载的生命周期：
+
+    3.1 验证（文件格式验证、元数据验证、字节码验证、符号引用验证）
+
+    3.2 准备（设置类变量的初始值）
+
+    3.3 解析（类或接口的解析、字段解析、类方法解析、接口方法解析）
+
+4.类初始化的顺序：
+
+    4.1  &lt;clinit&gt;()方法收集类中所有类变量和静态代码块初始化，父类优于子类而且在多线程环境下初始化时虚拟机保证只有一个线程去执行初始化方法，且只初始化一次。
+
+    4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量---父类构造函数---子类构造函数
+</code></pre></li>
+</ol>
+<ol start="3">
 <li>对方法区和永久区解的理以及它们之间关系的理解？</li>
 <li><p>一个java文件有3个类，编译后有几个class文件？</p>
 <pre><code>答：3个。
 </code></pre></li>
-<li><p>JVM GC复制算法/GC算法是怎么实现的？</p>
-</li>
+<li><p>JVM GC算法的前戏？</p>
+<p> 首先弄清楚判断对象是否存活的算法：</p>
+<pre><code>1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。
+
+缺点：无法解决循环引用的问题。
+
+2.可达性分析算法。对象到GC Roots 不可达则回收，反之不回收。
+
+2.1 可作为GC Roots的对象：
+
+    1.虚拟机栈（栈帧中）引用的对象。
+
+    2.方法区类静态属性引用的对象。
+
+    3.方法区常量引用的对象。
+
+    4.native方法中引用的对象。
+</code></pre><p> 永久代收集的什么垃圾？</p>
+<pre><code>1.废弃常量。没有任何引用。
+
+2.无用的类。所有实例都被回收、类加载器被回收、对象没有在任何地方引用。、
+</code></pre></li>
+<li><p>JVM GC算法核心内容？</p>
+<pre><code>1.标记-回收算法。判断是否存活，标记并清除。
+
+缺点：
+
+1.1 标记和回收效率低。
+
+1.2 大量内存碎片。
+
+2.复制算法。将内存分为两块，只用其中一块，然后将存活对象复制到空的那块内存。
+
+优点：
+
+2.1 效率高。
+
+2.2 没有内存碎片。
+
+缺点：
+
+2.1 只有一般内存可用，代价大。解决办法是划分为1个Eden2个Survivor(比例8:1:1)只有10%空间没用。这样做的缺点是万一存活对象大于10%则必须依赖老年代进行分配担保。
+
+2.1 不适合对象存活率高的情况，这样频繁复制影响效率。适合新生代，不适合老年代。
+
+3.标记-整理算法。所有存活对象移动到一边，清除边界外的内存。
+
+优点：
+
+3.1 适合老年代对象存活率高的情况。
+</code></pre><p> 总结：</p>
+<pre><code>Java垃圾回收一般是采用分代回收的，将java堆分成老年代和新生代。新生代特点对象存活率低，采用复制算法，老年代反之采用标记-整理/标记-清除算法。
+</code></pre></li>
+<li><p>JVM 垃圾收集器核心内容？</p>
+<p> 首先看个整体图，连线表示可以搭配使用。</p>
+<p> <img src="https://i.imgur.com/4mNb2Rd.png" alt=""></p>
+<p> 新生代（复制算法）：</p>
+<pre><code>1.Serial 收集器
+
+优点：
+
+    1.1 单线程、单CPU效率高、适合Client模式。
+
+缺点：
+
+    1.1 暂停所有工作线程（STW）,会有不良体验。
+
+2.ParNew 收集器
+
+优点：
+
+    2.1 多线程收集、适合Server模式。
+
+    2.1 除Serial外，唯一可以和CMS组合使用的收集器。
+
+缺点：
+
+    2.1 仍然不可避免STW。
+
+3.Parallel Scavenge 收集器
+
+ 优点：
+
+    3.1 吞吐量可控、自适应调节策略。
+</code></pre><p> 老年代：</p>
+<pre><code>4.Serial Old 收集器（标记-整理）
+
+优点：
+
+    4.1 单线程、单CPU效率高、适合Client模式。
+
+缺点：
+
+    4.1 暂停所有工作线程（STW）,会有不良体验。
+
+5.Parallel Old 收集器（标记-整理）
+
+优点：
+
+    5.1 多线程，搭配 Parallel Scavenge 使用效率高，适合Server端。
+
+6.CMS 收集器（标记-清除）
+
+整个过程：
+
+    1.初始标记（STW）
+
+    2.并发标记
+
+    3.重新标记（STW）
+
+    4.并发清除
+
+优点：
+
+    6.1 最少回收停顿时间。因为在并发标记和并发清除时，用户线程和收集线程并发工作。
+
+缺点：
+
+    6.1 多线程多CPU资源敏感。CPU不足时，垃圾收集线程占CPU将近50%，这大大降低了用户程序的执行速度。
+
+    6.2 无法处理浮动垃圾。浮动垃圾指在并发清除时，用户线程新产生的垃圾。由于这些垃圾的产生所以在设置-XX:CMSInitiatingOccupancyFraction（启动CMS时内存的阈值）时得注意给CMS
+    收集线程预留内存，否则会出现“Concurrent Model Failure”,临时启用Serial Old（单线程），性能下降。
+
+    6.3 会产生内存碎片。通过设置-XX：+UseCMSCompactAtFullCollection参数，在要进行Full GC时碎片整理。默认值为0表示每次要进入Full GC 时进行碎片整理。
+
+7.G1收集器
+</code></pre></li>
+</ol>
+<p><a href="https://www.cnblogs.com/duanxz/p/6102580.html" target="_blank" rel="noopener">G1 收集器的详解</a></p>
+<pre><code>重点部分总结：
+
+7.1 Region区域图解如下：
+</code></pre><p><img src="https://i.imgur.com/aM4TR6l.png" alt=""></p>
+<pre><code>    1.划分Region区域（默认2048），逻辑连续物理不连续，每个Region大小范围1M到32M(2的n次方)是通过参数堆的大小和Region个数计算出来的。其中humongous代表一组连续的Region区域，
+    用于存放大小超过默认Region大小50%的对象。
+
+7.2 年轻代的回收模式
+
+    1.主要是对Eden区进行GC，会发生Stop The World事件、同时会计算Eden和Survivor的大小
+
+
+7.3 mix GC模式
+
+    mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.
+
+    步骤：
+
+        1.初始标记(STW)
+
+        2.并发标记
+
+        3.最终标记（STW）
+
+        4.筛选回收
+
+7.3 Full GC模式：单线程、全局扫描堆然后标记清除代价昂贵。
+
+优点：
+
+    1.解决了CMS中内存碎片的问题。
+
+    2.能够在指定时间片内优先回收价值最大的Region。
+</code></pre><p>5.哪些对象会进入到老年代？</p>
+<pre><code>1.大对象。对Serial和parNew收集器而言，参数-XX:PretenureSizeThreshold代表对象大小如果大于它的值，则直接分配到老年代。
+
+2.年龄达到阈值（默认15岁）。Minor GC 进入到Survivor，此时年龄为1，继续存活年龄将不断增加。
+
+3.动态年龄判定。Surviovr区中年龄相等的对象占了整个Survivor大小的一半以上，则年龄大于或等于该年龄的对象将进入老年代。
+
+4.空间分配担保。如果晋升到老年代的对象的平均大小 小于 老年代的剩余空间则发生担保，Eden内的所有存活对象进入到老年代，否则担保失败，发生Full GC.(比Minor GC 慢10倍)
+</code></pre><ol start="5">
 <li><p>Java内存结构？ </p>
 <p> <img src="https://i.imgur.com/SwBcYyJ.png" alt=""></p>
 </li>
@@ -460,6 +661,8 @@
 </code></pre></li>
 <li><p>加载器双亲委派模型及破坏？</p>
 </li>
+</ol>
+<ol start="8">
 <li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p>
 <p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p>
 </li>

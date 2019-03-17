@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-23T06:25:38.901Z">
+<meta property="og:updated_time" content="2019-02-26T11:30:46.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
 <meta name="twitter:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
@@ -417,7 +417,7 @@
 <li>HashMap线程不安全的原因？</li>
 </ol>
 <p>参考文献：</p>
-<p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a><br>注：最后一步 next=null </p>
+<p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a>注：最后一步 next=null </p>
 <p>不安全原因在于多线程发生扩容时：</p>
 <pre><code>void resize(int newCapacity) {
     Entry[] oldTable = table;

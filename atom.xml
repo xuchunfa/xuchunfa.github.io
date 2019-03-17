@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2019-02-23T02:03:08.563Z</updated>
+  <updated>2019-03-16T13:47:48.890Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -21,20 +21,21 @@
     <link href="http://www.xuchunfa.cn/2019/02/23/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     <id>http://www.xuchunfa.cn/2019/02/23/面试总结-计算机网络/</id>
     <published>2019-02-23T01:57:49.000Z</published>
-    <updated>2019-02-23T02:03:08.563Z</updated>
+    <updated>2019-03-16T13:47:48.890Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>TCP和UDP的区别？</li><li>TCP如何保证可靠性，拥塞控制如何实现？</li><li>输入URL浏览器发生了什么？</li></ol>]]></content>
+    <content type="html"><![CDATA[<ol><li><p>TCP和UDP的区别？</p><pre><code>1.TCP面向连接的，UDP面向非连接的。2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达3.TCP面向字节流，UDP面向报文。4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。</code></pre><p> TCP的特点：</p><pre><code>可靠、稳定、慢、效率低、占用系统资源高。</code></pre><p> UDP的特点：</p><pre><code>传递数据快、不可靠丢包</code></pre></li><li><p>TCP如何保证可靠性，拥塞控制如何实现？</p><pre><code>1.确认和重传；2.数据校验；3.数据合理分片；4.流量控制：当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。5.拥塞控制；</code></pre></li></ol><ol start="3"><li>输入URL浏览器发生了什么？</li><li><p>进程和线程的区别？</p><pre><code>1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。4.多进程程序更强壮，多线程程序只要有一个线程挂了，进程就死掉了，但不会影响其他进程。</code></pre></li></ol><ol start="5"><li><p>进程的通信方式？</p><pre><code>1.管道：半双工、数据单向流动、具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程同信。2.信号量：计数器、控制多个进程访问共享资源。3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。4.信号：通知接受事件发生。5.共享内存：最快IPC通信、结合信号量使用。6.嵌套字：可用于不同机器间的进程通信。</code></pre></li><li><p>TCP的三次握手和四次挥手以及为什么是四次挥手？</p><p> 总结：</p><pre><code>1.第一次握手：标志位SYN=1 ACK=0,client_sequence=i,客户端SYN_SEND状态；2.第二次握手：检查并设置标志位ACK=1 SYN=1和发送确认序号ack number=i+1 server_sequence=j,服务端SYN_RECV状态；3.第三次握手：检查标志位ACK=1和发送确认序号ack=j+1,ESTABLISH.(这里要是出现ack丢失的情况不会重传没有数据的ack,而是重传第二次握手时的数据)4.第一次挥手: FIN=i,客户端FIN_WAIT1状态；5.第二次挥手：ACK=i+1,服务端CLOSED_WAIT状态（关闭服务器读通道）；客户端收到ACK进入FIN_WAIT2状态（关闭客户端写通道）；6.第三次挥手：服务端发送完数据以后，向客户端发送FIN=j,服务端进入到LAST_ACK状态；7.第四次挥手：发送ACK=j+1，客户端进入TIME_WAIT状态（关闭客户端读通道），服务器收到ACK后（关闭服务器写通道）；</code></pre><p> 注：</p><pre><code>1.TIME_WAIT=2MSL(Maximum Segment Lifetime)的原因？    1.1 保证全双工的TCP连接能够可靠关闭。因为万一服务端没收到ACK，则会重新发送FIN，但是客户端已经关闭了也就找不到与FIN对应的连接了。    1.2 保证这次连接的重复数据从网络中消失。新连接的端口号可能与旧端口号一致，导致新建立的TCP连接出现脏数据。2.为什么是4次挥手？    这里把ACK报文和FIN报文分开发是为了确保数据能完整得到传输。当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即可能你还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了。</code></pre></li></ol><p>参考文献：</p><p><a href="https://blog.csdn.net/smileiam/article/details/78226816" target="_blank" rel="noopener">TCP的三次握手、四次挥手</a>        </p><ol start="7"><li>http协议？http和https的区别？http的结构及状态码？</li></ol><pre><code>1.http请求结构    1.1 请求行        eg:POST /addStudent/addStu.html HTTP/1.1    1.2 请求头        Accept:客户端接受什么类型的响应；        Cookie、Cache-Control:响应数据在客户端的缓存控制；....    1.3 请求体        eg:name=xuchunfa&amp;gender=male&amp;age=182.http响应结构    2.1 响应行        eg:HTTP/1.1 200 OK    状态码：        1.200 OK:处理成功；        2.303 See Other:重定向其他页面;        3.304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;        4.404 Not Found:页面不存在；        5.500 Internal Server Error：服务器内部发生错误；    2.2 响应头        eg:Server、Content-Type、Set-Cookie等等；3.http协议    1.生成针对目标Web服务器的HTTP请求报文；    2.http协议是无状态的协议，服务器不会记录客户端的信息，解放了服务器但可能会传输大量重复信息。通过Cookie来维系客户端和服务器之间的状态。</code></pre><p>参考文献：</p><p><a href="https://blog.csdn.net/u010256388/article/details/68491509" target="_blank" rel="noopener">HTTP请求行、请求头、请求体详解</a>    </p><ol start="8"><li>Get请求和Post请求有什么区别？</li><li><p>Session和Cookie的区别？</p><pre><code>Session:服务器端保存的数据结构；可以放在内存、数据库、文件中等；Cookie:客户端保存用户信息的机制，实现Session的一种方式，如果Cookie被禁用会通过URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；总结:cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存，是针对某一次会话而言；</code></pre></li></ol>]]></content>
     
     <summary type="html">
     
       
       
         &lt;ol&gt;
-&lt;li&gt;TCP和UDP的区别？&lt;/li&gt;
-&lt;li&gt;TCP如何保证可靠性，拥塞控制如何实现？&lt;/li&gt;
-&lt;li&gt;输入URL浏览器发生了什么？&lt;/li&gt;
-&lt;/ol&gt;
+&lt;li&gt;&lt;p&gt;TCP和UDP的区别？&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1.TCP面向连接的，UDP面向非连接的。
 
+2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达
+
+3.T
       
     
     </summary>
@@ -79,9 +80,9 @@
     <link href="http://www.xuchunfa.cn/2019/02/18/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93-Spring%E6%A1%86%E6%9E%B6%E5%9F%BA%E7%A1%80/"/>
     <id>http://www.xuchunfa.cn/2019/02/18/面试总结-Spring框架基础/</id>
     <published>2019-02-18T12:18:34.000Z</published>
-    <updated>2019-02-23T02:09:59.651Z</updated>
+    <updated>2019-03-16T13:58:25.367Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>AOP和IOC原理？</li><li>Spring怎样解决循环依赖的问题？</li><li>DispatchServlet怎样分发任务的？</li><li>注解的原理？</li><li>Spring的入口？</li><li>SpringMVC 的 Controller 中返回值有哪些？</li><li>Servlet 和 JSP 的区别？</li><li>Servlet中的filter?</li><li>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</li></ol>]]></content>
+    <content type="html"><![CDATA[<ol><li>AOP和IOC原理？</li><li>Spring怎样解决循环依赖的问题？</li><li>DispatchServlet怎样分发任务的？</li><li>注解的原理？</li><li>Spring的入口？</li><li>SpringMVC 的 Controller 中返回值有哪些？</li><li>Servlet 和 JSP 的区别？</li><li>Servlet创建的过程？</li><li>Servlet中的filter？</li><li>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</li><li>Servlet中的变量是否需要加锁？</li></ol>]]></content>
     
     <summary type="html">
     
@@ -110,9 +111,9 @@
     <link href="http://www.xuchunfa.cn/2019/02/18/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93-Java%E9%9B%86%E5%90%88/"/>
     <id>http://www.xuchunfa.cn/2019/02/18/面试总结-Java集合/</id>
     <published>2019-02-18T12:16:24.000Z</published>
-    <updated>2019-02-23T06:25:38.901Z</updated>
+    <updated>2019-02-26T11:30:46.921Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</li><li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li><li>ArrayList以及LinkedList？</li><li>HashMap线程不安全的原因？</li></ol><p>参考文献：</p><p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a><br>注：最后一步 next=null </p><p>不安全原因在于多线程发生扩容时：</p><pre><code>void resize(int newCapacity) {    Entry[] oldTable = table;    int oldCapacity = oldTable.length;    if (oldCapacity == MAXIMUM_CAPACITY) {        threshold = Integer.MAX_VALUE;        return;    }    Entry[] newTable = new Entry[newCapacity];    transfer(newTable, initHashSeedAsNeeded(newCapacity));    table = newTable;    threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);}//多线程会形成循环链表void transfer(Entry[] newTable, boolean rehash) {    int newCapacity = newTable.length;    for (Entry&lt;K,V&gt; e : table) {        while(null != e) {            Entry&lt;K,V&gt; next = e.next;            if (rehash) {                e.hash = null == e.key ? 0 : hash(e.key);            }            int i = indexFor(e.hash, newCapacity);            e.next = newTable[i];//头插法时间复杂度低，但由于会反序导致线程不安全            newTable[i] = e;            e = next;        }    }</code></pre>]]></content>
+    <content type="html"><![CDATA[<ol><li>可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</li><li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li><li>ArrayList以及LinkedList？</li><li>HashMap线程不安全的原因？</li></ol><p>参考文献：</p><p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a>注：最后一步 next=null </p><p>不安全原因在于多线程发生扩容时：</p><pre><code>void resize(int newCapacity) {    Entry[] oldTable = table;    int oldCapacity = oldTable.length;    if (oldCapacity == MAXIMUM_CAPACITY) {        threshold = Integer.MAX_VALUE;        return;    }    Entry[] newTable = new Entry[newCapacity];    transfer(newTable, initHashSeedAsNeeded(newCapacity));    table = newTable;    threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);}//多线程会形成循环链表void transfer(Entry[] newTable, boolean rehash) {    int newCapacity = newTable.length;    for (Entry&lt;K,V&gt; e : table) {        while(null != e) {            Entry&lt;K,V&gt; next = e.next;            if (rehash) {                e.hash = null == e.key ? 0 : hash(e.key);            }            int i = indexFor(e.hash, newCapacity);            e.next = newTable[i];//头插法时间复杂度低，但由于会反序导致线程不安全            newTable[i] = e;            e = next;        }    }</code></pre>]]></content>
     
     <summary type="html">
     
@@ -167,9 +168,9 @@
     <link href="http://www.xuchunfa.cn/2019/02/18/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93-Mysql%E5%9F%BA%E7%A1%80/"/>
     <id>http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/</id>
     <published>2019-02-18T11:54:38.000Z</published>
-    <updated>2019-02-23T02:01:39.710Z</updated>
+    <updated>2019-03-16T05:49:34.350Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li><li>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</li><li>数据库的四个隔离级别，Mysql属于哪一种？</li></ol>]]></content>
+    <content type="html"><![CDATA[<ol><li>B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li><li>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</li><li>数据库的四个隔离级别，Mysql属于哪一种？</li><li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li><li>索引最左匹配原则？</li><li>事务的特性以及事务的隔离级别？</li><li>Mysql引擎？</li></ol>]]></content>
     
     <summary type="html">
     
@@ -179,8 +180,7 @@
 &lt;li&gt;B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？&lt;/li&gt;
 &lt;li&gt;Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？&lt;/li&gt;
 &lt;li&gt;数据库的四个隔离级别，Mysql属于哪一种？&lt;/li&gt;
-&lt;/ol&gt;
-
+&lt;li&gt;索引有哪几种？索引的好处？什么时候用
       
     
     </summary>
@@ -225,9 +225,9 @@
     <link href="http://www.xuchunfa.cn/2019/02/18/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93-Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
     <id>http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/</id>
     <published>2019-02-18T11:48:38.000Z</published>
-    <updated>2019-02-23T01:57:32.986Z</updated>
+    <updated>2019-03-16T05:48:53.959Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>ReadWriteLock读写之间互斥吗？</li><li>Semaphore拿到执行权的线程之间是否互斥？</li><li>写一个生产者消费者模式？</li><li>写一个死锁？</li><li>死锁的产生的原因以及怎么预防？ </li><li>int a = 1; 是原子性操作吗？</li><li>新的任务提交到线程池，线程池是怎样处理？</li><li>AQS和CAS原理？</li><li>synchronized底层实现原理？</li><li>synchronized和lock的区别？</li><li>volatile作用，指令重排相关？</li><li>ReentrantLock 是可重入锁，什么是可重入锁？</li><li>线程执行过程中遇到异常会发生什么，怎样处理？</li><li>进程和线程的区别？</li></ol>]]></content>
+    <content type="html"><![CDATA[<ol><li>ReadWriteLock读写之间互斥吗？</li><li>Semaphore拿到执行权的线程之间是否互斥？</li><li>写一个生产者消费者模式？</li><li>写一个死锁？</li><li>死锁的产生的原因以及怎么预防？ </li><li>int a = 1; 是原子性操作吗？</li><li>新的任务提交到线程池，线程池是怎样处理？</li><li>线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？</li><li>AQS和CAS原理？</li><li>synchronized底层实现原理？</li><li>synchronized和lock的区别？</li><li>volatile作用，指令重排相关？</li><li>ReentrantLock 是可重入锁，什么是可重入锁？</li><li>线程执行过程中遇到异常会发生什么，怎样处理？</li><li>java创建线程的方式？</li></ol>]]></content>
     
     <summary type="html">
     
@@ -256,9 +256,9 @@
     <link href="http://www.xuchunfa.cn/2019/02/18/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93-Java%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
     <id>http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/</id>
     <published>2019-02-18T11:41:52.000Z</published>
-    <updated>2019-02-18T11:48:11.552Z</updated>
+    <updated>2019-03-16T05:43:51.121Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>private修饰的方法可以通过反射访问，那么private的意义何在？</li><li>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</li></ol>]]></content>
+    <content type="html"><![CDATA[<ol><li>private修饰的方法可以通过反射访问，那么private的意义何在？</li><li>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</li><li>接口和抽象的区别？</li><li>重写和重载的区别？</li><li>Object类有哪些方法？以及具体用到哪？</li><li>java的浅拷贝和深拷贝？</li></ol>]]></content>
     
     <summary type="html">
     
@@ -267,8 +267,9 @@
         &lt;ol&gt;
 &lt;li&gt;private修饰的方法可以通过反射访问，那么private的意义何在？&lt;/li&gt;
 &lt;li&gt;局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？&lt;/li&gt;
-&lt;/ol&gt;
-
+&lt;li&gt;接口和抽象的区别？&lt;/li&gt;
+&lt;li&gt;重写和重载的区别？&lt;/li&gt;
+&lt;li&gt;Objec
       
     
     </summary>
@@ -285,20 +286,23 @@
     <link href="http://www.xuchunfa.cn/2019/02/18/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93-Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
     <id>http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/</id>
     <published>2019-02-18T11:32:52.000Z</published>
-    <updated>2019-02-25T12:29:57.256Z</updated>
+    <updated>2019-03-05T13:57:03.544Z</updated>
     
-    <content type="html"><![CDATA[<ol><li>Java类初始化顺序？</li><li>Java new一个对象的过程中发生了什么？</li><li>对方法区和永久区解的理以及它们之间关系的理解？</li><li><p>一个java文件有3个类，编译后有几个class文件？</p><pre><code>答：3个。</code></pre></li><li><p>JVM GC复制算法/GC算法是怎么实现的？</p></li><li><p>Java内存结构？ </p><p> <img src="https://i.imgur.com/SwBcYyJ.png" alt=""></p></li></ol><pre><code>JVM内存溢出情况：![](https://i.imgur.com/FFDc1GQ.png)    1.线程共享：方法区（永久代）和堆区。    2.线程私有：虚拟机栈（栈内存）、程序计数器和本地方法栈（native方法）。    3.堆内存存放内容：java对象、数组。    4.方法区存放内容：常量、静态变量、虚拟机加载的类信息和即时编译器编译后的代码。    注：    4.1 运行时常量池（常量池）是方法区的一部分。    4.2 Class文件内容组成：类的版本、字段、方法、接口等描述信息和常量池；常量池放编译期生成的(.class文件)各种字面量和符号引用。    5.对象的内存布局：对象头、实例数据和对齐填充。对象头包括：哈希码、GC分代年龄、锁状态标志、线程持有的锁等。</code></pre><ol start="6"><li><p>Object object = new Object(); 初始化的顺序是什么？在JVM各区域做了什么？</p><p> <a href="https://blog.csdn.net/Rainnnbow/article/details/52149586https://blog.csdn.net/Rainnnbow/article/details/52149586" target="_blank" rel="noopener">new之后JVM都做了什么？</a></p><pre><code>步骤：1.检查类加载2.堆中分配内存，初始化为零（除对象头）3.设置对象对象头信息4.程序中自定义的数据</code></pre></li><li><p>加载器双亲委派模型及破坏？</p></li><li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p><p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p></li><li><p>syn锁，jvm里面分成偏向锁、轻量级锁、重量级锁，其之间的转换过程是怎么样的，各自适用场景是什么样的，偏向锁情况产生竞争一定会膨胀成轻量级锁吗，为什么只能单向转换，比如偏向锁变成轻量级锁变成重量级锁之后不会在竞争消失之后在回到偏向锁，必须要重启jvm才行，是出于什么情况考虑的？</p></li></ol>]]></content>
+    <content type="html"><![CDATA[<ol><li><p>Java类加载以及类初始化顺序？</p><pre><code>1.类加载的生命周期：加载、连接（验证、准备、解析）、初始化、使用、卸载。2.类初始化（类加载）的时机：    2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);    2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;    2.3 初始化父类；(接口初始化不会初始化父类)    2.4 main方法所属类；3.细分一下加载的生命周期：    3.1 验证（文件格式验证、元数据验证、字节码验证、符号引用验证）    3.2 准备（设置类变量的初始值）    3.3 解析（类或接口的解析、字段解析、类方法解析、接口方法解析）4.类初始化的顺序：    4.1  &lt;clinit&gt;()方法收集类中所有类变量和静态代码块初始化，父类优于子类而且在多线程环境下初始化时虚拟机保证只有一个线程去执行初始化方法，且只初始化一次。    4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量---父类构造函数---子类构造函数</code></pre></li></ol><ol start="3"><li>对方法区和永久区解的理以及它们之间关系的理解？</li><li><p>一个java文件有3个类，编译后有几个class文件？</p><pre><code>答：3个。</code></pre></li><li><p>JVM GC算法的前戏？</p><p> 首先弄清楚判断对象是否存活的算法：</p><pre><code>1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。缺点：无法解决循环引用的问题。2.可达性分析算法。对象到GC Roots 不可达则回收，反之不回收。2.1 可作为GC Roots的对象：    1.虚拟机栈（栈帧中）引用的对象。    2.方法区类静态属性引用的对象。    3.方法区常量引用的对象。    4.native方法中引用的对象。</code></pre><p> 永久代收集的什么垃圾？</p><pre><code>1.废弃常量。没有任何引用。2.无用的类。所有实例都被回收、类加载器被回收、对象没有在任何地方引用。、</code></pre></li><li><p>JVM GC算法核心内容？</p><pre><code>1.标记-回收算法。判断是否存活，标记并清除。缺点：1.1 标记和回收效率低。1.2 大量内存碎片。2.复制算法。将内存分为两块，只用其中一块，然后将存活对象复制到空的那块内存。优点：2.1 效率高。2.2 没有内存碎片。缺点：2.1 只有一般内存可用，代价大。解决办法是划分为1个Eden2个Survivor(比例8:1:1)只有10%空间没用。这样做的缺点是万一存活对象大于10%则必须依赖老年代进行分配担保。2.1 不适合对象存活率高的情况，这样频繁复制影响效率。适合新生代，不适合老年代。3.标记-整理算法。所有存活对象移动到一边，清除边界外的内存。优点：3.1 适合老年代对象存活率高的情况。</code></pre><p> 总结：</p><pre><code>Java垃圾回收一般是采用分代回收的，将java堆分成老年代和新生代。新生代特点对象存活率低，采用复制算法，老年代反之采用标记-整理/标记-清除算法。</code></pre></li><li><p>JVM 垃圾收集器核心内容？</p><p> 首先看个整体图，连线表示可以搭配使用。</p><p> <img src="https://i.imgur.com/4mNb2Rd.png" alt=""></p><p> 新生代（复制算法）：</p><pre><code>1.Serial 收集器优点：    1.1 单线程、单CPU效率高、适合Client模式。缺点：    1.1 暂停所有工作线程（STW）,会有不良体验。2.ParNew 收集器优点：    2.1 多线程收集、适合Server模式。    2.1 除Serial外，唯一可以和CMS组合使用的收集器。缺点：    2.1 仍然不可避免STW。3.Parallel Scavenge 收集器 优点：    3.1 吞吐量可控、自适应调节策略。</code></pre><p> 老年代：</p><pre><code>4.Serial Old 收集器（标记-整理）优点：    4.1 单线程、单CPU效率高、适合Client模式。缺点：    4.1 暂停所有工作线程（STW）,会有不良体验。5.Parallel Old 收集器（标记-整理）优点：    5.1 多线程，搭配 Parallel Scavenge 使用效率高，适合Server端。6.CMS 收集器（标记-清除）整个过程：    1.初始标记（STW）    2.并发标记    3.重新标记（STW）    4.并发清除优点：    6.1 最少回收停顿时间。因为在并发标记和并发清除时，用户线程和收集线程并发工作。缺点：    6.1 多线程多CPU资源敏感。CPU不足时，垃圾收集线程占CPU将近50%，这大大降低了用户程序的执行速度。    6.2 无法处理浮动垃圾。浮动垃圾指在并发清除时，用户线程新产生的垃圾。由于这些垃圾的产生所以在设置-XX:CMSInitiatingOccupancyFraction（启动CMS时内存的阈值）时得注意给CMS    收集线程预留内存，否则会出现“Concurrent Model Failure”,临时启用Serial Old（单线程），性能下降。    6.3 会产生内存碎片。通过设置-XX：+UseCMSCompactAtFullCollection参数，在要进行Full GC时碎片整理。默认值为0表示每次要进入Full GC 时进行碎片整理。7.G1收集器</code></pre></li></ol><p><a href="https://www.cnblogs.com/duanxz/p/6102580.html" target="_blank" rel="noopener">G1 收集器的详解</a></p><pre><code>重点部分总结：7.1 Region区域图解如下：</code></pre><p><img src="https://i.imgur.com/aM4TR6l.png" alt=""></p><pre><code>    1.划分Region区域（默认2048），逻辑连续物理不连续，每个Region大小范围1M到32M(2的n次方)是通过参数堆的大小和Region个数计算出来的。其中humongous代表一组连续的Region区域，    用于存放大小超过默认Region大小50%的对象。7.2 年轻代的回收模式    1.主要是对Eden区进行GC，会发生Stop The World事件、同时会计算Eden和Survivor的大小7.3 mix GC模式    mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.    步骤：        1.初始标记(STW)        2.并发标记        3.最终标记（STW）        4.筛选回收7.3 Full GC模式：单线程、全局扫描堆然后标记清除代价昂贵。优点：    1.解决了CMS中内存碎片的问题。    2.能够在指定时间片内优先回收价值最大的Region。</code></pre><p>5.哪些对象会进入到老年代？</p><pre><code>1.大对象。对Serial和parNew收集器而言，参数-XX:PretenureSizeThreshold代表对象大小如果大于它的值，则直接分配到老年代。2.年龄达到阈值（默认15岁）。Minor GC 进入到Survivor，此时年龄为1，继续存活年龄将不断增加。3.动态年龄判定。Surviovr区中年龄相等的对象占了整个Survivor大小的一半以上，则年龄大于或等于该年龄的对象将进入老年代。4.空间分配担保。如果晋升到老年代的对象的平均大小 小于 老年代的剩余空间则发生担保，Eden内的所有存活对象进入到老年代，否则担保失败，发生Full GC.(比Minor GC 慢10倍)</code></pre><ol start="5"><li><p>Java内存结构？ </p><p> <img src="https://i.imgur.com/SwBcYyJ.png" alt=""></p></li></ol><pre><code>JVM内存溢出情况：![](https://i.imgur.com/FFDc1GQ.png)    1.线程共享：方法区（永久代）和堆区。    2.线程私有：虚拟机栈（栈内存）、程序计数器和本地方法栈（native方法）。    3.堆内存存放内容：java对象、数组。    4.方法区存放内容：常量、静态变量、虚拟机加载的类信息和即时编译器编译后的代码。    注：    4.1 运行时常量池（常量池）是方法区的一部分。    4.2 Class文件内容组成：类的版本、字段、方法、接口等描述信息和常量池；常量池放编译期生成的(.class文件)各种字面量和符号引用。    5.对象的内存布局：对象头、实例数据和对齐填充。对象头包括：哈希码、GC分代年龄、锁状态标志、线程持有的锁等。</code></pre><ol start="6"><li><p>Object object = new Object(); 初始化的顺序是什么？在JVM各区域做了什么？</p><p> <a href="https://blog.csdn.net/Rainnnbow/article/details/52149586https://blog.csdn.net/Rainnnbow/article/details/52149586" target="_blank" rel="noopener">new之后JVM都做了什么？</a></p><pre><code>步骤：1.检查类加载2.堆中分配内存，初始化为零（除对象头）3.设置对象对象头信息4.程序中自定义的数据</code></pre></li><li><p>加载器双亲委派模型及破坏？</p></li></ol><ol start="8"><li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p><p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p></li><li><p>syn锁，jvm里面分成偏向锁、轻量级锁、重量级锁，其之间的转换过程是怎么样的，各自适用场景是什么样的，偏向锁情况产生竞争一定会膨胀成轻量级锁吗，为什么只能单向转换，比如偏向锁变成轻量级锁变成重量级锁之后不会在竞争消失之后在回到偏向锁，必须要重启jvm才行，是出于什么情况考虑的？</p></li></ol>]]></content>
     
     <summary type="html">
     
       
       
         &lt;ol&gt;
-&lt;li&gt;Java类初始化顺序？&lt;/li&gt;
-&lt;li&gt;Java new一个对象的过程中发生了什么？&lt;/li&gt;
-&lt;li&gt;对方法区和永久区解的理以及它们之间关系的理解？&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;一个java文件有3个类，编译后有几个class文件？&lt;/p&gt;
-&lt;pre&gt;&lt;code
+&lt;li&gt;&lt;p&gt;Java类加载以及类初始化顺序？&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1.类加载的生命周期：
+
+加载、连接（验证、准备、解析）、初始化、使用、卸载。
+
+2.类初始化（类加载）的时机：
+
+    2.1 new 关键字、直接调用类的静态变量、静态方法（final修
       
     
     </summary>
