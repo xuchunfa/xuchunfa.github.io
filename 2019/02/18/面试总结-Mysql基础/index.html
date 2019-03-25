@@ -81,17 +81,22 @@
 
 
 
-<meta name="description" content="B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？ Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库的四个隔离级别，Mysql属于哪一种？ 索引有哪几种？索引的好处？什么时候用？索引的原理？ 索引最左匹配原则？ 事务的特性以及事务的隔离级别？ Mysql引擎？">
+<meta name="description" content="B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。  Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库事务特性以及四个隔离级别，Mysql属于哪一种？  隔离级别详解 1.事">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Mysql基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？ Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库的四个隔离级别，Mysql属于哪一种？ 索引有哪几种？索引的好处？什么时候用？索引的原理？ 索引最左匹配原则？ 事务的特性以及事务的隔离级别？ Mysql引擎？">
+<meta property="og:description" content="B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。  Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库事务特性以及四个隔离级别，Mysql属于哪一种？  隔离级别详解 1.事">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-16T05:49:34.350Z">
+<meta property="og:image" content="https://i.imgur.com/DUI0Os9.png">
+<meta property="og:image" content="https://i.imgur.com/qnwHm9Q.png">
+<meta property="og:image" content="https://i.imgur.com/CuYvDQi.png">
+<meta property="og:image" content="https://i.imgur.com/UvVpFDi.png">
+<meta property="og:updated_time" content="2019-03-19T13:43:29.074Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Mysql基础">
-<meta name="twitter:description" content="B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？ Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库的四个隔离级别，Mysql属于哪一种？ 索引有哪几种？索引的好处？什么时候用？索引的原理？ 索引最左匹配原则？ 事务的特性以及事务的隔离级别？ Mysql引擎？">
+<meta name="twitter:description" content="B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。  Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库事务特性以及四个隔离级别，Mysql属于哪一种？  隔离级别详解 1.事">
+<meta name="twitter:image" content="https://i.imgur.com/DUI0Os9.png">
 
 
 
@@ -411,13 +416,75 @@
 
       
         <ol>
-<li>B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
+<li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
+</ol>
+<p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
+<pre><code>1.作为文件系统以及数据库系统的索引结构；
+
+2.B树的关键字和data域放在了一起；
+
+3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。
+</code></pre><ol start="2">
 <li>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</li>
-<li>数据库的四个隔离级别，Mysql属于哪一种？</li>
+<li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
+</ol>
+<p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
+<pre><code>1.事务特性：原子性、一致性、隔离性和持久性；
+
+2.事务隔离级别：
+
+    2.1 读未提交：出现脏读，读取另一个未提交事务的数据；
+
+    2.2 读已提交：造成不可重复读，即在同一个事务中读到两次不同的结果；
+
+    2.3 可重复读：出现幻读，一个事务中读取的数据一致；
+</code></pre><p>幻读的例子：</p>
+<p><img src="https://i.imgur.com/DUI0Os9.png" alt=""></p>
+<pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
+
+        1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
+
+        2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
+
+3.MySQL的默认隔离级别：可重复读；
+</code></pre><ol start="4">
 <li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
-<li>索引最左匹配原则？</li>
-<li>事务的特性以及事务的隔离级别？</li>
-<li>Mysql引擎？</li>
+</ol>
+<p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
+<pre><code>1.普通索引
+
+    eg:ALTER TABLE stu add INDEX index_id(id);
+</code></pre><p>使用索引前：</p>
+<p><img src="https://i.imgur.com/qnwHm9Q.png" alt=""></p>
+<p>使用索引后：</p>
+<p><img src="https://i.imgur.com/CuYvDQi.png" alt=""></p>
+<pre><code>2.唯一索引：索引列的值必须唯一，但允许为空。
+
+    eg:ALTER TABLE stu add UNIQUE index_id(id);
+
+3.主键索引：特殊的唯一索引，索引列的值不允许为空。
+</code></pre><p><img src="https://i.imgur.com/UvVpFDi.png" alt=""></p>
+<pre><code>4.组合索引：默认最左前缀的结果。
+
+    eg:alter table stu add index id_name_note(id,name(10),note);
+
+     相当于分别建立了：
+
+    1.（id,name,note）索引
+
+    2.（id,name）索引
+
+    3.（id）索引
+</code></pre><p>索引失效的情况：</p>
+<pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引;
+
+2.在列上进行运算将会使索引失效；
+
+3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
+</code></pre><ol start="7">
+<li><p>Mysql引擎？</p>
+<pre><code>InnoDB引擎
+</code></pre></li>
 </ol>
 
       
@@ -534,7 +601,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -286,6 +286,211 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/计数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/计数排序/" itemprop="url">计数排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T12:32:23+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/04/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>核心思想：</strong>哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。</p>
+<p>计数排序示意图：</p>
+<p><img src="https://i.imgur.com/TsgETfY.png" alt=""></p>
+<pre><code>public class CountSort {
+
+//数组数字在0 ~ k之间
+public static int[] countSort(int[] a,int k){
+
+    int[] elementCounter = new int[k+1];
+
+    for(int i = 0;i&lt;a.length;i++){
+        elementCounter[a[i]]++;
+    }
+
+    //构造计数数组(即小于等于该元素的个数)
+    for(int j = 1;j&lt;elementCounter.length;j++){
+        elementCounter[j] = elementCounter[j-1]+elementCounter[j];
+    }
+
+
+    int[] result = new int[a.length];
+
+    //从原数组末尾开始遍历
+    for(int i = a.length-1;i&gt;=0;i--){
+        result[elementCounter[a[i]]-1] = a[i];
+        elementCounter[a[i]]--;
+    }
+
+    return result;
+}
+
+//优化方法只用了一个辅助数组
+public static void optCountSort(int[] a,int k){
+    int[] c = new int[k+1];
+    for(int i = 0;i &lt; a.length;i++){
+        c[a[i]]++;
+    }
+    int z = 0;
+    for(int j = 0;j &lt;= k;j++){
+        while (c[j] &gt; 0){
+            a[z++] = j;
+            c[j]--;
+        }
+    }
+}
+
+public static void main(String[] args){
+    int[] a = {6,5,4,3,2,1};
+    int[] result = new int[a.length];
+    result = CountSort.countSort(a,6);
+    System.out.println(Arrays.toString(result));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/03/希尔排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -390,7 +595,7 @@
       
         
           
-            <h4 id="希尔排序示意图"><a href="#希尔排序示意图" class="headerlink" title="希尔排序示意图"></a>希尔排序示意图</h4><p><img src="https://images2015.cnblogs.com/blog/1024555/201611/1024555-20161128110416068-1421707828.png" alt=""></p>
+            <h4 id="希尔排序示意图"><a href="#希尔排序示意图" class="headerlink" title="希尔排序示意图"></a>希尔排序示意图</h4><p><img src="https://i.imgur.com/StGMWOa.png" alt=""></p>
 <pre><code>public class ShellSort {
 
 public static void shellSort(int[] a){
@@ -589,7 +794,7 @@ public static void main(String[] args){
           
             <p><strong>什么叫分治思想？</strong></p>
 <p>分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之</p>
-<p><img src="https://images2015.cnblogs.com/blog/1024555/201612/1024555-20161218163120151-452283750.png" alt=""></p>
+<p><img src="https://i.imgur.com/fZZRzbL.png" alt=""></p>
 <pre><code>public class MergeSort {
 
 //临时数组
@@ -1015,7 +1220,6 @@ public static void heapSort(int[] a){
     }
 
     int len = a.length;
-    //构建大顶堆
     for(int i = len/2-1;i&gt;=0;i--){
         createHeap(a,i,len);
     }
@@ -1032,14 +1236,13 @@ private static void swap(int[] a, int i, int j) {
     a[j] = temp;
 }
 
+//构建大顶堆
 private static void createHeap(int[] a,int i,int len) {
 
     int father = a[i];
-    int j;//j代表子结点坐标 i代表父结点坐标
+    int j = 2i+1;//j代表子结点坐标 i代表父结点坐标
 
-    while(2*i + 1 &lt; len){
-
-        j = 2*i + 1;
+    while(j &lt; len){
 
         if(j + 1 &lt; len &amp;&amp; a[j] &lt; a[j+1] )
             j++;
@@ -1050,9 +1253,29 @@ private static void createHeap(int[] a,int i,int len) {
         }else {
             break;
         }
+        j = 2*i+1;
     }
 
     //找到最终位置
+    a[i] = father;
+}
+
+//构建小顶堆
+public static void createMinHeap(int[] a,int i,int length){
+    int father = a[i];
+    int j = 2*i + 1;
+    while (j &lt; length){
+        if(j+1 &lt; length &amp;&amp; a[j] &gt; a[j+1]){
+            j++;
+        }
+        if(a[j] &lt; father){
+            a[i] = a[j];
+            i = j;
+        }else {
+            break;
+        }
+        j = 2*i+1;
+    }
     a[i] = father;
 }
 
@@ -2232,280 +2455,11 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/24/二叉树的下一个结点/" itemprop="url">二叉树的下一个结点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T22:16:23+08:00">
-                2018-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/24/二叉树的下一个结点/" class="leancloud_visitors" data-flag-title="二叉树的下一个结点">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public class ParentBinaryTree {
-
-ParentBinaryTreeNode root;
-
-public void createTree(ParentBinaryTreeNode node,int data){
-
-    if(this.root == null){
-        root = new ParentBinaryTreeNode(data);
-    }else {
-        //二叉查找树
-        if(data &lt; node.data){
-            if(node.left == null){
-                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
-                node.left = temp;
-                temp.parent = node;
-            }else {
-                createTree(node.left,data);
-            }
-        }else {
-            if(node.right == null){
-                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
-                node.right = temp;
-                temp.parent = node;
-            }else {
-                createTree(node.right,data);
-            }
-        }
-    }
-}
-
-//中序遍历,递归实现
-public void inOrder(ParentBinaryTreeNode node){
-    if(node == null)
-        return;
-
-    inOrder(node.left);
-    System.out.print(node.data + &quot; &quot;);
-    inOrder(node.right);
-}
-
-//找出中序遍历中的下一个点
-public ParentBinaryTreeNode searchNext(ParentBinaryTreeNode node,int data){
-
-    if(node == null){
-        throw new RuntimeException(&quot;空树&quot;);
-    }
-
-    ParentBinaryTreeNode dataNode = searchData(node,data);
-
-    ParentBinaryTreeNode next = null;
-
-    if(dataNode == null){
-        throw new RuntimeException(&quot;不存在该值&quot;);
-    }else{
-        //有右子树
-        if(dataNode.right != null){
-            ParentBinaryTreeNode temp = dataNode.right;
-            while (temp.left != null){
-                temp = temp.left;
-            }
-            next = temp;
-        }else if(dataNode.parent != null){//等于null说明是根节点
-            ParentBinaryTreeNode current =  dataNode;
-            ParentBinaryTreeNode parent = current.parent;
-            while (parent != null &amp;&amp; parent.right == current){
-                current = parent;
-                parent = parent.parent;
-            }
-            next = parent;//parent有可能为null
-        }
-    }
-    return next;
-}
-
-private ParentBinaryTreeNode searchData(ParentBinaryTreeNode node, int data) {
-
-    if(node == null){
-       return null;
-    }
-
-    if(node.data == data){
-        return node;
-    }else if(searchData(node.left,data) != null){
-        return searchData(node.left,data);
-    }else
-        return searchData(node.right,data);
-}
-
-public static void main(String[] args){
-
-    ParentBinaryTree tree = new ParentBinaryTree();
-
-    //for(int i = 2;i&lt;10;i++){
-    //    tree.createTree(tree.root,i);
-    //}
-
-    tree.createTree(tree.root,9);
-    tree.createTree(tree.root,5);
-    tree.createTree(tree.root,3);
-    tree.createTree(tree.root,7);
-    tree.createTree(tree.root,6);
-    tree.createTree(tree.root,8);
-    tree.createTree(tree.root,12);
-    tree.createTree(tree.root,10);
-    tree.createTree(tree.root,14);
-
-    tree.inOrder(tree.root);
-    System.out.println();
-
-    ParentBinaryTreeNode node = tree.searchNext(tree.root,5);
-    if(node != null){
-        System.out.println(node.data);
-    }else {
-        System.out.println(&quot;最后一个结点&quot;);
-    }
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2555,7 +2509,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

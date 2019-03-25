@@ -89,7 +89,7 @@
 <meta property="og:description" content="核心思想：哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。 计数排序示意图：  public class CountSort {  //数组数字在0 ~ k之间 public static int[] countSort(int[] a,int k){      int[] elementCounter = new int[k+1];      for(int i = 0;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/TsgETfY.png">
-<meta property="og:updated_time" content="2018-08-26T14:23:32.901Z">
+<meta property="og:updated_time" content="2019-03-25T01:07:08.012Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计数排序">
 <meta name="twitter:description" content="核心思想：哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。 计数排序示意图：  public class CountSort {  //数组数字在0 ~ k之间 public static int[] countSort(int[] a,int k){      int[] elementCounter = new int[k+1];      for(int i = 0;">
@@ -416,10 +416,8 @@ public static int[] countSort(int[] a,int k){
     }
 
     //构造计数数组(即小于等于该元素的个数)
-    int preSum = elementCounter[0];
     for(int j = 1;j&lt;elementCounter.length;j++){
-        elementCounter[j] = preSum + elementCounter[j];
-        preSum = elementCounter[j];
+        elementCounter[j] = elementCounter[j-1]+elementCounter[j];
     }
 
 
@@ -432,6 +430,21 @@ public static int[] countSort(int[] a,int k){
     }
 
     return result;
+}
+
+//优化方法只用了一个辅助数组
+public static void optCountSort(int[] a,int k){
+    int[] c = new int[k+1];
+    for(int i = 0;i &lt; a.length;i++){
+        c[a[i]]++;
+    }
+    int z = 0;
+    for(int j = 0;j &lt;= k;j++){
+        while (c[j] &gt; 0){
+            a[z++] = j;
+            c[j]--;
+        }
+    }
 }
 
 public static void main(String[] args){
@@ -556,7 +569,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

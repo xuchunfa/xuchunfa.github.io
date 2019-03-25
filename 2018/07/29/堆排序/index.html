@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="堆排序？public class HeapSort {  public static void heapSort(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      int len = a.length;     //构建大顶堆     for(int i =">
+<meta name="description" content="堆排序？public class HeapSort {  public static void heapSort(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      int len = a.length;     for(int i = len/2-1;i&amp;gt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="堆排序">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/29/堆排序/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="堆排序？public class HeapSort {  public static void heapSort(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      int len = a.length;     //构建大顶堆     for(int i =">
+<meta property="og:description" content="堆排序？public class HeapSort {  public static void heapSort(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      int len = a.length;     for(int i = len/2-1;i&amp;gt">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-29T15:14:08.962Z">
+<meta property="og:updated_time" content="2019-03-24T13:35:28.422Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="堆排序">
-<meta name="twitter:description" content="堆排序？public class HeapSort {  public static void heapSort(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      int len = a.length;     //构建大顶堆     for(int i =">
+<meta name="twitter:description" content="堆排序？public class HeapSort {  public static void heapSort(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      int len = a.length;     for(int i = len/2-1;i&amp;gt">
 
 
 
@@ -408,7 +408,6 @@ public static void heapSort(int[] a){
     }
 
     int len = a.length;
-    //构建大顶堆
     for(int i = len/2-1;i&gt;=0;i--){
         createHeap(a,i,len);
     }
@@ -425,14 +424,13 @@ private static void swap(int[] a, int i, int j) {
     a[j] = temp;
 }
 
+//构建大顶堆
 private static void createHeap(int[] a,int i,int len) {
 
     int father = a[i];
-    int j;//j代表子结点坐标 i代表父结点坐标
+    int j = 2i+1;//j代表子结点坐标 i代表父结点坐标
 
-    while(2*i + 1 &lt; len){
-
-        j = 2*i + 1;
+    while(j &lt; len){
 
         if(j + 1 &lt; len &amp;&amp; a[j] &lt; a[j+1] )
             j++;
@@ -443,9 +441,29 @@ private static void createHeap(int[] a,int i,int len) {
         }else {
             break;
         }
+        j = 2*i+1;
     }
 
     //找到最终位置
+    a[i] = father;
+}
+
+//构建小顶堆
+public static void createMinHeap(int[] a,int i,int length){
+    int father = a[i];
+    int j = 2*i + 1;
+    while (j &lt; length){
+        if(j+1 &lt; length &amp;&amp; a[j] &gt; a[j+1]){
+            j++;
+        }
+        if(a[j] &lt; father){
+            a[i] = a[j];
+            i = j;
+        }else {
+            break;
+        }
+        j = 2*i+1;
+    }
     a[i] = father;
 }
 
@@ -579,7 +597,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

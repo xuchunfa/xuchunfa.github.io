@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
+<meta name="description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java集合">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java集合/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
+<meta property="og:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-26T11:30:46.921Z">
+<meta property="og:updated_time" content="2019-03-23T08:29:58.494Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
-<meta name="twitter:description" content="可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？ ArrayList以及LinkedList？ HashMap线程不安全的原因？  参考文献： HashMap线程不安全的">
+<meta name="twitter:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
 
 
 
@@ -411,9 +411,27 @@
 
       
         <ol>
-<li>可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</li>
+<li><p>可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</p>
+<pre><code>1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，
+
+会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。
+
+2.使用自身迭代器解决上述问题。
+</code></pre></li>
+</ol>
+<ol start="2">
 <li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
-<li>ArrayList以及LinkedList？</li>
+<li>Vector、ArrayList以及LinkedList？</li>
+</ol>
+<p>注意：</p>
+<pre><code>1.remove(int index)设计到了本地方法：
+
+    System.arraycopy(array(数据要被拷贝的数组),srcPos(数据被拷贝的起始坐标)，destArray(目的数组)，destPos(目的数组的起始坐标)，len(要被拷贝的数据的长度))；
+</code></pre><p>总结：</p>
+<pre><code>1.LinkedList底层双向链表，Node&lt;E&gt;节点，first和last指针，插入删除效率高，不需要扩容；
+
+2.ArrayList底层数组结构,数组动态扩容，无参构造数组大小为0，当添加第一个元素后，数组扩容为10，当添加第11个元素时进行扩容newCap = oldCap + oldCap*1.5,通过Arrays.copyOf(elementData,newCapacity)返回新数组；
+</code></pre><ol start="4">
 <li>HashMap线程不安全的原因？</li>
 </ol>
 <p>参考文献：</p>
@@ -448,6 +466,89 @@ void transfer(Entry[] newTable, boolean rehash) {
             e = next;
         }
     }
+</code></pre><p>5.关于concurrentHashMap的理解</p>
+<p><a href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap%E7%9A%84%E7%90%86%E8%A7%A3/">concurrentHashMap JDK1.7和JDK1.8的理解</a></p>
+<p>注意：</p>
+<pre><code>1.JDK1.8 和JDK1.7 concurrentHashMap不允许key或value为null
+  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
+
+2.JDK1.7 concurrentHashMap的每个Segment中含有一个
+  transient volatile HashEntry&lt;K,V&gt;[]table，保证了entryAt/setEntryAt的可见性；
+</code></pre><p>总结：</p>
+<pre><code>1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
+
+2.JDK1.8 concurrentHashMap的put操作：
+
+    2.1 通过casTabAt(tab, i, null,new Node&lt;K,V&gt;(hash, key, value, null)方法中的
+
+        U.compareAndSwapObject(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, c, v)CAS方法
+
+        在表头Node&lt;K,V&gt;[] table中插入节点；
+
+    2.2 采用synchronized + CAS的思想。synchronized锁住的是hash值相等的链表tab[i]的头节点；
+
+    2.3 采用尾插法插入新节点；
+
+3.JDK1.8 concurrentHashMap的get操作：
+
+    3.1 读操作没有加锁。key的hash值小于0就去红黑树中查找；hash值大于0就去链表中查找。
+
+    3.2 利用volatile线程可见性 (Node&lt;K,V&gt;)U.getObjectVolatile(tab,i);
+
+
+4.JDK1.7 concurrentHashMap的put操作：
+
+    4.1 获取segment的位置后尝试获取锁，获取到锁后node=null;没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
+
+    4.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
+
+        没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
+
+        最大尝试次数MAX_SCAN_RETRIES则加锁等待。
+
+    4.3 因为插入节点采用的头插法，所以在scanAndLockForPut会判断first有无发生变化，发生变化（有线
+
+        程加入节点）则重新遍历链表；
+
+
+5.JDK1.7 concurrentHashMap的get操作：
+
+    5.1 读操作没有加锁。通过volatile读语义保证可见性。只有当put和remove调用
+    setEntryAt（table,i）方法后（已经释放锁），读操作才能读到变化的table;
+
+    5.2 通过UNSAFE.getObjectVolatile(table,i)获得Segment&lt;K,V&gt;或HashEntry&lt;K,V&gt;[]的表头节点
+
+    保证了线程之间的可见性；
+</code></pre><p>6.关于HashMap的理解</p>
+<p>注意：</p>
+<pre><code>1.JDK1.7 和 JDK1.8 的hashMap都允许key为null,放在table[0]里面；
+</code></pre><p>总结：</p>
+<pre><code>1.JDK1.8 HashMap的resize操作：
+
+    1.1 新的数组长度和Threshold是旧数组对应原值的两倍；
+
+    1.2 旧数组中链表在新数组中的位置确定方法：
+
+        //loHead和loTail维护在新数组中位置不变的链表
+        //hiHead和hiTail维护在新数组中位置发生变化的链表
+        if(hash &amp; oldCap == 0){
+            newTab[j] = loHead;//在新数组中的位置保持不变
+        }else{
+            newTab[j+oldCap] = hiHead;//在新数组中的位置变成j+oldCap
+        } 
+
+2.JDK1.8 HashMap的get和put操作：
+
+    2.1 新加了红黑树的数据结构；
+
+
+3.JDK1.7 HashMap的resize操作：
+
+    3.1 重新计算每个元素在新数组中的位置，采用头插法插入元素到新数组中，线程不安全；
+
+4.JDK1.7 HashMap的get和put操作：
+
+    4.1 普通链表结构；
 </code></pre>
       
     </div>
@@ -563,7 +664,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

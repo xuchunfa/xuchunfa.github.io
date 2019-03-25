@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet创建的过程？ Servlet中的filter？ Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？ Ser">
+<meta name="description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ 1.Servlet控制业务流程，JSP动态生成网页；  2.JSP第一次被访问时会被容器编译为Servlet类；  3.Servlet接受Tomcat发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Spring框架基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Spring框架基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet创建的过程？ Servlet中的filter？ Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？ Ser">
+<meta property="og:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ 1.Servlet控制业务流程，JSP动态生成网页；  2.JSP第一次被访问时会被容器编译为Servlet类；  3.Servlet接受Tomcat发">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-16T13:58:25.367Z">
+<meta property="og:updated_time" content="2019-03-23T13:59:46.487Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Spring框架基础">
-<meta name="twitter:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ Servlet创建的过程？ Servlet中的filter？ Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？ Ser">
+<meta name="twitter:description" content="AOP和IOC原理？ Spring怎样解决循环依赖的问题？ DispatchServlet怎样分发任务的？ 注解的原理？ Spring的入口？ SpringMVC 的 Controller 中返回值有哪些？ Servlet 和 JSP 的区别？ 1.Servlet控制业务流程，JSP动态生成网页；  2.JSP第一次被访问时会被容器编译为Servlet类；  3.Servlet接受Tomcat发">
 
 
 
@@ -417,11 +417,70 @@
 <li>注解的原理？</li>
 <li>Spring的入口？</li>
 <li>SpringMVC 的 Controller 中返回值有哪些？</li>
-<li>Servlet 和 JSP 的区别？</li>
-<li>Servlet创建的过程？</li>
-<li>Servlet中的filter？</li>
-<li>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</li>
-<li>Servlet中的变量是否需要加锁？</li>
+<li><p>Servlet 和 JSP 的区别？</p>
+<pre><code>1.Servlet控制业务流程，JSP动态生成网页；
+
+2.JSP第一次被访问时会被容器编译为Servlet类；
+
+3.Servlet接受Tomcat发送过来的request和response;
+</code></pre><p> Servlet的四大域对象：</p>
+<pre><code>1.Page域：作用域为整个JSP页面；
+
+2.Request域：一次请求一个request;
+
+3.Session域：一次会话一个session;
+
+4.Application域：作用于整个服务器端，服务器开启对象创建，关闭服务器对象销毁；例如ServletContext通过request.getServletContext（)获得；
+</code></pre><p> JSP的九大内置对象：</p>
+<pre><code>1.request、response、pageContext、session、application、out、config、page、exception;
+</code></pre></li>
+<li><p>Servlet创建的过程？</p>
+</li>
+</ol>
+<ol start="8">
+<li><p>Servlet中的filter？</p>
+<p> 生命周期：</p>
+<pre><code>1.init()
+
+2.doFilter(ServletRequest req,ServletResponse resp,Filterchain chain)
+
+3.destroy()
+</code></pre></li>
+</ol>
+<ol start="9">
+<li><p>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</p>
+<p> 生命周期：</p>
+<pre><code>1.加载Servlet类并创建实例，若存在则不会创建了；
+
+2.init():每个Servlet只会被初始化一次；
+
+3.service():执行Post/GET/DELETE等等请求方法；
+
+4.destroy():仅执行一次；
+</code></pre><p> Servlet单实例多线程</p>
+<pre><code>1.设计成单例减少了创建Servlet实例的开销；
+
+2.容器每接收到一个请求就会通过线程池分配到一个线程，同一请求的多个线程并发执行；
+
+3.所以为了线程安全最好不要在Servlet中用实例变量，或使用synchronied同步；
+
+4.不要使用线程不安全的集合；
+</code></pre><p> Servlet如何处理多个请求同时访问？</p>
+<pre><code>1.Servlet加载实例化；
+
+2.容器初始化Servlet;
+
+3.Servlet容器通过调度线程给处理请求；
+
+4.线程执行service()方法；
+
+5.请求结束，放回线程池，等到被调用；
+</code></pre></li>
+</ol>
+<ol start="10">
+<li><p>Servlet中的变量是否需要加锁？</p>
+<p>实例变量需要考虑同步。</p>
+</li>
 </ol>
 
       
@@ -538,7 +597,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

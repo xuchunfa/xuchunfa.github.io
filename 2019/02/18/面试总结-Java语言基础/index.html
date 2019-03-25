@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 重写和重载的区别？ Object类有哪些方法？以及具体用到哪？ java的浅拷贝和深拷贝？">
+<meta name="description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java语言基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 重写和重载的区别？ Object类有哪些方法？以及具体用到哪？ java的浅拷贝和深拷贝？">
+<meta property="og:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-16T05:43:51.121Z">
+<meta property="og:updated_time" content="2019-03-21T11:05:50.166Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java语言基础">
-<meta name="twitter:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 重写和重载的区别？ Object类有哪些方法？以及具体用到哪？ java的浅拷贝和深拷贝？">
+<meta name="twitter:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是">
 
 
 
@@ -413,8 +413,15 @@
         <ol>
 <li>private修饰的方法可以通过反射访问，那么private的意义何在？</li>
 <li>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</li>
-<li>接口和抽象的区别？</li>
-<li>重写和重载的区别？</li>
+<li><p>接口和抽象的区别？</p>
+<pre><code>1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。
+
+2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是自底向上设计的，接口是自顶向下设计的。
+
+3.门和报警器的例子。将门抽象为一个类，实现报警功能的接口。抽象类是一种“is-a”的关系，接口代表的是“like-a”的关系。
+</code></pre></li>
+<li><p>重写和重载的区别？</p>
+</li>
 <li>Object类有哪些方法？以及具体用到哪？</li>
 <li>java的浅拷贝和深拷贝？</li>
 </ol>
@@ -533,7 +540,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

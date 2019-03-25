@@ -286,6 +286,195 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/24/未优化快排/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/24/未优化快排/" itemprop="url">未优化快排</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T20:10:30+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/03/24/未优化快排/" class="leancloud_visitors" data-flag-title="未优化快排">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>//有序数组直接选择第一个元素作轴效果不理想
+public class NormalQuickSort {
+
+public int partion(int[] a,int start,int end){
+    int pivot = a[start];
+    int i = start;
+    int j = end;
+    while (i &lt; j){
+        while (i &lt; j &amp;&amp; a[j] &gt;= pivot){
+            j--;
+        }
+        a[i] = a[j];
+
+        while (i &lt; j &amp;&amp; a[i] &lt;= pivot){
+            i++;
+        }
+        a[j] = a[i];
+    }
+    a[i] = pivot;
+    return i;
+}
+
+public void sort(int[] a,int start,int end){
+    if(start &lt; end){
+        int partition = partion(a,start,end);
+        sort(a,start,partition-1);
+        sort(a,partition+1,end);
+    }
+}
+
+@Test
+public void test(){
+    int[] a = {6,4,3,3,1,2,9,5};
+    sort(a,0,a.length-1);
+    System.out.println(Arrays.toString(a));
+}
+}    
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/23/面试总结-计算机网络/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -556,6 +745,8 @@
 
             4.4 404 Not Found:页面不存在（无法找到请求资源）；
 
+            4.5 405 Method not allowed 方法不被允许；
+
         服务器错误状态码：
 
             5.1 500 Internal Server Error：服务器内部发生错误；
@@ -595,7 +786,8 @@
     7.传输服务端加密后的信息；
 
     8.客户端解密信息。使用共享密钥k解密数据。
-</code></pre><p>参考文献：</p>
+</code></pre><p>7.HTTP1.0/HTTP2.0?</p>
+<p>参考文献：</p>
 <p><a href="https://blog.csdn.net/u010256388/article/details/68491509" target="_blank" rel="noopener">HTTP请求行、请求头、请求体详解</a>    </p>
 <ol start="8">
 <li><p>Get请求和Post请求有什么区别？</p>
@@ -963,11 +1155,70 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 <li>注解的原理？</li>
 <li>Spring的入口？</li>
 <li>SpringMVC 的 Controller 中返回值有哪些？</li>
-<li>Servlet 和 JSP 的区别？</li>
-<li>Servlet创建的过程？</li>
-<li>Servlet中的filter？</li>
-<li>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</li>
-<li>Servlet中的变量是否需要加锁？</li>
+<li><p>Servlet 和 JSP 的区别？</p>
+<pre><code>1.Servlet控制业务流程，JSP动态生成网页；
+
+2.JSP第一次被访问时会被容器编译为Servlet类；
+
+3.Servlet接受Tomcat发送过来的request和response;
+</code></pre><p> Servlet的四大域对象：</p>
+<pre><code>1.Page域：作用域为整个JSP页面；
+
+2.Request域：一次请求一个request;
+
+3.Session域：一次会话一个session;
+
+4.Application域：作用于整个服务器端，服务器开启对象创建，关闭服务器对象销毁；例如ServletContext通过request.getServletContext（)获得；
+</code></pre><p> JSP的九大内置对象：</p>
+<pre><code>1.request、response、pageContext、session、application、out、config、page、exception;
+</code></pre></li>
+<li><p>Servlet创建的过程？</p>
+</li>
+</ol>
+<ol start="8">
+<li><p>Servlet中的filter？</p>
+<p> 生命周期：</p>
+<pre><code>1.init()
+
+2.doFilter(ServletRequest req,ServletResponse resp,Filterchain chain)
+
+3.destroy()
+</code></pre></li>
+</ol>
+<ol start="9">
+<li><p>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</p>
+<p> 生命周期：</p>
+<pre><code>1.加载Servlet类并创建实例，若存在则不会创建了；
+
+2.init():每个Servlet只会被初始化一次；
+
+3.service():执行Post/GET/DELETE等等请求方法；
+
+4.destroy():仅执行一次；
+</code></pre><p> Servlet单实例多线程</p>
+<pre><code>1.设计成单例减少了创建Servlet实例的开销；
+
+2.容器每接收到一个请求就会通过线程池分配到一个线程，同一请求的多个线程并发执行；
+
+3.所以为了线程安全最好不要在Servlet中用实例变量，或使用synchronied同步；
+
+4.不要使用线程不安全的集合；
+</code></pre><p> Servlet如何处理多个请求同时访问？</p>
+<pre><code>1.Servlet加载实例化；
+
+2.容器初始化Servlet;
+
+3.Servlet容器通过调度线程给处理请求；
+
+4.线程执行service()方法；
+
+5.请求结束，放回线程池，等到被调用；
+</code></pre></li>
+</ol>
+<ol start="10">
+<li><p>Servlet中的变量是否需要加锁？</p>
+<p>实例变量需要考虑同步。</p>
+</li>
 </ol>
 
           
@@ -1133,9 +1384,27 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
         
           
             <ol>
-<li>可以用for循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</li>
+<li><p>可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</p>
+<pre><code>1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，
+
+会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。
+
+2.使用自身迭代器解决上述问题。
+</code></pre></li>
+</ol>
+<ol start="2">
 <li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
-<li>ArrayList以及LinkedList？</li>
+<li>Vector、ArrayList以及LinkedList？</li>
+</ol>
+<p>注意：</p>
+<pre><code>1.remove(int index)设计到了本地方法：
+
+    System.arraycopy(array(数据要被拷贝的数组),srcPos(数据被拷贝的起始坐标)，destArray(目的数组)，destPos(目的数组的起始坐标)，len(要被拷贝的数据的长度))；
+</code></pre><p>总结：</p>
+<pre><code>1.LinkedList底层双向链表，Node&lt;E&gt;节点，first和last指针，插入删除效率高，不需要扩容；
+
+2.ArrayList底层数组结构,数组动态扩容，无参构造数组大小为0，当添加第一个元素后，数组扩容为10，当添加第11个元素时进行扩容newCap = oldCap + oldCap*1.5,通过Arrays.copyOf(elementData,newCapacity)返回新数组；
+</code></pre><ol start="4">
 <li>HashMap线程不安全的原因？</li>
 </ol>
 <p>参考文献：</p>
@@ -1170,6 +1439,89 @@ void transfer(Entry[] newTable, boolean rehash) {
             e = next;
         }
     }
+</code></pre><p>5.关于concurrentHashMap的理解</p>
+<p><a href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap%E7%9A%84%E7%90%86%E8%A7%A3/">concurrentHashMap JDK1.7和JDK1.8的理解</a></p>
+<p>注意：</p>
+<pre><code>1.JDK1.8 和JDK1.7 concurrentHashMap不允许key或value为null
+  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
+
+2.JDK1.7 concurrentHashMap的每个Segment中含有一个
+  transient volatile HashEntry&lt;K,V&gt;[]table，保证了entryAt/setEntryAt的可见性；
+</code></pre><p>总结：</p>
+<pre><code>1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
+
+2.JDK1.8 concurrentHashMap的put操作：
+
+    2.1 通过casTabAt(tab, i, null,new Node&lt;K,V&gt;(hash, key, value, null)方法中的
+
+        U.compareAndSwapObject(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, c, v)CAS方法
+
+        在表头Node&lt;K,V&gt;[] table中插入节点；
+
+    2.2 采用synchronized + CAS的思想。synchronized锁住的是hash值相等的链表tab[i]的头节点；
+
+    2.3 采用尾插法插入新节点；
+
+3.JDK1.8 concurrentHashMap的get操作：
+
+    3.1 读操作没有加锁。key的hash值小于0就去红黑树中查找；hash值大于0就去链表中查找。
+
+    3.2 利用volatile线程可见性 (Node&lt;K,V&gt;)U.getObjectVolatile(tab,i);
+
+
+4.JDK1.7 concurrentHashMap的put操作：
+
+    4.1 获取segment的位置后尝试获取锁，获取到锁后node=null;没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
+
+    4.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
+
+        没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
+
+        最大尝试次数MAX_SCAN_RETRIES则加锁等待。
+
+    4.3 因为插入节点采用的头插法，所以在scanAndLockForPut会判断first有无发生变化，发生变化（有线
+
+        程加入节点）则重新遍历链表；
+
+
+5.JDK1.7 concurrentHashMap的get操作：
+
+    5.1 读操作没有加锁。通过volatile读语义保证可见性。只有当put和remove调用
+    setEntryAt（table,i）方法后（已经释放锁），读操作才能读到变化的table;
+
+    5.2 通过UNSAFE.getObjectVolatile(table,i)获得Segment&lt;K,V&gt;或HashEntry&lt;K,V&gt;[]的表头节点
+
+    保证了线程之间的可见性；
+</code></pre><p>6.关于HashMap的理解</p>
+<p>注意：</p>
+<pre><code>1.JDK1.7 和 JDK1.8 的hashMap都允许key为null,放在table[0]里面；
+</code></pre><p>总结：</p>
+<pre><code>1.JDK1.8 HashMap的resize操作：
+
+    1.1 新的数组长度和Threshold是旧数组对应原值的两倍；
+
+    1.2 旧数组中链表在新数组中的位置确定方法：
+
+        //loHead和loTail维护在新数组中位置不变的链表
+        //hiHead和hiTail维护在新数组中位置发生变化的链表
+        if(hash &amp; oldCap == 0){
+            newTab[j] = loHead;//在新数组中的位置保持不变
+        }else{
+            newTab[j+oldCap] = hiHead;//在新数组中的位置变成j+oldCap
+        } 
+
+2.JDK1.8 HashMap的get和put操作：
+
+    2.1 新加了红黑树的数据结构；
+
+
+3.JDK1.7 HashMap的resize操作：
+
+    3.1 重新计算每个元素在新数组中的位置，采用头插法插入元素到新数组中，线程不安全；
+
+4.JDK1.7 HashMap的get和put操作：
+
+    4.1 普通链表结构；
 </code></pre>
           
         
@@ -1502,13 +1854,75 @@ void transfer(Entry[] newTable, boolean rehash) {
         
           
             <ol>
-<li>B树和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
+<li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
+</ol>
+<p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
+<pre><code>1.作为文件系统以及数据库系统的索引结构；
+
+2.B树的关键字和data域放在了一起；
+
+3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。
+</code></pre><ol start="2">
 <li>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</li>
-<li>数据库的四个隔离级别，Mysql属于哪一种？</li>
+<li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
+</ol>
+<p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
+<pre><code>1.事务特性：原子性、一致性、隔离性和持久性；
+
+2.事务隔离级别：
+
+    2.1 读未提交：出现脏读，读取另一个未提交事务的数据；
+
+    2.2 读已提交：造成不可重复读，即在同一个事务中读到两次不同的结果；
+
+    2.3 可重复读：出现幻读，一个事务中读取的数据一致；
+</code></pre><p>幻读的例子：</p>
+<p><img src="https://i.imgur.com/DUI0Os9.png" alt=""></p>
+<pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
+
+        1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
+
+        2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
+
+3.MySQL的默认隔离级别：可重复读；
+</code></pre><ol start="4">
 <li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
-<li>索引最左匹配原则？</li>
-<li>事务的特性以及事务的隔离级别？</li>
-<li>Mysql引擎？</li>
+</ol>
+<p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
+<pre><code>1.普通索引
+
+    eg:ALTER TABLE stu add INDEX index_id(id);
+</code></pre><p>使用索引前：</p>
+<p><img src="https://i.imgur.com/qnwHm9Q.png" alt=""></p>
+<p>使用索引后：</p>
+<p><img src="https://i.imgur.com/CuYvDQi.png" alt=""></p>
+<pre><code>2.唯一索引：索引列的值必须唯一，但允许为空。
+
+    eg:ALTER TABLE stu add UNIQUE index_id(id);
+
+3.主键索引：特殊的唯一索引，索引列的值不允许为空。
+</code></pre><p><img src="https://i.imgur.com/UvVpFDi.png" alt=""></p>
+<pre><code>4.组合索引：默认最左前缀的结果。
+
+    eg:alter table stu add index id_name_note(id,name(10),note);
+
+     相当于分别建立了：
+
+    1.（id,name,note）索引
+
+    2.（id,name）索引
+
+    3.（id）索引
+</code></pre><p>索引失效的情况：</p>
+<pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引;
+
+2.在列上进行运算将会使索引失效；
+
+3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
+</code></pre><ol start="7">
+<li><p>Mysql引擎？</p>
+<pre><code>InnoDB引擎
+</code></pre></li>
 </ol>
 
           
@@ -1852,10 +2266,53 @@ void transfer(Entry[] newTable, boolean rehash) {
 <li>synchronized底层实现原理？</li>
 <li>synchronized和lock的区别？</li>
 <li>volatile作用，指令重排相关？</li>
+</ol>
+<p>参考：</p>
+<p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
+<p><a href="https://www.itcodemonkey.com/article/1725.html" target="_blank" rel="noopener">小灰漫画volatile</a></p>
+<pre><code>1.volatile变量在线程之间具有可见性；基于CPU的内存屏障实现的。
+
+2.volatile变量禁止指令重排；
+
+3.每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；
+
+4.每个volatile读操作前插入LoadLoad屏障，读操作之后插入LoadStore屏障；
+</code></pre><p>9.java内存模型？</p>
+<p><img src="https://i.imgur.com/7yPyszl.png" alt=""></p>
+<pre><code>1.JMM是一种规范，用于决解由于多线程通过共享内存（主存）进行通信时，存在本地内存数据不一致，编译器对代码指令重排等带来的问题。
+
+2.java并发编程中保证原子性、可见性和有序性的方法：
+
+    原子性：synchronized保证方法和代码块内的操作是原子性的。
+
+    可见性：synchronized、volatile和final关键字；
+
+    有序性：synchronized关键字；
+
+3.happens-before原则（8个）：
+
+    3.1 程序次序规则：单线程内顺序发生；
+
+    3.2 锁定规则：unlock操作先于对同一个锁的lock操作；
+
+    3.3 volatile规则：对volatile变量的写操作先于读操作；
+
+    3.4 传递规则:A先于B，B先于C，则A先于C；
+
+    3.5 线程启动规则：Thread对象的start()先于该线程的每一个动作；
+
+    3.6 线程中断规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生；
+
+    3.7 线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；
+
+    3.8 对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；
+</code></pre><ol start="10">
 <li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
 <li>线程执行过程中遇到异常会发生什么，怎样处理？</li>
 <li>java创建线程的方式？</li>
+<li>线程的状态？</li>
 </ol>
+<p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
 
           
         
@@ -2022,426 +2479,17 @@ void transfer(Entry[] newTable, boolean rehash) {
             <ol>
 <li>private修饰的方法可以通过反射访问，那么private的意义何在？</li>
 <li>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</li>
-<li>接口和抽象的区别？</li>
-<li>重写和重载的区别？</li>
+<li><p>接口和抽象的区别？</p>
+<pre><code>1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。
+
+2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是自底向上设计的，接口是自顶向下设计的。
+
+3.门和报警器的例子。将门抽象为一个类，实现报警功能的接口。抽象类是一种“is-a”的关系，接口代表的是“like-a”的关系。
+</code></pre></li>
+<li><p>重写和重载的区别？</p>
+</li>
 <li>Object类有哪些方法？以及具体用到哪？</li>
 <li>java的浅拷贝和深拷贝？</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Java虚拟机/" itemprop="url">面试总结-Java虚拟机</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:32:52+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Java虚拟机/" class="leancloud_visitors" data-flag-title="面试总结-Java虚拟机">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>Java类加载以及类初始化顺序？</p>
-<pre><code>1.类加载的生命周期：
-
-加载、连接（验证、准备、解析）、初始化、使用、卸载。
-
-2.类初始化（类加载）的时机：
-
-    2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);
-
-    2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;
-
-    2.3 初始化父类；(接口初始化不会初始化父类)
-
-    2.4 main方法所属类；
-
-3.细分一下加载的生命周期：
-
-    3.1 验证（文件格式验证、元数据验证、字节码验证、符号引用验证）
-
-    3.2 准备（设置类变量的初始值）
-
-    3.3 解析（类或接口的解析、字段解析、类方法解析、接口方法解析）
-
-4.类初始化的顺序：
-
-    4.1  &lt;clinit&gt;()方法收集类中所有类变量和静态代码块初始化，父类优于子类而且在多线程环境下初始化时虚拟机保证只有一个线程去执行初始化方法，且只初始化一次。
-
-    4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量---父类构造函数---子类构造函数
-</code></pre></li>
-</ol>
-<ol start="3">
-<li>对方法区和永久区解的理以及它们之间关系的理解？</li>
-<li><p>一个java文件有3个类，编译后有几个class文件？</p>
-<pre><code>答：3个。
-</code></pre></li>
-<li><p>JVM GC算法的前戏？</p>
-<p> 首先弄清楚判断对象是否存活的算法：</p>
-<pre><code>1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。
-
-缺点：无法解决循环引用的问题。
-
-2.可达性分析算法。对象到GC Roots 不可达则回收，反之不回收。
-
-2.1 可作为GC Roots的对象：
-
-    1.虚拟机栈（栈帧中）引用的对象。
-
-    2.方法区类静态属性引用的对象。
-
-    3.方法区常量引用的对象。
-
-    4.native方法中引用的对象。
-</code></pre><p> 永久代收集的什么垃圾？</p>
-<pre><code>1.废弃常量。没有任何引用。
-
-2.无用的类。所有实例都被回收、类加载器被回收、对象没有在任何地方引用。、
-</code></pre></li>
-<li><p>JVM GC算法核心内容？</p>
-<pre><code>1.标记-回收算法。判断是否存活，标记并清除。
-
-缺点：
-
-    1.1 标记和回收效率低。
-
-    1.2 大量内存碎片。
-
-2.复制算法。将内存分为两块，只用其中一块，然后将存活对象复制到空的那块内存。
-
-优点：
-
-    2.1 效率高。
-
-    2.2 没有内存碎片。（有点疑问？）
-
-缺点：
-
-    2.1 只有一半内存可用，代价大。解决办法是划分为1个Eden2个Survivor(比例8:1:1)只有10%空间没用。这样做的缺点是万一存活对象大于10%则必须依赖老年代进行分配担保。
-
-    2.2 不适合对象存活率高的情况，这样频繁复制影响效率。适合新生代，不适合老年代。
-
-3.标记-整理算法。所有存活对象移动到一边，清除边界外的内存。
-
-优点：
-
-    3.1 适合老年代对象存活率高的情况。
-
-4.分代回收算法。新生代采用复制算法，老年代采用标记-整理或标记清除算法。
-</code></pre><p> 总结：</p>
-<pre><code>Java垃圾回收一般是采用分代回收的，将java堆分成老年代和新生代。新生代特点对象存活率低，采用复制算法，老年代反之采用标记-整理/标记-清除算法。
-</code></pre></li>
-<li><p>JVM 垃圾收集器核心内容？</p>
-<p> 首先看个整体图，连线表示可以搭配使用。</p>
-<p> <img src="https://i.imgur.com/4mNb2Rd.png" alt=""></p>
-<p> 新生代（复制算法）：</p>
-<pre><code>1.Serial 收集器
-
-优点：
-
-    1.1 单线程、单CPU效率高、适合Client模式。
-
-缺点：
-
-    1.1 暂停所有工作线程（STW）,会有不良体验。
-
-2.ParNew 收集器
-
-优点：
-
-    2.1 多线程收集、适合Server模式。
-
-    2.1 除Serial外，唯一可以和CMS组合使用的收集器。
-
-缺点：
-
-    2.1 仍然不可避免STW。
-
-3.Parallel Scavenge 收集器
-
- 优点：
-
-    3.1 吞吐量可控、自适应调节策略。
-</code></pre><p> 老年代：</p>
-<pre><code>4.Serial Old 收集器（标记-整理）
-
-优点：
-
-    4.1 单线程、单CPU效率高、适合Client模式。
-
-缺点：
-
-    4.1 暂停所有工作线程（STW）,会有不良体验。
-
-5.Parallel Old 收集器（标记-整理）
-
-优点：
-
-    5.1 多线程，搭配 Parallel Scavenge 使用效率高，适合Server端。
-
-6.CMS 收集器（标记-清除）
-
-整个过程：
-
-    1.初始标记（STW）
-
-    2.并发标记
-
-    3.重新标记（STW）
-
-    4.并发清除
-
-优点：
-
-    6.1 最少回收停顿时间。因为在并发标记和并发清除时，用户线程和收集线程并发工作。
-
-缺点：
-
-    6.1 多线程多CPU资源敏感。CPU不足时，垃圾收集线程占CPU将近50%，这大大降低了用户程序的执行速度。
-
-    6.2 无法处理浮动垃圾。浮动垃圾指在并发清除时，用户线程新产生的垃圾。由于这些垃圾的产生所以在设置-XX:CMSInitiatingOccupancyFraction（启动CMS时内存的阈值）时得注意给CMS
-    收集线程预留内存，否则会出现“Concurrent Model Failure”,临时启用Serial Old（单线程），性能下降。
-
-    6.3 会产生内存碎片。通过设置-XX：+UseCMSCompactAtFullCollection参数，在要进行Full GC时碎片整理。默认值为0表示每次要进入Full GC 时进行碎片整理。
-
-7.G1收集器
-</code></pre></li>
-</ol>
-<p><a href="https://www.cnblogs.com/duanxz/p/6102580.html" target="_blank" rel="noopener">G1 收集器的详解</a></p>
-<pre><code>重点部分总结：
-
-7.1 Region区域图解如下：
-</code></pre><p><img src="https://i.imgur.com/aM4TR6l.png" alt=""></p>
-<pre><code>    1.划分Region区域（默认2048），逻辑连续物理不连续，每个Region大小范围1M到32M(2的n次方)是通过参数堆的大小和Region个数计算出来的。其中humongous代表一组连续的Region区域，
-    用于存放大小超过默认Region大小50%的对象。
-
-7.2 年轻代的回收模式
-
-    1.主要是对Eden区进行GC，会发生Stop The World事件、同时会计算Eden和Survivor的大小
-
-
-7.3 mix GC模式
-
-    mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.
-
-    步骤：
-
-        1.初始标记(STW)
-
-        2.并发标记
-
-        3.最终标记（STW）
-
-        4.筛选回收
-
-7.3 Full GC模式：单线程、全局扫描堆然后标记清除代价昂贵。
-
-优点：
-
-    1.解决了CMS中内存碎片的问题。
-
-    2.能够在指定时间片内优先回收价值最大的Region。
-</code></pre><p>5.哪些对象会进入到老年代？</p>
-<pre><code>1.大对象。对Serial和parNew收集器而言，参数-XX:PretenureSizeThreshold代表对象大小如果大于它的值，则直接分配到老年代。
-
-2.年龄达到阈值（默认15岁）。Minor GC 进入到Survivor，此时年龄为1，继续存活年龄将不断增加。
-
-3.动态年龄判定。Surviovr区中年龄相等的对象占了整个Survivor大小的一半以上，则年龄大于或等于该年龄的对象将进入老年代。
-
-4.空间分配担保。如果晋升到老年代的对象的平均大小 小于 老年代的剩余空间则发生担保，Eden内的所有存活对象进入到老年代，否则担保失败，发生Full GC.(比Minor GC 慢10倍)
-</code></pre><ol start="5">
-<li>Java内存结构？ </li>
-</ol>
-<p><img src="https://i.imgur.com/SwBcYyJ.png" alt=""></p>
-<pre><code>JVM内存溢出情况：
-</code></pre><p><img src="https://i.imgur.com/FFDc1GQ.png" alt=""></p>
-<pre><code>1.线程共享：方法区（永久代）和堆区。
-
-2.线程私有：虚拟机栈（栈内存）、程序计数器和本地方法栈（native方法）。
-
-3.堆内存存放内容：java对象、数组。
-
-4.方法区存放内容：常量、静态变量、虚拟机加载的类信息和即时编译器编译后的代码。
-
-注：
-
-4.1 运行时常量池（常量池）是方法区的一部分。
-
-4.2 Class文件内容组成：类的版本、字段、方法、接口等描述信息和常量池；常量池放编译期生成的(.class文件)各种字面量和符号引用。
-
-5.对象的内存布局：对象头、实例数据和对齐填充。对象头包括：哈希码、GC分代年龄、锁状态标志、线程持有的锁等。
-</code></pre><ol start="6">
-<li>Object object = new Object(); 初始化的顺序是什么？在JVM各区域做了什么？</li>
-</ol>
-<p><a href="https://blog.csdn.net/Rainnnbow/article/details/52149586https://blog.csdn.net/Rainnnbow/article/details/52149586" target="_blank" rel="noopener">new之后JVM都做了什么？</a></p>
-<pre><code>步骤：
-
-1.检查类加载
-
-2.堆中分配内存，初始化为零（除对象头）
-
-3.设置对象对象头信息
-
-4.程序中自定义的数据
-</code></pre><ol start="7">
-<li>加载器双亲委派模型及破坏？</li>
-</ol>
-<ol start="8">
-<li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p>
-<p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p>
-</li>
-<li><p>syn锁，jvm里面分成偏向锁、轻量级锁、重量级锁，其之间的转换过程是怎么样的，各自适用场景是什么样的，偏向锁情况产生竞争一定会膨胀成轻量级锁吗，为什么只能单向转换，比如偏向锁变成轻量级锁变成重量级锁之后不会在竞争消失之后在回到偏向锁，必须要重启jvm才行，是出于什么情况考虑的？</p>
-</li>
 </ol>
 
           
@@ -2482,7 +2530,7 @@ void transfer(Entry[] newTable, boolean rehash) {
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2532,7 +2580,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

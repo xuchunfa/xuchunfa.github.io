@@ -92,7 +92,8 @@
 <meta property="og:image" content="https://i.imgur.com/aM4TR6l.png">
 <meta property="og:image" content="https://i.imgur.com/SwBcYyJ.png">
 <meta property="og:image" content="https://i.imgur.com/FFDc1GQ.png">
-<meta property="og:updated_time" content="2019-03-17T09:26:48.639Z">
+<meta property="og:image" content="https://i.imgur.com/VlCH2P5.png">
+<meta property="og:updated_time" content="2019-03-18T07:36:08.611Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java虚拟机">
 <meta name="twitter:description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
@@ -661,7 +662,42 @@
 </code></pre><ol start="7">
 <li>加载器双亲委派模型及破坏？</li>
 </ol>
-<ol start="8">
+<p>结构图：</p>
+<p><img src="https://i.imgur.com/VlCH2P5.png" alt=""></p>
+<pre><code>1.启动类加载器（Bootstrap ClassLoader）:加载jdk/jre/目录下的类库jar包，例如rt.jar，C++实现在java里面无法获取；
+
+2.拓展类加载器（Extension ClassLoader）:加载jdk/jre/ext/目录下的jar包。
+
+3.应用程序类加载器（系统类加载器）（Application ClassLoader)：加载用户配置的classpath路径下的类库。
+</code></pre><p>不考虑多线程时的核心代码：</p>
+<pre><code>protected synchronized Class&lt;?&gt; loadClass(String name,boolean resolve){
+    //检查类是否被加载
+    Class&lt;?&gt; c = findLoadedClass(name);
+    if(c == null){
+        try{
+            if(parent != null){
+                c = parent.loadClass(name,false);
+            }else{
+                c = findBootstrapClassOrNull(name);//启动类加载器
+            }
+        }catch(ClassNotFoundException e){
+
+        }
+    if(c == null){
+        c = findClass(name);//调用本身的findclass方法进行类加载
+    }
+
+    if(resolve == true){
+        resolveClass(c);
+    }
+    return c;
+    }
+}
+</code></pre><p>破坏双亲委派模型例子：</p>
+<pre><code>JNDI服务，JDNI是使用启动类加载器加载的，调用classpath下的JNDI接口提供者（SPI,Service Provider Interface）的代码，
+
+引入了线程上下文类加载器（默认是系统类加载器），由它去加载SPI代码，打破了双亲委派模型，出现了父类加载器请求子类加载器去完成类加载动作。
+</code></pre><ol start="8">
 <li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p>
 <p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p>
 </li>
@@ -783,7 +819,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
