@@ -89,7 +89,7 @@
 <meta property="og:description" content="学习过程中一点点积累补充 什么叫做稳定性？稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png">
-<meta property="og:updated_time" content="2018-08-04T04:51:34.645Z">
+<meta property="og:updated_time" content="2019-03-25T03:42:46.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法比较">
 <meta name="twitter:description" content="学习过程中一点点积累补充 什么叫做稳定性？稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。  快排分析   时间复杂度：   1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度logn+1，第一次partition的时候需要和pivot比较n次   时间复杂度：nlogn   2.最差情况下：划分为了一颗斜着的树">
@@ -467,20 +467,18 @@
 <li><p>希尔排序</p>
 <p>  <strong>时间复杂度：</strong></p>
 <p>  最坏：O(n^2)</p>
-<p>  最好：O(n)</p>
+<p>  最好：O(nlogn)</p>
 <p>  平均：O(n^1.5)</p>
 <p>  <strong>空间复杂度：</strong>O(1)</p>
 </li>
+<li><p>计数排序</p>
+<p>  时间复杂度： </p>
+<p>  O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组</p>
+<pre><code>= O(n) + O(k) + O(n)
+</code></pre><p>  空间复杂度：O(n+k)</p>
+</li>
 </ul>
-<p>-计数排序</p>
-<pre><code>时间复杂度： 
-
-O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组
-
-       = O(n) + O(k) + O(n)
-
-空间复杂度：O(n+k)
-</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
+<p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
 <p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>
 
       

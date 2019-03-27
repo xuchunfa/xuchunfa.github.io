@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？ synchronized底层实现原理？ synchronized">
+<meta name="description" content="ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java并发编程">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？ synchronized底层实现原理？ synchronized">
+<meta property="og:description" content="ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
 <meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-03-19T01:13:20.152Z">
+<meta property="og:updated_time" content="2019-03-26T13:51:23.606Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
-<meta name="twitter:description" content="ReadWriteLock读写之间互斥吗？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？ synchronized底层实现原理？ synchronized">
+<meta name="twitter:description" content="ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原理？">
 <meta name="twitter:image" content="https://i.imgur.com/7yPyszl.png">
 
 
@@ -415,6 +415,7 @@
       
         <ol>
 <li>ReadWriteLock读写之间互斥吗？</li>
+<li>说说ReentrantLock是基于哪个类的？说说队列同步器？</li>
 <li>Semaphore拿到执行权的线程之间是否互斥？</li>
 <li>写一个生产者消费者模式？</li>
 <li>写一个死锁？</li>
@@ -426,6 +427,7 @@
 <li>synchronized底层实现原理？</li>
 <li>synchronized和lock的区别？</li>
 <li>volatile作用，指令重排相关？</li>
+<li>锁有哪几种？</li>
 </ol>
 <p>参考：</p>
 <p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="多种解法开拓思路  1.把数组从大到小进行排序，再遍历到第k个元素。 时间复杂度：O(nlogn+k). 2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。 时间复杂度：O(n*k).所以最坏情况为O(n^2). 3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Po">
+<meta name="description" content="QuickSelect算法: public class TopK {  //递归求解第k大的数 public static int kthLargest(int[] a,int l,int r,int k){     if(k &amp;gt; 0 &amp;amp;&amp;amp; k &amp;lt;= a.length){         int partition = QuickSort.versePartition(">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数组中第k大的数">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/20/数组中第k大的数/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="多种解法开拓思路  1.把数组从大到小进行排序，再遍历到第k个元素。 时间复杂度：O(nlogn+k). 2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。 时间复杂度：O(n*k).所以最坏情况为O(n^2). 3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Po">
+<meta property="og:description" content="QuickSelect算法: public class TopK {  //递归求解第k大的数 public static int kthLargest(int[] a,int l,int r,int k){     if(k &amp;gt; 0 &amp;amp;&amp;amp; k &amp;lt;= a.length){         int partition = QuickSort.versePartition(">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-24T07:21:36.776Z">
+<meta property="og:updated_time" content="2019-03-26T12:29:24.917Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数组中第k大的数">
-<meta name="twitter:description" content="多种解法开拓思路  1.把数组从大到小进行排序，再遍历到第k个元素。 时间复杂度：O(nlogn+k). 2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。 时间复杂度：O(n*k).所以最坏情况为O(n^2). 3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Po">
+<meta name="twitter:description" content="QuickSelect算法: public class TopK {  //递归求解第k大的数 public static int kthLargest(int[] a,int l,int r,int k){     if(k &amp;gt; 0 &amp;amp;&amp;amp; k &amp;lt;= a.length){         int partition = QuickSort.versePartition(">
 
 
 
@@ -399,17 +399,73 @@
       
 
       
-        <blockquote>
+        <p>QuickSelect算法:</p>
+<pre><code>public class TopK {
+
+//递归求解第k大的数
+public static int kthLargest(int[] a,int l,int r,int k){
+    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
+        int partition = QuickSort.versePartition(a,l,r);//分界点前是大数，分界点后是小数
+        if(partition == k - 1)
+            return a[partition];
+        if(partition &lt; k - 1){
+            return kthLargest(a,partition+1,r,k);
+        }
+        if(partition &gt; k - 1){
+            return kthLargest(a,l,partition-1,k);
+        }
+    }
+    return Integer.MAX_VALUE;
+}
+
+//递归求解第k小的数
+public static int kthSmallest(int[] a,int l,int r,int k){
+    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
+        int partition = QuickSort.partition(a,l,r);
+        if(partition == k - 1)
+            return a[partition];
+        if(partition &lt; k - 1){
+            return kthSmallest(a,partition+1,r,k);
+        }
+        if(partition &gt; k - 1){
+            return kthSmallest(a,l,partition-1,k);
+        }
+    }
+    return Integer.MAX_VALUE;
+}
+
+//迭代求解第k小的数
+public static int kthSmallest1(int[] a,int k) {
+    if (k &gt; 0 &amp;&amp; k &lt;= a.length) {
+        int low = 0;
+        int high = a.length-1;
+        while (low &lt;= high){
+            int partition = QuickSort.partition(a,low,high);
+            if(partition == k - 1){
+                return a[partition];
+            }
+            if(partition &lt; k - 1){
+                low = partition+1;
+            }else {
+                high = partition-1;
+            }
+        }
+    }
+    return Integer.MAX_VALUE;
+}
+}
+</code></pre><blockquote>
 <p>多种解法开拓思路</p>
 </blockquote>
-<p>1.把数组从大到小进行排序，再遍历到第k个元素。</p>
-<pre><code>时间复杂度：O(nlogn+k).
+<p>1.把数组从大到小进行排序，再直接通过数组下标获取元素</p>
+<pre><code>时间复杂度：O(nlogn)
 </code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p>
 <pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).
 </code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p>
 <pre><code>时间复杂度：O(n).详细证明见算法导论
 </code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p>
-<p>5.通过优先队列实现,底层原理基于4方法。</p>
+<pre><code>时间复杂度：O（n+klogn）
+</code></pre><p>5.通过优先队列实现,底层原理基于4方法。</p>
 <pre><code>时间复杂度：O(n)
 
 空间复杂度：O(n)

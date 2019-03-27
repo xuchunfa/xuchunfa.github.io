@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP面向非连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。  TCP的特点： 可靠、稳定、慢、效率低、占用系统资源高。  UD">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-23T07:52:10.225Z">
+<meta property="og:updated_time" content="2019-03-26T13:42:20.565Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--计算机网络">
 <meta name="twitter:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP面向非连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。  TCP的特点： 可靠、稳定、慢、效率低、占用系统资源高。  UD">
@@ -503,7 +503,9 @@
 
 2.为什么是4次挥手？
 
-    这里把ACK报文和FIN报文分开发是为了确保数据能完整得到传输。当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即可能你还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了。
+    2.1 因为TCP是全双工模式。
+
+    2.2 这里把ACK报文和FIN报文分开发是为了确保数据能完整得到传输。当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即可能你还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了。
 
 3.TCP第三次握手ACK丢失后的处理？
 
@@ -523,9 +525,16 @@
 
     1.2 请求头
 
-        Accept:客户端接受什么类型的响应；
+        Accept:客户端接受什么类型的响应；eg:text/html
 
-        Cookie、Cache-Control:响应数据在客户端的缓存控制；....
+        Cache-Control:响应数据在客户端的缓存控制；
+
+        Connection:请求完成后是否关掉TCP连接；eg:keep-alive;
+
+        Content-Type:请求的内容类型；eg:application/x-www-form-urlencoded标准的编码格式；
+
+        Cookie:保存server发送过来的set-Cookie内容；
+
 
     1.3 请求体
 
@@ -547,35 +556,46 @@
 
         重定向状态码：
 
-            2.1 301 Moved Permanently:永久重定向；
+            2.1 301 Moved Permanently:请求的网页已被永久移动到新位置。
 
-            2.2 302 Found:临时性重定向；
+            2.2 302 Found:服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。
 
-            2.3 303 See Other:重定向其他页面;
+            2.3 303 See Other:请求者应当对不同的位置使用单独的 GET 请求来检索响应时;
 
             2.4 304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;
+
+            2.5 305 Use Proxy：必须通过代理访问资源，代理的地址在Response的Location中
 
         客户端错误状态码：
 
             4.1 400 Bad Request:请求报文中存在语法错误；
 
-            4.2 401 Unauthorized：需要有通过Http认证的认证信息；
+            4.2 401 Unauthorized：未授权，需要有通过Http认证的认证信息；
 
             4.3 403 Forbidden:访问被拒绝；
 
             4.4 404 Not Found:页面不存在（无法找到请求资源）；
 
-            4.5 405 Method not allowed 方法不被允许；
+            4.5 405 Method not allowed：禁用请求中指定的方法；
 
         服务器错误状态码：
 
             5.1 500 Internal Server Error：服务器内部发生错误；
 
+            5.2 501 Not Implemented:客户端发起的请求超出服务器的能力范围;
+
             5.2 503 Service Unavailable：服务器处于超负荷或者正在停机维护；
+
+            5.3 505 HTTP Version Not Supported:不支持的HTTP版本；
 
     2.2 响应头
 
-        eg:Server、Content-Type、Set-Cookie等等；
+        Access-Control-Allow-Origin：响应头指定了该响应的资源是否被允许与给定的origin共享；eg:*表示允许所有域都具有访问资源的权限；
+
+        Location:指定的是需要将页面重新定向至的地址;
+
+        Set-cookie:服务器端向客户端发送的cookie；
+
 
 3.http协议
 
@@ -606,8 +626,17 @@
     7.传输服务端加密后的信息；
 
     8.客户端解密信息。使用共享密钥k解密数据。
-</code></pre><p>7.HTTP1.0/HTTP2.0?</p>
-<p>参考文献：</p>
+</code></pre><p>7.HTTP1.0/HTTP1.1/HTTP2.0的区别?</p>
+<pre><code>1.HTTP1.1默认长连接Connection:keep-alive,HTTP1.0 每次请求都要创建连接；
+
+2.HTTP1.x的解析是基于文本，而HTTP2.0是基于二进制格式；
+
+3.HTTP1.1中若干个请求排队串行化单线程处理，后面的请求等待前面请求的返回才能获得执行机会，一旦有某请求超时等，后续请求只能被阻塞；HTTP2.0中多个请求可同时在一个连接上并行执行，某个请求任务耗时严重，不会影响到其它连接的正常执行；
+
+4.HTTP2.0中压缩header;
+
+5.HTTP2.0中实现服务端的推送，即服务端推送能把客户端所需要的资源伴随着index.html一起发送到客户端，减少了客户端重复请求的步骤，大大提升了速度；
+</code></pre><p>参考文献：</p>
 <p><a href="https://blog.csdn.net/u010256388/article/details/68491509" target="_blank" rel="noopener">HTTP请求行、请求头、请求体详解</a>    </p>
 <ol start="8">
 <li><p>Get请求和Post请求有什么区别？</p>
@@ -639,6 +668,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
 </code></pre></li>
 </ol>
+<p>10.select和epoll的原理和区别？<br>11.协议层有哪些？说说五层协议、OSI、</p>
 
       
     </div>

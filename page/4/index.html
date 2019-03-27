@@ -976,8 +976,23 @@ public final void acquire(int arg) {
 </ul>
 <ul>
 <li><p>双重检查模式（DCL）</p>
-<p>  1.还是会在某些情况下出现DCL失效的情况。</p>
-</li>
+<pre><code>public class Singleton { 
+
+    private static volatile Singleton instance;
+
+    private Singleton(){}
+
+    public static Singleton getInstance(){
+        if(instance == null){
+            synchronied(Singleton.class){
+                if(instance == null){
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+</code></pre></li>
 </ul>
 <ul>
 <li><p>静态内部单例模式</p>

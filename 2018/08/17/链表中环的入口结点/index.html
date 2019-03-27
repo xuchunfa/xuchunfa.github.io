@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="public class EnterCycleNode {  public static ListNode meetNode(ListNode head){      if(head == null){         throw new RuntimeException(&amp;quot;链表不能为空&amp;quot;);     }      ListNode pre,post;     pre = he">
+<meta name="description" content="详细证明 public class EnterCycleNode {  public static ListNode findEntryNode(ListNode head){     if(head == null || head.next == null){         return null;     }     ListNode slow = head;     ListNode fa">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链表中环的入口结点">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/17/链表中环的入口结点/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="public class EnterCycleNode {  public static ListNode meetNode(ListNode head){      if(head == null){         throw new RuntimeException(&amp;quot;链表不能为空&amp;quot;);     }      ListNode pre,post;     pre = he">
+<meta property="og:description" content="详细证明 public class EnterCycleNode {  public static ListNode findEntryNode(ListNode head){     if(head == null || head.next == null){         return null;     }     ListNode slow = head;     ListNode fa">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-17T06:54:47.389Z">
+<meta property="og:updated_time" content="2019-03-26T03:04:55.562Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表中环的入口结点">
-<meta name="twitter:description" content="public class EnterCycleNode {  public static ListNode meetNode(ListNode head){      if(head == null){         throw new RuntimeException(&amp;quot;链表不能为空&amp;quot;);     }      ListNode pre,post;     pre = he">
+<meta name="twitter:description" content="详细证明 public class EnterCycleNode {  public static ListNode findEntryNode(ListNode head){     if(head == null || head.next == null){         return null;     }     ListNode slow = head;     ListNode fa">
 
 
 
@@ -399,78 +399,48 @@
       
 
       
-        <pre><code>public class EnterCycleNode {
+        <p><a href="https://www.geeksforgeeks.org/find-first-node-of-loop-in-a-linked-list/" title="详细证明" target="_blank" rel="noopener">详细证明</a></p>
+<pre><code>public class EnterCycleNode {
 
-public static ListNode meetNode(ListNode head){
-
-    if(head == null){
-        throw new RuntimeException(&quot;链表不能为空&quot;);
+public static ListNode findEntryNode(ListNode head){
+    if(head == null || head.next == null){
+        return null;
+    }
+    ListNode slow = head;
+    ListNode fast = head;
+    slow = slow.next;
+    fast = fast.next.next;
+    while (fast != null &amp;&amp; fast.next != null){
+        if(slow == fast)
+            break;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    if(slow != fast){//无环
+        return null;
     }
 
-    ListNode pre,post;
-    pre = head;
-    post = head;
-    int cycleNodeNum = calcycleNodeNum(head);
-    if(cycleNodeNum != 0){//有环
-        for(int i = 0;i&lt;cycleNodeNum;i++){//post先走cycleNodeNum步
-            pre = pre.next;
-        }
-
-        while(post != pre){//然后两个指针依次先前走一步
-            pre = pre.next;
-            post = post.next;
-        }
-        return post;
+    //走到这说明有环
+    slow = head;
+    while (slow != fast){
+        slow = slow.next;
+        fast = fast.next;
     }
 
-    return null;
+    return slow;
 }
-
-//判断链表是否有环,有的话计算环中一共有多少结点
-private static int calcycleNodeNum(ListNode head) {
-    ListNode p,pre;
-    p = head;
-    pre = head;
-    int numOfCycleNode = 0;
-
-    while (pre.next != null){
-        pre = pre.next;//走第一步时判断一下
-        if (pre != p &amp;&amp; pre.next != null){
-            p = p.next;
-            pre = pre.next;//pre先走了两步
-        }
-
-        //走完第二步再判断一下
-        if(pre == p){//第一个指针追上了第二个指针
-            numOfCycleNode++;
-            pre = pre.next;
-            while (pre != p){//计算环内结点
-                numOfCycleNode++;
-                pre = pre.next;
-            }
-            break;//跳出循环
-        }
-    }
-    return numOfCycleNode;
-}
-
 public static void main(String[] args){
     Link link = new Link();
     link.add(1);
     link.add(2);
     link.add(3);
     link.add(4);
-    ListNode tail = Link.head;
+    ListNode tail = link.head;
     while (tail.next != null){
         tail = tail.next;
     }
-    //tail.next = Link.head;
-    if(EnterCycleNode.meetNode(Link.head) != null){
-        System.out.println(EnterCycleNode.meetNode(Link.head).data);
-    }else {
-        throw new RuntimeException(&quot;不存在环入口节点&quot;);
-    }
-
+    tail.next = link.head.next;
+    System.out.println(EnterCycleNode.findEntryNode(link.head).data);
 }
 }
 </code></pre>

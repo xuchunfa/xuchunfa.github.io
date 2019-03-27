@@ -1069,17 +1069,73 @@ public static void main(String[] args){
       
         
           
-            <blockquote>
+            <p>QuickSelect算法:</p>
+<pre><code>public class TopK {
+
+//递归求解第k大的数
+public static int kthLargest(int[] a,int l,int r,int k){
+    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
+        int partition = QuickSort.versePartition(a,l,r);//分界点前是大数，分界点后是小数
+        if(partition == k - 1)
+            return a[partition];
+        if(partition &lt; k - 1){
+            return kthLargest(a,partition+1,r,k);
+        }
+        if(partition &gt; k - 1){
+            return kthLargest(a,l,partition-1,k);
+        }
+    }
+    return Integer.MAX_VALUE;
+}
+
+//递归求解第k小的数
+public static int kthSmallest(int[] a,int l,int r,int k){
+    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
+        int partition = QuickSort.partition(a,l,r);
+        if(partition == k - 1)
+            return a[partition];
+        if(partition &lt; k - 1){
+            return kthSmallest(a,partition+1,r,k);
+        }
+        if(partition &gt; k - 1){
+            return kthSmallest(a,l,partition-1,k);
+        }
+    }
+    return Integer.MAX_VALUE;
+}
+
+//迭代求解第k小的数
+public static int kthSmallest1(int[] a,int k) {
+    if (k &gt; 0 &amp;&amp; k &lt;= a.length) {
+        int low = 0;
+        int high = a.length-1;
+        while (low &lt;= high){
+            int partition = QuickSort.partition(a,low,high);
+            if(partition == k - 1){
+                return a[partition];
+            }
+            if(partition &lt; k - 1){
+                low = partition+1;
+            }else {
+                high = partition-1;
+            }
+        }
+    }
+    return Integer.MAX_VALUE;
+}
+}
+</code></pre><blockquote>
 <p>多种解法开拓思路</p>
 </blockquote>
-<p>1.把数组从大到小进行排序，再遍历到第k个元素。</p>
-<pre><code>时间复杂度：O(nlogn+k).
+<p>1.把数组从大到小进行排序，再直接通过数组下标获取元素</p>
+<pre><code>时间复杂度：O(nlogn)
 </code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p>
 <pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).
 </code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p>
 <pre><code>时间复杂度：O(n).详细证明见算法导论
 </code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p>
-<p>5.通过优先队列实现,底层原理基于4方法。</p>
+<pre><code>时间复杂度：O（n+klogn）
+</code></pre><p>5.通过优先队列实现,底层原理基于4方法。</p>
 <pre><code>时间复杂度：O(n)
 
 空间复杂度：O(n)
@@ -1414,7 +1470,7 @@ public static void main(String[] args){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/17/合并两个有序链表/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/17/合并两个有序链表以及k个有序链表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -1433,7 +1489,7 @@ public static void main(String[] args){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/17/合并两个有序链表/" itemprop="url">合并两个有序链表</a></h1>
+                <a class="post-title-link" href="/2018/08/17/合并两个有序链表以及k个有序链表/" itemprop="url">合并两个有序链表以及k个有序链表</a></h1>
         
 
         <div class="post-meta">
@@ -1485,7 +1541,7 @@ public static void main(String[] args){
 
           
           
-             <span id="/2018/08/17/合并两个有序链表/" class="leancloud_visitors" data-flag-title="合并两个有序链表">
+             <span id="/2018/08/17/合并两个有序链表以及k个有序链表/" class="leancloud_visitors" data-flag-title="合并两个有序链表以及k个有序链表">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1520,6 +1576,7 @@ public static void main(String[] args){
           
             <pre><code>public class MergeSortedLink {
 
+//递归
 public static ListNode merge(ListNode head1,ListNode head2){
     ListNode mergedHead;
 
@@ -1540,6 +1597,90 @@ public static ListNode merge(ListNode head1,ListNode head2){
     }
 
     return mergedHead;
+}
+
+//非递归
+public static ListNode merge1(ListNode head1,ListNode head2){
+    ListNode temp = new ListNode(0);
+    ListNode tail = temp;
+
+    while (true){
+        if(head1 == null){
+            tail.next = head2;
+            break;
+        }
+
+        if(head2 == null){
+            tail.next = head1;
+            break;
+        }
+
+        if(head1.data &lt;= head2.data){
+            tail.next = head1;
+            head1 = head1.next;
+        }else {
+            tail.next = head2;
+            head2 = head2.next;
+        }
+        tail = tail.next;
+    }
+    return temp.next;
+}
+
+//合并k个有序链表
+public static ListNode mergeK(ListNode[] listNodes,int last){
+    while (last != 0){
+        int i = 0;
+        int j = last;
+        while (i &lt; j){
+            listNodes[i] = merge1(listNodes[i],listNodes[j]);
+            i++;
+            j--;
+            if(i &gt;= j){
+                last = j;
+            }
+        }
+    }
+    return listNodes[0];
+}
+
+//优先队列（最小堆）时间复杂度：O（nklogk）
+public static ListNode mergeK1(ListNode[] listNodes,int last){
+
+    ListNode head = null;
+    ListNode tail = null;
+
+    PriorityQueue&lt;ListNode&gt; pq = new PriorityQueue&lt;ListNode&gt;(new Comparator&lt;ListNode&gt;(){
+        public int compare(ListNode a, ListNode b)
+        {
+            return a.data-b.data;
+        }
+    });
+
+    for (int i = 0; i &lt;= last; i++)
+        pq.add(listNodes[i]);
+
+    while (!pq.isEmpty())
+    {
+        ListNode top = pq.peek();
+        pq.remove();
+
+        if (top.next != null)
+            pq.add(top.next);
+
+        if (head == null)
+        {
+            head = top;
+            tail = top;
+        }
+        else
+        {
+            tail.next = top;
+            tail = top;
+        }
+    }
+    // head node of the required merged list
+    return head;
 }
 
 public static void main(String[] args){
@@ -2346,78 +2487,48 @@ public static void main(String[] args){
       
         
           
-            <pre><code>public class EnterCycleNode {
+            <p><a href="https://www.geeksforgeeks.org/find-first-node-of-loop-in-a-linked-list/" title="详细证明" target="_blank" rel="noopener">详细证明</a></p>
+<pre><code>public class EnterCycleNode {
 
-public static ListNode meetNode(ListNode head){
-
-    if(head == null){
-        throw new RuntimeException(&quot;链表不能为空&quot;);
+public static ListNode findEntryNode(ListNode head){
+    if(head == null || head.next == null){
+        return null;
+    }
+    ListNode slow = head;
+    ListNode fast = head;
+    slow = slow.next;
+    fast = fast.next.next;
+    while (fast != null &amp;&amp; fast.next != null){
+        if(slow == fast)
+            break;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    if(slow != fast){//无环
+        return null;
     }
 
-    ListNode pre,post;
-    pre = head;
-    post = head;
-    int cycleNodeNum = calcycleNodeNum(head);
-    if(cycleNodeNum != 0){//有环
-        for(int i = 0;i&lt;cycleNodeNum;i++){//post先走cycleNodeNum步
-            pre = pre.next;
-        }
-
-        while(post != pre){//然后两个指针依次先前走一步
-            pre = pre.next;
-            post = post.next;
-        }
-        return post;
+    //走到这说明有环
+    slow = head;
+    while (slow != fast){
+        slow = slow.next;
+        fast = fast.next;
     }
 
-    return null;
+    return slow;
 }
-
-//判断链表是否有环,有的话计算环中一共有多少结点
-private static int calcycleNodeNum(ListNode head) {
-    ListNode p,pre;
-    p = head;
-    pre = head;
-    int numOfCycleNode = 0;
-
-    while (pre.next != null){
-        pre = pre.next;//走第一步时判断一下
-        if (pre != p &amp;&amp; pre.next != null){
-            p = p.next;
-            pre = pre.next;//pre先走了两步
-        }
-
-        //走完第二步再判断一下
-        if(pre == p){//第一个指针追上了第二个指针
-            numOfCycleNode++;
-            pre = pre.next;
-            while (pre != p){//计算环内结点
-                numOfCycleNode++;
-                pre = pre.next;
-            }
-            break;//跳出循环
-        }
-    }
-    return numOfCycleNode;
-}
-
 public static void main(String[] args){
     Link link = new Link();
     link.add(1);
     link.add(2);
     link.add(3);
     link.add(4);
-    ListNode tail = Link.head;
+    ListNode tail = link.head;
     while (tail.next != null){
         tail = tail.next;
     }
-    //tail.next = Link.head;
-    if(EnterCycleNode.meetNode(Link.head) != null){
-        System.out.println(EnterCycleNode.meetNode(Link.head).data);
-    }else {
-        throw new RuntimeException(&quot;不存在环入口节点&quot;);
-    }
-
+    tail.next = link.head.next;
+    System.out.println(EnterCycleNode.findEntryNode(link.head).data);
 }
 }
 </code></pre>

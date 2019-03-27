@@ -81,20 +81,17 @@
 
 
 
-<meta name="description" content="单例模式的不同写法：  单例模式指？   只生成一个对象，避免重复创建对象。     instance为什么要加static关键字？   因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.  单例模式中构造函数为什么私有化？   1.构造函数私有化后，那">
+<meta name="description" content="public class MergeSortedLink {  //递归 public static ListNode merge(ListNode head1,ListNode head2){     ListNode mergedHead;      if(head1 == null){         return head2;     }      if(head2 == null){">
 <meta property="og:type" content="article">
-<meta property="og:title" content="单例模式">
-<meta property="og:url" content="http://www.xuchunfa.cn/2018/07/17/单例模式/index.html">
+<meta property="og:title" content="合并两个有序链表以及k个有序链表">
+<meta property="og:url" content="http://www.xuchunfa.cn/2018/08/17/合并两个有序链表以及k个有序链表/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="单例模式的不同写法：  单例模式指？   只生成一个对象，避免重复创建对象。     instance为什么要加static关键字？   因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.  单例模式中构造函数为什么私有化？   1.构造函数私有化后，那">
+<meta property="og:description" content="public class MergeSortedLink {  //递归 public static ListNode merge(ListNode head1,ListNode head2){     ListNode mergedHead;      if(head1 == null){         return head2;     }      if(head2 == null){">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/MkkHyU0.png">
-<meta property="og:image" content="https://i.imgur.com/EXnDWsp.png">
-<meta property="og:updated_time" content="2019-03-25T13:31:25.128Z">
+<meta property="og:updated_time" content="2019-03-25T08:59:13.978Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="单例模式">
-<meta name="twitter:description" content="单例模式的不同写法：  单例模式指？   只生成一个对象，避免重复创建对象。     instance为什么要加static关键字？   因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.  单例模式中构造函数为什么私有化？   1.构造函数私有化后，那">
-<meta name="twitter:image" content="https://i.imgur.com/MkkHyU0.png">
+<meta name="twitter:title" content="合并两个有序链表以及k个有序链表">
+<meta name="twitter:description" content="public class MergeSortedLink {  //递归 public static ListNode merge(ListNode head1,ListNode head2){     ListNode mergedHead;      if(head1 == null){         return head2;     }      if(head2 == null){">
 
 
 
@@ -124,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://www.xuchunfa.cn/2018/07/17/单例模式/"/>
+  <link rel="canonical" href="http://www.xuchunfa.cn/2018/08/17/合并两个有序链表以及k个有序链表/"/>
 
 
 
 
 
-  <title>单例模式 | Flying in the ocean of knowledge</title>
+  <title>合并两个有序链表以及k个有序链表 | Flying in the ocean of knowledge</title>
   
 
 
@@ -292,7 +289,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/单例模式/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/17/合并两个有序链表以及k个有序链表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -309,7 +306,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">单例模式</h1>
+          <h1 class="post-title" itemprop="name headline">合并两个有序链表以及k个有序链表</h1>
         
 
         <div class="post-meta">
@@ -321,8 +318,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T11:32:12+08:00">
-                2018-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-17T16:17:36+08:00">
+                2018-08-17
               </time>
             
 
@@ -344,8 +341,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
                   </a>
                 </span>
 
@@ -362,8 +359,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/07/17/单例模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/07/17/单例模式/" itemprop="commentsCount"></span>
+                <a href="/2018/08/17/合并两个有序链表以及k个有序链表/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/17/合并两个有序链表以及k个有序链表/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -371,7 +368,7 @@
 
           
           
-             <span id="/2018/07/17/单例模式/" class="leancloud_visitors" data-flag-title="单例模式">
+             <span id="/2018/08/17/合并两个有序链表以及k个有序链表/" class="leancloud_visitors" data-flag-title="合并两个有序链表以及k个有序链表">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,49 +399,134 @@
       
 
       
-        <p>单例模式的不同写法：</p>
-<ul>
-<li><p>单例模式指？</p>
-<p>  只生成一个对象，避免重复创建对象。</p>
-<p>  <img src="https://i.imgur.com/MkkHyU0.png" alt=""></p>
-</li>
-<li><p>instance为什么要加static关键字？</p>
-<p>  因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.</p>
-</li>
-<li><p>单例模式中构造函数为什么私有化？</p>
-<p>  1.构造函数私有化后，那么只能通过这个类的内部函数才能构造这个类的对象。</p>
-<p>  2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。</p>
-</li>
-<li><p>单例模式中volatile变量的作用？</p>
-<p>  首先分析 instance = new Singleton() 的本质：</p>
-<p>  1.为对象分配内存空间</p>
-<p>  2.对象初始化</p>
-<p>  3.将对象的引用指向对应的内存地址。</p>
-</li>
-</ul>
-<p>但是在单线程内2和3可能会发生重排序，于是发生了如下情况：<br><img src="https://i.imgur.com/EXnDWsp.png" alt=""></p>
-<p>此时线程B访问的是没有经过初始化的对象，会报错，所以使用volatile的根源在于：<strong>禁止A2和A3的重排序</strong>。</p>
-<ul>
-<li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
-<p>  因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。我们只需要在实例还没有创建之前添加加锁操作。</p>
-</li>
-<li><p>线程安全的延迟初始化？</p>
-<p>  1.基于volatile</p>
-<p>  2.基于类初始化</p>
-<p> 对于2举个例子：</p>
-<p>  private static class Holder{</p>
-<pre><code>private static Singleton instance =  new Singleton();
-</code></pre><p>  }</p>
-<p>  public static Singleton getInstance(int i){</p>
-<pre><code>return Holder.instance;
-</code></pre><p>  }</p>
-</li>
-<li><p>静态内部类方法创建单例模式的好处？</p>
-<p>  按需创建实例（饿汉式模式：在类加载时就完成了初始化），提高了内存的利用效率。</p>
-<p>  <code>这种方式的特点是：Singleton类被装载了，instance不一定被初始化，只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。</code></p>
-</li>
-</ul>
+        <pre><code>public class MergeSortedLink {
 
+//递归
+public static ListNode merge(ListNode head1,ListNode head2){
+    ListNode mergedHead;
+
+    if(head1 == null){
+        return head2;
+    }
+
+    if(head2 == null){
+        return head1;
+    }
+
+    if(head1.data &lt; head2.data){
+        mergedHead = head1;
+        mergedHead.next = merge(head1.next,head2);
+    }else {
+        mergedHead = head2;
+        mergedHead.next = merge(head1,head2.next);
+    }
+
+    return mergedHead;
+}
+
+//非递归
+public static ListNode merge1(ListNode head1,ListNode head2){
+    ListNode temp = new ListNode(0);
+    ListNode tail = temp;
+
+    while (true){
+        if(head1 == null){
+            tail.next = head2;
+            break;
+        }
+
+        if(head2 == null){
+            tail.next = head1;
+            break;
+        }
+
+        if(head1.data &lt;= head2.data){
+            tail.next = head1;
+            head1 = head1.next;
+        }else {
+            tail.next = head2;
+            head2 = head2.next;
+        }
+        tail = tail.next;
+    }
+    return temp.next;
+}
+
+//合并k个有序链表
+public static ListNode mergeK(ListNode[] listNodes,int last){
+    while (last != 0){
+        int i = 0;
+        int j = last;
+        while (i &lt; j){
+            listNodes[i] = merge1(listNodes[i],listNodes[j]);
+            i++;
+            j--;
+            if(i &gt;= j){
+                last = j;
+            }
+        }
+    }
+    return listNodes[0];
+}
+
+//优先队列（最小堆）时间复杂度：O（nklogk）
+public static ListNode mergeK1(ListNode[] listNodes,int last){
+
+    ListNode head = null;
+    ListNode tail = null;
+
+    PriorityQueue&lt;ListNode&gt; pq = new PriorityQueue&lt;ListNode&gt;(new Comparator&lt;ListNode&gt;(){
+        public int compare(ListNode a, ListNode b)
+        {
+            return a.data-b.data;
+        }
+    });
+
+    for (int i = 0; i &lt;= last; i++)
+        pq.add(listNodes[i]);
+
+    while (!pq.isEmpty())
+    {
+        ListNode top = pq.peek();
+        pq.remove();
+
+        if (top.next != null)
+            pq.add(top.next);
+
+        if (head == null)
+        {
+            head = top;
+            tail = top;
+        }
+        else
+        {
+            tail.next = top;
+            tail = top;
+        }
+    }
+    // head node of the required merged list
+    return head;
+}
+
+public static void main(String[] args){
+    Link link1 = new Link();
+    Link link2 = new Link();
+    link1.add(1);
+    link1.add(3);
+    link1.add(5);
+
+    link2.add(2);
+    link2.add(4);
+    link2.add(6);
+    link2.add(7);
+
+    ListNode newHead = MergeSortedLink.merge(link1.head,link2.head);
+    Link link3 = new Link();
+    link3.head = newHead;
+    link3.print();
+}
+}
+</code></pre>
       
     </div>
     
@@ -468,8 +550,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/13/Java变量/" rel="next" title="成员变量和局部变量">
-                <i class="fa fa-chevron-left"></i> 成员变量和局部变量
+              <a href="/2018/08/17/删除链表中的重复结点/" rel="next" title="删除链表中的重复结点">
+                <i class="fa fa-chevron-left"></i> 删除链表中的重复结点
               </a>
             
           </div>
@@ -478,8 +560,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/17/线程间协作和通信/" rel="prev" title="线程协作通信">
-                线程协作通信 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/19/类文件结构和类加载/" rel="prev" title="类文件结构和类加载">
+                类文件结构和类加载 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="就地反转和递归反转？public class VerseLink {  //直接遍历一遍 public static void verseLink(ListNode head){     ListNode previous,current,post;     previous = null;     current = head;      while (current != null){">
+<meta name="description" content="就地反转和递归反转？public class VerseLink {  //直接遍历一遍 public static ListNode verseLink(ListNode head){     ListNode previous,current,post;     previous = null;     current = head;      while (current != null){">
 <meta property="og:type" content="article">
 <meta property="og:title" content="反转链表">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/17/反转链表-1/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="就地反转和递归反转？public class VerseLink {  //直接遍历一遍 public static void verseLink(ListNode head){     ListNode previous,current,post;     previous = null;     current = head;      while (current != null){">
+<meta property="og:description" content="就地反转和递归反转？public class VerseLink {  //直接遍历一遍 public static ListNode verseLink(ListNode head){     ListNode previous,current,post;     previous = null;     current = head;      while (current != null){">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-17T06:52:27.623Z">
+<meta property="og:updated_time" content="2019-03-26T01:14:07.923Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="反转链表">
-<meta name="twitter:description" content="就地反转和递归反转？public class VerseLink {  //直接遍历一遍 public static void verseLink(ListNode head){     ListNode previous,current,post;     previous = null;     current = head;      while (current != null){">
+<meta name="twitter:description" content="就地反转和递归反转？public class VerseLink {  //直接遍历一遍 public static ListNode verseLink(ListNode head){     ListNode previous,current,post;     previous = null;     current = head;      while (current != null){">
 
 
 
@@ -402,21 +402,19 @@
         <h4 id="就地反转和递归反转？"><a href="#就地反转和递归反转？" class="headerlink" title="就地反转和递归反转？"></a>就地反转和递归反转？</h4><pre><code>public class VerseLink {
 
 //直接遍历一遍
-public static void verseLink(ListNode head){
+public static ListNode verseLink(ListNode head){
     ListNode previous,current,post;
     previous = null;
     current = head;
 
     while (current != null){
         post = current.next;
-
-        if(post == null)
-            Link.head = current;
-
         current.next = previous;
         previous = current;
         current = post;
     }
+    head = prev;
+    return head;
 }
 
 //递归反转

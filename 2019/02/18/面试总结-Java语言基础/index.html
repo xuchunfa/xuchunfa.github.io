@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是">
+<meta name="description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java语言基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是">
+<meta property="og:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-21T11:05:50.166Z">
+<meta property="og:updated_time" content="2019-03-25T13:11:36.357Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java语言基础">
-<meta name="twitter:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是">
+<meta name="twitter:description" content="private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。  2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不">
 
 
 
@@ -412,7 +412,9 @@
       
         <ol>
 <li>private修饰的方法可以通过反射访问，那么private的意义何在？</li>
-<li>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</li>
+<li><p>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</p>
+<pre><code>约束限制，减少出错。
+</code></pre></li>
 <li><p>接口和抽象的区别？</p>
 <pre><code>1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。
 
@@ -421,9 +423,47 @@
 3.门和报警器的例子。将门抽象为一个类，实现报警功能的接口。抽象类是一种“is-a”的关系，接口代表的是“like-a”的关系。
 </code></pre></li>
 <li><p>重写和重载的区别？</p>
-</li>
-<li>Object类有哪些方法？以及具体用到哪？</li>
-<li>java的浅拷贝和深拷贝？</li>
+<p> 重载：</p>
+<pre><code>1.函数名相同，参数列表不同；
+
+2.前期绑定，即编译期绑定，编译器确定调用哪个方法；
+</code></pre><p> 重写：</p>
+<pre><code>1.子类重写父类中的方法，函数名和参数列表都相同;
+
+2.动态绑定，多态
+</code></pre></li>
+<li><p>Object类有哪些方法？以及具体用到哪？</p>
+<pre><code> 1.getClass()、hashCode()、equals(Object)、clone()、toString()、notify()、notifyAll()、wait(long)、wait(）、finalize();
+
+2.wait()和notify():生产者消费者模式中常用到；
+</code></pre></li>
+</ol>
+<ol start="6">
+<li><p>java的浅拷贝和深拷贝？</p>
+<p> 浅拷贝：</p>
+<pre><code>1.属性为引用类型，拷贝的是内存地址，如果一个对象改变了引用对象指向的对象的内容，那么拷贝对象中也会发生变化；
+
+2.的确创建了一个对象；
+</code></pre><p> 深拷贝：</p>
+<pre><code>1.重写引用对象的克隆方法，即可实现深拷贝；
+</code></pre><p> 总结：</p>
+<pre><code>如果一个对象内部只有基本数据类型，那用 clone() 方法获取到的就是这个对象的深拷贝，
+
+而如果其内部还有引用数据类型，那用 clone() 方法就是一次浅拷贝的操作。
+</code></pre></li>
+</ol>
+<ol start="7">
+<li><p>equals和==的区别以及hashcode和equals之间的关系？</p>
+<pre><code>1.==表示地址是否相等，equals表示内容是否相等；
+</code></pre><p> hashcode和equals之间的关系：</p>
+<pre><code>1.两个对象equals相等，则hashcode相等；
+
+2.两个对象hashcode相等，equals不一定相等；
+
+3.当equals()被重写的时候，hashcode（）也要被重写，保证相等的对象的hashcode相等；
+
+4.java的集合中通常使用equals（）判断对象是否相等，使用hashcode能够加快效率；
+</code></pre></li>
 </ol>
 
       

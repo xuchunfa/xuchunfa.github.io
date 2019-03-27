@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getInstance(){ r">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-10T11:55:41.728Z">
+<meta property="og:updated_time" content="2019-03-25T13:58:08.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式的不同写法">
 <meta name="twitter:description" content="饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getInstance(){ r">
@@ -438,8 +438,23 @@
 </ul>
 <ul>
 <li><p>双重检查模式（DCL）</p>
-<p>  1.还是会在某些情况下出现DCL失效的情况。</p>
-</li>
+<pre><code>public class Singleton { 
+
+    private static volatile Singleton instance;
+
+    private Singleton(){}
+
+    public static Singleton getInstance(){
+        if(instance == null){
+            synchronied(Singleton.class){
+                if(instance == null){
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+</code></pre></li>
 </ul>
 <ul>
 <li><p>静态内部单例模式</p>
