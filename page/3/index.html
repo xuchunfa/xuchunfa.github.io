@@ -286,6 +286,438 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/25/Redis基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/25/Redis基础/" itemprop="url">Redis基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T19:43:16+08:00">
+                2018-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/25/Redis基础/" class="leancloud_visitors" data-flag-title="Redis基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>Redis 命令</p>
+<p>  1.expire key seconds ：为key指定过期时间，单位是秒。</p>
+<p>  2.ttl key ：返回设置了过期时间的key的剩余过期秒数。</p>
+</li>
+</ul>
+<pre><code>**String类型：**
+
+3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
+
+4.incrby/decrby key integer : 加减指定值。
+
+**List类型：就是一个每个子元素都是string类型的双向链表。**
+
+5.lpush/rpush key string : 在key对应list的头部/尾部添加字符串元素。
+
+6.llen key : 返回key对应list的长度。
+
+7.lrange key start end ：返回指定区间内的元素，下标从0开始，负值表示从后面计算，-1表示倒数第一个元素。
+
+8.ltrim key start end : 让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
+
+**Set类型：**
+
+8.sadd key member ：添加一个string元素到key对应的set集合中。
+
+9.smembers key ：返回key对应set的所有元素，结果是无序的。
+
+10.srem key member : 从key对应set中移除给定元素。
+
+11.srandmember key : 随机取set中的一个元素，但是不删除元素(spop会删除)。
+
+12.scard key ：返回set的元素个数。
+
+13.sismember key member ：判断member是否在set中。
+
+14.sinter key1 key2...keyN : 返回所有给定key的交集。
+
+15.sinterstore dstkey key1...keyN ：同sinter，但是会同时将交集存到dstkey下。可以推荐别人的共同好友给你。
+
+16.sunion key1 key2...keyN ：返回所有给定key的并集。
+
+17.sdiff key1 key2...keyN ：返回所有给定key的差集。
+
+18.sdiffstore dstkey key1...keyN ：同sdiff，并同时保存差集到dstkey下。
+
+**Zset类型：**
+
+19.zadd key score member ：添加元素到集合，元素在集合中存在则更新对应score。
+
+20.zincrby key incr member ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。
+
+21.zrank key member ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。
+
+22.zrevrank key member ：同上,但是集合中元素是按score从大到小排序。
+
+23.zrange/zrevrange key start end ：从集合中取指定区间的元素。返回的是有序结果，按score有序/逆序。
+
+24.zrangebyscore key min max ：返回集合中score在给定区间的元素。结果按score从小到大排序。
+
+25.zcount key min max ：返回集合中score在给定区间的数量。
+
+26.zcard key ：返回集合中元素个数。
+
+27.zscore key element ：返回给定元素对应的score。
+
+28.zremrangebyrank/zremrangebyscore key min max ：删除集合中排名/Score在给定区间的元素。
+
+**Hash类型：**
+
+29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。
+
+30.hget key field ：获取指定的hash field。
+
+31.hincrby key field integer ：增加hash域的值。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/24/Kafka基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/24/Kafka基础/" itemprop="url">Kafka基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-24T16:21:58+08:00">
+                2018-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据基础/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/24/Kafka基础/" class="leancloud_visitors" data-flag-title="Kafka基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>消息只能被消费组里面的一个消费者消费，如果被多个消费者消费，这些消费者必须在不同的消费组里面。</p>
+</li>
+<li><p>Kafka需要维持的元数据只有一个offset值，Consumer每消费一个消息，offset就会加1，消息的状态完全是由Consumer控制的，Consumer可以跟踪和重设这个offset值，这样的话Consumer就可以读取任意位置的消息。</p>
+</li>
+</ul>
+<ul>
+<li><p>replication-factor是以partition为单位的，只有一个partition的副本会被选举成leader作为读写用.</p>
+</li>
+<li><p>Producer在发送消息后，会得到一个响应，出现了一个重要的参数：默认值好像是0，在Producer中配置。</p>
+<pre><code>acks = 0 : 表示producer不会等待broker的响应.
+
+acks = 1 : 表示producer会在leader partition收到消息时得到broker的一个确认.
+
+acks = -1 : producer会在所有备份的partition收到消息时得到broker的确认.
+</code></pre></li>
+<li><p>Consumers的示意图：</p>
+</li>
+</ul>
+<p><img src="https://i.imgur.com/Zz6TdbW.png" alt=""></p>
+<ul>
+<li><p>消息可靠性的保障</p>
+<p>  Producer端：等待broker成功接收到消息的反馈。</p>
+<p>  Consumer端：Broker记录了partition中的一个offset值,可以通过这个offset值重新找到上一个出错消息，再重新进行处理。</p>
+</li>
+<li><p>Producer Config的重要参数</p>
+<pre><code>1.metadata.broker.list：启动时producer查询brokers的列表，可以是集群中所有brokers的一个子集。格式：host1:port1,host2:port2。
+
+2.request.required.acks：见上面的详解。
+
+3.request.timeout.ms：等待 Broker ack的超时时间，若等待时间超过此值，会返回客户端错误信息。
+
+4.producer.type：async表示异步，sync表示同步。如果设置成异步模式，可以允许生产者以batch的形式push数据，这样会极大的提高broker性能，推荐设置为异步
+</code></pre></li>
+<li><p>Consumer Config的重要参数</p>
+<pre><code>1.group.id：消费组id.
+
+2.zookeeper.connect:Consumer的zookeeper连接串，要和broker的配置一致.
+
+3.consumer.id : 默认为null,设置会自动生成。
+
+4.auto.commit.enable:默认值为true.Consumer会周期性的把当前消费的offset值保存到zookeeper。当consumer失败重启之后将会使用此值作为新开始消费的值。
+
+5.auto.commit.interval.ms:上述操作更新的频率。Consumer提交offset值到zookeeper的周期。
+</code></pre></li>
+</ul>
+<p>这里补充一下offset更新的方式：</p>
+<pre><code>1.自动提交：设置enable.auto.commit=true，更新的频率根据参数【auto.commit.interval.ms】来定。这种方式也被称为【at most once】，“最多一次”
+fetch到消息后就可以更新offset，无论是否消费成功。
+
+
+2.手动提交：设置enable.auto.commit=false，这种方式称为【at least once】。“最少一次”
+fetch到消息后，等消费完成再调用方法【consumer.commitSync()】，手动更新offset；如果消费失败，则offset也不会更新，此条消息会被重复消费一次。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/11/Storm基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2453,490 +2885,6 @@ WHERE MATCH (title,body) AGAINST (&apos;database&apos;);
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/结点的最近祖先/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/结点的最近祖先/" itemprop="url">结点的最近祖先</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T19:46:51+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/03/结点的最近祖先/" class="leancloud_visitors" data-flag-title="结点的最近祖先">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="两个结点的最近祖先？"><a href="#两个结点的最近祖先？" class="headerlink" title="两个结点的最近祖先？"></a>两个结点的最近祖先？</h4><pre><code>public class CommonAncestor {
-
-//树为二叉搜索树的情况，默认node1 node2已经存在树中
-public BinaryTreeNode findCommonAncestor(BinaryTreeNode pRoot,int node1,int node2){
-
-    if(pRoot.data &gt; node1 &amp;&amp; pRoot.data &lt; node2 || pRoot.data &lt; node1 &amp;&amp; pRoot.data &gt; node2)
-        return pRoot;
-
-    if(node1 &lt; pRoot.data &amp;&amp; node2 &lt; pRoot.data){
-        return findCommonAncestor(pRoot.left,node1,node2);
-    }else if(node1 &gt; pRoot.data &amp;&amp; node2 &gt; pRoot.data){
-        return findCommonAncestor(pRoot.right,node1,node2);
-    }
-
-    return null;
-}
-
-//树为普通二叉树递归解法
-public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
-
-    //判断两个结点在同一条分支上？？？
-
-    if(pRoot == null)
-        return null;
-
-    if(pathIsExisted(pRoot.left,node1)){
-        if(pathIsExisted(pRoot.right,node2)) {
-            return pRoot;
-        }else//两个结点都在左子树中继续向下递归
-            return findCommonAncestor1(pRoot.left,node1,node2);
-    }else {
-        if(pathIsExisted(pRoot.left,node2))
-            return pRoot;
-        else//两个结点都在右子树中继续向下递归
-            return findCommonAncestor1(pRoot.right,node1,node2);
-    }
-
-}
-
-//判断路径中是否存在指定结点的值
-public boolean pathIsExisted(BinaryTreeNode pRoot,int node){
-
-    if(pRoot == null)
-        return false;
-
-    if(pRoot.data == node)
-        return true;
-
-    boolean flag = pathIsExisted(pRoot.left,node);
-
-    //如果找到了就不用继续递归了
-    if(!flag){
-        flag = pathIsExisted(pRoot.right,node);
-    }
-
-    return flag;
-}
-
-//树为普通二叉树非递归解法
-public BinaryTreeNode findCommonAncestor2(BinaryTreeNode pRoot,int node1,int node2){
-
-    //list1和list2保存根节点到目标结点的路径
-    List&lt;BinaryTreeNode&gt; list1 = new ArrayList&lt;BinaryTreeNode&gt;();
-    boolean path1 = findPath(pRoot,node1,list1);
-
-    List&lt;BinaryTreeNode&gt; list2 = new ArrayList&lt;BinaryTreeNode&gt;();
-    boolean path2 = findPath(pRoot,node2,list2);
-
-    BinaryTreeNode ancestor = null;
-    Iterator list1Iterator = list1.iterator();
-    Iterator list2Iterator = list2.iterator();
-    int diffIndex = -1;//默认没有出现两个不同的节点
-    int i = 0;
-
-    //找到两条路径岔开的那个位置结点，那么前一个结点就是最后一个公共路径上的结点，也就是最近的祖先
-    if(path1 &amp;&amp; path2){
-        while (list1Iterator.hasNext() &amp;&amp; list2Iterator.hasNext()){
-
-            if(list1Iterator.next() != list2Iterator.next()){
-                diffIndex = --i;
-                break;
-            }
-            i++;
-        }
-    }
-
-    if(diffIndex &gt;= 0)
-        ancestor = list1.get(diffIndex);
-
-    //diffIndex = -1 表示node1和node2在同一条路径上
-    return ancestor;
-}
-
-//保存包含指定节点路径结点的方法
-public boolean findPath(BinaryTreeNode pRoot, int node, List&lt;BinaryTreeNode&gt; list){
-    if(pRoot ==  null)
-        return false;
-
-    list.add(pRoot);
-
-    if(pRoot.data == node)
-        return true;
-
-    boolean isExisted = findPath(pRoot.left,node,list);
-
-    if(!isExisted){
-        isExisted = findPath(pRoot.right,node,list);
-    }
-
-    if(!isExisted)
-        list.remove(list.size()-1);
-
-    return isExisted;
-}
-
-
-public static void main(String[] args){
-    BinaryTree tree = new BinaryTree();
-    tree.createBinaryTree(tree.getRoot(),8);
-    tree.createBinaryTree(tree.getRoot(),3);
-    tree.createBinaryTree(tree.getRoot(),2);
-    tree.createBinaryTree(tree.getRoot(),5);
-    tree.createBinaryTree(tree.getRoot(),1);
-    tree.createBinaryTree(tree.getRoot(),12);
-    tree.createBinaryTree(tree.getRoot(),9);
-
-    CommonAncestor test = new CommonAncestor();
-
-    System.out.println(test.findCommonAncestor1(tree.getRoot(),3,2).data);
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/丑数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/丑数/" itemprop="url">丑数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T10:30:46+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
-                    <span itemprop="name">策略类</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/03/丑数/" class="leancloud_visitors" data-flag-title="丑数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public class UglyNumber {
-
-public static int resolve(int index){
-
-    if(index &lt;= 0){
-        throw new RuntimeException(&quot;参数非法&quot;);
-    }
-
-    int[] uglyNumber = new int[index];
-
-    uglyNumber[0] = 1;
-    int indexOf2,indexOf3,indexOf5;
-    indexOf2 = indexOf3 = indexOf5 = 0;
-
-    int uglyNumberIndex = 1;
-
-    while (uglyNumberIndex &lt; index){
-        int min = Min(uglyNumber[indexOf2]*2,uglyNumber[indexOf3]*3,uglyNumber[indexOf5]*5);
-        uglyNumber[uglyNumberIndex] = min;
-
-        //uglyNumber[uglyNumberIndex]代表的是目前数组中最大的丑数
-        while (uglyNumber[indexOf2]*2 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf2++;
-        }
-
-        //下次的uglyNumber[indexOf3]肯定就大于Max uglyNumber
-        while (uglyNumber[indexOf3]*3 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf3++;
-        }
-
-        while (uglyNumber[indexOf5]*5 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf5++;
-        }
-
-        uglyNumberIndex++;
-    }
-    return uglyNumber[index-1];
-}
-
-
-private static int Min(int i, int j, int k) {
-    int min;
-    return (min = i &lt; j ? i : j) &lt; k ? min : k;
-}
-
-public static void main(String[] args){
-    System.out.println(UglyNumber.resolve(100));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2991,7 +2939,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

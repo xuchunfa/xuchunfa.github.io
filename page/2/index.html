@@ -286,6 +286,450 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/面试总结-Java并发编程/" itemprop="url">面试总结--Java并发编程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:48:38+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/18/面试总结-Java并发编程/" class="leancloud_visitors" data-flag-title="面试总结--Java并发编程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>ReadWriteLock读写之间互斥吗？</li>
+<li>说说ReentrantLock是基于哪个类的？说说队列同步器？</li>
+<li>Semaphore拿到执行权的线程之间是否互斥？</li>
+<li>写一个生产者消费者模式？</li>
+<li>写一个死锁？</li>
+<li>死锁的产生的原因以及怎么预防？ </li>
+<li>int a = 1; 是原子性操作吗？</li>
+<li>新的任务提交到线程池，线程池是怎样处理？</li>
+<li>线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？</li>
+<li>AQS和CAS原理？</li>
+<li>synchronized底层实现原理？</li>
+<li>synchronized和lock的区别？</li>
+<li>volatile作用，指令重排相关？</li>
+<li>锁有哪几种？</li>
+</ol>
+<p>参考：</p>
+<p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
+<p><a href="https://www.itcodemonkey.com/article/1725.html" target="_blank" rel="noopener">小灰漫画volatile</a></p>
+<pre><code>1.volatile变量在线程之间具有可见性；基于CPU的内存屏障实现的。
+
+2.volatile变量禁止指令重排；
+
+3.每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；
+
+4.每个volatile读操作前插入LoadLoad屏障，读操作之后插入LoadStore屏障；
+</code></pre><p>9.java内存模型？</p>
+<p><img src="https://i.imgur.com/7yPyszl.png" alt=""></p>
+<pre><code>1.JMM是一种规范，用于决解由于多线程通过共享内存（主存）进行通信时，存在本地内存数据不一致，编译器对代码指令重排等带来的问题。
+
+2.java并发编程中保证原子性、可见性和有序性的方法：
+
+    原子性：synchronized保证方法和代码块内的操作是原子性的。
+
+    可见性：synchronized、volatile和final关键字；
+
+    有序性：synchronized关键字；
+
+3.happens-before原则（8个）：
+
+    3.1 程序次序规则：单线程内顺序发生；
+
+    3.2 锁定规则：unlock操作先于对同一个锁的lock操作；
+
+    3.3 volatile规则：对volatile变量的写操作先于读操作；
+
+    3.4 传递规则:A先于B，B先于C，则A先于C；
+
+    3.5 线程启动规则：Thread对象的start()先于该线程的每一个动作；
+
+    3.6 线程中断规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生；
+
+    3.7 线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；
+
+    3.8 对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；
+</code></pre><ol start="10">
+<li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
+<li>线程执行过程中遇到异常会发生什么，怎样处理？</li>
+<li>java创建线程的方式？</li>
+<li>线程的状态？</li>
+</ol>
+<p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/面试总结-Java语言基础/" itemprop="url">面试总结--Java语言基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:41:52+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/java语言基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java语言基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/18/面试总结-Java语言基础/" class="leancloud_visitors" data-flag-title="面试总结--Java语言基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>private修饰的方法可以通过反射访问，那么private的意义何在？</li>
+<li><p>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</p>
+<pre><code>约束限制，减少出错。
+</code></pre></li>
+<li><p>接口和抽象的区别？</p>
+<pre><code>1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。
+
+2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是自底向上设计的，接口是自顶向下设计的。
+
+3.门和报警器的例子。将门抽象为一个类，实现报警功能的接口。抽象类是一种“is-a”的关系，接口代表的是“like-a”的关系。
+</code></pre></li>
+<li><p>重写和重载的区别？</p>
+<p> 重载：</p>
+<pre><code>1.函数名相同，参数列表不同；
+
+2.前期绑定，即编译期绑定，编译器确定调用哪个方法；
+</code></pre><p> 重写：</p>
+<pre><code>1.子类重写父类中的方法，函数名和参数列表都相同;
+
+2.动态绑定，多态
+</code></pre></li>
+<li><p>Object类有哪些方法？以及具体用到哪？</p>
+<pre><code> 1.getClass()、hashCode()、equals(Object)、clone()、toString()、notify()、notifyAll()、wait(long)、wait(）、finalize();
+
+2.wait()和notify():生产者消费者模式中常用到；
+</code></pre></li>
+</ol>
+<ol start="6">
+<li><p>java的浅拷贝和深拷贝？</p>
+<p> 浅拷贝：</p>
+<pre><code>1.属性为引用类型，拷贝的是内存地址，如果一个对象改变了引用对象指向的对象的内容，那么拷贝对象中也会发生变化；
+
+2.的确创建了一个对象；
+</code></pre><p> 深拷贝：</p>
+<pre><code>1.重写引用对象的克隆方法，即可实现深拷贝；
+</code></pre><p> 总结：</p>
+<pre><code>如果一个对象内部只有基本数据类型，那用 clone() 方法获取到的就是这个对象的深拷贝，
+
+而如果其内部还有引用数据类型，那用 clone() 方法就是一次浅拷贝的操作。
+</code></pre></li>
+</ol>
+<ol start="7">
+<li><p>equals和==的区别以及hashcode和equals之间的关系？</p>
+<pre><code>1.==表示地址是否相等，equals表示内容是否相等；
+</code></pre><p> hashcode和equals之间的关系：</p>
+<pre><code>1.两个对象equals相等，则hashcode相等；
+
+2.两个对象hashcode相等，equals不一定相等；
+
+3.当equals()被重写的时候，hashcode（）也要被重写，保证相等的对象的hashcode相等；
+
+4.java的集合中通常使用equals（）判断对象是否相等，使用hashcode能够加快效率；
+</code></pre></li>
+</ol>
+<p>8.StringBuffer和StringBuilder的区别？</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2438,438 +2882,6 @@ final void setArray(Object[] a) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/25/Redis基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/25/Redis基础/" itemprop="url">Redis基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T19:43:16+08:00">
-                2018-10-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/25/Redis基础/" class="leancloud_visitors" data-flag-title="Redis基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>Redis 命令</p>
-<p>  1.expire key seconds ：为key指定过期时间，单位是秒。</p>
-<p>  2.ttl key ：返回设置了过期时间的key的剩余过期秒数。</p>
-</li>
-</ul>
-<pre><code>**String类型：**
-
-3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
-
-4.incrby/decrby key integer : 加减指定值。
-
-**List类型：就是一个每个子元素都是string类型的双向链表。**
-
-5.lpush/rpush key string : 在key对应list的头部/尾部添加字符串元素。
-
-6.llen key : 返回key对应list的长度。
-
-7.lrange key start end ：返回指定区间内的元素，下标从0开始，负值表示从后面计算，-1表示倒数第一个元素。
-
-8.ltrim key start end : 让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
-
-**Set类型：**
-
-8.sadd key member ：添加一个string元素到key对应的set集合中。
-
-9.smembers key ：返回key对应set的所有元素，结果是无序的。
-
-10.srem key member : 从key对应set中移除给定元素。
-
-11.srandmember key : 随机取set中的一个元素，但是不删除元素(spop会删除)。
-
-12.scard key ：返回set的元素个数。
-
-13.sismember key member ：判断member是否在set中。
-
-14.sinter key1 key2...keyN : 返回所有给定key的交集。
-
-15.sinterstore dstkey key1...keyN ：同sinter，但是会同时将交集存到dstkey下。可以推荐别人的共同好友给你。
-
-16.sunion key1 key2...keyN ：返回所有给定key的并集。
-
-17.sdiff key1 key2...keyN ：返回所有给定key的差集。
-
-18.sdiffstore dstkey key1...keyN ：同sdiff，并同时保存差集到dstkey下。
-
-**Zset类型：**
-
-19.zadd key score member ：添加元素到集合，元素在集合中存在则更新对应score。
-
-20.zincrby key incr member ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。
-
-21.zrank key member ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。
-
-22.zrevrank key member ：同上,但是集合中元素是按score从大到小排序。
-
-23.zrange/zrevrange key start end ：从集合中取指定区间的元素。返回的是有序结果，按score有序/逆序。
-
-24.zrangebyscore key min max ：返回集合中score在给定区间的元素。结果按score从小到大排序。
-
-25.zcount key min max ：返回集合中score在给定区间的数量。
-
-26.zcard key ：返回集合中元素个数。
-
-27.zscore key element ：返回给定元素对应的score。
-
-28.zremrangebyrank/zremrangebyscore key min max ：删除集合中排名/Score在给定区间的元素。
-
-**Hash类型：**
-
-29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。
-
-30.hget key field ：获取指定的hash field。
-
-31.hincrby key field integer ：增加hash域的值。
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/24/Kafka基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/24/Kafka基础/" itemprop="url">Kafka基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-24T16:21:58+08:00">
-                2018-10-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据基础/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/24/Kafka基础/" class="leancloud_visitors" data-flag-title="Kafka基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>消息只能被消费组里面的一个消费者消费，如果被多个消费者消费，这些消费者必须在不同的消费组里面。</p>
-</li>
-<li><p>Kafka需要维持的元数据只有一个offset值，Consumer每消费一个消息，offset就会加1，消息的状态完全是由Consumer控制的，Consumer可以跟踪和重设这个offset值，这样的话Consumer就可以读取任意位置的消息。</p>
-</li>
-</ul>
-<ul>
-<li><p>replication-factor是以partition为单位的，只有一个partition的副本会被选举成leader作为读写用.</p>
-</li>
-<li><p>Producer在发送消息后，会得到一个响应，出现了一个重要的参数：默认值好像是0，在Producer中配置。</p>
-<pre><code>acks = 0 : 表示producer不会等待broker的响应.
-
-acks = 1 : 表示producer会在leader partition收到消息时得到broker的一个确认.
-
-acks = -1 : producer会在所有备份的partition收到消息时得到broker的确认.
-</code></pre></li>
-<li><p>Consumers的示意图：</p>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/Zz6TdbW.png" alt=""></p>
-<ul>
-<li><p>消息可靠性的保障</p>
-<p>  Producer端：等待broker成功接收到消息的反馈。</p>
-<p>  Consumer端：Broker记录了partition中的一个offset值,可以通过这个offset值重新找到上一个出错消息，再重新进行处理。</p>
-</li>
-<li><p>Producer Config的重要参数</p>
-<pre><code>1.metadata.broker.list：启动时producer查询brokers的列表，可以是集群中所有brokers的一个子集。格式：host1:port1,host2:port2。
-
-2.request.required.acks：见上面的详解。
-
-3.request.timeout.ms：等待 Broker ack的超时时间，若等待时间超过此值，会返回客户端错误信息。
-
-4.producer.type：async表示异步，sync表示同步。如果设置成异步模式，可以允许生产者以batch的形式push数据，这样会极大的提高broker性能，推荐设置为异步
-</code></pre></li>
-<li><p>Consumer Config的重要参数</p>
-<pre><code>1.group.id：消费组id.
-
-2.zookeeper.connect:Consumer的zookeeper连接串，要和broker的配置一致.
-
-3.consumer.id : 默认为null,设置会自动生成。
-
-4.auto.commit.enable:默认值为true.Consumer会周期性的把当前消费的offset值保存到zookeeper。当consumer失败重启之后将会使用此值作为新开始消费的值。
-
-5.auto.commit.interval.ms:上述操作更新的频率。Consumer提交offset值到zookeeper的周期。
-</code></pre></li>
-</ul>
-<p>这里补充一下offset更新的方式：</p>
-<pre><code>1.自动提交：设置enable.auto.commit=true，更新的频率根据参数【auto.commit.interval.ms】来定。这种方式也被称为【at most once】，“最多一次”
-fetch到消息后就可以更新offset，无论是否消费成功。
-
-
-2.手动提交：设置enable.auto.commit=false，这种方式称为【at least once】。“最少一次”
-fetch到消息后，等消费完成再调用方法【consumer.commitSync()】，手动更新offset；如果消费失败，则offset也不会更新，此条消息会被重复消费一次。
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2924,7 +2936,7 @@ fetch到消息后，等消费完成再调用方法【consumer.commitSync()】，
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

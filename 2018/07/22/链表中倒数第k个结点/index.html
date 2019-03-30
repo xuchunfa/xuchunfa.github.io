@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="求链表中的倒数第k个结点？">
+<meta name="description" content="求链表中的倒数第k个结点？ //链表中的倒数第 K 个结点 public ListNode FindKthToTail(ListNode head,int k){      ListNode fast = head;     ListNode slow = head;      if(k &amp;lt;= 0){         throw new RuntimeException(&amp;quot;请输入自">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链表中倒数第k个结点">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/22/链表中倒数第k个结点/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="求链表中的倒数第k个结点？">
+<meta property="og:description" content="求链表中的倒数第k个结点？ //链表中的倒数第 K 个结点 public ListNode FindKthToTail(ListNode head,int k){      ListNode fast = head;     ListNode slow = head;      if(k &amp;lt;= 0){         throw new RuntimeException(&amp;quot;请输入自">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T11:48:58.742Z">
+<meta property="og:updated_time" content="2019-03-27T01:50:06.735Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表中倒数第k个结点">
-<meta name="twitter:description" content="求链表中的倒数第k个结点？">
+<meta name="twitter:description" content="求链表中的倒数第k个结点？ //链表中的倒数第 K 个结点 public ListNode FindKthToTail(ListNode head,int k){      ListNode fast = head;     ListNode slow = head;      if(k &amp;lt;= 0){         throw new RuntimeException(&amp;quot;请输入自">
 
 
 
@@ -399,7 +399,35 @@
       
 
       
-        <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4>
+        <h4 id="求链表中的倒数第k个结点？"><a href="#求链表中的倒数第k个结点？" class="headerlink" title="求链表中的倒数第k个结点？"></a>求链表中的倒数第k个结点？</h4><pre><code> //链表中的倒数第 K 个结点
+public ListNode FindKthToTail(ListNode head,int k){
+
+    ListNode fast = head;
+    ListNode slow = head;
+
+    if(k &lt;= 0){
+        throw new RuntimeException(&quot;请输入自然数k！&quot;);
+    }
+
+    if(head == null) {
+        throw new RuntimeException(&quot;链表不能为空！&quot;);
+    }
+
+    for(int i = 0;i &lt; k;i++){
+        if(fast != null){//先走k步
+            fast = fast.next;
+        }else {
+            throw new RuntimeException(&quot;k值大于了链表长度&quot;);
+        }
+    }
+
+    while (fast != null){//pre == null 时p指针指向倒数第k个结点
+        slow = slow.next;
+        fast = fast.next;
+    }
+    return slow;
+}
+</code></pre>
       
     </div>
     
@@ -523,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

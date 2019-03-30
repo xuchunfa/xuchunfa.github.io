@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="前序、中序和后序递归与非递归的遍历二叉树？public class BinaryTree {  private BinaryTreeNode root;  public boolean isEmpty(){     if(this.root == null)         return true;      return false; }  public BinaryTreeNode getRo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-23T08:00:37.409Z">
+<meta property="og:updated_time" content="2019-03-27T12:16:31.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树的创建和遍历">
 <meta name="twitter:description" content="前序、中序和后序递归与非递归的遍历二叉树？public class BinaryTree {  private BinaryTreeNode root;  public boolean isEmpty(){     if(this.root == null)         return true;      return false; }  public BinaryTreeNode getRo">
@@ -449,6 +449,24 @@ public void preOrder(BinaryTreeNode node){
     preOrder(node.right);
 }
 
+//先序遍历非递归优化方法
+public void iterativePreOrder(BinaryTreeNode p){
+    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;&gt;();
+    if(p != null){
+        stack.push(p);
+    }
+    while (!stack.isEmpty()){
+        BinaryTreeNode q = stack.pop();
+        System.out.print(q.data + &quot; &quot;);
+        if(q.right != null){
+            stack.push(q.right);
+        }
+        if(q.left != null){
+            stack.push(q.left);
+        }
+    }
+}
+
 //先序遍历,非递归实现
 public void cyclePreOrder(BinaryTreeNode node){
 
@@ -520,6 +538,51 @@ public void postOrder(BinaryTreeNode node) {
 
 }
 
+//后续遍历更容易想到的方法
+public void iterativePostOrder(BinaryTreeNode p){
+    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();
+    while (true){
+        while (p != null){
+            s.push(p);
+            s.push(p);
+            p = p.left;
+        }
+        if(s.isEmpty())
+            return;
+        p = s.pop();
+        if(!s.isEmpty() &amp;&amp; p == s.peek()){
+            p = p.right;
+        }else {
+            System.out.print(p.data + &quot; &quot;);
+            p = null;
+        }
+    }
+}
+
+//后续遍历的倒序方法
+public void reversePostOrder(BinaryTreeNode p){
+    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();
+    Stack&lt;BinaryTreeNode&gt; result = new Stack&lt;&gt;();
+    if(p != null){
+        s.push(p);
+    }
+    while (!s.isEmpty()){
+        p = s.pop();
+        //System.out.print(p.data + &quot; &quot;);
+        result.push(p);
+        if(p.left != null){
+            s.push(p.left);
+        }
+        if(p.right != null){
+            s.push(p.right);
+        }
+    }
+
+    while (!result.isEmpty()){
+        System.out.print(result.pop().data + &quot; &quot;);
+    }
+}
+
 //后序遍历,非递归实现
 public void cyclePostOrder(BinaryTreeNode node){
     BinaryTreeNode current;
@@ -532,7 +595,7 @@ public void cyclePostOrder(BinaryTreeNode node){
 
         //还不能出栈
         current = s.peek();
-        if((current.left == null &amp;&amp; current.right == null) || (visited != null &amp;&amp; (current.left == visited || current.right == visited)) ){
+        if((current.left == null &amp;&amp; current.right == null) || (visited != null &amp;&amp; (current.left == visited || current.right == visited))){
             current = s.pop();
             System.out.print(current.data + &quot; &quot;);
             visited = current;
@@ -548,6 +611,27 @@ public void cyclePostOrder(BinaryTreeNode node){
     }
 }
 
+//队列实现层次遍历
+public void levelOrder(BinaryTreeNode p){
+    Queue&lt;BinaryTreeNode&gt; queue = new LinkedList&lt;&gt;();
+    if(p != null){
+        queue.offer(p);
+    }
+    while (!queue.isEmpty()){
+       int queueSize = queue.size();
+        for(int i = 0;i &lt; queueSize;i++){//queueSize表示每一层的节点数
+            p = queue.poll();
+            System.out.print(p.data + &quot; &quot;);
+            if(p.left != null){
+                queue.offer(p.left);
+            }
+            if (p.right != null){
+                queue.offer(p.right);
+            }
+        }
+        System.out.println();
+    }
+}
 
 public static void main(String[] args){
     BinaryTree bt = new BinaryTree();
@@ -688,7 +772,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

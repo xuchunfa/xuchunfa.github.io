@@ -286,6 +286,440 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/指数幂运算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/11/指数幂运算/" itemprop="url">指数幂运算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T14:58:18+08:00">
+                2018-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/位运算/" itemprop="url" rel="index">
+                    <span itemprop="name">位运算</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/11/指数幂运算/" class="leancloud_visitors" data-flag-title="指数幂运算">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><pre><code>public class Pow {
+
+public static double pow(double base,int exp){
+
+    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp == 0){
+        return 0.0;
+    }
+
+    //浮点数的比较
+    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp &lt; 0){
+        throw new RuntimeException(&quot;参数不合法&quot;);
+    }
+
+    double result;
+    int absExp;
+    if(exp &lt; 0){
+        absExp = -exp;
+    }else {
+        absExp = exp;
+    }
+
+    result = calPow(base,absExp);
+    if(exp &lt; 0){
+        result = 1.0/result;
+    }
+
+    return result;
+}
+
+private static double calPow(double base, int exp) {
+
+    if(exp == 0)
+        return 1;
+
+    if(exp == 1)
+        return base;
+
+    //位移运算代替除法
+    double result = calPow(base,exp &gt;&gt; 1);
+    result *= result;
+
+    //与运算代替取余
+    if((exp &amp; 1) == 1){
+        result *= base;
+    }
+
+    return result;
+}
+
+public static void main(String[] args){
+    System.out.println(Pow.pow(0,-4));
+}
+</code></pre><p>}</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/10/背包问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/10/背包问题/" itemprop="url">背包问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T16:06:29+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                    <span itemprop="name">动态规划</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/10/背包问题/" class="leancloud_visitors" data-flag-title="背包问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="https://i.imgur.com/bZL8dQF.png" alt=""></p>
+<p>例如：</p>
+<p>int[] v = {4,2,10,1,2}</p>
+<p>int[] w = {12,1,4,1,2}</p>
+<p>最大价值为：15kg</p>
+<p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p>
+<p>v[i]:第i个物体的价值。</p>
+<p>w[i]:第i个物体的重量。</p>
+<p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p>
+<p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p>
+<blockquote>
+<p>动态规划</p>
+</blockquote>
+<p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p>
+<pre><code>public class ThiefProblem {
+
+static int max(int a, int b) { return (a &gt; b)? a : b; }
+
+//基于递归的解法
+static int knapSack(int W, int wt[], int val[], int n)
+{
+    if (n == 0 || W == 0)
+        return 0;
+
+    // If weight of the nth item is more than Knapsack capacity W, then
+    // this item cannot be included in the optimal solution
+    if (wt[n-1] &gt; W)
+        return knapSack(W, wt, val, n-1);
+
+        // Return the maximum of two cases:
+        // (1) nth item included
+        // (2) not included
+    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),
+            knapSack(W, wt, val, n-1)
+    );
+}
+
+//基于动态规划的解法
+static int maxValue(int W, int wt[], int val[], int n)
+{
+
+   int[][] itemToValue = new int[n+1][W+1];
+
+   for(int i = 0;i&lt;W+1;i++){
+       itemToValue[0][i] = 0;
+   }
+
+   for(int j = 0;j&lt;n+1;j++){
+       itemToValue[j][0] = 0;
+   }
+
+
+   for(int i = 1;i&lt;=n;i++){
+        for(int j = 1;j&lt;=W;j++){
+            int weightPlus = j - wt[i-1];
+            if(weightPlus &lt; 0){
+                itemToValue[i][j] = itemToValue[i-1][j];
+            }else {
+                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);
+            }
+
+        }
+   }
+
+   return itemToValue[n][W];
+}
+
+public static void main(String[] args){
+    int[] value = {6,3,5,4,6};
+    int[] weight = {2,3,6,5,7};
+    int maxWeight = 10;
+    int n = value.length;
+
+    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));
+    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/09/CAS的理解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2358,491 +2792,6 @@ return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/04/线程池/" itemprop="url">线程池</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T20:12:47+08:00">
-                2018-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/04/线程池/" class="leancloud_visitors" data-flag-title="线程池">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
-<li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
-<li><p>set方法</p>
-<p> //ThreadLocal.java<br> public void set(T value) {</p>
-<pre><code>// 得到当前线程对象
-Thread t = Thread.currentThread();
-
-// 这里获取ThreadLocalMap
-ThreadLocalMap map = getMap(t);
-
-// 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
-// 例如数据库中的 connection 对象
-if (map != null)
-    map.set(this, value);
-else
-    createMap(t, value);
-</code></pre><p> }</p>
-<p> void createMap(Thread t, T firstValue) {</p>
-<pre><code>//key为 ThreadLocal 对象
-t.threadLocals = new ThreadLocalMap(this, firstValue);
-</code></pre><p> }</p>
-</li>
-</ol>
-<p>看看ThreadLocalMap</p>
-<pre><code>//ThreadLocal.java
-static class ThreadLocalMap {
-    static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {
-        /** The value associated with this ThreadLocal. */
-        Object value;
-
-        Entry(ThreadLocal&lt;?&gt; k, Object v) {
-            super(k);
-            value = v;
-        }
-    }
-    //....很长
-}
-</code></pre><p>ThreadLocalMap是ThreadLocal的一个内部类。用Entry类来进行存储,我们的值都是存储到这个Map上的，key是当前ThreadLocal对象！</p>
-<p>该ThreadLocalMap从Thread中获取：</p>
-<pre><code>//Thread.java
-ThreadLocalMap getMap(Thread t) {
-    return t.threadLocals;
-}
-</code></pre><p>get方法：</p>
-<pre><code>//ThreadLocal.java
-public T get() {
-    Thread t = Thread.currentThread();
-    ThreadLocalMap map = getMap(t);
-    if (map != null) {
-        //this代表ThreadLocal对象
-        ThreadLocalMap.Entry e = map.getEntry(this);
-        if (e != null) {
-            @SuppressWarnings(&quot;unchecked&quot;)
-            T result = (T)e.value;
-            return result;
-        }
-    }
-    return setInitialValue();
-}
-</code></pre><p>总结：</p>
-<pre><code>1.ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。
-
-2.调用ThreadLocal的get()方法时，实际上就是往ThreadLocalMap获取值，key是ThreadLocal对象
-
-3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
-</code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
-<p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
-<hr>
-<h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
-<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
-<p>3.提高线程的可管理性。</p>
-<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
-<pre><code>public static void start(){
-    ServerSocket serverSocket = new ServerSocket(port);
-    Socket socket = null;
-    while ((socket = serverSocket.accept() != null)){
-        thread.execute(new HttpRequestHandler(socket));
-    }
-}
-分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
-</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
-<p>在ThreadPoolExecutor类中提供了四个构造方法：</p>
-<pre><code>//ThreadPoolExecutor.java
-//
-public class ThreadPoolExecutor extends AbstractExecutorService {
-.....
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue);
-
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory);
-
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,RejectedExecutionHandler handler);
-
-//前三个构造器都调用第四个构造器进行初始化
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-    BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler);
-...
-</code></pre><p>}</p>
-<p>1.corePoolSize:线程池中线程的基本数量。（工人）</p>
-<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize（工人+临时工）</p>
-<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
-<p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。</p>
-<p>5.handler：表示当拒绝处理任务时的策略。</p>
-<p>6.poolSize：线程池中当前的线程数。</p>
-<h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>任务提交到线程池后的执行过程：</p>
-<pre><code>1.如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建一个线程去执行这个任务；
-
-2.如果当前线程池中的线程数目&gt;=corePoolSize，则每来一个任务，会尝试将其添加到任务缓存队列当中，若添加成功，则该任务会等待空闲线程将其取出去执行；
-若添加失败（一般来说是任务缓存队列已满），则会尝试创建新的线程去执行这个任务；（任务队列满了的话请临时线程来处理新来的任务）
-
-3.如果当前线程池中的线程数目达到maximumPoolSize，而且线程池内的阻塞队列已满，RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 
-默认的处理方式是直接抛异常
-
-4.如果线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止，直至线程池中的线程数目不大于corePoolSize；
-如果允许为核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止。
-</code></pre><p>源码解析：</p>
-<pre><code>//ThreadPoolExecutor.java
-public void execute(Runnable command) {
-    if (command == null)
-        throw new NullPointerException();
-
-    int c = ctl.get();
-    if (workerCountOf(c) &lt; corePoolSize) {
-        if (addWorker(command, true))
-            return;
-        c = ctl.get();
-    }
-    if (isRunning(c) &amp;&amp; workQueue.offer(command)) {
-        int recheck = ctl.get();
-        if (! isRunning(recheck) &amp;&amp; remove(command))
-            reject(command);
-        else if (workerCountOf(recheck) == 0)
-            addWorker(null, false);
-    }
-    else if (!addWorker(command, false))
-        reject(command);
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/基数排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/04/基数排序/" itemprop="url">基数排序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T14:04:16+08:00">
-                2018-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排序/" itemprop="url" rel="index">
-                    <span itemprop="name">排序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/04/基数排序/" class="leancloud_visitors" data-flag-title="基数排序">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="桶的思想？"><a href="#桶的思想？" class="headerlink" title="桶的思想？"></a>桶的思想？</h4><p><img src="https://i.imgur.com/5NeTrG5.png" alt=""></p>
-<pre><code>public class RadixSort {
-
-public static void radixSort(int[] a,int k){
-    int[] counter = new int[10];
-    int[][] container = new int[10][a.length];
-    int n = 1;
-    int t = 0;
-    while (n &lt; k){
-        for(int num : a){
-            int radix = (num/n)%10;
-            container[radix][counter[radix]] = num;
-            counter[radix]++;
-        }
-
-        for(int i = 0;i &lt; 10;i++){
-                if(counter[i] != 0){
-                    for(int j = 0;j&lt;counter[i];j++){
-                        a[t] = container[i][j];
-                        t++;
-                    }
-                }
-            counter[i] = 0;
-        }
-
-        t = 0;
-        n *= 10;
-    }
-}
-
-public static void main(String[] args){
-    int[] a = {1,21,32,45,687,89,43,44,95};
-    RadixSort.radixSort(a,1000);
-    System.out.println(Arrays.toString(a));
-}
-}
-</code></pre><p><strong>时间复杂度：</strong></p>
-<pre><code>时间复杂度 = [放桶的时间(O(n)) + 取桶里面的元素(O(n))]*位数
-
-     = O(d*n) (d为常数)
-
-空间复杂度 = O(n * 10 + 10) = O(n)
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2897,7 +2846,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

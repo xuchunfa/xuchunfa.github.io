@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP面向非连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。  TCP的特点： 可靠、稳定、慢、效率低、占用系统资源高。  UD">
+<meta name="description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&amp;quot;点&amp;quot;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--计算机网络">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/23/面试总结-计算机网络/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP面向非连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。  TCP的特点： 可靠、稳定、慢、效率低、占用系统资源高。  UD">
+<meta property="og:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&amp;quot;点&amp;quot;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T13:42:20.565Z">
+<meta property="og:updated_time" content="2019-03-28T03:30:17.788Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--计算机网络">
-<meta name="twitter:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP面向非连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。  TCP的特点： 可靠、稳定、慢、效率低、占用系统资源高。  UD">
+<meta name="twitter:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&amp;quot;点&amp;quot;">
 
 
 
@@ -412,17 +412,23 @@
       
         <ol>
 <li><p>TCP和UDP的区别？</p>
-<pre><code>1.TCP面向连接的，UDP面向非连接的。
+<pre><code>1.TCP面向连接的，UDP无连接的。
 
 2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达
 
-3.TCP面向字节流，UDP面向报文。
+3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；
 
-4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。
+4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&quot;点&quot;代表的是socket(IP:PORT)；
+
+5.TCP首部20个字节，UDP是8个字节；
 </code></pre><p> TCP的特点：</p>
 <pre><code>可靠、稳定、慢、效率低、占用系统资源高。
 </code></pre><p> UDP的特点：</p>
-<pre><code>传递数据快、不可靠丢包
+<pre><code>1.传递数据快、不可靠丢包、快速递交比精准递交更重要，例如：视频语音；
+</code></pre><p> 相关问题解释：</p>
+<pre><code>1.TCP连接的发送方和接收方都有缓存，TCP不关心发送到TCP发送方缓存的报文长度，它会根据对方的窗口值和网络拥塞情况来决定一个报文段包含有多少字节。
+
+2.TCP发送方发送4个数据块，接收方可能2个数据块就能把字节流传到应用层；
 </code></pre></li>
 <li><p>TCP如何保证可靠性，拥塞控制如何实现？</p>
 <pre><code>1.确认和重传；
@@ -668,7 +674,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
 </code></pre></li>
 </ol>
-<p>10.select和epoll的原理和区别？<br>11.协议层有哪些？说说五层协议、OSI、</p>
+<p>10.select和epoll的原理和区别？<br>11.协议层有哪些？说说五层协议、OSI、TCP/IP模型？</p>
 
       
     </div>
@@ -784,7 +790,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？核心思想： 1.右上角的数字与要查找的数字比较。 2.右上角 &amp;gt; key 去列 否则 去行 public int findElement(int[][] arr,int n,int m,int search){      int row = n;     int col = m;     int key = search">
+<meta name="description" content="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？核心思想： 1.右上角的数字与要查找的数字比较。 2.右上角 &amp;gt; key 去列 否则 去行； public class Solution { public boolean Find(int target, int [][] array) {     if(array == null){         return fa">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二维数组的查找">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/19/二维数组的查找/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？核心思想： 1.右上角的数字与要查找的数字比较。 2.右上角 &amp;gt; key 去列 否则 去行 public int findElement(int[][] arr,int n,int m,int search){      int row = n;     int col = m;     int key = search">
+<meta property="og:description" content="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？核心思想： 1.右上角的数字与要查找的数字比较。 2.右上角 &amp;gt; key 去列 否则 去行； public class Solution { public boolean Find(int target, int [][] array) {     if(array == null){         return fa">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-19T14:07:11.002Z">
+<meta property="og:updated_time" content="2019-03-29T13:41:15.095Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二维数组的查找">
-<meta name="twitter:description" content="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？核心思想： 1.右上角的数字与要查找的数字比较。 2.右上角 &amp;gt; key 去列 否则 去行 public int findElement(int[][] arr,int n,int m,int search){      int row = n;     int col = m;     int key = search">
+<meta name="twitter:description" content="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？核心思想： 1.右上角的数字与要查找的数字比较。 2.右上角 &amp;gt; key 去列 否则 去行； public class Solution { public boolean Find(int target, int [][] array) {     if(array == null){         return fa">
 
 
 
@@ -401,60 +401,32 @@
       
         <h4 id="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？"><a href="#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？" class="headerlink" title="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？"></a>二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？</h4><p><strong>核心思想：</strong></p>
 <p>1.右上角的数字与要查找的数字比较。</p>
-<p>2.右上角 &gt; key 去列 否则 去行</p>
-<pre><code>public int findElement(int[][] arr,int n,int m,int search){
-
-    int row = n;
-    int col = m;
-    int key = search;
+<p>2.右上角 &gt; key 去列 否则 去行；</p>
+<pre><code>public class Solution {
+public boolean Find(int target, int [][] array) {
+    if(array == null){
+        return false;
+    }
+    int row = array.length;
+    int col = array[0].length;
     int i = 0;
-
-    if(arr == null){
-        System.out.println(&quot;请输入一个二维数组&quot;);
-        return 0;
-    }
-
-    if(n &lt;= 0 || m &lt;=0){
-        System.out.println(&quot;输入两个自然数&quot;);
-    }
-
-    while(i &lt; row &amp;&amp; col &gt;0){
-        //去列
-        if(arr[i][col-1] &gt; key){
-            col--;
-        }else if(arr[i][col-1] &lt; key){
+    int j = array[0].length - 1;
+    while(i &lt; row &amp;&amp; j &gt;= 0){
+        int rightUpCorner = array[i][j];
+        if(rightUpCorner &lt; target){
             i++;
-        }else {
-            //找到元素
-            return arr[i][col-1];
-        }
-
-        //只剩一行
-        if(i == row-1){
-            for(int j=0;j&lt;col;j++){
-                if(arr[i][j] == key) {
-                    return arr[i][j];
-                }
-            }
-
-            return 0;
-        }
-
-        //只剩一列
-        if(col == 1){
-            for(int j = 0;j&lt;row;j++){
-                if(arr[j][0] == key)
-                    return arr[j][0];
-            }
-
-            return 0;
+        }else if(rightUpCorner &gt; target){
+            j--;
+        }else{
+            return true;
         }
     }
-
-    //不存在
-    return 0;
+    return false;
+    }
 }
-</code></pre>
+</code></pre><p>时间复杂度：O(m+n)</p>
+<p>空间复杂度：O(1)</p>
+
       
     </div>
     
@@ -578,7 +550,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

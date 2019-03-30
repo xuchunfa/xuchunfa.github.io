@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="详细证明 public class EnterCycleNode {  public static ListNode findEntryNode(ListNode head){     if(head == null || head.next == null){         return null;     }     ListNode slow = head;     ListNode fa">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T03:04:55.562Z">
+<meta property="og:updated_time" content="2019-03-27T01:06:49.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表中环的入口结点">
 <meta name="twitter:description" content="详细证明 public class EnterCycleNode {  public static ListNode findEntryNode(ListNode head){     if(head == null || head.next == null){         return null;     }     ListNode slow = head;     ListNode fa">
@@ -413,7 +413,7 @@ public static ListNode findEntryNode(ListNode head){
     while (fast != null &amp;&amp; fast.next != null){
         if(slow == fast)
             break;
-        slow = slow.next;
+        slow = slow.next;//这里两步的顺序不能反保证fast走过距离是slow的倍数
         fast = fast.next.next;
     }
     if(slow != fast){//无环
@@ -558,7 +558,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
