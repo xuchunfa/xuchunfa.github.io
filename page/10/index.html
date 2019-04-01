@@ -642,12 +642,12 @@ public static void main(String[] args){
 <pre><code>public class ReplaceChar {
 
 //时间复杂度：O(n) 空间复杂度：O(n)
-public void replace(char[] a,int len){
+public static void replace(char[] a,int len){
 
     //len = 1 时就一个字符&apos;\0&apos;
     if(a == null || len&lt;2){
         System.out.println(&quot;输入长度大于0的字符串&quot;);
-        System.exit(-1);
+        return;
     }
 
     int oldLen = 0;
@@ -658,63 +658,22 @@ public void replace(char[] a,int len){
             count++;
         oldLen++;
     }
-
     newLen = oldLen + 2*count;
-
+    //判断输入与字符数组的不匹配的字符串长度
     if(newLen &gt; len)
         return;
 
-    int i = oldLen;//从&apos;\0&apos;开始
-    int j = newLen;
-
-    while (i &gt;= 0 &amp;&amp; i &lt; j){
-
-        if(a[i] == &apos; &apos;){
+    int j = newLen - 1;
+    for(int i = oldLen-1;i &gt;= 0;i--) {
+        if (a[i] == &apos; &apos;) {
             a[j--] = &apos;0&apos;;
             a[j--] = &apos;2&apos;;
             a[j--] = &apos;%&apos;;
-        }else {
+        } else {
             //注意 j 越界的情况
             a[j--] = a[i];
         }
-
-        i--;
     }
-}
-
-public static void main(String[] args) {
-
-    String s = &quot;abcd&quot;;
-
-    //多了个&apos;\0&apos;
-    char oldChar[] = new char[s.length()+1];
-
-    int counter = 0;
-    for (int i = 0; i&lt;s.length(); i++) {
-        if (s.charAt(i) == &apos; &apos;)
-            counter++;
-        oldChar[i] = s.charAt(i);
-    }
-
-    //字符串结束标志
-    oldChar[s.length()] = &apos;\0&apos;;
-
-    //里面已经包含了&apos;\0&apos;结束符
-    int totalLen = oldChar.length + counter*2;
-
-    //数组扩容
-    char[] newChar = new char[totalLen];
-    for(int i = 0;i&lt;oldChar.length;i++){
-        newChar[i] = oldChar[i];
-    }
-
-    new ReplaceChar().replace(newChar,totalLen);
-
-    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){
-        System.out.print(newChar[i]);
-    }
-
-}
 }
 </code></pre>
           

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="找出递增数组旋转后的最小值？public class RotateArray {  //如果把排序数组的前0个元素搬到最后面,算法得不到正确结果 public static int minElement2(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      if">
+<meta name="description" content="找出递增数组旋转后的最小值？public int findMin(int[] a,int l,int r){     if(l == r){         return a[l];     }     int mid = (l+r)/2;     if(a[mid] &amp;gt; a[r]){         return findMin(a,mid+1,r);     }else{">
 <meta property="og:type" content="article">
 <meta property="og:title" content="旋转数组中的最小值">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/28/旋转数组中的最小值/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="找出递增数组旋转后的最小值？public class RotateArray {  //如果把排序数组的前0个元素搬到最后面,算法得不到正确结果 public static int minElement2(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      if">
+<meta property="og:description" content="找出递增数组旋转后的最小值？public int findMin(int[] a,int l,int r){     if(l == r){         return a[l];     }     int mid = (l+r)/2;     if(a[mid] &amp;gt; a[r]){         return findMin(a,mid+1,r);     }else{">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-28T13:40:56.221Z">
+<meta property="og:updated_time" content="2019-03-31T09:30:56.636Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="旋转数组中的最小值">
-<meta name="twitter:description" content="找出递增数组旋转后的最小值？public class RotateArray {  //如果把排序数组的前0个元素搬到最后面,算法得不到正确结果 public static int minElement2(int[] a){      if(a == null){         throw new RuntimeException(&amp;quot;输入数组&amp;quot;);     }      if">
+<meta name="twitter:description" content="找出递增数组旋转后的最小值？public int findMin(int[] a,int l,int r){     if(l == r){         return a[l];     }     int mid = (l+r)/2;     if(a[mid] &amp;gt; a[r]){         return findMin(a,mid+1,r);     }else{">
 
 
 
@@ -399,124 +399,41 @@
       
 
       
-        <h4 id="找出递增数组旋转后的最小值？"><a href="#找出递增数组旋转后的最小值？" class="headerlink" title="找出递增数组旋转后的最小值？"></a>找出递增数组旋转后的最小值？</h4><pre><code>public class RotateArray {
-
-//如果把排序数组的前0个元素搬到最后面,算法得不到正确结果
-public static int minElement2(int[] a){
-
-    if(a == null){
-        throw new RuntimeException(&quot;输入数组&quot;);
+        <h4 id="找出递增数组旋转后的最小值？"><a href="#找出递增数组旋转后的最小值？" class="headerlink" title="找出递增数组旋转后的最小值？"></a>找出递增数组旋转后的最小值？</h4><pre><code>public int findMin(int[] a,int l,int r){
+    if(l == r){
+        return a[l];
     }
-
-    if(a.length == 0){
-        throw new RuntimeException(&quot;数组为空&quot;);
+    int mid = (l+r)/2;
+    if(a[mid] &gt; a[r]){
+        return findMin(a,mid+1,r);
+    }else{
+        return findMin(a,l,mid);
     }
-
-    int low = 0;
-    int high = a.length-1;
-    int media;
-    while (low &lt; high){
-
-        if(high == low + 1){
-            return a[high];
-        }
-
-        media = (low + high)/2;
-        if(a[media] &gt;= a[low]){
-            low = media;
-        }else if(a[media] &lt;= a[high]){
-            high = media;
-        }
-    }
-    return a[high];
 }
 
-//解决了a = {1,2,3} 的问题
-public static int minElement1(int[] a){
-
-    if(a == null){
-        throw new RuntimeException(&quot;输入数组&quot;);
+public int minNumberInRotateArray(int [] array) {
+    if(array == null){
+        throw new RuntimeException(&quot;array is not existed&quot;);
     }
-
-    if(a.length == 0){
-        throw new RuntimeException(&quot;数组为空&quot;);
+    if(array.length == 0){
+        return 0;
     }
-
-    int low = 0;
-    int high = a.length-1;
-    int media = low;
-
-    while (a[low] &gt;= a[high]){
-
-        if(high == low + 1){
-            media = high;
-            break;
-        }
-
-        media = (low + high)/2;
-
-        if(a[media] &gt;= a[low]){
-            low = media;
-        }else if(a[media] &lt;= a[high]){
-            high = media;
-        }
-    }
-
-    return a[media];
+    return findMin(array,0,array.length-1);
 }
 
-//解决了 a = {0,1,1,1,1} --&gt; {1,0,1,1,1}的情况
-public static int minElement(int[] a){
-    if(a == null){
-        throw new RuntimeException(&quot;输入数组&quot;);
-    }
-
-    if(a.length == 0){
-        throw new RuntimeException(&quot;数组为空&quot;);
-    }
-
-    int low = 0;
-    int high = a.length-1;
-    int media = low;
-
-    while (a[low] &gt;= a[high]){
-
-        if(high == low + 1){
-            media = high;
-            break;
-        }
-
-        media = (low + high)/2;
-
-        //顺序查找
-        if(a[low] == a[high] &amp;&amp; a[low] == a[media]){
-            return fromBeginToEnd(a,low,high);
-        }
-
-        if(a[media] &gt;= a[low]){
-            low = media;
-        }else if(a[media] &lt;= a[high]){
-            high = media;
+//迭代
+public int findMin(int [] array) {
+    int low = 0 ;
+    int high = array.length - 1;
+    while(low &lt; high){
+        int mid = (low + high) / 2;
+        if(array[mid] &gt; array[high]){
+            low = mid + 1;
+        }else{
+            high = mid;
         }
     }
-    return a[media];
-}
-
-private static int fromBeginToEnd(int[] a,int start,int end) {
-    int min = a[start];
-    for(int i = start;i&lt;end;i++){
-        if(a[i] &lt; min){
-            min = a[i];
-        }
-    }
-
-    return min;
-}
-
-public static void main(String[] args){
-    int[] a = {1,1,1,0,1};
-    System.out.println(RotateArray.minElement(a));
-}
+    return array[low];
 }
 </code></pre>
       

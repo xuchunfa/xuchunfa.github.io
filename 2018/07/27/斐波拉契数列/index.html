@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="斐波拉契数列？public class Fibonacci {  //效率差 public static long fibonacci1(int n){      if(n == 0)         return 0;      if(n == 1)         return 1;      return fibonacci1(n-1) + fibonacci1(n-2);  }  publ">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-27T13:49:26.110Z">
+<meta property="og:updated_time" content="2019-03-31T13:32:29.424Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="斐波拉契数列">
 <meta name="twitter:description" content="斐波拉契数列？public class Fibonacci {  //效率差 public static long fibonacci1(int n){      if(n == 0)         return 0;      if(n == 1)         return 1;      return fibonacci1(n-1) + fibonacci1(n-2);  }  publ">
@@ -470,6 +470,13 @@ public static void main(String[] args){
     System.out.println(FrogStep.solution(100));
 }
 }
+</code></pre><h4 id="一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？"><a href="#一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？" class="headerlink" title="一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？"></a>一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？</h4><pre><code>//除最后一个台阶必跳之外，其余所有台阶都有跳和不跳两种选择，故为2的n-1次方
+public int JumpFloorII(int target) {
+    if(target &lt;= 0){
+        return -1;
+    }
+    return 1&lt;&lt;--target;
+}
 </code></pre>
       
     </div>
@@ -663,7 +670,7 @@ public static void main(String[] args){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#斐波拉契数列？"><span class="nav-number">1.</span> <span class="nav-text">斐波拉契数列？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><span class="nav-number">2.</span> <span class="nav-text">青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#斐波拉契数列？"><span class="nav-number">1.</span> <span class="nav-text">斐波拉契数列？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><span class="nav-number">2.</span> <span class="nav-text">青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？"><span class="nav-number">3.</span> <span class="nav-text">一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？</span></a></li></ol></div>
             
 
           </div>

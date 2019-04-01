@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="将字符串中的’ ‘替换成”20%”？  核心思想： 1.从最后一字符开始从前遍历，最后一个字符是’\0’。 2.将字符串变为数组时，要在字符串数组后面添加’\0’。 public class ReplaceChar {  //时间复杂度：O(n) 空间复杂度：O(n) public void replace(char[] a,int len){      //len = 1 时就一个字符&amp;apo">
+<meta name="description" content="将字符串中的’ ‘替换成”20%”？  核心思想： 1.从最后一字符开始从前遍历，最后一个字符是’\0’。 2.将字符串变为数组时，要在字符串数组后面添加’\0’。 public class ReplaceChar {  //时间复杂度：O(n) 空间复杂度：O(n) public static void replace(char[] a,int len){      //len = 1 时就一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="替换字符串字符">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/20/替换字符串字符/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="将字符串中的’ ‘替换成”20%”？  核心思想： 1.从最后一字符开始从前遍历，最后一个字符是’\0’。 2.将字符串变为数组时，要在字符串数组后面添加’\0’。 public class ReplaceChar {  //时间复杂度：O(n) 空间复杂度：O(n) public void replace(char[] a,int len){      //len = 1 时就一个字符&amp;apo">
+<meta property="og:description" content="将字符串中的’ ‘替换成”20%”？  核心思想： 1.从最后一字符开始从前遍历，最后一个字符是’\0’。 2.将字符串变为数组时，要在字符串数组后面添加’\0’。 public class ReplaceChar {  //时间复杂度：O(n) 空间复杂度：O(n) public static void replace(char[] a,int len){      //len = 1 时就一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-20T08:09:14.899Z">
+<meta property="og:updated_time" content="2019-03-30T11:28:51.614Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="替换字符串字符">
-<meta name="twitter:description" content="将字符串中的’ ‘替换成”20%”？  核心思想： 1.从最后一字符开始从前遍历，最后一个字符是’\0’。 2.将字符串变为数组时，要在字符串数组后面添加’\0’。 public class ReplaceChar {  //时间复杂度：O(n) 空间复杂度：O(n) public void replace(char[] a,int len){      //len = 1 时就一个字符&amp;apo">
+<meta name="twitter:description" content="将字符串中的’ ‘替换成”20%”？  核心思想： 1.从最后一字符开始从前遍历，最后一个字符是’\0’。 2.将字符串变为数组时，要在字符串数组后面添加’\0’。 public class ReplaceChar {  //时间复杂度：O(n) 空间复杂度：O(n) public static void replace(char[] a,int len){      //len = 1 时就一">
 
 
 
@@ -408,12 +408,12 @@
 <pre><code>public class ReplaceChar {
 
 //时间复杂度：O(n) 空间复杂度：O(n)
-public void replace(char[] a,int len){
+public static void replace(char[] a,int len){
 
     //len = 1 时就一个字符&apos;\0&apos;
     if(a == null || len&lt;2){
         System.out.println(&quot;输入长度大于0的字符串&quot;);
-        System.exit(-1);
+        return;
     }
 
     int oldLen = 0;
@@ -424,63 +424,22 @@ public void replace(char[] a,int len){
             count++;
         oldLen++;
     }
-
     newLen = oldLen + 2*count;
-
+    //判断输入与字符数组的不匹配的字符串长度
     if(newLen &gt; len)
         return;
 
-    int i = oldLen;//从&apos;\0&apos;开始
-    int j = newLen;
-
-    while (i &gt;= 0 &amp;&amp; i &lt; j){
-
-        if(a[i] == &apos; &apos;){
+    int j = newLen - 1;
+    for(int i = oldLen-1;i &gt;= 0;i--) {
+        if (a[i] == &apos; &apos;) {
             a[j--] = &apos;0&apos;;
             a[j--] = &apos;2&apos;;
             a[j--] = &apos;%&apos;;
-        }else {
+        } else {
             //注意 j 越界的情况
             a[j--] = a[i];
         }
-
-        i--;
     }
-}
-
-public static void main(String[] args) {
-
-    String s = &quot;abcd&quot;;
-
-    //多了个&apos;\0&apos;
-    char oldChar[] = new char[s.length()+1];
-
-    int counter = 0;
-    for (int i = 0; i&lt;s.length(); i++) {
-        if (s.charAt(i) == &apos; &apos;)
-            counter++;
-        oldChar[i] = s.charAt(i);
-    }
-
-    //字符串结束标志
-    oldChar[s.length()] = &apos;\0&apos;;
-
-    //里面已经包含了&apos;\0&apos;结束符
-    int totalLen = oldChar.length + counter*2;
-
-    //数组扩容
-    char[] newChar = new char[totalLen];
-    for(int i = 0;i&lt;oldChar.length;i++){
-        newChar[i] = oldChar[i];
-    }
-
-    new ReplaceChar().replace(newChar,totalLen);
-
-    for(int i = 0;newChar[i] != &apos;\0&apos;;i++){
-        System.out.print(newChar[i]);
-    }
-
-}
 }
 </code></pre>
       

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？核心思想：递归创建，更新start和end坐标。 public class RestructBinaryTree {  private BinaryTreeNode root;  //根据前序和中序构造二叉树 public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,">
+<meta name="description" content="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？核心思想：递归创建，更新start和end坐标。 前序中序创建二叉树 方法1：未优化 private BinaryTreeNode root;  static int preIndex = 0;  public int search(int[] in,int start,int end,int data){     int i;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前序中序后序构建二叉树">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/24/前序中序后序构建二叉树/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？核心思想：递归创建，更新start和end坐标。 public class RestructBinaryTree {  private BinaryTreeNode root;  //根据前序和中序构造二叉树 public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,">
+<meta property="og:description" content="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？核心思想：递归创建，更新start和end坐标。 前序中序创建二叉树 方法1：未优化 private BinaryTreeNode root;  static int preIndex = 0;  public int search(int[] in,int start,int end,int data){     int i;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-24T08:26:16.443Z">
+<meta property="og:updated_time" content="2019-03-31T02:59:44.083Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前序中序后序构建二叉树">
-<meta name="twitter:description" content="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？核心思想：递归创建，更新start和end坐标。 public class RestructBinaryTree {  private BinaryTreeNode root;  //根据前序和中序构造二叉树 public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,">
+<meta name="twitter:description" content="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？核心思想：递归创建，更新start和end坐标。 前序中序创建二叉树 方法1：未优化 private BinaryTreeNode root;  static int preIndex = 0;  public int search(int[] in,int start,int end,int data){     int i;">
 
 
 
@@ -400,6 +400,72 @@
 
       
         <h4 id="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"><a href="#根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？" class="headerlink" title="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"></a>根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？</h4><p><strong>核心思想：</strong>递归创建，更新start和end坐标。</p>
+<p>前序中序创建二叉树</p>
+<p>方法1：未优化</p>
+<pre><code>private BinaryTreeNode root;
+
+static int preIndex = 0;
+
+public int search(int[] in,int start,int end,int data){
+    int i;
+    for(i = start;i &lt; end;i++){
+        if(in[i] == data)
+            return i;
+    }
+    return i;
+}
+
+public BinaryTreeNode createTree(int[] pre,int[] in,int inStart,int inEnd){
+    if(inStart &gt; inEnd)
+        return null;
+    BinaryTreeNode node = new BinaryTreeNode(pre[preIndex++]);
+    if(inStart == inEnd)
+        return node;
+
+    int inIndex = search(in,inStart,inEnd,node.data);
+    node.left = createTree(pre,in,inStart,inIndex-1);
+    node.right = createTree(pre,in,inIndex+1,inEnd);
+
+    return node;
+}
+
+public BinaryTreeNode reConstructBinaryTree(int [] pre,int [] in) {
+    preIndex = 0;
+    if(pre.length == 0 || in.length == 0){
+        return null;
+    }
+    return createTree(pre,in,0,in.length-1);
+}
+</code></pre><p>时间复杂度：O(n2)</p>
+<p>方法1：优化</p>
+<pre><code>public BinaryTreeNode createTree(int[] pre,int[] in,int inStart,int inEnd,HashMap&lt;Integer,Integer&gt; indexHash){
+    if(inStart &gt; inEnd)
+        return null;
+    int value = pre[preIndex++];
+    BinaryTreeNode node = new BinaryTreeNode(value);
+    if(inStart == inEnd)
+        return node;
+
+    //hashmap直接定位元素在中序数组中的位置，时间复杂度为O(1)
+    int inIndex = indexHash.get(value);
+    node.left = createTree(pre,in,inStart,inIndex-1,indexHash);
+    node.right = createTree(pre,in,inIndex+1,inEnd,indexHash);
+    return node;
+}
+
+public BinaryTreeNode reConstructBinaryTree(int [] pre,int [] in) {
+    preIndex = 0;
+    HashMap&lt;Integer,Integer&gt; inorderHash = new HashMap&lt;&gt;();
+    if(pre.length == 0 || in.length == 0){
+        return null;
+    }
+    for(int i = 0;i &lt; in.length;i++){
+        inorderHash.put(in[i],i);
+    }
+    return createTree(pre,in,0,in.length-1,inorderHash);
+}
+</code></pre><p>优化后的时间复杂度：O(n).</p>
+<p>方法2：</p>
 <pre><code>public class RestructBinaryTree {
 
 private BinaryTreeNode root;
@@ -433,8 +499,36 @@ public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,int[] in,int in
 
     return node;
 }
+</code></pre><p>中序后序创建二叉树：</p>
+<p>方法1：</p>
+<pre><code>public BinaryTreeNode createInAndPostTree(int[] post,int[] in,int inStart,int inEnd,HashMap&lt;Integer,Integer&gt; indexHash){
+    if(inStart &gt; inEnd)
+        return null;
+    int value = post[postIndex--];
+    BinaryTreeNode node = new BinaryTreeNode(value);
+    if(inStart == inEnd)
+        return node;
 
-//根据中序和后序构造二叉树
+    int inIndex = indexHash.get(value);
+    node.right = createInAndPostTree(post,in,inIndex+1,inEnd,indexHash);
+    node.left = createInAndPostTree(post,in,inStart,inIndex-1,indexHash);
+    return node;
+}
+
+public BinaryTreeNode inAndPostRestruct(int[] post,int[] in){
+    HashMap&lt;Integer,Integer&gt; inorderHash = new HashMap&lt;&gt;();
+    if(in.length == 0 || post.length == 0){
+        return null;
+    }
+    postIndex = post.length - 1;
+    for(int i = 0;i &lt; in.length;i++){
+        inorderHash.put(in[i],i);
+    }
+    return createInAndPostTree(post,in,0,in.length-1,inorderHash);
+}
+</code></pre><p>时间复杂度：O(n).</p>
+<p>方法2:</p>
+<pre><code>//根据中序和后序构造二叉树
 public BinaryTreeNode inAndPost(int[] post,int postStart,int postEnd,int[] in,int inStart,int inEnd){
 
     if(post == null || in == null || post.length &lt;= 0 || in.length &lt;= 0){
@@ -473,7 +567,6 @@ public void preOrder(BinaryTreeNode node){
     preOrder(node.right);
 }
 
-
 //后序遍历
 public void postOrder(BinaryTreeNode node) {
 
@@ -496,7 +589,6 @@ public static void main(String[] args){
     tree.root = tree.preAndIn(pre,0,pre.length-1,in,0,in.length-1);
     //tree.preOrder(tree.root);
     tree.postOrder(tree.root);
-
  }
 }
 </code></pre>
