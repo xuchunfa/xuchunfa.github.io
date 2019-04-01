@@ -286,6 +286,405 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/面试总结-Mysql基础/" itemprop="url">面试总结--Mysql基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:54:38+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Mysql基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/18/面试总结-Mysql基础/" class="leancloud_visitors" data-flag-title="面试总结--Mysql基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
+</ol>
+<p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
+<pre><code>1.作为文件系统以及数据库系统的索引结构；
+
+2.B树的关键字和data域放在了一起；
+
+3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。
+</code></pre><ol start="2">
+<li>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</li>
+<li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
+</ol>
+<p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
+<pre><code>1.事务特性：原子性、一致性、隔离性和持久性；
+
+2.事务隔离级别：
+
+    2.1 读未提交：出现脏读，读取另一个未提交事务的数据；
+
+    2.2 读已提交：造成不可重复读，即在同一个事务中读到两次不同的结果；
+
+    2.3 可重复读：出现幻读，一个事务中读取的数据一致；
+</code></pre><p>幻读的例子：</p>
+<p><img src="https://i.imgur.com/DUI0Os9.png" alt=""></p>
+<pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
+
+        1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
+
+        2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
+
+3.MySQL的默认隔离级别：可重复读；
+</code></pre><ol start="4">
+<li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
+</ol>
+<p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
+<pre><code>1.普通索引
+
+    eg:ALTER TABLE stu add INDEX index_id(id);
+</code></pre><p>使用索引前：</p>
+<p><img src="https://i.imgur.com/qnwHm9Q.png" alt=""></p>
+<p>使用索引后：</p>
+<p><img src="https://i.imgur.com/CuYvDQi.png" alt=""></p>
+<pre><code>2.唯一索引：索引列的值必须唯一，但允许为空。
+
+    eg:ALTER TABLE stu add UNIQUE index_id(id);
+
+3.主键索引：特殊的唯一索引，索引列的值不允许为空。
+</code></pre><p><img src="https://i.imgur.com/UvVpFDi.png" alt=""></p>
+<pre><code>4.组合索引：默认最左前缀的结果。
+
+    eg:alter table stu add index id_name_note(id,name(10),note);
+
+     相当于分别建立了：
+
+    1.（id,name,note）索引
+
+    2.（id,name）索引
+
+    3.（id）索引
+</code></pre><p>索引失效的情况：</p>
+<pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引;
+
+2.在列上进行运算将会使索引失效；
+
+3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
+</code></pre><ol start="7">
+<li>数据库引擎有哪些？说说他们的区别？</li>
+<li></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java设计模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/面试总结-Java设计模式/" itemprop="url">面试总结--Java设计模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:52:34+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/18/面试总结-Java设计模式/" class="leancloud_visitors" data-flag-title="面试总结--Java设计模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>写一个你认为最好的单例模式？</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,14 +800,40 @@
       
         
           
-            <p>1.</p>
+            <ol>
+<li>线程创建的方法？</li>
+</ol>
 <ol>
 <li>ReadWriteLock读写之间互斥吗？</li>
 <li>说说ReentrantLock是基于哪个类的？说说队列同步器？</li>
 <li>Semaphore拿到执行权的线程之间是否互斥？</li>
 <li>写一个生产者消费者模式？</li>
-<li>写一个死锁？</li>
-<li>死锁的产生的原因以及怎么预防？ </li>
+<li><p>写一个死锁？</p>
+<p> public class DeadLock {<br> static class SynAddRunnable implements Runnable{</p>
+<pre><code>private int a,b;
+
+public SynAddRunnable(int a,int b){
+    this.a = a;
+    this.b = b;
+}
+
+@Override
+public void run() {
+    synchronized (Integer.valueOf(a)){
+        synchronized (Integer.valueOf(b)){
+            System.out.println(a + b);
+        }
+    }
+}
+</code></pre><p> }<br> public static void main(String[] args) {</p>
+<pre><code>for (int i = 0; i &lt; 1000; i++) {
+    new Thread(new SynAddRunnable(1,2)).start();
+    new Thread(new SynAddRunnable(2,1)).start();
+}
+</code></pre><p> }<br> }</p>
+</li>
+<li><p>死锁的产生的原因以及怎么预防？ </p>
+</li>
 <li>int a = 1; 是原子性操作吗？</li>
 <li>新的任务提交到线程池，线程池是怎样处理？</li>
 <li>线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？</li>
@@ -2380,509 +2805,6 @@ private static class WriterManagerInstance{
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/30/工厂方法模式和抽象工厂模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/30/工厂方法模式和抽象工厂模式/" itemprop="url">工厂方法模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-30T11:32:40+08:00">
-                2018-10-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/30/工厂方法模式和抽象工厂模式/" class="leancloud_visitors" data-flag-title="工厂方法模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>模式分类</li>
-</ul>
-<p><img src="https://i.imgur.com/Hdg4Ylc.png" alt=""></p>
-<p>举个生产手机的例子增加印象：</p>
-<p>1.抽象产品类：</p>
-<pre><code>public abstract class Phone {
-
-//两种手机都可以打电话
-public void Call() {
-   //公共方法的实现
-}
-
-//两种手机都有品牌,但是品牌不同，所以是抽象的
-public abstract void PhoneBrand();
-}
-</code></pre><p>2.具体产品类：</p>
-<pre><code>public class HUAWEIPhone extends Phone {
-   //品牌
-   @Override
-   public void PhoneBrand() {
-   Log.e(&quot;qzs&quot;,&quot;我的品牌是华为&quot;);
-   }
-}
-
-public class MIPhone extends Phone {
-  //品牌
-  @Override
-  public void PhoneBrand() {
-   Log.e(&quot;qzs&quot;,&quot;我的品牌是小米&quot;);
-   }
-}
-</code></pre><p>3.抽象工厂类：</p>
-<pre><code>public abstract class PhoneFactory  {
-       public abstract &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c);
-}
-</code></pre><p>4.具体工厂类：</p>
-<pre><code>public class ConcretePhoneFactory extends PhoneFactory {
-
-  @Override
-   public &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {
-   Phone phone=null;
-   try{
-       phone =(Phone)Class.forName(c.getName()).newInstance();
-       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);
-       phone.PhoneBrand();
-   }catch (Exception e){
-
-   }
-   return (T) phone;
-   }
-}
-</code></pre><p>调用：</p>
-<pre><code>PhoneFactory phoneFactory=new ConcretePhoneFactory();
-Phone huaiweiphone=phoneFactory.createPhone(HUAWEIPhone.class);
-Phone miphone=phoneFactory.createPhone(MIPhone.class);
-</code></pre><ul>
-<li>工厂方法的延申</li>
-</ul>
-<p>1.简单工厂模式（静态工厂模式）</p>
-<p>去掉工厂抽象类，具体工厂类的方法上加上static.</p>
-<pre><code>public class ConcretePhoneFactory {
-
-   public  static &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {
-   Phone phone=null;
-   try{
-       phone =(Phone)Class.forName(c.getName()).newInstance();
-       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);
-       phone.PhoneBrand();
-   }catch (Exception e){
-   }
-   return (T) phone;
-   }
-}
-</code></pre><p>2.多工厂方法模式</p>
-<p>每个产品都有自己的工厂，抽象工厂的方法不用再传参了。</p>
-<p>抽象工厂类：</p>
-<pre><code>public abstract class PhoneFactory  {
-    public abstract  Phone createPhone();
-}
-</code></pre><p>具体工厂类：</p>
-<pre><code>public class ConcreteHUAWEIFactory extends PhoneFactory {
-   @Override
-   public Phone createPhone() {
-   Log.e(&quot;qzs&quot;,&quot;生产了一个华为手机&quot;);
-   return new HUAWEIPhone();
-   }
-}
-
-public class ConcreteMIFactory extends PhoneFactory {
-   @Override
-   public Phone createPhone() {     
-   Log.e(&quot;qzs&quot;,&quot;生产了一个小米手机&quot;);
-   return new MIPhone();
-   }
-}
-</code></pre><p>3.工厂方法模式实现单例模式</p>
-<p>单例类：</p>
-<pre><code>public class Singleton {  
-
-   private Singleton() {  
-
-   }  
-
-   public void doSomething() {  
-   System.out.println(&quot;具体逻辑&quot;);  
-   }  
-}
-</code></pre><p>单例工厂类：</p>
-<pre><code>public class SingletonFactory {  
-
-   private static Singleton singleton;  
-
-   static {  
-   try {  
-       Class clazz = Class.forName(Singleton.class.getName());  
-       Constructor constructor = clazz.getDeclaredConstructor();  
-       constructor.setAccessible(true);  
-       singleton = (Singleton) constructor.newInstance();  
-   } catch (Exception e) {  
-
-   } 
-   }  
-
-   public static Singleton getSingleton() {  
-       return singleton;  
-   }  
-}
-</code></pre><p>特点：</p>
-<ul>
-<li>在工厂方法模式中，客户端不需要知道具体产品类的类名，只需要知道所对应的工厂即可；</li>
-</ul>
-<p>优点：</p>
-<ul>
-<li><p>更符合开-闭原则。新增一种产品时，只需要增加相应的具体产品类和相应的工厂子类即可。例如增加苹果手机，增加一个IPhone具体类和一个IPhoneFactory类即可。</p>
-</li>
-<li><p>符合单一职责原则。每个具体工厂类只负责创建对应的产品。</p>
-</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>添加新产品时，系统类的个数会成倍增加，增加了额外的开销。</li>
-</ul>
-<hr>
-<h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>工厂方法模式在增加一个具体产品的时候，都要增加对应的工厂。但是抽象工厂模式只有在新增一个类型的具体产品时才需要新增工厂。例如跑车、商务车、越野车是不同的类型。
-
-抽象工厂模式中的具体工厂生产的是：一种类型的具体产品。
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/29/CopyOnWrite容器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/29/CopyOnWrite容器/" itemprop="url">CopyOnWrite容器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-29T14:14:34+08:00">
-                2018-10-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/29/CopyOnWrite容器/" class="leancloud_visitors" data-flag-title="CopyOnWrite容器">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h4><p>即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。</p>
-<pre><code>相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被
-阻塞，性能又提升了。
-
-不同点：
-
-读写锁：读线程任何时候都是获取到最新的数据，满足数据实时性。原因在于--为了实现数据实时性，
-在写锁被获取后，读线程会等待或者当读锁被获取后，写线程会等待，从而解决“脏读”等问题。
-
-COW: 牺牲数据实时性满足数据的最终一致性。即读线程对数据的更新是延时感知的，因此读线程不会存在等待的情况。
-
-相同点：
-
-1. 两者都是通过读写分离的思想实现。
-
-2. 读线程间是互不阻塞的。
-</code></pre><ul>
-<li>CopyOnWriteArrayList<e>：</e></li>
-</ul>
-<p>写操作：需要加锁。</p>
-<pre><code>//CopyOnWriteArrayList.java
-public boolean add(E e) {
-    final ReentrantLock lock = this.lock;
-    lock.lock();
-    try {
-        Object[] elements = getArray();
-        int len = elements.length;
-        Object[] newElements = Arrays.copyOf(elements, len + 1);
-        newElements[len] = e;
-        setArray(newElements);//原引用指向新的容器
-        return true;
-    } finally {
-        lock.unlock();
-    }
-}
-
-//注意：private transient volatile Object[] array
-//volatile保证可见性，在进行写时看到的已经是最新的数据的，但是只读的话就有可能是未更新的数据。
-final void setArray(Object[] a) {
-    array = a;
-}
-</code></pre><p>读操作：不需要加锁，存在并发读，读到的可能是旧数据。</p>
-<pre><code>public E get(int index) {
-    return get(getArray(), index);
-}
-</code></pre><h4 id="适用场景："><a href="#适用场景：" class="headerlink" title="适用场景："></a>适用场景：</h4><ul>
-<li>CopyOnWriteArrayList适合使用在读操作远远大于写操作的场景里，比如缓存。</li>
-</ul>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><pre><code>1.内存占用问题。
-
-2.数据一致性问题。
-</code></pre><p>- </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2937,7 +2859,7 @@ final void setArray(Object[] a) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

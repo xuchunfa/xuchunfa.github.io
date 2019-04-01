@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="ThreadLocal解析 线程内的局部变量。线程间的ThreadLocal变量是隔离的。 set方法  //ThreadLocal.java public void set(T value) { // 得到当前线程对象 Thread t = Thread.currentThread();  // 这里获取ThreadLocalMap ThreadLocalMap map = getMap(t);">
+<meta name="description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 具体步骤： 1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；  2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线程池">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/04/线程池/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="ThreadLocal解析 线程内的局部变量。线程间的ThreadLocal变量是隔离的。 set方法  //ThreadLocal.java public void set(T value) { // 得到当前线程对象 Thread t = Thread.currentThread();  // 这里获取ThreadLocalMap ThreadLocalMap map = getMap(t);">
+<meta property="og:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 具体步骤： 1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；  2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/4n7P9X3.png">
 <meta property="og:image" content="https://i.imgur.com/U289xRb.png">
-<meta property="og:updated_time" content="2018-10-29T13:45:28.112Z">
+<meta property="og:image" content="https://i.imgur.com/4n7P9X3.png">
+<meta property="og:updated_time" content="2019-04-01T03:41:17.919Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
-<meta name="twitter:description" content="ThreadLocal解析 线程内的局部变量。线程间的ThreadLocal变量是隔离的。 set方法  //ThreadLocal.java public void set(T value) { // 得到当前线程对象 Thread t = Thread.currentThread();  // 这里获取ThreadLocalMap ThreadLocalMap map = getMap(t);">
-<meta name="twitter:image" content="https://i.imgur.com/4n7P9X3.png">
+<meta name="twitter:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 具体步骤： 1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；  2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进">
+<meta name="twitter:image" content="https://i.imgur.com/U289xRb.png">
 
 
 
@@ -402,7 +402,96 @@
       
 
       
-        <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
+        <h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
+<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
+<p>3.提高线程的可管理性。</p>
+<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
+<p>具体步骤：</p>
+<pre><code>1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；
+
+2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进入下步；
+
+3.判断线程池是否已满，否的话就创建新线程执行任务，是则进入下步；
+
+4.交给饱和策略处理；
+
+public static void start(){
+    ServerSocket serverSocket = new ServerSocket(port);
+    Socket socket = null;
+    while ((socket = serverSocket.accept() != null)){
+        thread.execute(new HttpRequestHandler(socket));
+    }
+}
+分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
+</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
+<p>在ThreadPoolExecutor类中提供了四个构造方法：</p>
+<pre><code>//ThreadPoolExecutor.java
+//
+public class ThreadPoolExecutor extends AbstractExecutorService {
+.....
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+        BlockingQueue&lt;Runnable&gt; workQueue);
+
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+        BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory);
+
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+        BlockingQueue&lt;Runnable&gt; workQueue,RejectedExecutionHandler handler);
+
+//前三个构造器都调用第四个构造器进行初始化
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+    BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler);
+...
+</code></pre><p>}</p>
+<p>1.corePoolSize:线程池中线程的基本数量。（工人）</p>
+<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize（工人+临时工）</p>
+<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
+<pre><code>类型：BlockingQueue&lt;Runnable&gt;;
+</code></pre><p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。</p>
+<p>5.handler：表示当拒绝处理任务时的策略。</p>
+<p>6.poolSize：线程池中当前的线程数。</p>
+<p><strong>拒绝策略(队列和线程池满了)：</strong></p>
+<pre><code>1.AbortPolicy:默认策略，直接抛出异常RejectedExecutionException；
+
+2.DiscardPolicy:不处理直接抛弃；
+
+3.DiscardOldestPolicy:丢弃队列最前面的任务，执行当前任务；
+
+4.CallerRunsPolicy:由调用线程（例如main线程）执行任务；
+</code></pre><h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>任务提交到线程池后的执行过程：</p>
+<pre><code>1.如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建一个线程去执行这个任务；
+
+2.如果当前线程池中的线程数目&gt;=corePoolSize，则每来一个任务，会尝试将其添加到任务缓存队列当中，若添加成功，则该任务会等待空闲线程将其取出去执行；
+若添加失败（一般来说是任务缓存队列已满），则会尝试创建新的线程去执行这个任务；（任务队列满了的话请临时线程来处理新来的任务）
+
+3.如果当前线程池中的线程数目达到maximumPoolSize，而且线程池内的阻塞队列已满，RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 
+默认的处理方式是直接抛异常
+
+4.如果线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止，直至线程池中的线程数目不大于corePoolSize；
+如果允许为核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止。
+</code></pre><p>源码解析：</p>
+<pre><code>//ThreadPoolExecutor.java
+public void execute(Runnable command) {
+    if (command == null)
+        throw new NullPointerException();
+
+    int c = ctl.get();
+    if (workerCountOf(c) &lt; corePoolSize) {
+        if (addWorker(command, true))
+            return;
+        c = ctl.get();
+    }
+    if (isRunning(c) &amp;&amp; workQueue.offer(command)) {
+        int recheck = ctl.get();
+        if (! isRunning(recheck) &amp;&amp; remove(command))
+            reject(command);
+        else if (workerCountOf(recheck) == 0)
+            addWorker(null, false);
+    }
+    else if (!addWorker(command, false))
+        reject(command);
+}
+</code></pre><h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
 <li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
 <li><p>set方法</p>
 <p> //ThreadLocal.java<br> public void set(T value) {</p>
@@ -469,79 +558,7 @@ public T get() {
 3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
 </code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
 <p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
-<hr>
-<h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
-<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
-<p>3.提高线程的可管理性。</p>
-<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
-<pre><code>public static void start(){
-    ServerSocket serverSocket = new ServerSocket(port);
-    Socket socket = null;
-    while ((socket = serverSocket.accept() != null)){
-        thread.execute(new HttpRequestHandler(socket));
-    }
-}
-分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
-</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
-<p>在ThreadPoolExecutor类中提供了四个构造方法：</p>
-<pre><code>//ThreadPoolExecutor.java
-//
-public class ThreadPoolExecutor extends AbstractExecutorService {
-.....
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue);
 
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory);
-
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,RejectedExecutionHandler handler);
-
-//前三个构造器都调用第四个构造器进行初始化
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-    BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler);
-...
-</code></pre><p>}</p>
-<p>1.corePoolSize:线程池中线程的基本数量。（工人）</p>
-<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize（工人+临时工）</p>
-<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
-<p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。</p>
-<p>5.handler：表示当拒绝处理任务时的策略。</p>
-<p>6.poolSize：线程池中当前的线程数。</p>
-<h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>任务提交到线程池后的执行过程：</p>
-<pre><code>1.如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建一个线程去执行这个任务；
-
-2.如果当前线程池中的线程数目&gt;=corePoolSize，则每来一个任务，会尝试将其添加到任务缓存队列当中，若添加成功，则该任务会等待空闲线程将其取出去执行；
-若添加失败（一般来说是任务缓存队列已满），则会尝试创建新的线程去执行这个任务；（任务队列满了的话请临时线程来处理新来的任务）
-
-3.如果当前线程池中的线程数目达到maximumPoolSize，而且线程池内的阻塞队列已满，RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 
-默认的处理方式是直接抛异常
-
-4.如果线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止，直至线程池中的线程数目不大于corePoolSize；
-如果允许为核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止。
-</code></pre><p>源码解析：</p>
-<pre><code>//ThreadPoolExecutor.java
-public void execute(Runnable command) {
-    if (command == null)
-        throw new NullPointerException();
-
-    int c = ctl.get();
-    if (workerCountOf(c) &lt; corePoolSize) {
-        if (addWorker(command, true))
-            return;
-        c = ctl.get();
-    }
-    if (isRunning(c) &amp;&amp; workQueue.offer(command)) {
-        int recheck = ctl.get();
-        if (! isRunning(recheck) &amp;&amp; remove(command))
-            reject(command);
-        else if (workerCountOf(recheck) == 0)
-            addWorker(null, false);
-    }
-    else if (!addWorker(command, false))
-        reject(command);
-}
-</code></pre>
       
     </div>
     
@@ -665,7 +682,7 @@ public void execute(Runnable command) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -734,7 +751,7 @@ public void execute(Runnable command) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadLocal解析"><span class="nav-number">1.</span> <span class="nav-text">ThreadLocal解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要使用线程池？"><span class="nav-number">2.</span> <span class="nav-text">为什么要使用线程池？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池执行流程？"><span class="nav-number">3.</span> <span class="nav-text">线程池执行流程？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池的创建？"><span class="nav-number">4.</span> <span class="nav-text">线程池的创建？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadExecutor详解"><span class="nav-number">5.</span> <span class="nav-text">ThreadExecutor详解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要使用线程池？"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用线程池？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池执行流程？"><span class="nav-number">2.</span> <span class="nav-text">线程池执行流程？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池的创建？"><span class="nav-number">3.</span> <span class="nav-text">线程池的创建？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadExecutor详解"><span class="nav-number">4.</span> <span class="nav-text">ThreadExecutor详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadLocal解析"><span class="nav-number">5.</span> <span class="nav-text">ThreadLocal解析</span></a></li></ol></div>
             
 
           </div>

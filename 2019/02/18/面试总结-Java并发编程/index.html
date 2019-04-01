@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="1.  ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原">
+<meta name="description" content="线程创建的方法？   ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？  public class DeadLock { static class SynAddRunnable implements Runnable{ private int a,b">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java并发编程">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.  ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原">
+<meta property="og:description" content="线程创建的方法？   ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？  public class DeadLock { static class SynAddRunnable implements Runnable{ private int a,b">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
 <meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-04-01T00:41:10.822Z">
+<meta property="og:updated_time" content="2019-04-01T01:58:59.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
-<meta name="twitter:description" content="1.  ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？ 死锁的产生的原因以及怎么预防？  int a = 1; 是原子性操作吗？ 新的任务提交到线程池，线程池是怎样处理？ 线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？ AQS和CAS原">
+<meta name="twitter:description" content="线程创建的方法？   ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？  public class DeadLock { static class SynAddRunnable implements Runnable{ private int a,b">
 <meta name="twitter:image" content="https://i.imgur.com/7yPyszl.png">
 
 
@@ -413,14 +413,40 @@
       
 
       
-        <p>1.</p>
+        <ol>
+<li>线程创建的方法？</li>
+</ol>
 <ol>
 <li>ReadWriteLock读写之间互斥吗？</li>
 <li>说说ReentrantLock是基于哪个类的？说说队列同步器？</li>
 <li>Semaphore拿到执行权的线程之间是否互斥？</li>
 <li>写一个生产者消费者模式？</li>
-<li>写一个死锁？</li>
-<li>死锁的产生的原因以及怎么预防？ </li>
+<li><p>写一个死锁？</p>
+<p> public class DeadLock {<br> static class SynAddRunnable implements Runnable{</p>
+<pre><code>private int a,b;
+
+public SynAddRunnable(int a,int b){
+    this.a = a;
+    this.b = b;
+}
+
+@Override
+public void run() {
+    synchronized (Integer.valueOf(a)){
+        synchronized (Integer.valueOf(b)){
+            System.out.println(a + b);
+        }
+    }
+}
+</code></pre><p> }<br> public static void main(String[] args) {</p>
+<pre><code>for (int i = 0; i &lt; 1000; i++) {
+    new Thread(new SynAddRunnable(1,2)).start();
+    new Thread(new SynAddRunnable(2,1)).start();
+}
+</code></pre><p> }<br> }</p>
+</li>
+<li><p>死锁的产生的原因以及怎么预防？ </p>
+</li>
 <li>int a = 1; 是原子性操作吗？</li>
 <li>新的任务提交到线程池，线程池是怎样处理？</li>
 <li>线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？</li>
@@ -591,7 +617,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

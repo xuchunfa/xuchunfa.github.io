@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="计算a的n次幂考虑边界情况？public class Pow {  public static double pow(double base,int exp){      if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;amp;&amp;amp; exp == 0){         return 0.0;     }">
+<meta name="description" content="计算a的n次幂考虑边界情况？方法1： public static double allCalPow(double base, int exp){     if(exp == 0)         return 1;      if(exp == 1)         return base;      double result = allCalPow(base,exp/2);      if((">
 <meta property="og:type" content="article">
 <meta property="og:title" content="指数幂运算">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/11/指数幂运算/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="计算a的n次幂考虑边界情况？public class Pow {  public static double pow(double base,int exp){      if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;amp;&amp;amp; exp == 0){         return 0.0;     }">
+<meta property="og:description" content="计算a的n次幂考虑边界情况？方法1： public static double allCalPow(double base, int exp){     if(exp == 0)         return 1;      if(exp == 1)         return base;      double result = allCalPow(base,exp/2);      if((">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-11T06:59:54.472Z">
+<meta property="og:updated_time" content="2019-04-01T14:12:21.678Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="指数幂运算">
-<meta name="twitter:description" content="计算a的n次幂考虑边界情况？public class Pow {  public static double pow(double base,int exp){      if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;amp;&amp;amp; exp == 0){         return 0.0;     }">
+<meta name="twitter:description" content="计算a的n次幂考虑边界情况？方法1： public static double allCalPow(double base, int exp){     if(exp == 0)         return 1;      if(exp == 1)         return base;      double result = allCalPow(base,exp/2);      if((">
 
 
 
@@ -399,60 +399,65 @@
       
 
       
-        <h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><pre><code>public class Pow {
-
-public static double pow(double base,int exp){
-
-    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp == 0){
-        return 0.0;
-    }
-
-    //浮点数的比较
-    if(Double.doubleToLongBits(base) == Double.doubleToLongBits(0.00) &amp;&amp; exp &lt; 0){
-        throw new RuntimeException(&quot;参数不合法&quot;);
-    }
-
-    double result;
-    int absExp;
-    if(exp &lt; 0){
-        absExp = -exp;
-    }else {
-        absExp = exp;
-    }
-
-    result = calPow(base,absExp);
-    if(exp &lt; 0){
-        result = 1.0/result;
-    }
-
-    return result;
-}
-
-private static double calPow(double base, int exp) {
-
+        <h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><p>方法1：</p>
+<pre><code>public static double allCalPow(double base, int exp){
     if(exp == 0)
         return 1;
 
     if(exp == 1)
         return base;
 
-    //位移运算代替除法
-    double result = calPow(base,exp &gt;&gt; 1);
-    result *= result;
+    double result = allCalPow(base,exp/2);
 
-    //与运算代替取余
-    if((exp &amp; 1) == 1){
-        result *= base;
+    if((exp &amp; 1) == 0){
+        result *= result;
+    }else {
+        if(exp &gt; 0){
+            result = base*result*result;
+        }else {
+            result = 1/base*result*result;
+        }
     }
 
+    return result;
+}
+</code></pre><p>时间复杂度：</p>
+<p>方法2：</p>
+<pre><code>public class Pow {
+
+public static double pow(double base,int exp){
+
+    if(Double.compare(base,0) == 0 &amp;&amp; exponent &lt; 0){
+        throw new RuntimeException(&quot;exponent is not allowed negative&quot;);
+    }
+    if(Double.compare(base,0) == 0 &amp;&amp; exponent &gt; 0){
+        return 0;
+    }
+    if(exponent == 0){
+        return 1;
+    }
+    int positiveExp = exponent;
+    boolean negative = false;
+    if(exponent &lt; 0){
+        negative = true;
+        positiveExp = -exponent;
+    }
+
+    double result = 1;
+    for(int i = 1;i &lt;= positiveExp;i++){
+        result = result*base;
+    }
+    if(negative){
+        result = 1/result;
+    }
     return result;
 }
 
 public static void main(String[] args){
     System.out.println(Pow.pow(0,-4));
 }
-</code></pre><p>}</p>
-
+}
+</code></pre>
       
     </div>
     
@@ -576,7 +581,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

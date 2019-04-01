@@ -286,6 +286,444 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/06/矩阵路径/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/06/矩阵路径/" itemprop="url">矩阵路径</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T13:20:10+08:00">
+                2018-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/回溯算法/" itemprop="url" rel="index">
+                    <span itemprop="name">回溯算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/06/矩阵路径/" class="leancloud_visitors" data-flag-title="矩阵路径">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="回溯和递归的理解？"><a href="#回溯和递归的理解？" class="headerlink" title="回溯和递归的理解？"></a>回溯和递归的理解？</h4><p>1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。</p>
+<p>2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。</p>
+<p>3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。</p>
+<ul>
+<li><p>矩阵路径问题？</p>
+<pre><code>public class MatrixPath {
+
+public static boolean hasPath(char[][] a,int rows,int cols,String str){
+    if(a == null || rows &lt; 1 || cols &lt; 1 || str == null)
+        throw new RuntimeException(&quot;参数非法&quot;);
+
+    boolean[][] visited = new boolean[rows][cols];
+    int pathLength = 0;
+    for(int row = 0;row &lt; rows;row++){
+        for(int col = 0;col &lt; cols;col++){
+            if(hasOnePath(a,row,col,rows,cols,str,pathLength,visited)){
+                return true;
+        }
+    }
+}
+
+    return false;
+}
+
+private static boolean hasOnePath(char[][] a, int row, int col, int rows, int cols, String str,int pathLength,boolean[][] visited) {
+    boolean result = false;
+    if(str.length() == pathLength){
+        return true;
+    }
+
+    if(row &gt;= 0 &amp;&amp; row &lt; rows &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; cols &amp;&amp; a[row][col] == str.charAt(pathLength) &amp;&amp; !visited[row][col]) {
+        ++pathLength;
+        visited[row][col] = true;
+
+        result = hasOnePath(a, row - 1, col, rows, cols, str, pathLength, visited) ||
+            hasOnePath(a, row, col - 1, rows, cols, str, pathLength, visited) ||
+            hasOnePath(a, row + 1, col, rows, cols, str, pathLength, visited) ||
+            hasOnePath(a, row, col + 1, rows, cols, str, pathLength, visited);
+
+        if (!result) {
+            --pathLength;
+            visited[row][col] = false;
+        }
+    }
+
+    return result;
+}
+
+  public static void main(String[] args){
+/*char[][] a = {{'a','b','t','g'},
+                    {'c','f','c','s'},
+                    {'j','d','e','h'}};*/
+char[][] a = {{'a'},
+                      {'f'},
+                      {'g'},
+                      {'d'}};
+
+String str = &quot;gl&quot;;
+System.out.println(MatrixPath.hasPath(a,4,1,str));
+}
+}
+</code></pre></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/05/Executors详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/05/Executors详解/" itemprop="url">Executors详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-05T15:24:34+08:00">
+                2018-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/05/Executors详解/" class="leancloud_visitors" data-flag-title="Executors详解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Excutors框架的类与接口"><a href="#Excutors框架的类与接口" class="headerlink" title="Excutors框架的类与接口"></a>Excutors框架的类与接口</h4><p><img src="https://i.imgur.com/F7UbYhu.png" alt=""></p>
+<ul>
+<li>Callable</li>
+</ul>
+<p>一般是配合ExecutorService使用。</p>
+<pre><code>public interface Callable&lt;V&gt; {
+
+    V call() throws Exception;
+}
+
+//ExecutorService.java
+&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);
+&lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);
+Future&lt;?&gt; submit(Runnable task);
+</code></pre><ul>
+<li>Future</li>
+</ul>
+<p>对于具体的Runnable或者Callable任务的执行结果进行取消、查询是否完成、获取结果.</p>
+<pre><code>public interface Future&lt;V&gt; {
+    boolean cancel(boolean mayInterruptIfRunning);
+    boolean isCancelled();
+    boolean isDone();
+    V get() throws InterruptedException, ExecutionException;
+    V get(long timeout, TimeUnit unit)
+        throws InterruptedException, ExecutionException, TimeoutException;
+}
+</code></pre><ul>
+<li><p>RunnableFuture</p>
+<p>  public interface RunnableFuture<v> extends Runnable, Future<v> {</v></v></p>
+<pre><code>void run();
+</code></pre><p>  }</p>
+</li>
+<li><p>FutureTask</p>
+</li>
+</ul>
+<p>提供的两个构造函数：</p>
+<pre><code>public FutureTask(Callable&lt;V&gt; callable) {
+}
+public FutureTask(Runnable runnable, V result) {
+}
+</code></pre><h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p>
+<ul>
+<li><p>FixedThreadPool</p>
+</li>
+<li><p>SingleThreadPool</p>
+</li>
+<li><p>CachedThreadPool</p>
+</li>
+</ul>
+<p>具体的实现：</p>
+<pre><code>//创建固定容量大小的缓冲池
+public static ExecutorService newFixedThreadPool(int nThreads) {
+return new ThreadPoolExecutor(nThreads, nThreads,
+                              0L, TimeUnit.MILLISECONDS,
+                              new LinkedBlockingQueue&lt;Runnable&gt;());
+}
+
+//创建容量为1的缓冲池
+public static ExecutorService newSingleThreadExecutor() {
+return new FinalizableDelegatedExecutorService
+    (new ThreadPoolExecutor(1, 1,
+                            0L, TimeUnit.MILLISECONDS,
+                            new LinkedBlockingQueue&lt;Runnable&gt;()));
+}
+
+//创建一个缓冲池，缓冲池容量大小为Integer.MAX_VALUE
+public static ExecutorService newCachedThreadPool() {
+return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                              60L, TimeUnit.SECONDS,
+                              new SynchronousQueue&lt;Runnable&gt;());
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -390,7 +828,96 @@
       
         
           
-            <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
+            <h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
+<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
+<p>3.提高线程的可管理性。</p>
+<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
+<p>具体步骤：</p>
+<pre><code>1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；
+
+2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进入下步；
+
+3.判断线程池是否已满，否的话就创建新线程执行任务，是则进入下步；
+
+4.交给饱和策略处理；
+
+public static void start(){
+    ServerSocket serverSocket = new ServerSocket(port);
+    Socket socket = null;
+    while ((socket = serverSocket.accept() != null)){
+        thread.execute(new HttpRequestHandler(socket));
+    }
+}
+分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
+</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
+<p>在ThreadPoolExecutor类中提供了四个构造方法：</p>
+<pre><code>//ThreadPoolExecutor.java
+//
+public class ThreadPoolExecutor extends AbstractExecutorService {
+.....
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+        BlockingQueue&lt;Runnable&gt; workQueue);
+
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+        BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory);
+
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+        BlockingQueue&lt;Runnable&gt; workQueue,RejectedExecutionHandler handler);
+
+//前三个构造器都调用第四个构造器进行初始化
+public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+    BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler);
+...
+</code></pre><p>}</p>
+<p>1.corePoolSize:线程池中线程的基本数量。（工人）</p>
+<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize（工人+临时工）</p>
+<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
+<pre><code>类型：BlockingQueue&lt;Runnable&gt;;
+</code></pre><p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。</p>
+<p>5.handler：表示当拒绝处理任务时的策略。</p>
+<p>6.poolSize：线程池中当前的线程数。</p>
+<p><strong>拒绝策略(队列和线程池满了)：</strong></p>
+<pre><code>1.AbortPolicy:默认策略，直接抛出异常RejectedExecutionException；
+
+2.DiscardPolicy:不处理直接抛弃；
+
+3.DiscardOldestPolicy:丢弃队列最前面的任务，执行当前任务；
+
+4.CallerRunsPolicy:由调用线程（例如main线程）执行任务；
+</code></pre><h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>任务提交到线程池后的执行过程：</p>
+<pre><code>1.如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建一个线程去执行这个任务；
+
+2.如果当前线程池中的线程数目&gt;=corePoolSize，则每来一个任务，会尝试将其添加到任务缓存队列当中，若添加成功，则该任务会等待空闲线程将其取出去执行；
+若添加失败（一般来说是任务缓存队列已满），则会尝试创建新的线程去执行这个任务；（任务队列满了的话请临时线程来处理新来的任务）
+
+3.如果当前线程池中的线程数目达到maximumPoolSize，而且线程池内的阻塞队列已满，RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 
+默认的处理方式是直接抛异常
+
+4.如果线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止，直至线程池中的线程数目不大于corePoolSize；
+如果允许为核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止。
+</code></pre><p>源码解析：</p>
+<pre><code>//ThreadPoolExecutor.java
+public void execute(Runnable command) {
+    if (command == null)
+        throw new NullPointerException();
+
+    int c = ctl.get();
+    if (workerCountOf(c) &lt; corePoolSize) {
+        if (addWorker(command, true))
+            return;
+        c = ctl.get();
+    }
+    if (isRunning(c) &amp;&amp; workQueue.offer(command)) {
+        int recheck = ctl.get();
+        if (! isRunning(recheck) &amp;&amp; remove(command))
+            reject(command);
+        else if (workerCountOf(recheck) == 0)
+            addWorker(null, false);
+    }
+    else if (!addWorker(command, false))
+        reject(command);
+}
+</code></pre><h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
 <li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
 <li><p>set方法</p>
 <p> //ThreadLocal.java<br> public void set(T value) {</p>
@@ -457,79 +984,7 @@ public T get() {
 3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
 </code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
 <p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
-<hr>
-<h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
-<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
-<p>3.提高线程的可管理性。</p>
-<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
-<pre><code>public static void start(){
-    ServerSocket serverSocket = new ServerSocket(port);
-    Socket socket = null;
-    while ((socket = serverSocket.accept() != null)){
-        thread.execute(new HttpRequestHandler(socket));
-    }
-}
-分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
-</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
-<p>在ThreadPoolExecutor类中提供了四个构造方法：</p>
-<pre><code>//ThreadPoolExecutor.java
-//
-public class ThreadPoolExecutor extends AbstractExecutorService {
-.....
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue);
 
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory);
-
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,RejectedExecutionHandler handler);
-
-//前三个构造器都调用第四个构造器进行初始化
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-    BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler);
-...
-</code></pre><p>}</p>
-<p>1.corePoolSize:线程池中线程的基本数量。（工人）</p>
-<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize（工人+临时工）</p>
-<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
-<p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。</p>
-<p>5.handler：表示当拒绝处理任务时的策略。</p>
-<p>6.poolSize：线程池中当前的线程数。</p>
-<h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>任务提交到线程池后的执行过程：</p>
-<pre><code>1.如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建一个线程去执行这个任务；
-
-2.如果当前线程池中的线程数目&gt;=corePoolSize，则每来一个任务，会尝试将其添加到任务缓存队列当中，若添加成功，则该任务会等待空闲线程将其取出去执行；
-若添加失败（一般来说是任务缓存队列已满），则会尝试创建新的线程去执行这个任务；（任务队列满了的话请临时线程来处理新来的任务）
-
-3.如果当前线程池中的线程数目达到maximumPoolSize，而且线程池内的阻塞队列已满，RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 
-默认的处理方式是直接抛异常
-
-4.如果线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止，直至线程池中的线程数目不大于corePoolSize；
-如果允许为核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止。
-</code></pre><p>源码解析：</p>
-<pre><code>//ThreadPoolExecutor.java
-public void execute(Runnable command) {
-    if (command == null)
-        throw new NullPointerException();
-
-    int c = ctl.get();
-    if (workerCountOf(c) &lt; corePoolSize) {
-        if (addWorker(command, true))
-            return;
-        c = ctl.get();
-    }
-    if (isRunning(c) &amp;&amp; workQueue.offer(command)) {
-        int recheck = ctl.get();
-        if (! isRunning(recheck) &amp;&amp; remove(command))
-            reject(command);
-        else if (workerCountOf(recheck) == 0)
-            addWorker(null, false);
-    }
-    else if (!addWorker(command, false))
-        reject(command);
-}
-</code></pre>
           
         
       
@@ -1987,425 +2442,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/旋转数组中的最小值/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/28/旋转数组中的最小值/" itemprop="url">旋转数组中的最小值</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T21:37:21+08:00">
-                2018-07-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/28/旋转数组中的最小值/" class="leancloud_visitors" data-flag-title="旋转数组中的最小值">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="找出递增数组旋转后的最小值？"><a href="#找出递增数组旋转后的最小值？" class="headerlink" title="找出递增数组旋转后的最小值？"></a>找出递增数组旋转后的最小值？</h4><pre><code>public int findMin(int[] a,int l,int r){
-    if(l == r){
-        return a[l];
-    }
-    int mid = (l+r)/2;
-    if(a[mid] &gt; a[r]){
-        return findMin(a,mid+1,r);
-    }else{
-        return findMin(a,l,mid);
-    }
-}
-
-public int minNumberInRotateArray(int [] array) {
-    if(array == null){
-        throw new RuntimeException(&quot;array is not existed&quot;);
-    }
-    if(array.length == 0){
-        return 0;
-    }
-    return findMin(array,0,array.length-1);
-}
-
-//迭代
-public int findMin(int [] array) {
-    int low = 0 ;
-    int high = array.length - 1;
-    while(low &lt; high){
-        int mid = (low + high) / 2;
-        if(array[mid] &gt; array[high]){
-            low = mid + 1;
-        }else{
-            high = mid;
-        }
-    }
-    return array[low];
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/排序算法比较/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/28/排序算法比较/" itemprop="url">排序算法比较</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T16:13:19+08:00">
-                2018-07-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排序/" itemprop="url" rel="index">
-                    <span itemprop="name">排序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/28/排序算法比较/" class="leancloud_visitors" data-flag-title="排序算法比较">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p>
-<p><strong>学习过程中一点点积累补充</strong></p>
-<h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
-<ul>
-<li><p>快排分析</p>
-<p>  <strong>时间复杂度：</strong></p>
-<p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p>
-<p>  时间复杂度：nlogn</p>
-<p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p>
-<p>  时间复杂度：n^2</p>
-<p>  3.一般情况下：略</p>
-<p>  时间复杂度：nlogn</p>
-<p>  <strong>空间复杂度：</strong></p>
-<p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p>
-<p>  空间复杂度：O(logn)</p>
-<p>  2.最差情况：略</p>
-<p>  空间复杂度：O(n)</p>
-<p>  <strong>补充：</strong>快排是不稳定的。</p>
-</li>
-<li><p>直接插入排序</p>
-<p>  <strong>时间复杂度：</strong></p>
-<p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p>
-<p>  时间复杂度：O(n)</p>
-<p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p>
-<p>  时间复杂度：O(n^2)</p>
-<p>  平均复杂度:O(n^2)</p>
-<p>  <strong>空间复杂度：</strong></p>
-<p>  空间复杂度：O(1)</p>
-<p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p>
-</li>
-<li><p>冒泡排序</p>
-<p>  <strong>时间复杂度：</strong></p>
-<p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p>
-<p>  时间复杂度：O(n)</p>
-<p>  2.最坏情况：逆序，交换次数O(n^2)。</p>
-<p>  时间复杂度:O(n^2)</p>
-<p>  平均时间复杂度：O(n^2)</p>
-<p>  <strong>空间复杂度：</strong>O(1)</p>
-</li>
-<li><p>简单选择排序</p>
-<p>  <strong>时间复杂度：</strong></p>
-<p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p>
-<p>  时间复杂度：O(n^2)</p>
-<p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p>
-<p>  时间复杂度:O(n^2)</p>
-<p>  平均时间复杂度：O(n^2)</p>
-<p>  <strong>空间复杂度：</strong>O(1)</p>
-</li>
-<li><p>堆排序</p>
-<p>  <strong>时间复杂度：</strong></p>
-<p>  分析：</p>
-<p>  初始化堆的过程时间：O(n)</p>
-<p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p>
-<p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p>
-<p>  <strong>空间复杂度：</strong>O(1)</p>
-</li>
-<li><p>归并排序</p>
-<p>  总时间 = 划分时间 + 合并时间</p>
-<p>  <strong>时间复杂度：</strong></p>
-<p>  最好 = 最坏 = 平均 = O(nlogn)</p>
-<p>  <strong>空间复杂度：</strong></p>
-<p>  O(n) = O(logn) + O(n)</p>
-</li>
-<li><p>希尔排序</p>
-<p>  <strong>时间复杂度：</strong></p>
-<p>  最坏：O(n^2)</p>
-<p>  最好：O(nlogn)</p>
-<p>  平均：O(n^1.5)</p>
-<p>  <strong>空间复杂度：</strong>O(1)</p>
-</li>
-<li><p>计数排序</p>
-<p>  时间复杂度： </p>
-<p>  O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组</p>
-<pre><code>= O(n) + O(k) + O(n)
-</code></pre><p>  空间复杂度：O(n+k)</p>
-</li>
-</ul>
-<p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
-<p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2460,7 +2496,7 @@ public int findMin(int [] array) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
