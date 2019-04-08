@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="线程创建的方法？   ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？  public class DeadLock { static class SynAddRunnable implements Runnable{ private int a,b">
+<meta name="description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java并发编程">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="线程创建的方法？   ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？  public class DeadLock { static class SynAddRunnable implements Runnable{ private int a,b">
+<meta property="og:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
 <meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-04-01T01:58:59.851Z">
+<meta property="og:updated_time" content="2019-04-04T12:29:24.838Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
-<meta name="twitter:description" content="线程创建的方法？   ReadWriteLock读写之间互斥吗？ 说说ReentrantLock是基于哪个类的？说说队列同步器？ Semaphore拿到执行权的线程之间是否互斥？ 写一个生产者消费者模式？ 写一个死锁？  public class DeadLock { static class SynAddRunnable implements Runnable{ private int a,b">
+<meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
 <meta name="twitter:image" content="https://i.imgur.com/7yPyszl.png">
 
 
@@ -414,13 +414,64 @@
 
       
         <ol>
-<li>线程创建的方法？</li>
+<li><p>线程创建的方法？</p>
+<pre><code>1.继承Thread重写run方法；
+
+2.实现Runnable接口，new Thread(接口实现)；
+
+3.实现Callable&lt;V&gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&lt;V&gt; callable)，最后创建 new Thread(FutureTask&lt;V&gt; future)；
+
+4.线程池；
+</code></pre></li>
 </ol>
-<ol>
+<p>1.一个线程打印奇数另一个线程打印偶数</p>
+<pre><code>static class PrintOddAndEven implements Runnable{
+    private static final int NUMBERS = 20;
+    private static volatile int index = 1;
+    private int flag;
+    static Object lock = new Object();//static
+
+    public PrintOddAndEven(int flag) {
+        this.flag = flag;
+    }
+
+    @Override
+    public void run(){
+        while(index &lt; NUMBERS){
+            synchronized (lock){
+                while ((index &amp; 1) != flag){
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(Thread.currentThread().getName()+&quot;: &quot;+index);
+                index++;
+                lock.notifyAll();//将等待队列中的所有线程移到同步队列中去
+            }
+        }
+    }
+}
+
+public static void main(String[] args){
+    Thread oddThread = new Thread(new PrintOddAndEven(1));
+    Thread evenThread = new Thread(new PrintOddAndEven(0));
+    oddThread.start();
+    evenThread.start();
+}
+</code></pre><ol>
 <li>ReadWriteLock读写之间互斥吗？</li>
 <li>说说ReentrantLock是基于哪个类的？说说队列同步器？</li>
+<li><p>AQS和CAS原理？</p>
+<pre><code>AbstractQueuedSynchronizer(AQS):抽象队列同步器。用于管理同步状态、阻塞和唤醒线程，以及维护被阻塞线程的队列。
+</code></pre></li>
+</ol>
+<ol start="2">
 <li>Semaphore拿到执行权的线程之间是否互斥？</li>
 <li>写一个生产者消费者模式？</li>
+</ol>
+<ol start="4">
 <li><p>写一个死锁？</p>
 <p> public class DeadLock {<br> static class SynAddRunnable implements Runnable{</p>
 <pre><code>private int a,b;
@@ -432,6 +483,8 @@ public SynAddRunnable(int a,int b){
 
 @Override
 public void run() {
+    //数字范围在-128到127之间直接返回缓存好的对象
+    //所以会存在资源的竞争
     synchronized (Integer.valueOf(a)){
         synchronized (Integer.valueOf(b)){
             System.out.println(a + b);
@@ -445,16 +498,80 @@ public void run() {
 }
 </code></pre><p> }<br> }</p>
 </li>
-<li><p>死锁的产生的原因以及怎么预防？ </p>
+<li><p>死锁的产生的原因以及怎么预防？</p>
+<pre><code>原因：
+
+ 1.系统资源不足；
+
+ 2.进程运行的推进顺序不合理；
+
+ 3.资源分配不当；
+</code></pre><p> 四个必要条件：</p>
+<pre><code>1.互斥条件：一个资源每次只能被一个进程使用；
+
+2.请求和保持条件：一个进程因请求资源而阻塞时，对已经获得的资源保持不放；
+
+3.不剥夺条件：进程已经获得的资源，在未使用之前不能强行剥夺；
+
+4.循环等待条件：若干进程之间形成了一种头尾相接循环等待资源的关系；
+</code></pre><p> 预防死锁：</p>
+<pre><code>1.破环请求和保持条件和不剥夺条件：一次性申请所需要的全部资源；
+
+  破环循环等待条件：资源分层，得到上一层资源后才能申请下一层的资源；
+</code></pre><p> 解决死锁的策略：</p>
+<pre><code>1.死锁预防：破坏四个必要条件；
+
+2.死锁避免：指进程每次申请资源时判断安不安全，例如银行家算法。
+
+3.死锁检测：事后措施；
+
+4.死锁解除：强行剥夺进程的资源；
+</code></pre></li>
+</ol>
+<ol start="5">
+<li><p>int a = 1; 是原子性操作吗？</p>
+<pre><code>是
+</code></pre></li>
+<li><p>新的任务提交到线程池，线程池是怎样处理？</p>
+<p> <a href="http://www.xuchunfa.cn/2018/08/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池详解</a></p>
 </li>
-<li>int a = 1; 是原子性操作吗？</li>
-<li>新的任务提交到线程池，线程池是怎样处理？</li>
-<li>线程池有哪几种？核心参数有哪几个？线程池的拒绝策略有哪几种？</li>
-<li>AQS和CAS原理？</li>
-<li>synchronized底层实现原理？</li>
-<li>synchronized和lock的区别？</li>
-<li>volatile作用，指令重排相关？</li>
-<li>锁有哪几种？</li>
+<li><p>synchronized底层实现原理？</p>
+<pre><code>使用方式：
+
+ 1.同步普通方法，锁的是当前对象；
+
+ 2.同步静态方法，锁的是当前Class的对象;
+
+ 3.同步块，锁的是（）内的对象；
+</code></pre><p> 原理；（重量级锁）</p>
+<pre><code>1.首先synchronized用的锁是存放在对象头里面的，JVM基于进入和退出Monitor（监视器锁互斥）对象实现同步块和同步方法的；
+
+2.编译之后在同步代码块之前插入Monitorenter指令，同步代码块完成之后或异常之后插入Monitorexit指令；
+</code></pre></li>
+<li><p>synchronized和lock的区别？</p>
+</li>
+<li><p>锁有哪几种？</p>
+<p>1.偏向锁:为了在只有一个线程执行同步块时提高性能。</p>
+<pre><code>优点：加锁和解锁不需要额外的消耗；
+
+缺点：线程间如果存在锁竞争会带来额外的锁撤销消耗；
+
+场景：一个线程访问的同步块；
+</code></pre><p>2.轻量级锁：为了在线程近乎交替执行同步块时提高性能；</p>
+<pre><code>优点：竞争的线程不会阻塞；
+
+缺点：没得到锁的线程会通过自旋，消耗CPU；
+
+场景：追求响应时间、同步块执行时间短；
+</code></pre><p>3.重量级锁：</p>
+<pre><code>优点：竞争线程不自旋不会消耗CPU；
+
+缺点：线程阻塞、响应时间缓慢；
+
+场景：追求吞吐量；
+</code></pre></li>
+<li><p>volatile作用，指令重排相关？    </p>
+</li>
 </ol>
 <p>参考：</p>
 <p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
@@ -498,7 +615,6 @@ public void run() {
 </code></pre><ol start="10">
 <li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
 <li>线程执行过程中遇到异常会发生什么，怎样处理？</li>
-<li>java创建线程的方式？</li>
 <li>线程的状态？</li>
 </ol>
 <p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
@@ -617,7 +733,7 @@ public void run() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

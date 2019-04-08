@@ -286,6 +286,1166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/前序中序后序构建二叉树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/前序中序后序构建二叉树/" itemprop="url">前序中序后序构建二叉树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T14:58:22+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/24/前序中序后序构建二叉树/" class="leancloud_visitors" data-flag-title="前序中序后序构建二叉树">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"><a href="#根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？" class="headerlink" title="根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？"></a>根据前序和中序序列构建二叉树？根据中序和后序序列构建二叉树？</h4><p><strong>核心思想：</strong>递归创建，更新start和end坐标。</p>
+<p>前序中序创建二叉树</p>
+<p>方法1：未优化</p>
+<pre><code>private BinaryTreeNode root;
+
+static int preIndex = 0;
+
+public int search(int[] in,int start,int end,int data){
+    int i;
+    for(i = start;i &lt; end;i++){
+        if(in[i] == data)
+            return i;
+    }
+    return i;
+}
+
+public BinaryTreeNode createTree(int[] pre,int[] in,int inStart,int inEnd){
+    if(inStart &gt; inEnd)
+        return null;
+    BinaryTreeNode node = new BinaryTreeNode(pre[preIndex++]);
+    if(inStart == inEnd)
+        return node;
+
+    int inIndex = search(in,inStart,inEnd,node.data);
+    node.left = createTree(pre,in,inStart,inIndex-1);
+    node.right = createTree(pre,in,inIndex+1,inEnd);
+
+    return node;
+}
+
+public BinaryTreeNode reConstructBinaryTree(int [] pre,int [] in) {
+    preIndex = 0;
+    if(pre.length == 0 || in.length == 0){
+        return null;
+    }
+    return createTree(pre,in,0,in.length-1);
+}
+</code></pre><p>时间复杂度：O(n2)</p>
+<p>方法1：优化</p>
+<pre><code>public BinaryTreeNode createTree(int[] pre,int[] in,int inStart,int inEnd,HashMap&lt;Integer,Integer&gt; indexHash){
+    if(inStart &gt; inEnd)
+        return null;
+    int value = pre[preIndex++];
+    BinaryTreeNode node = new BinaryTreeNode(value);
+    if(inStart == inEnd)
+        return node;
+
+    //hashmap直接定位元素在中序数组中的位置，时间复杂度为O(1)
+    int inIndex = indexHash.get(value);
+    node.left = createTree(pre,in,inStart,inIndex-1,indexHash);
+    node.right = createTree(pre,in,inIndex+1,inEnd,indexHash);
+    return node;
+}
+
+public BinaryTreeNode reConstructBinaryTree(int [] pre,int [] in) {
+    preIndex = 0;
+    HashMap&lt;Integer,Integer&gt; inorderHash = new HashMap&lt;&gt;();
+    if(pre.length == 0 || in.length == 0){
+        return null;
+    }
+    for(int i = 0;i &lt; in.length;i++){
+        inorderHash.put(in[i],i);
+    }
+    return createTree(pre,in,0,in.length-1,inorderHash);
+}
+</code></pre><p>优化后的时间复杂度：O(n).</p>
+<p>方法2：</p>
+<pre><code>public class RestructBinaryTree {
+
+private BinaryTreeNode root;
+
+//根据前序和中序构造二叉树
+public BinaryTreeNode preAndIn(int[] pre,int preStart,int preEnd,int[] in,int inStart,int inEnd){
+
+    if(pre == null || in == null || pre.length &lt;= 0 || in.length &lt;= 0){
+        throw new RuntimeException(&quot;序列数组长度需大于0&quot;);
+    }
+
+    if(preEnd &lt; preStart || inEnd &lt; inStart){
+        return null;
+    }
+
+    //第一个结点
+    BinaryTreeNode node = new BinaryTreeNode(pre[preStart]);
+
+    int i = 0;
+    for(;i&lt;in.length;i++){
+        if(node.data == in[i]){
+            node.left = preAndIn(pre,preStart+1,preStart+i-inStart,in,inStart,i-1);
+            node.right = preAndIn(pre,preStart+i-inStart+1,preEnd,in,i+1,inEnd);
+            break;
+        }
+    }
+
+    if(i == in.length){
+        throw new RuntimeException(&quot;两组序列不匹配&quot;);
+    }
+
+    return node;
+}
+</code></pre><p>中序后序创建二叉树：</p>
+<p>方法1：</p>
+<pre><code>public BinaryTreeNode createInAndPostTree(int[] post,int[] in,int inStart,int inEnd,HashMap&lt;Integer,Integer&gt; indexHash){
+    if(inStart &gt; inEnd)
+        return null;
+    int value = post[postIndex--];
+    BinaryTreeNode node = new BinaryTreeNode(value);
+    if(inStart == inEnd)
+        return node;
+
+    int inIndex = indexHash.get(value);
+    node.right = createInAndPostTree(post,in,inIndex+1,inEnd,indexHash);
+    node.left = createInAndPostTree(post,in,inStart,inIndex-1,indexHash);
+    return node;
+}
+
+public BinaryTreeNode inAndPostRestruct(int[] post,int[] in){
+    HashMap&lt;Integer,Integer&gt; inorderHash = new HashMap&lt;&gt;();
+    if(in.length == 0 || post.length == 0){
+        return null;
+    }
+    postIndex = post.length - 1;
+    for(int i = 0;i &lt; in.length;i++){
+        inorderHash.put(in[i],i);
+    }
+    return createInAndPostTree(post,in,0,in.length-1,inorderHash);
+}
+</code></pre><p>时间复杂度：O(n).</p>
+<p>方法2:</p>
+<pre><code>//根据中序和后序构造二叉树
+public BinaryTreeNode inAndPost(int[] post,int postStart,int postEnd,int[] in,int inStart,int inEnd){
+
+    if(post == null || in == null || post.length &lt;= 0 || in.length &lt;= 0){
+        throw new RuntimeException(&quot;序列数组长度需大于0&quot;);
+    }
+
+    if(postEnd &lt; postStart || inEnd &lt; inStart){
+        return null;
+    }
+
+    //第一个结点
+    BinaryTreeNode node = new BinaryTreeNode(post[postEnd]);
+    int i = 0;
+    for(;i&lt;in.length;i++){
+        if(node.data == in[i]){
+            node.right = inAndPost(post,postEnd-inEnd+i,postEnd-1,in,i+1,inEnd);
+            node.left = inAndPost(post,postStart,postEnd-inEnd+i-1,in,inStart,i-1);
+            break;
+        }
+    }
+
+    if(i == in.length){
+        throw new RuntimeException(&quot;两组序列不匹配&quot;);
+    }
+
+    return node;
+}
+
+//先序遍历,递归实现
+public void preOrder(BinaryTreeNode node){
+    if (node == null)
+        return;
+
+    System.out.print(node.data + &quot; &quot;);
+    preOrder(node.left);
+    preOrder(node.right);
+}
+
+//后序遍历
+public void postOrder(BinaryTreeNode node) {
+
+    if (node == null)
+        return;
+    postOrder(node.left);
+    postOrder(node.right);
+    System.out.print(node.data + &quot; &quot;);
+
+}
+
+public static void main(String[] args){
+
+    RestructBinaryTree tree = new RestructBinaryTree();
+    int[] pre = {1,2,3,4};
+    int[] in = {4,3,2,1};
+    int[] post = {7,4,2,5,8,6,3,1};
+
+    //tree.root = tree.inAndPost(post,0,post.length-1,in,0,in.length-1);
+    tree.root = tree.preAndIn(pre,0,pre.length-1,in,0,in.length-1);
+    //tree.preOrder(tree.root);
+    tree.postOrder(tree.root);
+ }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/java内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/java内存模型/" itemprop="url">java内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T20:12:59+08:00">
+                2018-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/23/java内存模型/" class="leancloud_visitors" data-flag-title="java内存模型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Java内存模型示意图</p>
+</blockquote>
+<p><img src="https://i.imgur.com/wRkMYGE.png" alt=""></p>
+<p>1.主内存：相当于java堆中的对象实例数据部分以及方法区内的类的静态字段区域（这两部分都是线程的共享内存区域）。</p>
+<p>2.本地内存：相当于虚拟机栈内存区域部分。</p>
+<ul>
+<li><p>happens-before原则：</p>
+<h4 id="怎么理解内存可见性？"><a href="#怎么理解内存可见性？" class="headerlink" title="怎么理解内存可见性？"></a>怎么理解内存可见性？</h4><p>  在单线程或者多线程之间，如果两个操作之间存在happen-before关系的话，那么其中一个操作如果对内存(JMM主存)变量进行操作(写变量),则对变量的操作结果,在内存中对另外那个操作可见，同时还会存在执行顺序的优先性，第一个操作优于第二个操作执行，叫内存可见性。</p>
+</li>
+</ul>
+<pre><code>#### 怎么理解happens-before原则？ ####
+
+1.A happens-before B 意味着执行A产生的影响直接对B可见。
+
+2.而以下的规则是天生就存在这种happens-before关系的例子。
+
+#### happens-before规则有哪些？ ####
+</code></pre><ol>
+<li>程序顺序规则：但线程内，在不改变程序结果的情况下(可能会发生重排序),程序按顺序执行。</li>
+<li>监视器锁规则：对一个锁的解锁(volatile写)优先于锁的加锁(volatile读)。</li>
+<li>volatile变量规则：volatile写优先volatile读。</li>
+<li>传递性：A happens-before B, Bhappens-before C则 A happens-before C。</li>
+<li>start()原则：如果在线程A中执行ThreadB.start(),那么A线程的ThreadB.start()操作要先于线程B中的任意操作。</li>
+<li>join()操作：线程A执行ThreadB.join()操作并成功返回,那么B中的任意操作都先于线程A从ThreadB.join()操作成功返回。</li>
+</ol>
+<p>举个例子：</p>
+<p><img src="https://i.imgur.com/5HFiSBc.png" alt=""></p>
+<p><strong>特点：</strong>happens-before保证了两个线程之间的内存可见性。</p>
+<p>1.两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</p>
+<p>2.<strong>数据竞争：</strong>一个线程在读，一个线程在写，而且两个线程还没有同步保证。</p>
+<p>3.<strong>线程通信：</strong>线程间交换信息，例如：共享内存和消息传递。</p>
+<p>4.<strong>线程同步：</strong>控制线程间操作发生的顺序。</p>
+<p>5.<strong>顺序一致性模型和JMM的比较：</strong></p>
+<pre><code>(1)前者保证单线程内的操作按程序的顺序来执行,后者不能保证。
+(2)前者保证所有的线程只能看到一致的操作执行顺序,因为在顺序一致性模型中每个操作必须立即对所有线程可见,而在后者中，因为存在缓存的缘故，当数据写入到缓存中，还没刷新到主存中时，此时的写操作仅对该线程可见,其他线程不可见。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/23/二叉树的创建和遍历/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/二叉树的创建和遍历/" itemprop="url">二叉树的创建和遍历</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T15:57:04+08:00">
+                2018-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/23/二叉树的创建和遍历/" class="leancloud_visitors" data-flag-title="二叉树的创建和遍历">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="前序、中序和后序递归与非递归的遍历二叉树？"><a href="#前序、中序和后序递归与非递归的遍历二叉树？" class="headerlink" title="前序、中序和后序递归与非递归的遍历二叉树？"></a>前序、中序和后序递归与非递归的遍历二叉树？</h4><pre><code>public class BinaryTree {
+
+private BinaryTreeNode root;
+
+public boolean isEmpty(){
+    if(this.root == null)
+        return true;
+
+    return false;
+}
+
+public BinaryTreeNode getRoot() {
+    return root;
+}
+
+public void createBinaryTree(BinaryTreeNode node, int data){
+    if(root == null){
+        this.root = new BinaryTreeNode(data);
+    }else{
+
+        //创建二叉查找树
+        if(data &lt; node.data){
+            //构建左子树
+            if(node.left == null){
+                node.left = new BinaryTreeNode(data);
+            }else {
+                createBinaryTree(node.left,data);
+            }
+        }else {
+            //构建右子树
+            if(node.right == null){
+                node.right = new BinaryTreeNode(data);
+            }else {
+                createBinaryTree(node.right,data);
+            }
+        }
+    }
+
+}
+
+//先序遍历,递归实现
+public void preOrder(BinaryTreeNode node){
+    if (node == null)
+        return;
+
+    System.out.print(node.data + &quot; &quot;);
+    preOrder(node.left);
+    preOrder(node.right);
+}
+
+//先序遍历非递归优化方法
+public void iterativePreOrder(BinaryTreeNode p){
+    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;&gt;();
+    if(p != null){
+        stack.push(p);
+    }
+    while (!stack.isEmpty()){
+        BinaryTreeNode q = stack.pop();
+        System.out.print(q.data + &quot; &quot;);
+        if(q.right != null){
+            stack.push(q.right);
+        }
+        if(q.left != null){
+            stack.push(q.left);
+        }
+    }
+}
+
+//先序遍历,非递归实现
+public void cyclePreOrder(BinaryTreeNode node){
+
+    BinaryTreeNode p = node;
+    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();
+
+    if(p == null){
+        System.out.println(&quot;二叉树为空&quot;);
+    }
+
+    //根节点出栈后栈空了但 p != null
+    while (p != null || !stack.isEmpty()){
+        while (p != null){
+            System.out.print(p.data + &quot; &quot;);
+            stack.push(p);
+            p = p.left;
+        }
+
+        if(!stack.isEmpty()){
+            p = stack.pop();
+            p = p.right;
+        }
+    }
+
+}
+
+//中序遍历,递归实现
+public void inOrder(BinaryTreeNode node){
+    if(node == null)
+        return;
+
+    inOrder(node.left);
+    System.out.print(node.data + &quot; &quot;);
+    inOrder(node.right);
+}
+
+//中序遍历,非递归实现
+public void cycleInOrder(BinaryTreeNode node){
+    BinaryTreeNode p = node;
+    Stack&lt;BinaryTreeNode&gt; stack = new Stack&lt;BinaryTreeNode&gt;();
+
+    if(p == null){
+        System.out.println(&quot;二叉树为空&quot;);
+    }
+
+    //根节点出栈后栈空了但 p != null
+    while (p != null || !stack.isEmpty()){
+        while (p != null){
+            stack.push(p);
+            p = p.left;
+        }
+
+        if(!stack.isEmpty()){
+            p = stack.pop();
+            System.out.print(p.data + &quot; &quot;);
+            p = p.right;
+        }
+    }
+}
+
+//后序遍历,递归实现
+public void postOrder(BinaryTreeNode node) {
+
+    if (node == null)
+        return;
+    postOrder(node.left);
+    postOrder(node.right);
+    System.out.print(node.data + &quot; &quot;);
+
+}
+
+//后续遍历更容易想到的方法
+public void iterativePostOrder(BinaryTreeNode p){
+    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();
+    while (true){
+        while (p != null){
+            s.push(p);
+            s.push(p);
+            p = p.left;
+        }
+        if(s.isEmpty())
+            return;
+        p = s.pop();
+        if(!s.isEmpty() &amp;&amp; p == s.peek()){
+            p = p.right;
+        }else {
+            System.out.print(p.data + &quot; &quot;);
+            p = null;
+        }
+    }
+}
+
+//后续遍历的倒序方法
+public void reversePostOrder(BinaryTreeNode p){
+    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();
+    Stack&lt;BinaryTreeNode&gt; result = new Stack&lt;&gt;();
+    if(p != null){
+        s.push(p);
+    }
+    while (!s.isEmpty()){
+        p = s.pop();
+        //System.out.print(p.data + &quot; &quot;);
+        result.push(p);
+        if(p.left != null){
+            s.push(p.left);
+        }
+        if(p.right != null){
+            s.push(p.right);
+        }
+    }
+
+    while (!result.isEmpty()){
+        System.out.print(result.pop().data + &quot; &quot;);
+    }
+}
+
+//后序遍历,非递归实现
+public void cyclePostOrder(BinaryTreeNode node){
+    BinaryTreeNode current;
+    BinaryTreeNode visited = null;
+    Stack&lt;BinaryTreeNode&gt; s = new Stack&lt;BinaryTreeNode&gt;();
+
+    s.push(node);
+
+    while (!s.isEmpty()){
+
+        //还不能出栈
+        current = s.peek();
+        if((current.left == null &amp;&amp; current.right == null) || (visited != null &amp;&amp; (current.left == visited || current.right == visited))){
+            current = s.pop();
+            System.out.print(current.data + &quot; &quot;);
+            visited = current;
+        }else {
+            if(current.right != null){
+                s.push(current.right);
+            }
+
+            if(current.left != null){
+                s.push(current.left);
+            }
+        }
+    }
+}
+
+//队列实现层次遍历
+public void levelOrder(BinaryTreeNode p){
+    Queue&lt;BinaryTreeNode&gt; queue = new LinkedList&lt;&gt;();
+    if(p != null){
+        queue.offer(p);
+    }
+    while (!queue.isEmpty()){
+       int queueSize = queue.size();
+        for(int i = 0;i &lt; queueSize;i++){//queueSize表示每一层的节点数
+            p = queue.poll();
+            System.out.print(p.data + &quot; &quot;);
+            if(p.left != null){
+                queue.offer(p.left);
+            }
+            if (p.right != null){
+                queue.offer(p.right);
+            }
+        }
+        System.out.println();
+    }
+}
+
+public static void main(String[] args){
+    BinaryTree bt = new BinaryTree();
+    Random random = new Random();
+
+    //10个结点
+    for(int i = 0;i&lt;6;i++){
+        bt.createBinaryTree(bt.root,random.nextInt(10));
+    }
+
+    bt.postOrder(bt.root);
+    System.out.println();
+    bt.cyclePostOrder(bt.root);
+
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/反转链表/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/22/反转链表/" itemprop="url">反转链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T19:44:48+08:00">
+                2018-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/22/反转链表/" class="leancloud_visitors" data-flag-title="反转链表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="反转链表？"><a href="#反转链表？" class="headerlink" title="反转链表？"></a>反转链表？</h4><pre><code>public class VerseLinkPrint {
+
+private ListNode head;
+
+    private ListNode q;
+
+//添加链表节点
+   public void add(int data){
+    ListNode node = new ListNode(data);
+    if(this.head == null){
+        this.head = node;
+    }else {
+        this.head.addNode(node);
+    }
+}
+
+//从头到尾打印链表节点
+    public void print(){
+    if(this.head == null){
+        System.out.println(&quot;链表为空&quot;);
+    }else {
+        this.head.printNode();
+        System.out.println();
+    }
+}
+
+//非递归实现反转链表
+   public void versePrint(){
+
+if(head == null){
+    System.out.println(&quot;链表为空&quot;);
+    return;
+}
+
+//已经改变的链表的结构
+ListNode p = head.next;
+ListNode q = null;
+head.next = null;
+
+while (p != null){
+    q = p.next;
+    p.next = head;
+    head = p;
+    p = q;
+}
+print();
+}
+
+//递归实现反转链表
+   public void verseRecursive(ListNode p){
+
+if(p == null)
+    return;
+
+verseRecursive(p.next);
+
+if(p.next == null){
+    head = p;
+    q = p;
+}
+
+p.next = null;
+q.next = p;
+q = q.next;
+}
+
+public static void main(String[] args){
+    VerseLinkPrint link = new VerseLinkPrint();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.verseRecursive(link.head);
+    link.print();
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/22/从尾到头打印链表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1463,968 +2623,6 @@ public boolean Find(int target, int [][] array) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/18/数组中的重复数字/" itemprop="url">数组中的重复数字</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T17:20:58+08:00">
-                2018-07-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/18/数组中的重复数字/" class="leancloud_visitors" data-flag-title="数组中的重复数字">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
-<p>1.数组下标 = 数组元素</p>
-<p>2.目标交换：num[i] = m </p>
-<p>   swap: m <---> num[m] 直到 num[i] == i</---></p>
-<pre><code>public class OptDuplication {
-
-//哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)
-boolean findDup1(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
-            return false;
-        }
-    }
-
-    //哈希表
-    int[] count = new int[len];
-    for(int i = 0;i&lt;len;i++){
-        if(count[nums[i]] == 1){
-            duplication[0] = nums[i];
-            return true;
-        }
-
-        count[nums[i]]++;
-    }
-
-    return false;
-
-}
-
-boolean findDup(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
-            return false;
-        }
-    }
-
-    int temp;
-    for(int i = 0;i&lt;len;i++){
-        while (i != nums[i]){
-            //nums[i]=m 说明 m 所在的下标是 i 和 m 所以重复了
-            if(nums[i] == nums[nums[i]]){
-                duplication[0]=nums[i];
-                return true;
-            }else {
-                //交换num[i] 和 num[num[i]]
-                temp = nums[i];
-                nums[i] = nums[nums[i]];
-                nums[temp] = temp;
-            }
-        }
-    }
-
-    System.out.println(&quot;没有重复数字&quot;);
-    return false;
-}
-</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
-<p>1.二分法的运用，加入了统计数字个数的方法</p>
-<p>2.循环结束条件：start == end</p>
-<pre><code>public class DuplicationVersion {
-
-//时间复杂度:O(nlogn) 空间复杂度:O(1)
-boolean findDup(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);
-            return false;
-        }
-    }
-
-    int start = 1;
-    int end = len-1;
-    int middle;
-    while(start &lt;=  end){
-
-        middle = (start + end)/2;
-        int number = calNum(nums,len,start,middle);
-
-        //结束条件
-        if(start == end){
-            if(number &gt; 1){
-                duplication[0] = start;
-                return true;
-            }else{
-                break;
-            }
-        }
-
-        if(middle - start + 1 &lt; number){
-            end = middle;
-        }else {
-            start = middle + 1;
-        }
-    }
-
-    System.out.println(&quot;没有重复数字&quot;);
-    return false;
-}
-
-private int calNum(int[] nums, int len, int start, int end) {
-    int count = 0;
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){
-            count++;
-        }
-    }
-    return count;
-}
- }
-</code></pre><p>参考文档：</p>
-<p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/线程间协作和通信/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/17/线程间协作和通信/" itemprop="url">线程协作通信</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T20:47:37+08:00">
-                2018-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/17/线程间协作和通信/" class="leancloud_visitors" data-flag-title="线程协作通信">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>匿名内部类？</p>
-<p>  没有名字的内部类，只能使用一次，简化代码编写。</p>
-<p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p>
-<pre><code>interface People {
-public abstract void eat();
-}
-
-public class Demo {
-   public static void main(String[] args) {
-People p = new People() {
-    public void eat() {
-        System.out.println(&quot;I can eat &quot;);
-    }
-};
-p.eat();
-}
-</code></pre></li>
-<li><p>阻塞队列</p>
-<pre><code>阻塞队列会对当前线程产生阻塞，比如一个线程从一个空的阻塞队列中取元素，此时线程会被阻塞直到阻塞队列中有了元素。
-当队列中有元素后，被阻塞的线程会自动被唤醒（不需要我们编写代码去唤醒）。这样提供了极大的方便性。
-</code></pre></li>
-<li><p>wait()、notify()和notifyAll()</p>
-<pre><code>1.如果调用某个对象的 wait()/notify() 方法，当前线程必须拥有这个对象的monitor（即锁），因此调用 wait()/notify()
-方法必须在同步块或者同步方法中进行（synchronized块或者synchronized方法)。
-
-2.调用某个对象的wait()方法，相当于让当前线程交出此对象的monitor，然后进入等待状态，等待后续再次获得此对象的锁。（而sleep不会释放该对象的锁）
-
-3.notifyAll() 唤醒所有正在等待该对象的monitor的线程。
-
-4.一个线程被唤醒不代表立即获取了对象的monitor，只有等调用完notify()或者notifyAll()并退出synchronized块，释放对象锁后，其余线程才可获得锁执行。
-</code></pre></li>
-<li><p>Condition</p>
-</li>
-</ul>
-<p>它用来替代传统的Object的wait()、notify()实现线程间的协作,更加安全和高效。</p>
-<pre><code>1.Condition依赖于Lock接口，生成一个Condition的基本代码是lock.newCondition()。
-
-2.调用Condition的await()和signal()方法，都必须在lock保护之内，就是说必须在lock.lock()和lock.unlock之间才可以使用。
-
-3.
-    Conditon中的await()对应Object的wait()；
-    Condition中的signal()对应Object的notify()；
-    Condition中的signalAll()对应Object的notifyAll()。
-</code></pre><p>java.util.concurrent下的三个常用类：</p>
-<ul>
-<li>CyclicBarrier</li>
-</ul>
-<p>CyclicBarrier强调的是n个线程，大家相互等待，只要有一个没完成，所有人都得等着。</p>
-<p>重要字段：</p>
-<pre><code>private static class Generation {
-    boolean broken = false;
-}
-
-private final ReentrantLock lock = new ReentrantLock();
-
-private final Condition trip = lock.newCondition();//和锁一起使用
-
-private final int parties;//需要相互等待的线程数
-
-private final Runnable barrierCommand;
-
-private Generation generation = new Generation();
-
-private int count;//需要等待的线程的数量
-</code></pre><p>重要方法：</p>
-<pre><code>//CyclicBarrier.java
-public int await() throws InterruptedException, BrokenBarrierException {
-    try {
-        return dowait(false, 0L);
-    } catch (TimeoutException toe) {
-        throw new Error(toe); // cannot happen
-    }
-}
-</code></pre><p>进入：</p>
-<pre><code>private int dowait(boolean timed, long nanos)
-    throws InterruptedException, BrokenBarrierException,
-           TimeoutException {
-    final ReentrantLock lock = this.lock;
-    lock.lock();
-    try {
-        final Generation g = generation;
-
-        if (g.broken)
-            throw new BrokenBarrierException();
-
-        if (Thread.interrupted()) {
-            breakBarrier();
-            throw new InterruptedException();
-        }
-
-        int index = --count;
-        if (index == 0) {  // tripped
-            boolean ranAction = false;
-            try {
-                final Runnable command = barrierCommand;
-                if (command != null)
-                    command.run();//调用构造函数中的Runnable实现
-                ranAction = true;
-                nextGeneration();//唤醒所有阻塞的线程
-                return 0;
-            } finally {
-                if (!ranAction)
-                    breakBarrier();
-            }
-        }
-
-
-        for (;;) {
-            try {
-                if (!timed)
-                    trip.await();//线程还没到齐就一直阻塞
-                else if (nanos &gt; 0L)
-                    nanos = trip.awaitNanos(nanos);
-            } catch (InterruptedException ie) {
-                if (g == generation &amp;&amp; ! g.broken) {
-                    breakBarrier();
-                    throw ie;
-                } else {
-                    // We&apos;re about to finish waiting even if we had not
-                    // been interrupted, so this interrupt is deemed to
-                    // &quot;belong&quot; to subsequent execution.
-                    Thread.currentThread().interrupt();
-                }
-            }
-
-            if (g.broken)
-                throw new BrokenBarrierException();
-
-            if (g != generation)
-                return index;
-
-            if (timed &amp;&amp; nanos &lt;= 0L) {
-                breakBarrier();
-                throw new TimeoutException();
-            }
-        }
-    } finally {
-        lock.unlock();
-    }
-}
-</code></pre><p>看一眼唤醒的方法：</p>
-<pre><code>private void nextGeneration() {
-    // signal completion of last generation
-    trip.signalAll();
-    // set up next generation
-    count = parties;
-    generation = new Generation();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/单例模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/17/单例模式/" itemprop="url">单例模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T11:32:12+08:00">
-                2018-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/17/单例模式/" class="leancloud_visitors" data-flag-title="单例模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>单例模式的不同写法：</p>
-<ul>
-<li><p>单例模式指？</p>
-<p>  只生成一个对象，避免重复创建对象。</p>
-<p>  <img src="https://i.imgur.com/MkkHyU0.png" alt=""></p>
-</li>
-<li><p>instance为什么要加static关键字？</p>
-<p>  因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.</p>
-</li>
-<li><p>单例模式中构造函数为什么私有化？</p>
-<p>  1.构造函数私有化后，那么只能通过这个类的内部函数才能构造这个类的对象。</p>
-<p>  2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。</p>
-</li>
-<li><p>单例模式中volatile变量的作用？</p>
-<p>  首先分析 instance = new Singleton() 的本质：</p>
-<p>  1.为对象分配内存空间</p>
-<p>  2.对象初始化</p>
-<p>  3.将对象的引用指向对应的内存地址。</p>
-</li>
-</ul>
-<p>但是在单线程内2和3可能会发生重排序，于是发生了如下情况：<br><img src="https://i.imgur.com/EXnDWsp.png" alt=""></p>
-<p>此时线程B访问的是没有经过初始化的对象，会报错，所以使用volatile的根源在于：<strong>禁止A2和A3的重排序</strong>。</p>
-<ul>
-<li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
-<p>  因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。我们只需要在实例还没有创建之前添加加锁操作。</p>
-</li>
-<li><p>线程安全的延迟初始化？</p>
-<p>  1.基于volatile</p>
-<p>  2.基于类初始化</p>
-<p> 对于2举个例子：</p>
-<p>  private static class Holder{</p>
-<pre><code>private static Singleton instance =  new Singleton();
-</code></pre><p>  }</p>
-<p>  public static Singleton getInstance(int i){</p>
-<pre><code>return Holder.instance;
-</code></pre><p>  }</p>
-</li>
-<li><p>静态内部类方法创建单例模式的好处？</p>
-<p>  按需创建实例（饿汉式模式：在类加载时就完成了初始化），提高了内存的利用效率。</p>
-<p>  <code>这种方式的特点是：Singleton类被装载了，instance不一定被初始化，只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。</code></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/Java变量/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/13/Java变量/" itemprop="url">成员变量和局部变量</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T13:29:01+08:00">
-                2018-07-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/变量/" itemprop="url" rel="index">
-                    <span itemprop="name">变量</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/13/Java变量/" class="leancloud_visitors" data-flag-title="成员变量和局部变量">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><h4 id="栈内存和堆内存的比较？"><a href="#栈内存和堆内存的比较？" class="headerlink" title="栈内存和堆内存的比较？"></a>栈内存和堆内存的比较？</h4><p>  <img src="https://img-blog.csdn.net/20170430132812242?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWFydmVsX19EZWFk/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-</li>
-</ul>
-<pre><code>**堆内存存的内容：**数组元素、类对象、类中的非静态成员变量（实例变量）、包装类数据(Integer等)、
-
-**栈内存内容：**
-
-1.方法中声明的变量(因为方法执行时，被分配的内存就在栈中,即方法栈)：分基本数据类型变量和引用变量，前者的变量名和值都存在方法栈中，后者声明的变量存放在栈中，所指的对象放在堆中。
-
-2.对象的引用
-
-**方法区：**线程共享的内存区域。类里面的静态成员和静态方法、
-
-**常量池：**方法区的一块内存。
-
-**静态域：**方法区的一块内存。存放类中的静态成员变量
-</code></pre><ul>
-<li><p>局部变量保存在栈内存中，随方法的消失而消失;成员变量存储在堆中的对象里，由垃圾回收器负责回收。</p>
-</li>
-<li><p>包装类数据Integer、String等等存在于堆中。</p>
-</li>
-<li><p>JAVA的自动装箱拆箱</p>
-<p>  装箱：</p>
-<pre><code>Integer a = 99;
-(实际执行Integer.valueof(a))
-</code></pre><p>  拆箱：</p>
-<pre><code>int b = a;(实际执行a.intValue())
-</code></pre><p>  对于Integer:</p>
-<pre><code>在(-128,+128]之间有固定的256个值是为了避免多次创建对象，如果值在这个范围里就直接返回Integer对象
-</code></pre></li>
-</ul>
-<pre><code>参考文档一：[https://blog.csdn.net/Marvel__Dead/article/details/69220153](https://blog.csdn.net/Marvel__Dead/article/details/69220153)
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2479,7 +2677,7 @@ public int await() throws InterruptedException, BrokenBarrierException {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

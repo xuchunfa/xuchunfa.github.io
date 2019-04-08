@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&amp;quot;点&amp;quot;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-31T07:26:00.902Z">
+<meta property="og:updated_time" content="2019-04-06T01:37:22.298Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--计算机网络">
 <meta name="twitter:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&amp;quot;点&amp;quot;">
@@ -671,11 +671,12 @@
 
     1.客户端发起HTTPS请求，三次握手；
 
-    2.服务端配置。配置数字证书，即公钥和密钥；
+    2.服务端配置。配置数字证书，即公钥和密钥（非对称加密）；
 
-    3.服务端传送证书。即传送公钥给客户端；
+    3.服务端传送SSL证书，证书的内容包括：证书的颁发机构、有效期、公钥、证书持有者、签名等，解决了公钥获取的安全性；
 
-    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；
+    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；(操作系统内置了受信任的证书颁发机构，取出颁发者CA的公钥对证书的签名进行解密，
+    浏览器使用hash算法计算证书的hash值，与证书签名作对比)
 
     5.传输加密信息。浏览器随机生成一个对称加密的密钥k（临时会话密钥），密钥k是在客户端和服务端共享的，用证书中的公钥加密k,得到密文k&apos;；
 
@@ -684,6 +685,22 @@
     7.传输服务端加密后的信息；
 
     8.客户端解密信息。使用共享密钥k解密数据。
+
+总结：
+
+    1.加密算法
+
+        对称加密：加密和解密都是通过同一个密钥进行，采用对称加密进行通信存在密钥协商过程的不安全性；
+
+        非对称加密：私钥加密后的密文只要是公钥都可以解密，但公钥加密后的密文只有私钥可以解密；
+
+        注意：
+
+            1.非对称加密算法保证了协商对称加密算法的过程；
+
+            2.非对称加密算法会有公钥被劫持的问题，通过CA颁发的证书保证安全；
+
+            3.最后客户端和服务端协商出了对称加密算法进行信息的加密传输；
 </code></pre><p>7.HTTP1.0/HTTP1.1/HTTP2.0的区别?</p>
 <pre><code>1.HTTP1.1默认长连接Connection:keep-alive,HTTP1.0 每次请求都要创建连接；
 
@@ -842,7 +859,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -286,6 +286,1048 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/11/04/CountDownLatch详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/04/CountDownLatch详解/" itemprop="url">CountDownLatch详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-04T21:15:07+08:00">
+                2018-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/11/04/CountDownLatch详解/" class="leancloud_visitors" data-flag-title="CountDownLatch详解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="与CyclicBarrier的区别？"><a href="#与CyclicBarrier的区别？" class="headerlink" title="与CyclicBarrier的区别？"></a>与CyclicBarrier的区别？</h4><pre><code>1.CyclicBarrier主要用于一组线程之间的相互等待，而CountDownLatch一般用于一组线程等待另一组些线程。
+
+2.即 CountDownLatch中的countDown()+await() = CyclicBarrier中的await()。注意：在一个线程中先调用countDown()，然后调用await()。
+</code></pre><p>CyclicBarrier可以重复使用，CountDownLatch不能，原因在CyclicBarrier中：</p>
+<pre><code> public void reset() {
+    final ReentrantLock lock = this.lock;
+    lock.lock();
+    try {
+        breakBarrier();   // break the current generation
+        nextGeneration(); // start a new generation
+    } finally {
+        lock.unlock();
+    }
+}
+</code></pre><ul>
+<li>CountDownLatch</li>
+</ul>
+<p>等待其他线程都执行完后，主线程才继续往下执行。</p>
+<p>构造函数：</p>
+<pre><code>public CountDownLatch(int count) {
+    if (count &lt; 0) throw new IllegalArgumentException(&quot;count &lt; 0&quot;);
+    this.sync = new Sync(count);
+}
+</code></pre><p>内部类Sync：</p>
+<pre><code>private static final class Sync extends AbstractQueuedSynchronizer {
+    private static final long serialVersionUID = 4982264981922014374L;
+
+    //AbstractQueuedSynchronizer.java 同步器
+    //private volatile int state;
+    Sync(int count) {
+        setState(count);
+    }
+
+    int getCount() {
+        return getState();
+    }
+
+    protected int tryAcquireShared(int acquires) {
+        return (getState() == 0) ? 1 : -1;
+    }
+
+    protected boolean tryReleaseShared(int releases) {
+        // Decrement count; signal when transition to zero
+        for (;;) {
+            int c = getState();
+            if (c == 0)
+                return false;
+            int nextc = c-1;
+            //如果state为c，则更新state为nextc.
+            //防止在getState()方法和compareAndSetState()方法调用之间对state进行了更改
+            if (compareAndSetState(c, nextc))
+                return nextc == 0;
+        }
+    }
+}
+</code></pre><p>重要方法：await()</p>
+<pre><code>//CountDownLatch.java
+public void await() throws InterruptedException {
+    //调用上述的tryAcquireShared()
+    //state为0：表示调用该方法的线程可以继续往下执行
+    //state不为0: 表示该线程阻塞
+    sync.acquireSharedInterruptibly(1);
+}
+</code></pre><p>重要方法:countDown()</p>
+<pre><code>public void countDown() {
+    sync.releaseShared(1);
+}
+</code></pre><p>首先进入：</p>
+<pre><code>public final boolean releaseShared(int arg) {
+    if (tryReleaseShared(arg)) {
+        //由最后一个执行countDown()方法的线程唤醒调用await()方法的线程
+        //这里唤醒的线程可能是多个
+        doReleaseShared();
+        return true;
+    }
+    return false;
+}
+</code></pre><p>再看看重要的：</p>
+<pre><code>//AbstractQueuedSynchronizer.java
+//唤醒等待线程
+private void doReleaseShared() {
+
+    for (;;) {
+        Node h = head;
+        //在等待队列中，头节点中并没有保存正在等待的线程，其只是一个空的Node对象，真正等待的线程是从头节点的下一个节点开始存放的，
+        因而会有对头结点是否等于尾节点的判断
+        if (h != null &amp;&amp; h != tail) {
+            int ws = h.waitStatus;
+            if (ws == Node.SIGNAL) {
+                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                    continue;            // loop to recheck cases
+                unparkSuccessor(h);
+            }
+            else if (ws == 0 &amp;&amp;
+                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                continue;                // loop on failed CAS
+        }
+        if (h == head)                   // loop if head changed
+            break;
+    }
+}
+</code></pre><p>最后看一眼：</p>
+<pre><code>//AbstractQueuedSynchronizer.java
+private void unparkSuccessor(Node node) {
+
+    int ws = node.waitStatus;
+    if (ws &lt; 0)
+        compareAndSetWaitStatus(node, ws, 0);
+
+    Node s = node.next;
+    if (s == null || s.waitStatus &gt; 0) {
+        s = null;
+
+        for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)
+            if (t.waitStatus &lt;= 0)//没有结束，继续向前。
+                s = t;
+    }
+    if (s != null)
+        LockSupport.unpark(s.thread); //唤醒离传入节点最近的处于等待状态的节点线程
+}
+</code></pre><p>最后调用    countDown() 的线程会触发所有调用await()阻塞的线程。</p>
+<p>分析：</p>
+<pre><code>public void await() throws InterruptedException {
+    sync.acquireSharedInterruptibly(1);
+}
+</code></pre><p>进入：</p>
+<pre><code>//AbstractQueuedSynchronizer.java
+public final void acquireSharedInterruptibly(int arg)
+        throws InterruptedException {
+    if (Thread.interrupted())
+        throw new InterruptedException();
+    if (tryAcquireShared(arg) &lt; 0)//自己Sync重写的方法
+        doAcquireSharedInterruptibly(arg);
+}
+</code></pre><p>重要方法:</p>
+<pre><code>private void doAcquireSharedInterruptibly(int arg)
+    throws InterruptedException {
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head) {
+                //唤醒后，tryAcquireShared(arg)将会大于0
+                int r = tryAcquireShared(arg);
+                if (r &gt;= 0) {
+                    setHeadAndPropagate(node, r);//当前节点设置为头节点，继续唤醒后面的节点
+                    p.next = null; // help GC
+                    failed = false;
+                    return;
+                }
+            }
+
+            //所有线程阻塞的地方
+            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt())
+                throw new InterruptedException();
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+</code></pre><p>最后简单看一下：</p>
+<pre><code>private void setHeadAndPropagate(Node node, int propagate) {
+    Node h = head; // Record old head for check below
+    setHead(node);
+
+    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||
+        (h = head) == null || h.waitStatus &lt; 0) {
+        Node s = node.next;
+        if (s == null || s.isShared())
+            doReleaseShared();//继续唤醒下一个
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/31/适配器模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/31/适配器模式/" itemprop="url">适配器模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T10:09:23+08:00">
+                2018-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/31/适配器模式/" class="leancloud_visitors" data-flag-title="适配器模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>类适配器UML图：</p>
+<p><img src="https://i.imgur.com/0yrww9E.png" alt=""></p>
+<p>对象适配器UML图：</p>
+<p><img src="https://i.imgur.com/Q9tMtJ5.png" alt=""></p>
+<p>适配器模式分三种：</p>
+<ul>
+<li><p>类适配器模式</p>
+</li>
+<li><p>对象适配器模式</p>
+</li>
+<li><p>特殊的缺省适配模式</p>
+</li>
+</ul>
+<p>详解见博客：</p>
+<p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/30/装饰者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/30/装饰者模式/" itemprop="url">装饰者模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-30T21:45:15+08:00">
+                2018-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/30/装饰者模式/" class="leancloud_visitors" data-flag-title="装饰者模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>UML类图：</p>
+<p><img src="https://i.imgur.com/4VrgAqN.jpg" alt=""></p>
+<p>1.Component接口(也可以是抽象类)</p>
+<pre><code>public interface Component {
+    void method()；
+}
+</code></pre><p>2.待装饰的对象:</p>
+<pre><code>public class ConcreteComponent implements Component{
+
+public void method() {
+    System.out.println(&quot;原来的方法&quot;);
+}
+}
+</code></pre><p>3.抽象装饰器父类（并不是必须的）</p>
+<pre><code>public abstract class Decorator implements Component{
+
+protected Component component;//组合待装饰的接口或者抽象类，更加灵活
+
+public Decorator(Component component) {
+    super();
+    this.component = component;
+}
+
+public void method() {
+    component.method();
+}
+}
+</code></pre><p>4.具体的装饰类：</p>
+<pre><code>package com.decorator;
+
+public class ConcreteDecoratorA extends Decorator{
+
+public ConcreteDecoratorA(Component component) {
+    super(component);
+}
+
+public void methodA(){
+    System.out.println(&quot;被装饰器A扩展的功能&quot;);
+}
+
+public void method(){
+    System.out.println(&quot;针对该方法加一层A包装&quot;);
+    super.method();
+    System.out.println(&quot;A包装结束&quot;);
+}
+}
+</code></pre><ul>
+<li>JAVA中的IO就是装饰者模式的具体应用：</li>
+</ul>
+<p><img src="https://i.imgur.com/RxUg3EW.jpg" alt=""></p>
+<p>总结：</p>
+<pre><code>装饰者模式能够很好的解决了，因为需求的变化需要重复添加功能相似的代码，即代码冗余；这种结构也能很好的解决“类爆炸”的情况。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/30/观察者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/30/观察者模式/" itemprop="url">观察者模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-30T17:10:33+08:00">
+                2018-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/30/观察者模式/" class="leancloud_visitors" data-flag-title="观察者模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>举个公众号订阅-发布消息的例子：</p>
+<p>1.抽象观察者：</p>
+<pre><code>public interface Observer{
+    public void update (String message);
+}
+</code></pre><p>2.具体观察者：</p>
+<pre><code>public class User implements Observer {
+    private String name;
+    public User(String name) {
+        this.name = name;
+    }
+    @override
+    public void update (String message){
+           System.out.println(this.name + &quot;收到通知-&quot; + message);
+    }
+}
+</code></pre><p>3.抽象被观察者：</p>
+<pre><code>public interface Subject{
+    public void addObserver (Observer Observer);
+    public void removeObserver (Observer Observer);
+    public void notify(String message);
+}
+</code></pre><p>4.具体被观察者：</p>
+<pre><code>public class ConcreteSubject implements Subject {
+private List&lt;Observer&gt; usersList = new ArrayList&lt;Observer&gt;();
+@Override
+public void addObserver (Observer observer) {
+    usersList.add(observer);
+}
+
+@Override
+public void removeObserver (Observer observer) {
+    usersList.remove(observer);
+}
+
+@Override
+public void notify(String message) {
+    for (Observer observer : usersList) {
+        observer.update(message);
+    }
+}
+}
+</code></pre><ul>
+<li>下面是JDK1.8的观察者模式</li>
+</ul>
+<p>观察者：</p>
+<pre><code>//每一个观察者都必须实现这个接口    
+public interface Observer {
+//第一个代表被观察者
+void update(Observable o, Object arg);
+}
+</code></pre><p>被观察者：</p>
+<pre><code>public class Observable {
+    private boolean changed = false;
+    private Vector&lt;Observer&gt; obs;
+
+    public Observable() {
+        obs = new Vector&lt;&gt;();
+    }
+
+public synchronized void addObserver(Observer o) {
+    if (o == null)
+        throw new NullPointerException();
+    if (!obs.contains(o)) {
+        obs.addElement(o);
+    }
+}
+
+public synchronized void deleteObserver(Observer o) {
+    obs.removeElement(o);
+}
+
+public void notifyObservers() {
+    notifyObservers(null);
+}
+
+public void notifyObservers(Object arg) {
+
+    //一个临时的数组，用于并发访问被观察者时，留住观察者列表的当前状态
+    Object[] arrLocal;
+
+    //注意这个同步块，它表示在获取观察者列表时，该对象是被锁定的
+    //也就是说，在我获取到观察者列表之前，不允许其他线程改变观察者列表
+    synchronized (this) {
+
+        if (!changed)
+            return;
+        arrLocal = obs.toArray();
+        //将改变标识重新置回未改变
+        clearChanged();
+    }
+
+    //注意这个for循环没有在同步块，此时已经释放了被观察者的锁，其他线程可以改变观察者列表
+    //但是这并不影响我们当前进行的操作，因为我们已经将观察者列表复制到临时数组
+    //在通知时我们只通知数组中的观察者，当前删除和添加观察者，都不会影响我们通知的对象
+    for (int i = arrLocal.length-1; i&gt;=0; i--)
+        ((Observer)arrLocal[i]).update(this, arg);
+}
+</code></pre><p>再举个别人的例子：读者和作者的例子，多对多的关系。</p>
+<p>实现观察者：</p>
+<pre><code>//读者类，要实现观察者接口
+public class Reader implements Observer{
+
+private String name;
+
+public Reader(String name) {
+    super();
+    this.name = name;
+}
+
+public String getName() {
+    return name;
+}
+
+//读者可以关注某一位作者，关注则代表把自己加到作者的观察者列表里
+public void subscribe(String writerName)
+    //订阅的时候添加观察者
+    WriterManager.getInstance().getWriter(writerName).addObserver(this);
+}
+
+//读者可以取消关注某一位作者，取消关注则代表把自己从作者的观察者列表里删除
+public void unsubscribe(String writerName){
+    //取消订阅的时候添加观察者
+    WriterManager.getInstance().getWriter(writerName).deleteObserver(this);
+}
+
+//当关注的作者发表新小说时，会通知读者去看
+public void update(Observable o, Object obj) {
+    if (o instanceof Writer) {
+        Writer writer = (Writer) o;
+        System.out.println(name+&quot;知道&quot; + writer.getName() + &quot;发布了新书《&quot; + writer.getLastNovel() + &quot;》，非要去看！&quot;);
+    }
+}   
+}
+</code></pre><p>实现被观察者：</p>
+<pre><code>//作者类，要继承自被观察者类
+public class Writer extends Observable{
+
+private String name;//作者的名称
+
+private String lastNovel;//记录作者最新发布的小说
+
+public Writer(String name) {
+    super();
+    this.name = name;
+    WriterManager.getInstance().add(this);
+}
+
+//作者发布新小说了，要通知所有关注自己的读者
+public void addNovel(String novel) {
+    System.out.println(name + &quot;发布了新书《&quot; + novel + &quot;》！&quot;);
+    lastNovel = novel;
+    setChanged();//被观察者状态的改变
+    notifyObservers();//通知观察者
+}
+
+public String getLastNovel() {
+    return lastNovel;
+}
+
+public String getName() {
+    return name;
+}
+}    
+</code></pre><p>作者管理器：单例模式实现。</p>
+<pre><code>//管理器，保持一份独有的作者列表
+public class WriterManager{
+
+private Map&lt;String, Writer&gt; writerMap = new HashMap&lt;String, Writer&gt;();
+
+//添加作者
+public void add(Writer writer){
+    writerMap.put(writer.getName(), writer);
+}
+//根据作者姓名获取作者
+public Writer getWriter(String name){
+    return writerMap.get(name);
+}
+
+//单例
+private WriterManager(){}
+
+//静态内部类实现延迟初始化的单例模式
+public static WriterManager getInstance(){
+    return WriterManagerInstance.instance;
+}
+private static class WriterManagerInstance{
+
+    private static final WriterManager instance = new WriterManager();
+
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/30/工厂方法模式和抽象工厂模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1951,965 +2993,6 @@ return wrappedBean;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/16/Spring动态代理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/16/Spring动态代理/" itemprop="url">Spring动态代理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T16:24:56+08:00">
-                2018-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/16/Spring动态代理/" class="leancloud_visitors" data-flag-title="Spring动态代理">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="关于动态代理的需要注意的问题？"><a href="#关于动态代理的需要注意的问题？" class="headerlink" title="关于动态代理的需要注意的问题？"></a>关于动态代理的需要注意的问题？</h4><pre><code>如果是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，这样就不会把自己的代码织入到约定
-的流程中去。
-</code></pre><p>举个书上的例子：</p>
-<pre><code>public class UserServiceImpl implements UserService {
-
-@Autowired
-private UserDao userDao = null;
-
-//这里@Transactional会失效，每次调用不会都产生一个新事务
-@Override
-@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
-public int insertUsers(List&lt;User&gt; userList){
-    int count = 0;
-    for(User : user){
-        count += insertUser(user);
-    }
-}
-
-@Override
-@Transactional(isolation = Isolation.READ_COMMITTED)
-public int insertUser(User user) {
-    return userDao.insertUser(user);
-}
-}
-</code></pre><p>解决办法如下：</p>
-<pre><code>public class UserServiceImpl implements UserService，ApplicationContextAware {
-
-@Autowired
-private UserDao userDao = null;
-
-private ApplicationContext applicationContext = null;
-
-@Override
-void setApplicationContext(ApplicationContext applicationContext) 
-throws BeansException{
-    this.applicationContext = applicationContext;
-}
-
-//这里@Transactional会失效，每次调用不会都产生一个新事务
-@Override
-@Transactional(isolation = Isolation.READ_COMMITTED, propagation=Propagation.REQUIRED)
-public int insertUsers(List&lt;User&gt; userList){
-    int count = 0;
-    UserService userService = applicationContext.getBean(UserService.class);
-    for(User : user){
-        count += insertUser(user);
-    }
-}
-
-@Override
-@Transactional(isolation = Isolation.READ_COMMITTED)
-public int insertUser(User user) {
-    return userDao.insertUser(user);
-}
-}    
-</code></pre><p>1.每一个动态代理类都必须要实现InvocationHandler这个接口.</p>
-<pre><code>//该接口中的唯一方法
-public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
-</code></pre><p>2.Proxy代理类的newProxyInstance()方法</p>
-<pre><code>//生成代理实例的三个参数：类加载器（代理类的？？？）、要代理的接口、代理类通过
-//InvocationHandler实现对外服务
-
-public static Object newProxyInstance(ClassLoader loader,
-Class&lt;?&gt;[] interfaces,InvocationHandler h)
-</code></pre><p>3.通过代理对象调用目标对象接口的方法，这是会跳转到由这个代理对象关联的 Handler 中的invoke方法去执行，而这个 Handler 对象又接受了一个 HelloServiceImpl 类型的参数，表示代理的就是这个真实对象。</p>
-<p>4.通过 Proxy.newProxyInstance 创建的代理对象是在jvm运行时动态生成的一个对象，它并不是我们InvocationHandler类型，也不是我们定义的那组接口的类型，而是在运行时动态生成的一个对象，并且命名方式都是这样的形式，以$开头proxy为中，最后一个数字表示对象的标号。</p>
-<p>5.代理类和委托类有同样的接口。</p>
-<p>6.动态代理是代理一个接口下的多个实现类。代理的是接口所以代理类必须实现该接口.</p>
-<pre><code>代理模式 = 接口 + 真实实现类 + 代理类。Spring AOP 要做的事情就是生成这个代理类。
-
-//AbstractAutoProxyCreator.java
-protected Object createProxy(Class&lt;?&gt; beanClass, @Nullable String beanName,
-        @Nullable Object[] specificInterceptors, TargetSource targetSource) {
-....
-
-ProxyFactory proxyFactory = new ProxyFactory();
-
-return proxyFactory.getProxy(getProxyClassLoader());
-
-}
-</code></pre><p>然后进入了ProxyFactory中：</p>
-<pre><code>//ProxyFactory.java
-public Object getProxy(ClassLoader classLoader) {
-
-return createAopProxy().getProxy(classLoader);
-
-}
-</code></pre><p>首先创建一个AopProxy的实例：</p>
-<pre><code>//ProxyCreatorSupport.java
-protected final synchronized AopProxy createAopProxy() {
-if (!this.active) {
-  activate();
-}
-return getAopProxyFactory().createAopProxy(this);
-}
-</code></pre><p>接着来到真正创建Aop代理实例的地方了：</p>
-<pre><code>//DefaultAopProxyFactory.java
-public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
-
-@Override
-
-public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
-  // (我也没用过这个optimize，默认false) || (proxy-target-class=true) || (没有接口)
-  if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
-     Class&lt;?&gt; targetClass = config.getTargetClass();
-     if (targetClass == null) {
-        throw new AopConfigException(&quot;TargetSource cannot determine target class: &quot; +
-              &quot;Either an interface or a target is required for proxy creation.&quot;);
-     }
-     // 如果要代理的类本身就是接口，也会用 JDK 动态代理
-     // 我也没用过这个。。。
-     if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
-        return new JdkDynamicAopProxy(config);
-     }
-     return new ObjenesisCglibAopProxy(config);
-  }
-  else {
-     // 如果有接口，会跑到这个分支
-     return new JdkDynamicAopProxy(config);
-  }
-}
-// 判断是否有实现自定义的接口
-private boolean hasNoUserSuppliedProxyInterfaces(AdvisedSupport config) {
-  Class&lt;?&gt;[] ifcs = config.getProxiedInterfaces();
-  return (ifcs.length == 0 || (ifcs.length == 1 &amp;&amp; SpringProxy.class.isAssignableFrom(ifcs[0])));
-}
-</code></pre><p>再回到原来通过工厂创建AopProxy代理实例的地方：</p>
-<pre><code>createAopProxy().getProxy(classLoader);
-</code></pre><p>看看其中一个实现类 JdkDynamicAopProxy 的 getProxy 方法源码：</p>
-<pre><code>public Object getProxy(@Nullable ClassLoader classLoader) {
-    if (logger.isDebugEnabled()) {
-        logger.debug(&quot;Creating JDK dynamic proxy: target source is &quot; + this.advised.getTargetSource());
-    }
-    Class&lt;?&gt;[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);
-    findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);
-
-    //this 代表 InvocationHandler 实例，因为 JdkDynamicAopProxy 本身实现了
-    //InvocationHandler接口
-    return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
-}
-</code></pre><p>看一下 JdkDynamicAopProxy 源码的invoke方法：</p>
-<pre><code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    MethodInvocation invocation;
-    Object oldProxy = null;
-    boolean setProxyContext = false;
-
-    TargetSource targetSource = this.advised.targetSource;
-    Object target = null;
-
-    try {
-        if (!this.equalsDefined &amp;&amp; AopUtils.isEqualsMethod(method)) {
-            // The target does not implement the equals(Object) method itself.
-            //这个方法 equals 和 hashCode方法都不会产生代理内容
-            return equals(args[0]);
-        }
-        else if (!this.hashCodeDefined &amp;&amp; AopUtils.isHashCodeMethod(method)) {
-            // The target does not implement the hashCode() method itself.
-            return hashCode();
-        }
-        else if (method.getDeclaringClass() == DecoratingProxy.class) {
-            // There is only getDecoratedClass() declared -&gt; dispatch to proxy config.
-            return AopProxyUtils.ultimateTargetClass(this.advised);
-        }
-        else if (!this.advised.opaque &amp;&amp; method.getDeclaringClass().isInterface() &amp;&amp;
-                method.getDeclaringClass().isAssignableFrom(Advised.class)) {
-            // Service invocations on ProxyConfig with the proxy config...
-            return AopUtils.invokeJoinpointUsingReflection(this.advised, method, args);
-        }
-
-        Object retVal;
-
-        if (this.advised.exposeProxy) {
-            // Make invocation available if necessary.
-            oldProxy = AopContext.setCurrentProxy(proxy);
-            setProxyContext = true;
-        }
-
-        // Get as late as possible to minimize the time we &quot;own&quot; the target,
-        // in case it comes from a pool.
-        target = targetSource.getTarget();
-        Class&lt;?&gt; targetClass = (target != null ? target.getClass() : null);
-
-        // Get the interception chain for this method.
-        List&lt;Object&gt; chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
-
-        // Check whether we have any advice. If we don&apos;t, we can fallback on direct
-        // reflective invocation of the target, and avoid creating a MethodInvocation.
-        if (chain.isEmpty()) {
-            // We can skip creating a MethodInvocation: just invoke the target directly
-            // Note that the final invoker must be an InvokerInterceptor so we know it does
-            // nothing but a reflective operation on the target, and no hot swapping or fancy proxying.
-            Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
-            retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);
-        }
-        else {
-
-            invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
-            //进行方法的拦截
-            retVal = invocation.proceed();
-        }
-
-        // Massage return value if necessary.
-        Class&lt;?&gt; returnType = method.getReturnType();
-        if (retVal != null &amp;&amp; retVal == target &amp;&amp;
-                returnType != Object.class &amp;&amp; returnType.isInstance(proxy) &amp;&amp;
-                !RawTargetAccess.class.isAssignableFrom(method.getDeclaringClass())) {
-            // Special case: it returned &quot;this&quot; and the return type of the method
-            // is type-compatible. Note that we can&apos;t help if the target sets
-            // a reference to itself in another returned object.
-            retVal = proxy;
-        }
-        else if (retVal == null &amp;&amp; returnType != Void.TYPE &amp;&amp; returnType.isPrimitive()) {
-            throw new AopInvocationException(
-                    &quot;Null return value from advice does not match primitive return type for: &quot; + method);
-        }
-        return retVal;
-    }
-    finally {
-        if (target != null &amp;&amp; !targetSource.isStatic()) {
-            // Must have come from TargetSource.
-            targetSource.releaseTarget(target);
-        }
-        if (setProxyContext) {
-            // Restore old proxy.
-            AopContext.setCurrentProxy(oldProxy);
-        }
-    }
-}
-</code></pre><p>7.动态代理类的字节码在程序运行时由Java反射机制动态生成.</p>
-<p>8.代理类可以为委托类进行消息的预处理.</p>
-<blockquote>
-<p>静态代理类</p>
-</blockquote>
-<p>1.代理类和实现类都实现了要代理的接口.</p>
-<p>2.将实现类的对象传到代理类中(通过构造方法),实际上就是调用要代理对象的方法.</p>
-<hr>
-<h4 id="什么叫切面"><a href="#什么叫切面" class="headerlink" title="什么叫切面?"></a>什么叫切面?</h4><pre><code>所谓&quot;切面&quot;，简单说就是那些与业务无关，却为业务模块所共同调用的逻辑或责任封装起来，便于减少系统的重复代码，降低模块之间的耦合度，并有利于未来的可操作性和可维护性。
-</code></pre><h4 id="多个切面的情况"><a href="#多个切面的情况" class="headerlink" title="多个切面的情况"></a>多个切面的情况</h4><pre><code>&lt;aop:config&gt;
-
-    //timeHandler相当于实现 InvocationHandler 接口的调用器,最后调用的是真实对象的方法(invoke方法实现)
-    &lt;aop:aspect id=&quot;time&quot; ref=&quot;timeHandler&quot; order=&quot;1&quot;&gt;
-        &lt;aop:pointcut id=&quot;addTime&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.print*(..))&quot; /&gt;
-
-        //抽取出来的业务模块的共同方法
-        &lt;aop:before method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;
-        &lt;aop:after method=&quot;printTime&quot; pointcut-ref=&quot;addTime&quot; /&gt;
-    &lt;/aop:aspect&gt;
-    &lt;aop:aspect id=&quot;log&quot; ref=&quot;logHandler&quot; order=&quot;2&quot;&gt;
-        &lt;aop:pointcut id=&quot;printLog&quot; expression=&quot;execution(* com.xrq.aop.HelloWorld.do*(..))&quot; /&gt;
-        &lt;aop:before method=&quot;LogBefore&quot; pointcut-ref=&quot;printLog&quot; /&gt;
-        &lt;aop:after method=&quot;LogAfter&quot; pointcut-ref=&quot;printLog&quot; /&gt;
-    &lt;/aop:aspect&gt;
-&lt;/aop:config&gt;
-</code></pre><p>输出:</p>
-<pre><code>CurrentTime = 1446130273734
-Log before method
-Enter HelloWorldImpl1.printHelloWorld()
-Log after method
-CurrentTime = 1446130273735
-</code></pre><p>Spring默认以aspect的定义顺序作为织入顺序.order属性可以改变横切点的顺序.</p>
-<hr>
-<p>生成代理的底层原理：</p>
-<pre><code>Bean生成代理的时机：在每个Bean初始化之后,先是AbstractAutowireCapableBeanFactory的initializeBean方法进行初始化。
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/09/Linux基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/09/Linux基础/" itemprop="url">Linux基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-09T16:47:26+08:00">
-                2018-09-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/09/Linux基础/" class="leancloud_visitors" data-flag-title="Linux基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.硬链接和软链接</p>
-<p>硬链接装的是原文件的inode节点，软链接装的是原文件所在的路径。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/08/面试常见Linux指令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/08/面试常见Linux指令/" itemprop="url">面试常见Linux指令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-08T16:12:30+08:00">
-                2018-09-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/08/面试常见Linux指令/" class="leancloud_visitors" data-flag-title="面试常见Linux指令">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/07/SpringBoot菜鸡入门/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/07/SpringBoot菜鸡入门/" itemprop="url">SpringBoot菜鸡入门</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-07T22:37:45+08:00">
-                2018-09-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring入门/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring入门</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/07/SpringBoot菜鸡入门/" class="leancloud_visitors" data-flag-title="SpringBoot菜鸡入门">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Bean-为什么是单例的？"><a href="#Bean-为什么是单例的？" class="headerlink" title="Bean 为什么是单例的？"></a>Bean 为什么是单例的？</h4><blockquote>
-<p>SpringBoot干货</p>
-</blockquote>
-<p>1.spring-boot-starter-parent：提供相关的Maven依赖。</p>
-<p>2.起步依赖 spring-boot-starter-xx:自动封装好你想要实现的功能的依赖。本质上是一个Maven对象模型。</p>
-<p>3.Spring Boot Maven插件:把项目打包成可执行的JAR,所有的依赖都打进JAR包中。</p>
-<p>4.注解</p>
-<ul>
-<li><p>@SpringBootApplication：开启自动配置。主要依靠的是其中的@EnableAutoConfiguration和@ComponentScan两个注解。</p>
-</li>
-<li><p>@ConfigurationProperties(prefix = “com.dudu”)：绑定一个对象的bean(例子中指的是ConfigBean)，解决在成员属性上一个个加@Value属性的麻烦。</p>
-</li>
-<li><p>@EnableConfigurationProperties(${ConfigBean.Class}):Spring Boot 入口类上的注解，指明要加载那个Bean.</p>
-</li>
-<li><p>@Configuration：代表是一个Java配置文件.用于定义配置类，可替换xml配置文件，被注解的类内部包含有一个或多个被@Bean注解的方法，这些方法将会被AnnotationConfigApplicationContext或者AnnotationConfigWebApplicationContext类进行扫描，并用于构建bean定义，初始化Spring容器</p>
-</li>
-<li><p>@Component:表明是哪个类被扫描进入Spring IoC 容器。相当于XML的配置。</p>
-</li>
-<li><p>@Bean:用在@Configuration注解的类中。</p>
-</li>
-<li><p>@ComponentScan:采用何种策略去扫描装配Bean，告诉 Spring 去哪里找到 bean</p>
-<pre><code>The @ComponentScan annotation is used to automatically create beans for every class annotated with @Component, @Service, @Controller, @RestController, @Repository, ... and adds them to the Spring container (allowing them to be @Autowired).所以以上都是声明Bean的注解。
-</code></pre></li>
-<li><p>@Autowired:它根据属性的类型找到对应的Bean进行注入。如果对应类型的 Bean 不是唯一的话，那么将属性的名称和Bean的名称进行匹配。还能作用于方法，从Ioc容器中找到对应的Bean进行注入。有个属性required默认为true，即找不到Bean就报错。</p>
-</li>
-<li><p>@ImportResource：如果你必须使用XML的配置，你可以使用@ImportResource来加载指定的XML配置。</p>
-</li>
-<li><p>@Primary:告诉Spring IoC容器，当发现有多个同样类型的Bean时,将优先使用@Primary注解的Bean。</p>
-</li>
-<li><p>@Qualifier:和 @Autowired 一起使用，通过它能够按照名称和类型找到对应的Bean进行注入。</p>
-<pre><code>@Autowired：ByType
-@Qualifier（&quot;dog&quot;）:ByName
-private Animal animal = null;
-</code></pre></li>
-<li><p>@PostConstruct:定义Bean的初始化方法。</p>
-</li>
-<li><p>@PreDestroy:定义Bean的销毁方法。</p>
-</li>
-<li><p>@PropertySource:定义对应的属性文件</p>
-<pre><code>@PropertySource(value = {&quot;classpath:jdbc.properties&quot;})
-</code></pre></li>
-<li><p>@Conditional:条件装配 Bean,但需要实现Condition接口实现功能。</p>
-<pre><code>@Conditional(DatabaseConditional.class)
-</code></pre></li>
-<li><p>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE):定义作用域的类型。</p>
-</li>
-<li><p>@ImportResource(value = {classpath:spring-other.xml}):引入 XML 配置的 Bean。</p>
-</li>
-<li><p>@Aspect:定义切面。</p>
-<p>  约定的流程如下：</p>
-<pre><code>1.@Pointcut(...)
-public void pointCut(){}
-
-2.Before(&quot;pointCut()&quot;)
-
-3.After(&quot;pointCut()&quot;)
-
-4.AfterReturning(&quot;pointCut()&quot;)
-
-5.AfterThrowing(&quot;pointCut()&quot;)
-</code></pre></li>
-<li><p>@Pointcut:向Spring描述哪些类的哪些方法需要启用AOP编程。</p>
-<pre><code>//Pointcut表达式
-@Pointcut(&quot;execution(* com.springboot.chapter4.*.*.*.*.print(..)) &amp;&amp; bean(&apos;userServiceImpl&apos;)&quot;)
-
-//Point签名
-public void pointCut()
-</code></pre><p>  1.*：表示任意返回类型的方法。</p>
-<p>  2.（..）:表示任意参数进行匹配。</p>
-</li>
-<li><p>@RequestMapping():定义类的请求路径。用于读取Request请求的body部分数据，使用系统默认配置的HttpMessageConverter进行解析，然后把相应的数据绑定到要返回的对象上</p>
-</li>
-<li><p>ResponseBody:该注解用于将Controller的方法返回的对象，通过适当HttpMessageConverter转换为指定格式后，写入到Response对象的body数据区。以JSON的格式展现。</p>
-</li>
-<li><p>RequestBody:可以将JSON数据集转换成java对象。通常用来注解参数，从前端输入JSON数据集，数据会自动转换成@RequestBody注解的对象。</p>
-</li>
-<li><p>@DeclareParents:引入新的接口。</p>
-<pre><code>@DeclareParents(value= &quot;com.springboot.chapter4.aspect.service.impl.UserServiceImpl+&quot;, defaultImpl=UserValidatorImpl.class)
-public UserValidator userValidator;
-</code></pre></li>
-<li><p>@Order:指定切面的执行顺序。eg:@Order(1)</p>
-</li>
-<li><p>@RestController：就是@Controller+@ResponseBody组合，返回json字符串。使用@RestController这个注解，就不能返回jsp,html页面，视图解析器无法解析jsp,html页面。</p>
-</li>
-<li><p>SpringBootApplication：@SpringBootConfiguration + @EnableAutoConfiguration + @ComponentScan的组合体</p>
-</li>
-</ul>
-<ul>
-<li>@EnableAutoConfiguration：能够自动配置spring的上下文，试图猜测和配置你想要的bean类，通常会自动根据你的类路径和你的bean定义自动配置。</li>
-</ul>
-<ul>
-<li><p>@GetMapping：是@RequestMapping(method = RequestMethod.GET)的缩写,组合注解是方法级别的只能用在方法上。获取数据。</p>
-</li>
-<li><p>@PostMapping：是@RequestMapping(method = RequestMethod.POST)的缩写。创建或更新数据。</p>
-</li>
-<li><p>@PutMapping:更新数据，对象的属性要全。</p>
-</li>
-<li><p>@DeleteMapping：删除数据。</p>
-</li>
-<li><p>@Result:修饰返回的结果集，关联实体类属性和数据库字段一一对应，如果实体类属性和数据库属性名保持一致，就不需要这个属性来修饰。和@Results注解一起使用。</p>
-</li>
-<li><p>@RequestParam：指定HTTP参数与控制器方法参数的映射关系。默认情况下被注解的参数是不允许为空的，可以通过required=false来设置。</p>
-</li>
-<li><p>@PathVariable：从request中接收请求的，用在REST风格中，对应URI.</p>
-</li>
-</ul>
-<p>5.动态代理的方式？</p>
-<p>当需要使用 AOP 的类拥有接口时，它会以 JDK 动态代理的方式运行，否则以CGLIB 运行。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2964,7 +3047,7 @@ public UserValidator userValidator;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

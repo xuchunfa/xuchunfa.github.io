@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/U289xRb.png">
 <meta property="og:image" content="https://i.imgur.com/4n7P9X3.png">
-<meta property="og:updated_time" content="2019-04-01T03:41:17.919Z">
+<meta property="og:updated_time" content="2019-04-02T08:47:36.514Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 具体步骤： 1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；  2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进">
@@ -458,6 +458,53 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 3.DiscardOldestPolicy:丢弃队列最前面的任务，执行当前任务；
 
 4.CallerRunsPolicy:由调用线程（例如main线程）执行任务；
+</code></pre><p><strong>创建线程池的方式：</strong></p>
+<pre><code>1.newFixedThreadPool：创建固定数量的线程池。默认使用的是无界队列，maximumPoolSize和keepAliveTime参数无效，不会拒绝任务。
+适合于负载较重的服务器。
+
+    return new ThreadPoolExecutor(nThreads, nThreads,
+                                  0L, TimeUnit.MILLISECONDS,
+                        new LinkedBlockingQueue&lt;Runnable&gt;());
+
+2.newCachedThreadPool：没有数量限制的线程池。适合处理生存期短的大量异步任务或负载较轻、空闲线程等待执行任务超过60s则销毁线程。
+
+    1.return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                  60L, TimeUnit.SECONDS,
+                      new SynchronousQueue&lt;Runnable&gt;());
+
+    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，如果此时maxPoolSize=0的话会创建一个新线程执行任务；
+
+
+
+3.newSingleThreadExecutor：单线程的线程池，默认的使用无界队列。
+任务在线程池里顺序执行、如果当前线程终止会创建一个新线程继续执行任务、不能配置去重新加入线程。
+
+    return new FinalizableDelegatedExecutorService
+        (new ThreadPoolExecutor(1, 1,
+                                0L, TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue&lt;Runnable&gt;()));
+
+4.newSingleThreadScheduledExecutor和newScheduledThreadPool：继承ThreadExecutor实现ScheduledExecutorService接口、执行周期任务、给定延迟。
+
+ return new ScheduledThreadPoolExecutor(corePoolSize);
+
+执行步骤：
+
+    1.从DelayedWorkQueue获取到期的任务，即当前时间大于ScheduledFutureTask的time参数；
+
+    2.执行ScheduledFutureTask任务；
+
+    3.修改下次执行ScheduledFutureTask任务的time;
+
+    4.添加任务到DelayedWorkQueue，会按time顺序排好队，底层原理PriorQueue.
+</code></pre><p><strong>任务提交到线程池：</strong></p>
+<pre><code>1.execute:提交不需要返回值的任务；
+
+2.submit:提交需要返回值的任务；
+</code></pre><p><strong>关闭线程池：</strong></p>
+<pre><code>1.shutdown:SHUTDOWN状态，interrupt没有执行任务的线程；
+
+2.shutdownNow:STOP状态，停止所有线程然后进行关闭；
 </code></pre><h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>任务提交到线程池后的执行过程：</p>
 <pre><code>1.如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建一个线程去执行这个任务；
 
@@ -682,7 +729,7 @@ public T get() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

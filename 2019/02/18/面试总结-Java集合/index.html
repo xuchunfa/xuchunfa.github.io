@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T13:27:50.791Z">
+<meta property="og:updated_time" content="2019-04-08T02:27:12.150Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
 <meta name="twitter:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
@@ -421,7 +421,7 @@
 </ol>
 <ol start="2">
 <li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
-<li>Vector、ArrayList以及LinkedList？</li>
+<li>ArrayList以及LinkedList？</li>
 </ol>
 <p>注意：</p>
 <pre><code>1.remove(int index)设计到了本地方法：
@@ -431,6 +431,38 @@
 <pre><code>1.LinkedList底层双向链表，Node&lt;E&gt;节点，first和last指针，插入删除效率高，不需要扩容；
 
 2.ArrayList底层数组结构,数组动态扩容，无参构造数组大小为0，当添加第一个元素后，数组扩容为10，当添加第11个元素时进行扩容newCap = oldCap + oldCap*1.5,通过Arrays.copyOf(elementData,newCapacity)返回新数组；
+</code></pre><p>3.Vector、HashSet以及LinkedHashMap、TreeMap、TreeSet的底层理解？</p>
+<p>   3.1.Vector VS ArrayList:</p>
+<pre><code>1.Vector是线程安全的ArrayList;
+
+2.如果Vector指定了增长系数capacityIncrement&gt;0的话，扩容时增长的长度为capacityIncrement，否则增长的长度为oldCapacity。
+
+    int newCapacity = oldCapacity + ((capacityIncrement &gt; 0) ?
+                              capacityIncrement :oldCapacity);
+
+3.2 HashSet的理解
+
+    1.底层HashMap:
+
+      private transient HashMap&lt;E,Object&gt; map;
+
+    2.加入的元素作为key,value都为统一的PRESENT，HashMap新添加的Entry的value会覆盖原来Entry的value值，但key不会有任何变化；
+
+    public boolean add(E e) {
+        return map.put(e, PRESENT)==null;
+    }
+
+3.3 LinkedHashMap的理解
+
+    1.有序的HashMap，可以实现按插入排序（默认）和按访问排序，每次将访问的节点放置链表末尾；
+
+    2.通过Entry&lt;K,V&gt;的 before、after和header组合指针来维护一个双向列表；
+
+3.4 TreeSet的理解
+
+    1.基于TreeMap实现，底层红黑树结构，特点是：排序和唯一；
+
+    2.new TreeSet()默认的是自然排序；
 </code></pre><ol start="4">
 <li>HashMap线程不安全的原因？</li>
 </ol>
@@ -665,7 +697,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

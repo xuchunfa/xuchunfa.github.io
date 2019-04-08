@@ -286,6 +286,713 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/判断数组是否是BST的后序遍历/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/判断数组是否是BST的后序遍历/" itemprop="url">判断数组是否是BST的后序遍历</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T16:42:57+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/03/判断数组是否是BST的后序遍历/" class="leancloud_visitors" data-flag-title="判断数组是否是BST的后序遍历">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>判断数组是否是BST的后序遍历？</strong></p>
+<pre><code>public boolean VerifySquenceOfBST(int [] sequence) {
+    if(sequence == null || sequence.length == 0){
+        return false;
+    }
+    return verify(sequence,0,sequence.length-1);
+}
+public boolean verify(int[] array,int left,int right){
+    if(left &gt;= right)
+        return true;
+    int i = right;
+    while (i &gt;= left &amp;&amp; array[i] &gt;= array[right])
+        i--;
+    for(int j = i;j &gt;= left;j--){
+        if(array[j] &gt; array[right])
+            return false;
+    }
+    return verify(array,left,i) &amp;&amp; verify(array,i+1,right-1);
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/入栈序列和出栈序列是否匹配/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/入栈序列和出栈序列是否匹配/" itemprop="url">入栈序列和出栈序列是否匹配</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T11:33:53+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/03/入栈序列和出栈序列是否匹配/" class="leancloud_visitors" data-flag-title="入栈序列和出栈序列是否匹配">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>入栈序列和出栈序列是否匹配？</strong></p>
+<pre><code>public boolean IsPopOrder(int[] pushA,int[] popA) {
+    if(pushA == null || popA == null || pushA.length == 0 || popA.length == 0){
+        return false;
+    }
+    if(pushA.length != popA.length){
+        return false;
+    }
+    int length = pushA.length;
+    int popIndex = 0;
+    Stack&lt;Integer&gt; assit = new Stack&lt;&gt;();
+    for(int i = 0; i &lt; length;i++){
+        assit.push(pushA[i]);
+
+        while (!assit.isEmpty() &amp;&amp; assit.peek() == popA[popIndex] &amp;&amp; popIndex &lt; length){
+            assit.pop();
+            popIndex++;
+        }
+    }
+    return  popIndex == length;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/自定义栈返回最小值/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/自定义栈返回最小值/" itemprop="url">自定义栈返回最小值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T10:34:44+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/03/自定义栈返回最小值/" class="leancloud_visitors" data-flag-title="自定义栈返回最小值">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>自定义栈 O(1)时间内返回最小值？</strong></p>
+<pre><code>public class MinStack {
+
+Stack&lt;Integer&gt; dataStack = new Stack&lt;&gt;();
+Stack&lt;Integer&gt; assistStack = new Stack&lt;&gt;();
+
+public void push(int node) {
+    dataStack.push(node);
+    if(assistStack.isEmpty() || node &lt; assistStack.peek()){
+        assistStack.push(node);
+    }else {
+        assistStack.push(assistStack.peek());//保证此位置出栈后能正确返回最小值
+    }
+}
+
+public void pop() {
+    if(!dataStack.isEmpty() &amp;&amp; !assistStack.isEmpty()){
+        dataStack.pop();
+        assistStack.pop();
+    }
+}
+
+public int top() {
+    if(dataStack.isEmpty())
+        throw new RuntimeException(&quot;error: stack is empty&quot;);
+
+    return dataStack.peek();
+}
+
+public int min() {
+    if(assistStack.isEmpty()){
+        throw new RuntimeException(&quot;error: stack is empty&quot;);
+    }
+    return assistStack.peek();
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/02/判断树的子树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/02/判断树的子树/" itemprop="url">判断树的子树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-02T20:24:20+08:00">
+                2019-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/02/判断树的子树/" class="leancloud_visitors" data-flag-title="判断树的子树">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>public static boolean isSubTree(BinaryTreeNode root1,BinaryTreeNode root2){
+
+    if(root2 == null){
+        return true;
+    }
+    if(root1 == null){//root1==null root2!=null
+        return false;
+    }
+    return root1.data == root2.data &amp;&amp; isSubTree(root1.left,root2.left) &amp;&amp; isSubTree(root1.right,root2.right);
+
+}
+
+
+public static boolean HasSubtree(BinaryTreeNode root1,BinaryTreeNode root2) {
+    if(root1 == null || root2 == null){
+        return false;
+    }
+
+    if(isSubTree(root1,root2)){
+        return true;
+    }
+    return HasSubtree(root1.left,root2) || HasSubtree(root1.right,root2);
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/01/判断大于n的最小2的n次方的整数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1607,11 +2314,12 @@ public void test(){
 
     1.客户端发起HTTPS请求，三次握手；
 
-    2.服务端配置。配置数字证书，即公钥和密钥；
+    2.服务端配置。配置数字证书，即公钥和密钥（非对称加密）；
 
-    3.服务端传送证书。即传送公钥给客户端；
+    3.服务端传送SSL证书，证书的内容包括：证书的颁发机构、有效期、公钥、证书持有者、签名等，解决了公钥获取的安全性；
 
-    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；
+    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；(操作系统内置了受信任的证书颁发机构，取出颁发者CA的公钥对证书的签名进行解密，
+    浏览器使用hash算法计算证书的hash值，与证书签名作对比)
 
     5.传输加密信息。浏览器随机生成一个对称加密的密钥k（临时会话密钥），密钥k是在客户端和服务端共享的，用证书中的公钥加密k,得到密文k&apos;；
 
@@ -1620,6 +2328,22 @@ public void test(){
     7.传输服务端加密后的信息；
 
     8.客户端解密信息。使用共享密钥k解密数据。
+
+总结：
+
+    1.加密算法
+
+        对称加密：加密和解密都是通过同一个密钥进行，采用对称加密进行通信存在密钥协商过程的不安全性；
+
+        非对称加密：私钥加密后的密文只要是公钥都可以解密，但公钥加密后的密文只有私钥可以解密；
+
+        注意：
+
+            1.非对称加密算法保证了协商对称加密算法的过程；
+
+            2.非对称加密算法会有公钥被劫持的问题，通过CA颁发的证书保证安全；
+
+            3.最后客户端和服务端协商出了对称加密算法进行信息的加密传输；
 </code></pre><p>7.HTTP1.0/HTTP1.1/HTTP2.0的区别?</p>
 <pre><code>1.HTTP1.1默认长连接Connection:keep-alive,HTTP1.0 每次请求都要创建连接；
 
@@ -1663,883 +2387,6 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 </code></pre></li>
 </ol>
 <p>10.select和epoll的原理和区别？<br>11.协议层有哪些？说说五层协议、OSI、TCP/IP模型？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/23/面试总结-操作系统/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/23/面试总结-操作系统/" itemprop="url">面试总结--操作系统</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T09:56:09+08:00">
-                2019-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/操作系统/" itemprop="url" rel="index">
-                    <span itemprop="name">操作系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/23/面试总结-操作系统/" class="leancloud_visitors" data-flag-title="面试总结--操作系统">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>操作系统的内存管理机制？</li>
-<li>CPU飙升怎么定位问题？</li>
-<li>LRU算法？</li>
-<li>性能调优看哪些命令？</li>
-<li>操作系统有哪些页面置换算法？</li>
-<li>线程和进程如何创建？</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Spring框架基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Spring框架基础/" itemprop="url">面试总结--Spring框架基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T20:18:34+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Spring框架基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring框架基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Spring框架基础/" class="leancloud_visitors" data-flag-title="面试总结--Spring框架基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>AOP和IOC原理？</li>
-<li>Spring怎样解决循环依赖的问题？</li>
-<li>DispatchServlet怎样分发任务的？</li>
-<li>注解的原理？</li>
-<li>Spring的入口？</li>
-<li>SpringMVC 的 Controller 中返回值有哪些？</li>
-<li><p>Servlet 和 JSP 的区别？</p>
-<pre><code>1.Servlet控制业务流程，JSP动态生成网页；
-
-2.JSP第一次被访问时会被容器编译为Servlet类；
-
-3.Servlet接受Tomcat发送过来的request和response;
-</code></pre><p> Servlet的四大域对象：</p>
-<pre><code>1.Page域：作用域为整个JSP页面；
-
-2.Request域：一次请求一个request;
-
-3.Session域：一次会话一个session;
-
-4.Application域：作用于整个服务器端，服务器开启对象创建，关闭服务器对象销毁；例如ServletContext通过request.getServletContext（)获得；
-</code></pre><p> JSP的九大内置对象：</p>
-<pre><code>1.request、response、pageContext、session、application、out、config、page、exception;
-</code></pre></li>
-<li><p>Servlet创建的过程？</p>
-</li>
-</ol>
-<ol start="8">
-<li><p>Servlet中的filter？</p>
-<p> 生命周期：</p>
-<pre><code>1.init()
-
-2.doFilter(ServletRequest req,ServletResponse resp,Filterchain chain)
-
-3.destroy()
-</code></pre></li>
-</ol>
-<ol start="9">
-<li><p>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</p>
-<p> 生命周期：</p>
-<pre><code>1.加载Servlet类并创建实例，若存在则不会创建了；
-
-2.init():每个Servlet只会被初始化一次；
-
-3.service():执行Post/GET/DELETE等等请求方法；
-
-4.destroy():仅执行一次；
-</code></pre><p> Servlet单实例多线程</p>
-<pre><code>1.设计成单例减少了创建Servlet实例的开销；
-
-2.容器每接收到一个请求就会通过线程池分配到一个线程，同一请求的多个线程并发执行；
-
-3.所以为了线程安全最好不要在Servlet中用实例变量，或使用synchronied同步；
-
-4.不要使用线程不安全的集合；
-</code></pre><p> Servlet如何处理多个请求同时访问？</p>
-<pre><code>1.Servlet加载实例化；
-
-2.容器初始化Servlet;
-
-3.Servlet容器通过调度线程给处理请求；
-
-4.线程执行service()方法；
-
-5.请求结束，放回线程池，等到被调用；
-</code></pre></li>
-</ol>
-<ol start="10">
-<li><p>Servlet中的变量是否需要加锁？</p>
-<p>实例变量需要考虑同步。</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java集合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Java集合/" itemprop="url">面试总结--Java集合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T20:16:24+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/java集合/" itemprop="url" rel="index">
-                    <span itemprop="name">java集合</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Java集合/" class="leancloud_visitors" data-flag-title="面试总结--Java集合">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</p>
-<pre><code>1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，
-
-会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。
-
-2.使用自身迭代器解决上述问题。
-</code></pre></li>
-</ol>
-<ol start="2">
-<li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
-<li>Vector、ArrayList以及LinkedList？</li>
-</ol>
-<p>注意：</p>
-<pre><code>1.remove(int index)设计到了本地方法：
-
-    System.arraycopy(array(数据要被拷贝的数组),srcPos(数据被拷贝的起始坐标)，destArray(目的数组)，destPos(目的数组的起始坐标)，len(要被拷贝的数据的长度))；
-</code></pre><p>总结：</p>
-<pre><code>1.LinkedList底层双向链表，Node&lt;E&gt;节点，first和last指针，插入删除效率高，不需要扩容；
-
-2.ArrayList底层数组结构,数组动态扩容，无参构造数组大小为0，当添加第一个元素后，数组扩容为10，当添加第11个元素时进行扩容newCap = oldCap + oldCap*1.5,通过Arrays.copyOf(elementData,newCapacity)返回新数组；
-</code></pre><ol start="4">
-<li>HashMap线程不安全的原因？</li>
-</ol>
-<p>参考文献：</p>
-<p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a>注：最后一步 next=null </p>
-<p>不安全原因在于多线程发生扩容时：</p>
-<pre><code>void resize(int newCapacity) {
-    Entry[] oldTable = table;
-    int oldCapacity = oldTable.length;
-    if (oldCapacity == MAXIMUM_CAPACITY) {
-        threshold = Integer.MAX_VALUE;
-        return;
-    }
-
-    Entry[] newTable = new Entry[newCapacity];
-    transfer(newTable, initHashSeedAsNeeded(newCapacity));
-    table = newTable;
-    threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
-}
-
-//多线程会形成循环链表
-void transfer(Entry[] newTable, boolean rehash) {
-    int newCapacity = newTable.length;
-    for (Entry&lt;K,V&gt; e : table) {
-        while(null != e) {
-            Entry&lt;K,V&gt; next = e.next;
-            if (rehash) {
-                e.hash = null == e.key ? 0 : hash(e.key);
-            }
-            int i = indexFor(e.hash, newCapacity);
-            e.next = newTable[i];//头插法时间复杂度低，但由于会反序导致线程不安全
-            newTable[i] = e;
-            e = next;
-        }
-    }
-</code></pre><p>5.关于concurrentHashMap的理解</p>
-<p><a href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap%E7%9A%84%E7%90%86%E8%A7%A3/">concurrentHashMap JDK1.7和JDK1.8的理解</a></p>
-<p>注意：</p>
-<pre><code>1.JDK1.8 和JDK1.7 concurrentHashMap不允许key或value为null
-  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
-
-2.JDK1.7 concurrentHashMap的每个Segment中含有一个
-  transient volatile HashEntry&lt;K,V&gt;[]table，保证了entryAt/setEntryAt的可见性；
-</code></pre><p>总结：</p>
-<pre><code>1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
-
-2.JDK1.8 concurrentHashMap的put操作：
-
-    2.1 通过casTabAt(tab, i, null,new Node&lt;K,V&gt;(hash, key, value, null)方法中的
-
-        U.compareAndSwapObject(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, c, v)CAS方法
-
-        在表头Node&lt;K,V&gt;[] table中插入节点；
-
-    2.2 采用synchronized + CAS的思想。synchronized锁住的是hash值相等的链表tab[i]的头节点；
-
-    2.3 采用尾插法插入新节点；
-
-3.JDK1.8 concurrentHashMap的get操作：
-
-    3.1 读操作没有加锁。key的hash值小于0就去红黑树中查找；hash值大于0就去链表中查找。
-
-    3.2 利用volatile线程可见性 (Node&lt;K,V&gt;)U.getObjectVolatile(tab,i);
-
-
-4.JDK1.7 concurrentHashMap的put操作：
-
-    4.1 获取segment的位置后尝试获取锁，获取到锁后node=null;没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
-
-    4.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
-
-        没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
-
-        最大尝试次数MAX_SCAN_RETRIES则加锁等待。
-
-    4.3 因为插入节点采用的头插法，所以在scanAndLockForPut会判断first有无发生变化，发生变化（有线
-
-        程加入节点）则重新遍历链表；
-
-
-5.JDK1.7 concurrentHashMap的get操作：
-
-    5.1 读操作没有加锁。通过volatile读语义保证可见性。只有当put和remove调用
-    setEntryAt（table,i）方法后（已经释放锁），读操作才能读到变化的table;
-
-    5.2 通过UNSAFE.getObjectVolatile(table,i)获得Segment&lt;K,V&gt;或HashEntry&lt;K,V&gt;[]的表头节点
-
-    保证了线程之间的可见性；
-</code></pre><p>6.关于HashMap的理解</p>
-<p>注意：</p>
-<pre><code>1.JDK1.7 和 JDK1.8 的hashMap都允许key为null,放在table[0]里面；
-</code></pre><p>总结：</p>
-<pre><code>1.JDK1.8 HashMap的resize操作：
-
-    1.1 新的数组长度和Threshold是旧数组对应原值的两倍；
-
-    1.2 旧数组中链表在新数组中的位置确定方法：
-
-        //loHead和loTail维护在新数组中位置不变的链表
-        //hiHead和hiTail维护在新数组中位置发生变化的链表
-        if(hash &amp; oldCap == 0){
-            newTab[j] = loHead;//在新数组中的位置保持不变
-        }else{
-            newTab[j+oldCap] = hiHead;//在新数组中的位置变成j+oldCap
-        } 
-
-2.JDK1.8 HashMap的get和put操作：
-
-    2.1 新加了红黑树的数据结构；
-
-
-3.JDK1.7 HashMap的resize操作：
-
-    3.1 重新计算每个元素在新数组中的位置，采用头插法插入元素到新数组中，线程不安全；
-
-4.JDK1.7 HashMap的get和put操作：
-
-    4.1 普通链表结构；
-</code></pre><p>7.TreeMap的实现原理？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Linux基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Linux基础/" itemprop="url">面试总结--Linux基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T20:13:51+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Linux基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Linux基础/" class="leancloud_visitors" data-flag-title="面试总结--Linux基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>cpu 100%怎样定位？</li>
-<li>进程间通信的方式有哪些？</li>
-<li></li>
-</ol>
 
           
         
@@ -2629,7 +2476,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">105</span>
+                  <span class="site-state-item-count">109</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
