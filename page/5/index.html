@@ -286,6 +286,423 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/丑数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/丑数/" itemprop="url">丑数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T10:30:46+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/03/丑数/" class="leancloud_visitors" data-flag-title="丑数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public class UglyNumber {
+
+public static int resolve(int index){
+
+    if(index &lt;= 0){
+        throw new RuntimeException(&quot;参数非法&quot;);
+    }
+
+    int[] uglyNumber = new int[index];
+
+    uglyNumber[0] = 1;
+    int indexOf2,indexOf3,indexOf5;
+    indexOf2 = indexOf3 = indexOf5 = 0;
+
+    int uglyNumberIndex = 1;
+
+    while (uglyNumberIndex &lt; index){
+        int min = Min(uglyNumber[indexOf2]*2,uglyNumber[indexOf3]*3,uglyNumber[indexOf5]*5);
+        uglyNumber[uglyNumberIndex] = min;
+
+        //uglyNumber[uglyNumberIndex]代表的是目前数组中最大的丑数
+        while (uglyNumber[indexOf2]*2 &lt;= uglyNumber[uglyNumberIndex]){
+            indexOf2++;
+        }
+
+        //下次的uglyNumber[indexOf3]肯定就大于Max uglyNumber
+        while (uglyNumber[indexOf3]*3 &lt;= uglyNumber[uglyNumberIndex]){
+            indexOf3++;
+        }
+
+        while (uglyNumber[indexOf5]*5 &lt;= uglyNumber[uglyNumberIndex]){
+            indexOf5++;
+        }
+
+        uglyNumberIndex++;
+    }
+    return uglyNumber[index-1];
+}
+
+
+private static int Min(int i, int j, int k) {
+    int min;
+    return (min = i &lt; j ? i : j) &lt; k ? min : k;
+}
+
+public static void main(String[] args){
+    System.out.println(UglyNumber.resolve(100));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/逆序对的个数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/逆序对的个数/" itemprop="url">逆序对的个数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T10:28:22+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/03/逆序对的个数/" class="leancloud_visitors" data-flag-title="逆序对的个数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="逆序对的个数？"><a href="#逆序对的个数？" class="headerlink" title="逆序对的个数？"></a>逆序对的个数？</h4><pre><code>public class InversePairNum {
+
+private int count = 0;
+private int[] temp;//保存排好序的中间结果，再将结果拷贝到原数组
+
+public int resolve(int[] num,int length){
+    temp = new int[length];
+    divideSort(num,0,length-1);
+    return count;
+}
+
+private void divideSort(int[] num, int left, int right) {
+    if(left &lt; right){
+        int mid = (left + right)/2;
+
+        //分成一个一个元素
+        divideSort(num,left,mid);
+        divideSort(num,mid+1,right);
+
+        mergeSort(num,left,mid,right);
+    }
+}
+
+private void mergeSort(int[] num, int left, int mid, int right) {
+
+    int leftEnd = mid;
+    int rightEnd = right;
+
+    int tempIndex = right;
+
+    //指针从后往前移
+    while (leftEnd &gt;= left &amp;&amp; rightEnd &gt;= mid + 1) {
+        if (num[leftEnd] &gt; num[rightEnd]) {
+            temp[tempIndex--] = num[leftEnd--];
+
+            //不是 right - mid 右边的指针是往前挪的
+            count += rightEnd - mid;
+        } else {
+            temp[tempIndex--] = num[rightEnd--];
+        }
+    }
+
+    //剩余元素
+    while (leftEnd &gt;= left) {
+        temp[tempIndex--] = num[leftEnd--];
+    }
+
+    while (rightEnd &gt;= mid + 1) {
+        temp[tempIndex--] = num[rightEnd--];
+    }
+
+    //利用临时数组temp来使得num数组左右两边都是有序的(递增的)
+    for (int i = left; i &lt;= right; i++) {
+        num[i] = temp[i];
+    }
+}
+
+public static void main(String[] args){
+    InversePairNum test = new InversePairNum();
+    int[] num = {4,6,3,1,5,7,2};
+    System.out.println(test.resolve(num,num.length));
+}
+
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1839,392 +2256,11 @@ public static void main(String [] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/24/数组中和为m的所有组合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/数组中和为m的所有组合/" itemprop="url">数组中和为m的所有组合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T18:09:40+08:00">
-                2018-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
-                    <span itemprop="name">动态规划</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/24/数组中和为m的所有组合/" class="leancloud_visitors" data-flag-title="数组中和为m的所有组合">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/24/随机版本的快排/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/随机版本的快排/" itemprop="url">随机版本的快排</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T12:24:16+08:00">
-                2018-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排序/" itemprop="url" rel="index">
-                    <span itemprop="name">排序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/24/随机版本的快排/" class="leancloud_visitors" data-flag-title="随机版本的快排">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>public class QuickSort {
-
-public static void swap(int[] a,int i,int j){
-    int temp;
-    temp = a[i];
-    a[i] = a[j];
-    a[j] = temp;
-}
-public static int partition(int[] a,int start,int end){
-
-    if(a == null || start &lt; 0 || end &gt; a.length-1){
-        throw new RuntimeException(&quot;参数不合法&quot;);
-    }
-
-    //轴值在[start,end]区间内随机生成,然后把轴值交换到数组中第一位
-    rand_pivot(a,start,end);
-
-    int i = start;
-    int j = end;
-    int pivot = a[start];
-
-    while (i &lt; j){
-        while (i &lt; j &amp;&amp; a[j] &gt;= pivot){
-            j--;
-        }
-
-        //a[i] = a[j];//这种写法时条件不能为a[j] &gt; pivot必须要 &gt;=
-        swap(a,i,j);
-
-        while (i &lt; j &amp;&amp; a[i] &lt;= pivot){
-            i++;
-        }
-
-        //a[j] = a[i];
-        swap(a,j,i);
-    }
-
-    //a[i] 或者 a[j]
-    //a[i] = pivot;
-
-    return i;
-}
-
-//随机化的选择主元
-private static void rand_pivot(int[] a, int start, int end) {
-    Random random = new Random();
-    int rand = start + random.nextInt(end - start + 1);//随机函数生成的整数区间在[0,length)
-
-    //交换第一个数和随机选出来的数
-    int temp = a[start];
-    a[start] = a[rand];
-    a[rand] = temp;
-}
-
-public static void quickSort(int[] a,int start,int end){
-
-    if(start &gt;= end)
-        return;
-
-    int index = partition(a,start,end);
-    quickSort(a,start,index-1);
-    quickSort(a,index+1,end);
-
-    /*int index;
-    if(start &lt; end){
-        index = partition(a,start,end);
-        quickSort(a,start,index-1);
-        quickSort(a,index+1,end);
-    }*/
-}
-
-public static void main(String[] args){
-    int[] a = {2,4,5,1,1,2,7,6,3};
-    QuickSort.quickSort(a,0,a.length-1);
-    System.out.println(Arrays.toString(a));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2274,7 +2310,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">110</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
