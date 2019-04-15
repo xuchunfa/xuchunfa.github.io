@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
 <meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-04-14T12:42:15.870Z">
+<meta property="og:updated_time" content="2019-04-15T03:16:22.476Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
@@ -483,7 +483,9 @@ public static void main(String[] args){
 </li>
 </ol>
 <ol start="3">
-<li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
+<li><p>ReentrantLock 是可重入锁，什么是可重入锁？</p>
+<p> 该锁能够支持一个线程对资源的重复加锁。</p>
+</li>
 <li><p>synchronized和lock的区别？</p>
 <pre><code>1.synchronized是java关键字，Lock是一个接口；
 
@@ -796,7 +798,7 @@ public void run() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">109</span>
+                  <span class="site-state-item-count">110</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

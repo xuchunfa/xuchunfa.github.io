@@ -81,13 +81,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Flying in the ocean of knowledge">
-<meta property="og:url" content="http://www.xuchunfa.cn/categories/Storm/index.html">
+<meta name="description" content="1.总结下独占式的获取同步状态的流程，具体源码如下： 流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同步队列源码解析">
+<meta property="og:url" content="http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
+<meta property="og:description" content="1.总结下独占式的获取同步状态的流程，具体源码如下： 流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-15T03:17:42.986Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Flying in the ocean of knowledge">
+<meta name="twitter:title" content="同步队列源码解析">
+<meta name="twitter:description" content="1.总结下独占式的获取同步状态的流程，具体源码如下： 流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是">
 
 
 
@@ -117,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://www.xuchunfa.cn/categories/Storm/"/>
+  <link rel="canonical" href="http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/"/>
 
 
 
 
 
-  <title>分类: Storm | Flying in the ocean of knowledge</title>
+  <title>同步队列源码解析 | Flying in the ocean of knowledge</title>
   
 
 
@@ -142,7 +146,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 	
 	<!-- fork me on GitHub -->
@@ -271,55 +275,366 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Storm<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/10/11/Storm基础/" itemprop="url">
-              
-                <span itemprop="name">Storm基础</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">同步队列源码解析</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-11T09:26:53+08:00"
-              content="2018-10-11" >
-          10-11
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T19:12:09+08:00">
+                2019-04-14
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/14/同步队列源码解析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/04/14/同步队列源码解析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/04/14/同步队列源码解析/" class="leancloud_visitors" data-flag-title="同步队列源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>1.总结下独占式的获取同步状态的流程，具体源码如下：</p>
+<p>流程</p>
+<pre><code>1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；
+
+1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；
+
+1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；
+
+1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是进入自旋等待；
+</code></pre><p>AQS的acquire方法源码：用户重写tryAcquire方法</p>
+<pre><code>public final void acquire(int arg) {
+if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同步队列
+    acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+    selfInterrupt();
+}
+</code></pre><p>看一下ReentrantLock的tryAcquire（公平锁FairSync）方法：</p>
+<pre><code>protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {//当前没有线程获取到锁
+            if (!hasQueuedPredecessors() &amp;&amp;
+                compareAndSetState(0, acquires)) {
+                setExclusiveOwnerThread(current);
+                return true;
+            }
+        }
+        //当前线程重入到已经获得的锁，不存在并发
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc &lt; 0)
+                throw new Error(&quot;Maximum lock count exceeded&quot;);
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
+}
+</code></pre><p>若获取同步状态失败，进入addWaiter方法：</p>
+<pre><code>private Node addWaiter(Node mode) {
+    Node node = new Node(Thread.currentThread(), mode);
+    // Try the fast path of enq; backup to full enq on failure
+    Node pred = tail;
+    if (pred != null) {
+        node.prev = pred;
+        //确保线程正确有序的加入到同步队列
+        if (compareAndSetTail(pred, node)) {
+            pred.next = node;
+            return node;
+        }
+    }
+    enq(node);
+    return node;
+}
+</code></pre><p>若尾节点被其他线程更改过了或者tail为空，则跳出if进入到enq(node)方法：</p>
+<pre><code>private Node enq(final Node node) {
+    for (;;) {//节点加入到同步队列中去才退出循环
+        Node t = tail;
+        if (t == null) { 
+            if (compareAndSetHead(new Node()))//同步队列的头节点
+                tail = head;
+        } else {
+            node.prev = t;
+            if (compareAndSetTail(t, node)) {
+                t.next = node;
+                return t;
+            }
+        }
+    }
+}
+</code></pre><p>加入到同步队列中的每个节点会通过自旋不断获取同步状态：详见acquire(arg)中的acquireQueued方法</p>
+<pre><code>final boolean acquireQueued(final Node node, int arg) {
+    boolean failed = true;
+    try {
+        //
+        boolean interrupted = false;
+        for (;;) {//不断自旋获取同步状态
+            //直到节点的前一个节点释放锁，并且前一个节点是头节点
+            final Node p = node.predecessor();
+            if (p == head &amp;&amp; tryAcquire(arg)) {
+                setHead(node);
+                p.next = null; // help GC
+                failed = false;
+                return interrupted;
+            }
+
+            //执行到这说明当前节点的前驱不是head或者tryAcquire(arg)失败
+            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)//tryAcquire()方法抛异常时
+            cancelAcquire(node);
+    }
+}
+</code></pre><p>如果当前节点获取锁失败的话，将会进行线程的挂起操作：</p>
+<p>waitStatus的状态分析：代表后继节点的状态。</p>
+<pre><code>ws = 0 : 默认加入节点的状态值；
+
+ws = -1 : 后继节点等待当前节点（前驱节点）被唤醒；
+
+ws = 1：等待节点等待超时或被中断取消了等待；
+
+ws = -2:后继节点等待在Condition队列中，其他线程对Condition调用signal（）方法后，节点将从等待队列转移到同步队列；
+
+private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+    int ws = pred.waitStatus;
+    if (ws == Node.SIGNAL)//前驱节点状态正常，需要将当前节点挂起
+        return true;
+    if (ws &gt; 0) {//说明前驱节点取消了排队，需要向前找到状态正常的节点
+        //waitStatus = 1表示线程取消了排队
+        do {
+            node.prev = pred = pred.prev;
+        } while (pred.waitStatus &gt; 0);
+        pred.next = node;
+    } else {
+        //正常情况下ws=0，CAS将前驱节点设置为Node.SIGNAL
+        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+    }
+    return false;
+}
+
+//前提为true的条件下，LockSupport工具将线程挂起
+private final boolean parkAndCheckInterrupt() {
+    LockSupport.park(this);
+    return Thread.interrupted();
+}
+</code></pre><hr>
+<p>再看一下释放锁的源码：</p>
+<p>AQS中的release(int arg)方法：</p>
+<pre><code>public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null &amp;&amp; h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+</code></pre><p>其中以ReentrantLock为例，重写了tryRelease方法：</p>
+<pre><code>protected final boolean tryRelease(int releases) {
+        int c = getState() - releases;
+        if (Thread.currentThread() != getExclusiveOwnerThread())
+            throw new IllegalMonitorStateException();
+        boolean free = false;
+        if (c == 0) {//没有出现重入直接释放锁
+            free = true;
+            setExclusiveOwnerThread(null);
+        }
+        setState(c);
+        return free;
+    }
+</code></pre><p>LockSupport唤醒线程：</p>
+<pre><code>private void unparkSuccessor(Node node) {
+
+    int ws = node.waitStatus;
+    if (ws &lt; 0)
+        compareAndSetWaitStatus(node, ws, 0);
+
+    Node s = node.next;
+    if (s == null || s.waitStatus &gt; 0) {
+        s = null;
+        //从后往前找到最靠近头节点的即将被唤醒的线程（waitStatus&lt;=0）
+        for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)
+            if (t.waitStatus &lt;= 0)
+                s = t;
+    }
+    if (s != null)
+        LockSupport.unpark(s.thread);
+}
+</code></pre><p>参考文献：</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer" target="_blank" rel="noopener">同步队列源码分析第一篇</a></p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/03/判断数组是否是BST的后序遍历/" rel="next" title="判断数组是否是BST的后序遍历">
+                <i class="fa fa-chevron-left"></i> 判断数组是否是BST的后序遍历
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -327,6 +642,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -583,6 +909,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -629,6 +959,30 @@
 
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'xuchunfa',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '8b62d73e4e43ea9fed41d143506b730373e3e86d',
+            
+                client_id: '157728609b4b9a007483'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 
