@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
 <meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-04-04T12:29:24.838Z">
+<meta property="og:updated_time" content="2019-04-14T12:42:15.870Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
@@ -462,16 +462,81 @@ public static void main(String[] args){
 }
 </code></pre><ol>
 <li>ReadWriteLock读写之间互斥吗？</li>
-<li>说说ReentrantLock是基于哪个类的？说说队列同步器？</li>
-<li><p>AQS和CAS原理？</p>
-<pre><code>AbstractQueuedSynchronizer(AQS):抽象队列同步器。用于管理同步状态、阻塞和唤醒线程，以及维护被阻塞线程的队列。
+<li><p>说说ReentrantLock是基于哪个类的？说说队列同步器？</p>
+<p> 2.1 AbstractQueuedSynchronizer(AQS):</p>
+<pre><code>抽象队列同步器。用于管理同步状态、阻塞和唤醒线程，以及维护被阻塞线程的队列。
+</code></pre><p> 2.2 自定义同步器需要重写AQS的以下方法：</p>
+<pre><code>1.protected boolean tryAcquire(int arg)：独占式的获取同步状态，并使用CAS设置同步状态；
+
+    1.1 state = 0:表示获取到锁；
+
+    1.2 state = 1:表示锁被占用；
+
+    1.3 state &gt; 1:表示当前线程重入到已经获取到的锁；
+
+2.protected boolean tryRelease(int arg)：独占式的释放同步状态；
+
+3.protected int tryAcquireShared(int arg)：共享式获取同步状态，返回值大于等于0，表示获取成功，在读写锁中会被重写；
+
+4.tryReleaseShared、isHeldExclusively（是否被当前线程独占）；
+</code></pre><p> 2.3 同步队列的源码解析：</p>
+</li>
+</ol>
+<ol start="3">
+<li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
+<li><p>synchronized和lock的区别？</p>
+<pre><code>1.synchronized是java关键字，Lock是一个接口；
+
+2.synchronized方法发生异常时会自动释放线程占用的锁，Lock需要显示调用unLock()方法释放锁；
+
+3.Lock可以在等待获取锁的过程中响应中断（即可中断线程），通过lockInterruptibly()实现能被中断的获取锁；
+
+4.Readwritelock提高了读操作的效率，在资源竞争激烈的情况下Lock的效率要比synchronized高；
 </code></pre></li>
 </ol>
 <ol start="2">
 <li>Semaphore拿到执行权的线程之间是否互斥？</li>
-<li>写一个生产者消费者模式？</li>
-</ol>
-<ol start="4">
+<li><p>写一个生产者消费者模式？</p>
+<p> public class TestProducerConsumer {</p>
+<p> private static final int cap = 3;<br> static Queue<integer>  queue = new LinkedList<integer>();<br> static Object lock = new Object();</integer></integer></p>
+<p> static class Producer implements Runnable{</p>
+<pre><code>private static int product;
+@Override
+public void run() {
+    synchronized (lock){
+        while (queue.size() == cap){
+            try {
+                System.out.println(&quot;queue is full: &quot;+Thread.currentThread().getName()+&quot; is waitting&quot;);
+                lock.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(Thread.currentThread().getName()+&quot; is product: &quot;+product);
+        queue.offer(product++);
+        lock.notify();
+    }
+}
+</code></pre><p> }</p>
+<p> static class Consumer implements Runnable{</p>
+<pre><code>@Override
+public void run() {
+    synchronized (lock){
+        while (queue.size() == 0){
+            try {
+                lock.wait();
+                System.out.println(&quot;queue is empty: &quot;+Thread.currentThread().getName()+&quot; is waitting&quot;);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        int product = queue.poll();
+        System.out.println(Thread.currentThread().getName()+&quot; is consume: &quot;+product);
+        lock.notify();
+    }
+}
+</code></pre><p> }</p>
+</li>
 <li><p>写一个死锁？</p>
 <p> public class DeadLock {<br> static class SynAddRunnable implements Runnable{</p>
 <pre><code>private int a,b;
@@ -548,9 +613,8 @@ public void run() {
 
 2.编译之后在同步代码块之前插入Monitorenter指令，同步代码块完成之后或异常之后插入Monitorexit指令；
 </code></pre></li>
-<li><p>synchronized和lock的区别？</p>
-</li>
 <li><p>锁有哪几种？</p>
+<p>公平锁/非公平锁、可重入锁、独享锁/共享锁（读写锁）、悲观锁/乐观锁、分段锁、自旋锁等；</p>
 <p>1.偏向锁:为了在只有一个线程执行同步块时提高性能。</p>
 <pre><code>优点：加锁和解锁不需要额外的消耗；
 
@@ -612,8 +676,7 @@ public void run() {
     3.7 线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；
 
     3.8 对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；
-</code></pre><ol start="10">
-<li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
+</code></pre><ol start="11">
 <li>线程执行过程中遇到异常会发生什么，怎样处理？</li>
 <li>线程的状态？</li>
 </ol>

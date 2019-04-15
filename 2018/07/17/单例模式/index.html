@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="单例模式的不同写法：  单例模式指？   只生成一个对象，避免重复创建对象。     instance为什么要加static关键字？   因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.  单例模式中构造函数为什么私有化？   1.构造函数私有化后，那">
+<meta name="description" content="单例模式是如何保证单例的？ 即怎么保证内存中只有一个对象：  1.外界不能随意创建对象，所有构造函数必须私有化；  2.类本身要有一个对象。即类里面要封装好一个对象，下次通过公共方法调用时都是返回的这个对象；  3.通过公共的方法提供给别人。因为外界不能创建对象，所以通过给方法加static关键字，通过类名访问类方法来获取对象；  单例模式指？   只生成一个对象，避免重复创建对象。     in">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单例模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/17/单例模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="单例模式的不同写法：  单例模式指？   只生成一个对象，避免重复创建对象。     instance为什么要加static关键字？   因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.  单例模式中构造函数为什么私有化？   1.构造函数私有化后，那">
+<meta property="og:description" content="单例模式是如何保证单例的？ 即怎么保证内存中只有一个对象：  1.外界不能随意创建对象，所有构造函数必须私有化；  2.类本身要有一个对象。即类里面要封装好一个对象，下次通过公共方法调用时都是返回的这个对象；  3.通过公共的方法提供给别人。因为外界不能创建对象，所以通过给方法加static关键字，通过类名访问类方法来获取对象；  单例模式指？   只生成一个对象，避免重复创建对象。     in">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/MkkHyU0.png">
 <meta property="og:image" content="https://i.imgur.com/EXnDWsp.png">
-<meta property="og:updated_time" content="2019-03-25T13:31:25.128Z">
+<meta property="og:updated_time" content="2019-04-10T10:53:27.200Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式">
-<meta name="twitter:description" content="单例模式的不同写法：  单例模式指？   只生成一个对象，避免重复创建对象。     instance为什么要加static关键字？   因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.  单例模式中构造函数为什么私有化？   1.构造函数私有化后，那">
+<meta name="twitter:description" content="单例模式是如何保证单例的？ 即怎么保证内存中只有一个对象：  1.外界不能随意创建对象，所有构造函数必须私有化；  2.类本身要有一个对象。即类里面要封装好一个对象，下次通过公共方法调用时都是返回的这个对象；  3.通过公共的方法提供给别人。因为外界不能创建对象，所以通过给方法加static关键字，通过类名访问类方法来获取对象；  单例模式指？   只生成一个对象，避免重复创建对象。     in">
 <meta name="twitter:image" content="https://i.imgur.com/MkkHyU0.png">
 
 
@@ -402,8 +402,15 @@
       
 
       
-        <p>单例模式的不同写法：</p>
-<ul>
+        <p><strong>单例模式是如何保证单例的？</strong></p>
+<pre><code>即怎么保证内存中只有一个对象：
+
+1.外界不能随意创建对象，所有构造函数必须私有化；
+
+2.类本身要有一个对象。即类里面要封装好一个对象，下次通过公共方法调用时都是返回的这个对象；
+
+3.通过公共的方法提供给别人。因为外界不能创建对象，所以通过给方法加static关键字，通过类名访问类方法来获取对象；
+</code></pre><ul>
 <li><p>单例模式指？</p>
 <p>  只生成一个对象，避免重复创建对象。</p>
 <p>  <img src="https://i.imgur.com/MkkHyU0.png" alt=""></p>

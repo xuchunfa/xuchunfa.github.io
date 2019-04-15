@@ -1310,7 +1310,9 @@ void transfer(Entry[] newTable, boolean rehash) {
       
         
           
-            <ol>
+            <p>1.select count(*) 和 select count(列名)？</p>
+<pre><code>前者会包含null的行，后者不会包括；
+</code></pre><ol>
 <li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
 </ol>
 <p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
@@ -1318,9 +1320,35 @@ void transfer(Entry[] newTable, boolean rehash) {
 
 2.B树的关键字和data域放在了一起；
 
-3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。
+3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针；
+</code></pre><p>B树和B+树的区别？</p>
+<pre><code>1.B树所有节点都带有卫星数据，B+树只有叶子节点带有；
+
+2.B+树的中间节点没有卫星数据，同样大小的磁盘页可以容纳更多的元素；树型更矮胖，减少了查询时候的IO次数；
+
+3.B+树查询性能稳定、范围查询效率更高；
+</code></pre><p>m阶（代表一个树节点最多有多少个查找路径）的B树特点：</p>
+<pre><code>1.每个节点至多有m棵子树；
+
+2.除根节点外每个分支节点至少有 m/2取上整 棵子树；
+
+3.根节点至少有两棵子树；
+
+4.关键字的数量num：大于等于ceil(m/2)-1 ，小于等于 M-1；
+
+5.有k个子树的中间节点包含k-1个元素；
+</code></pre><p>m阶B+树；</p>
+<pre><code>1.有k个子树的中间节点包含k个元素；
+
+2.叶子节点包含了全部元素信息以及指向这些元素记录的指针；
+
+3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大或最小元素；
 </code></pre><ol start="2">
-<li>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</li>
+<li><p>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
+<pre><code>因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；
+</code></pre></li>
+</ol>
+<ol start="3">
 <li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
 </ol>
 <p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
@@ -1357,9 +1385,9 @@ void transfer(Entry[] newTable, boolean rehash) {
 
     eg:ALTER TABLE stu add UNIQUE index_id(id);
 
-3.主键索引：特殊的唯一索引，索引列的值不允许为空。
+3.主键索引（聚集索引）：特殊的唯一索引，索引列的值不允许为空。
 </code></pre><p><img src="https://i.imgur.com/UvVpFDi.png" alt=""></p>
-<pre><code>4.组合索引：默认最左前缀的结果。
+<pre><code>4.组合索引：默认最左前缀的结果。组合索引的好处是已经对第二个键值进行了排序，无需额外的排序。
 
     eg:alter table stu add index id_name_note(id,name(10),note);
 
@@ -1370,14 +1398,42 @@ void transfer(Entry[] newTable, boolean rehash) {
     2.（id,name）索引
 
     3.（id）索引
+
+5.全文索引：格式为Match(列名)Against(关键字)，是搜索引擎使用的一种关键技术；
+</code></pre><p>什么时候使用索引呢？</p>
+<pre><code>1.考虑在where和order by命令上涉及的列上建立索引；
+
+2.和其他表作连接的字段需要加索引；
 </code></pre><p>索引失效的情况：</p>
 <pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引;
 
-2.在列上进行运算将会使索引失效；
+2.在列上进行运算将会使索引失效，包括计算表达式、数据库函数；
 
 3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
+
+4.联合索引未使用最左匹配原则，例如组合索引（A，B），where B=b不会使用索引；
+
+5.不要使用 NOT IN、&lt;&gt;、！= 操作索引会失效，但&lt;，&lt;=，=，&gt;=，BETWEEN，IN是可以用到索引的；
 </code></pre><ol start="7">
-<li>数据库引擎有哪些？说说他们的区别？</li>
+<li><p>数据库引擎有哪些？说说他们的区别？</p>
+<p> MyISAM</p>
+<pre><code>1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
+
+2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
+
+3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
+
+辅助索引是独立的。
+</code></pre></li>
+</ol>
+<pre><code>InnoDB:
+
+    1.行级锁、支持事务、支持外键、支持MVCC、MySQL5.6.4版本以后开始支持FULLTEXT类型的索引；
+
+    2.InnoDB是聚集索引，数据文件和索引绑定在一起，必须要有主键，没的话会自动生成主键，主键
+
+    索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
+</code></pre><ol start="8">
 <li></li>
 </ol>
 
@@ -1758,16 +1814,81 @@ public static void main(String[] args){
 }
 </code></pre><ol>
 <li>ReadWriteLock读写之间互斥吗？</li>
-<li>说说ReentrantLock是基于哪个类的？说说队列同步器？</li>
-<li><p>AQS和CAS原理？</p>
-<pre><code>AbstractQueuedSynchronizer(AQS):抽象队列同步器。用于管理同步状态、阻塞和唤醒线程，以及维护被阻塞线程的队列。
+<li><p>说说ReentrantLock是基于哪个类的？说说队列同步器？</p>
+<p> 2.1 AbstractQueuedSynchronizer(AQS):</p>
+<pre><code>抽象队列同步器。用于管理同步状态、阻塞和唤醒线程，以及维护被阻塞线程的队列。
+</code></pre><p> 2.2 自定义同步器需要重写AQS的以下方法：</p>
+<pre><code>1.protected boolean tryAcquire(int arg)：独占式的获取同步状态，并使用CAS设置同步状态；
+
+    1.1 state = 0:表示获取到锁；
+
+    1.2 state = 1:表示锁被占用；
+
+    1.3 state &gt; 1:表示当前线程重入到已经获取到的锁；
+
+2.protected boolean tryRelease(int arg)：独占式的释放同步状态；
+
+3.protected int tryAcquireShared(int arg)：共享式获取同步状态，返回值大于等于0，表示获取成功，在读写锁中会被重写；
+
+4.tryReleaseShared、isHeldExclusively（是否被当前线程独占）；
+</code></pre><p> 2.3 同步队列的源码解析：</p>
+</li>
+</ol>
+<ol start="3">
+<li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
+<li><p>synchronized和lock的区别？</p>
+<pre><code>1.synchronized是java关键字，Lock是一个接口；
+
+2.synchronized方法发生异常时会自动释放线程占用的锁，Lock需要显示调用unLock()方法释放锁；
+
+3.Lock可以在等待获取锁的过程中响应中断（即可中断线程），通过lockInterruptibly()实现能被中断的获取锁；
+
+4.Readwritelock提高了读操作的效率，在资源竞争激烈的情况下Lock的效率要比synchronized高；
 </code></pre></li>
 </ol>
 <ol start="2">
 <li>Semaphore拿到执行权的线程之间是否互斥？</li>
-<li>写一个生产者消费者模式？</li>
-</ol>
-<ol start="4">
+<li><p>写一个生产者消费者模式？</p>
+<p> public class TestProducerConsumer {</p>
+<p> private static final int cap = 3;<br> static Queue<integer>  queue = new LinkedList<integer>();<br> static Object lock = new Object();</integer></integer></p>
+<p> static class Producer implements Runnable{</p>
+<pre><code>private static int product;
+@Override
+public void run() {
+    synchronized (lock){
+        while (queue.size() == cap){
+            try {
+                System.out.println(&quot;queue is full: &quot;+Thread.currentThread().getName()+&quot; is waitting&quot;);
+                lock.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(Thread.currentThread().getName()+&quot; is product: &quot;+product);
+        queue.offer(product++);
+        lock.notify();
+    }
+}
+</code></pre><p> }</p>
+<p> static class Consumer implements Runnable{</p>
+<pre><code>@Override
+public void run() {
+    synchronized (lock){
+        while (queue.size() == 0){
+            try {
+                lock.wait();
+                System.out.println(&quot;queue is empty: &quot;+Thread.currentThread().getName()+&quot; is waitting&quot;);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        int product = queue.poll();
+        System.out.println(Thread.currentThread().getName()+&quot; is consume: &quot;+product);
+        lock.notify();
+    }
+}
+</code></pre><p> }</p>
+</li>
 <li><p>写一个死锁？</p>
 <p> public class DeadLock {<br> static class SynAddRunnable implements Runnable{</p>
 <pre><code>private int a,b;
@@ -1844,9 +1965,8 @@ public void run() {
 
 2.编译之后在同步代码块之前插入Monitorenter指令，同步代码块完成之后或异常之后插入Monitorexit指令；
 </code></pre></li>
-<li><p>synchronized和lock的区别？</p>
-</li>
 <li><p>锁有哪几种？</p>
+<p>公平锁/非公平锁、可重入锁、独享锁/共享锁（读写锁）、悲观锁/乐观锁、分段锁、自旋锁等；</p>
 <p>1.偏向锁:为了在只有一个线程执行同步块时提高性能。</p>
 <pre><code>优点：加锁和解锁不需要额外的消耗；
 
@@ -1908,8 +2028,7 @@ public void run() {
     3.7 线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；
 
     3.8 对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；
-</code></pre><ol start="10">
-<li>ReentrantLock 是可重入锁，什么是可重入锁？</li>
+</code></pre><ol start="11">
 <li>线程执行过程中遇到异常会发生什么，怎样处理？</li>
 <li>线程的状态？</li>
 </ol>

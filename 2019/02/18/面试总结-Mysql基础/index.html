@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。  Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库事务特性以及四个隔离级别，Mysql属于哪一种？  隔离级别详解 1.事">
+<meta name="description" content="1.select count(*) 和 select count(列名)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针； B树和B+树的区别？ 1.B树">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Mysql基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。  Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库事务特性以及四个隔离级别，Mysql属于哪一种？  隔离级别详解 1.事">
+<meta property="og:description" content="1.select count(*) 和 select count(列名)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针； B树和B+树的区别？ 1.B树">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/DUI0Os9.png">
 <meta property="og:image" content="https://i.imgur.com/qnwHm9Q.png">
 <meta property="og:image" content="https://i.imgur.com/CuYvDQi.png">
 <meta property="og:image" content="https://i.imgur.com/UvVpFDi.png">
-<meta property="og:updated_time" content="2019-03-26T13:45:11.816Z">
+<meta property="og:updated_time" content="2019-04-09T01:06:48.318Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Mysql基础">
-<meta name="twitter:description" content="B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。  Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？ 数据库事务特性以及四个隔离级别，Mysql属于哪一种？  隔离级别详解 1.事">
+<meta name="twitter:description" content="1.select count(*) 和 select count(列名)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针； B树和B+树的区别？ 1.B树">
 <meta name="twitter:image" content="https://i.imgur.com/DUI0Os9.png">
 
 
@@ -415,7 +415,9 @@
       
 
       
-        <ol>
+        <p>1.select count(*) 和 select count(列名)？</p>
+<pre><code>前者会包含null的行，后者不会包括；
+</code></pre><ol>
 <li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
 </ol>
 <p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
@@ -423,9 +425,35 @@
 
 2.B树的关键字和data域放在了一起；
 
-3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针。
+3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针；
+</code></pre><p>B树和B+树的区别？</p>
+<pre><code>1.B树所有节点都带有卫星数据，B+树只有叶子节点带有；
+
+2.B+树的中间节点没有卫星数据，同样大小的磁盘页可以容纳更多的元素；树型更矮胖，减少了查询时候的IO次数；
+
+3.B+树查询性能稳定、范围查询效率更高；
+</code></pre><p>m阶（代表一个树节点最多有多少个查找路径）的B树特点：</p>
+<pre><code>1.每个节点至多有m棵子树；
+
+2.除根节点外每个分支节点至少有 m/2取上整 棵子树；
+
+3.根节点至少有两棵子树；
+
+4.关键字的数量num：大于等于ceil(m/2)-1 ，小于等于 M-1；
+
+5.有k个子树的中间节点包含k-1个元素；
+</code></pre><p>m阶B+树；</p>
+<pre><code>1.有k个子树的中间节点包含k个元素；
+
+2.叶子节点包含了全部元素信息以及指向这些元素记录的指针；
+
+3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大或最小元素；
 </code></pre><ol start="2">
-<li>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</li>
+<li><p>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
+<pre><code>因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；
+</code></pre></li>
+</ol>
+<ol start="3">
 <li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
 </ol>
 <p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
@@ -462,9 +490,9 @@
 
     eg:ALTER TABLE stu add UNIQUE index_id(id);
 
-3.主键索引：特殊的唯一索引，索引列的值不允许为空。
+3.主键索引（聚集索引）：特殊的唯一索引，索引列的值不允许为空。
 </code></pre><p><img src="https://i.imgur.com/UvVpFDi.png" alt=""></p>
-<pre><code>4.组合索引：默认最左前缀的结果。
+<pre><code>4.组合索引：默认最左前缀的结果。组合索引的好处是已经对第二个键值进行了排序，无需额外的排序。
 
     eg:alter table stu add index id_name_note(id,name(10),note);
 
@@ -475,14 +503,42 @@
     2.（id,name）索引
 
     3.（id）索引
+
+5.全文索引：格式为Match(列名)Against(关键字)，是搜索引擎使用的一种关键技术；
+</code></pre><p>什么时候使用索引呢？</p>
+<pre><code>1.考虑在where和order by命令上涉及的列上建立索引；
+
+2.和其他表作连接的字段需要加索引；
 </code></pre><p>索引失效的情况：</p>
 <pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引;
 
-2.在列上进行运算将会使索引失效；
+2.在列上进行运算将会使索引失效，包括计算表达式、数据库函数；
 
 3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
+
+4.联合索引未使用最左匹配原则，例如组合索引（A，B），where B=b不会使用索引；
+
+5.不要使用 NOT IN、&lt;&gt;、！= 操作索引会失效，但&lt;，&lt;=，=，&gt;=，BETWEEN，IN是可以用到索引的；
 </code></pre><ol start="7">
-<li>数据库引擎有哪些？说说他们的区别？</li>
+<li><p>数据库引擎有哪些？说说他们的区别？</p>
+<p> MyISAM</p>
+<pre><code>1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
+
+2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
+
+3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
+
+辅助索引是独立的。
+</code></pre></li>
+</ol>
+<pre><code>InnoDB:
+
+    1.行级锁、支持事务、支持外键、支持MVCC、MySQL5.6.4版本以后开始支持FULLTEXT类型的索引；
+
+    2.InnoDB是聚集索引，数据文件和索引绑定在一起，必须要有主键，没的话会自动生成主键，主键
+
+    索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
+</code></pre><ol start="8">
 <li></li>
 </ol>
 
