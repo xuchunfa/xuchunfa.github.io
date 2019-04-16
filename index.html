@@ -286,6 +286,500 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CyclicBarrier源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/15/CyclicBarrier源码解析/" itemprop="url">CyclicBarrier源码解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:50:10+08:00">
+                2019-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/15/CyclicBarrier源码解析/" class="leancloud_visitors" data-flag-title="CyclicBarrier源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考文献</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CyclicBarrier源码解析</a></p>
+<p>看一下构造函数：</p>
+<pre><code>//parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。
+public CyclicBarrier(int parties) {
+    this(parties, null);
+}
+</code></pre><p>核心await()方法：</p>
+<pre><code>public int await() throws InterruptedException, BrokenBarrierException {
+    try {
+        return dowait(false, 0L);
+    } catch (TimeoutException toe) {
+        throw new Error(toe); // cannot happen
+    }
+}
+</code></pre><p>进入到dowait()方法：</p>
+<pre><code>private int dowait(boolean timed, long nanos)
+    throws InterruptedException, BrokenBarrierException,
+           TimeoutException {
+    final ReentrantLock lock = this.lock;
+    lock.lock();
+    try {
+        final Generation g = generation;
+
+        if (g.broken)
+            throw new BrokenBarrierException();
+
+        if (Thread.interrupted()) {
+            breakBarrier();
+            throw new InterruptedException();
+        }
+
+        int index = --count;
+        if (index == 0) {  
+            boolean ranAction = false;
+            try {
+                final Runnable command = barrierCommand;
+                if (command != null)
+                    command.run();
+                ranAction = true;
+                nextGeneration();//唤醒所有线程，开启下一代
+                return 0;
+            } finally {
+                if (!ranAction)//在执行command.run()时发生了异常
+                    breakBarrier();//唤醒所有线程，broker=true
+            }
+        }
+
+        //不是最后一个到达栅栏的线程走到这
+        for (;;) {
+            try {
+                if (!timed)
+                    //Condition trip = reentrantLock.newCondition
+                    trip.await();
+                else if (nanos &gt; 0L)
+                    nanos = trip.awaitNanos(nanos);
+            } catch (InterruptedException ie) {
+                if (g == generation &amp;&amp; ! g.broken) {
+                    breakBarrier();
+                    throw ie;
+                } else {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            if (g.broken)
+                throw new BrokenBarrierException();
+
+            if (g != generation)
+                return index;
+
+            if (timed &amp;&amp; nanos &lt;= 0L) {
+                breakBarrier();
+                throw new TimeoutException();
+            }
+        }
+    } finally {
+        lock.unlock();
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/15/CountDownLatch源码解析/" itemprop="url">CountDownLatch源码解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:06:48+08:00">
+                2019-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/15/CountDownLatch源码解析/" class="leancloud_visitors" data-flag-title="CountDownLatch源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考文献</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p>
+<p>文献已经给出了详细的讲解，这里作简单的总结：</p>
+<p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
+<pre><code>protected int tryAcquireShared(int acquires) {
+        return (getState() == 0) ? 1 : -1;
+    }
+
+protected boolean tryReleaseShared(int releases) {
+    // Decrement count; signal when transition to zero
+    for (;;) {
+        int c = getState();
+        if (c == 0)
+            return false;
+        int nextc = c-1;
+        if (compareAndSetState(c, nextc))
+            return nextc == 0;
+    }
+}
+</code></pre><p>线程阻塞的await()方法：</p>
+<pre><code>public void await() throws InterruptedException {
+    sync.acquireSharedInterruptibly(1);
+}
+
+public final void acquireSharedInterruptibly(int arg)
+        throws InterruptedException {
+    if (Thread.interrupted())
+        throw new InterruptedException();
+    //countdown()方法会使state的值减1，当state还未为0时会进入到该方法
+    if (tryAcquireShared(arg) &lt; 0)
+        doAcquireSharedInterruptibly(arg);
+}
+</code></pre><p>进入到阻塞队列中：</p>
+<pre><code>private void doAcquireSharedInterruptibly(int arg)
+    throws InterruptedException {
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head) {
+                int r = tryAcquireShared(arg);
+                if (r &gt;= 0) {//调用countdown()方法使state=1的线程会唤醒阻塞的线程，并将节点设置为head
+                    setHeadAndPropagate(node, r);
+                    p.next = null; // help GC
+                    failed = false;
+                    return;
+                }
+            }
+            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt())//LockSupport阻塞线程
+                throw new InterruptedException();
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+</code></pre><p>阻塞队列被唤醒的过程：</p>
+<pre><code>private void setHeadAndPropagate(Node node, int propagate) {
+    Node h = head; 
+    setHead(node);
+    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||
+        (h = head) == null || h.waitStatus &lt; 0) {
+        Node s = node.next;
+        if (s == null || s.isShared())
+            doReleaseShared();//继续唤醒下一个节点
+    }
+}
+</code></pre><p>继续唤醒队列中的其他节点：</p>
+<pre><code> private void doReleaseShared() {
+    for (;;) {//不断唤醒线程直到head不再发生变化
+        Node h = head;
+        if (h != null &amp;&amp; h != tail) {
+            int ws = h.waitStatus;
+            if (ws == Node.SIGNAL) {
+                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                    continue;            // loop to recheck cases
+                unparkSuccessor(h);
+            }
+            else if (ws == 0 &amp;&amp;
+                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                continue;                
+        }
+        if (h == head)                   
+            break;
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock中的Condition源码分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -421,6 +915,8 @@
         if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
             break;
     }
+
+    //节点进入到Sync队列后，跳出上述while循环，通过acquireQueued方法加入同步状态的竞争中去
     if (acquireQueued(node, savedState) &amp;&amp; interruptMode != THROW_IE)
         interruptMode = REINTERRUPT;
     if (node.nextWaiter != null) // clean up if cancelled
@@ -1948,381 +2444,6 @@ public int small(int n){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/01/判断整数是否是2的整数次方/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/01/判断整数是否是2的整数次方/" itemprop="url">判断整数是否是2的整数次方</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T15:03:02+08:00">
-                2019-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/位运算/" itemprop="url" rel="index">
-                    <span itemprop="name">位运算</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/01/判断整数是否是2的整数次方/" class="leancloud_visitors" data-flag-title="判断整数是否是2的整数次方">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>//整数为0返回false
-class Solution {
-    public boolean checkPowerOf2(int n) {
-        if (n &lt; 1) {
-            return false;
-        } else {
-            return (n &amp; (n - 1)) == 0;
-    }
-}
-};
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/28/计算机网络基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/28/计算机网络基础/" itemprop="url">计算机网络基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T09:07:05+08:00">
-                2019-03-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/计算机网络/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/03/28/计算机网络基础/" class="leancloud_visitors" data-flag-title="计算机网络基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.TCP/IP vs OSI模型？</p>
-<p><img src="https://i.imgur.com/6Lm1zUA.png" alt=""></p>
-<p><img src="https://i.imgur.com/qDA1cTG.png" alt=""></p>
-<pre><code>OSI:
-
-    1.清楚的区分服务、接口和协议，但实现起来困难；
-
-    2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；
-
-TCP/IP:
-
-    1.网络层只支持无连接的通信，传输层同时支持连接和无连接；
-</code></pre><p>2.传输层</p>
-<pre><code>2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信；
-</code></pre><p>2.可靠传输的原理？</p>
-<p>重传机制：</p>
-<pre><code>1.发送完一个分组后要暂时保存已发送分组的副本；
-
-2.分组和确认分组需要进行编号；
-
-3.重传时间应当比数据在分组传输的平均往返时间更长一些；
-</code></pre><p>确认丢失和确认迟到：</p>
-<pre><code>1.接收方丢弃重复的M1，重传确认M1;
-
-2.发送方丢弃收到的重复确认；
-</code></pre><p>3.UDP和TCP的报文段？</p>
-<p><img src="https://i.imgur.com/SrXYECp.png" alt=""></p>
-<p>字段解释：</p>
-<pre><code>1.序号：本报文段的字节流数据中一个字节的序号；
-
-2.确认号：期望收到对方下一个报文段的第一个数据字节的序号；
-
-3.数据偏移：TCP报文段的首部字段；
-
-4.控制位
-
-    4.1 ACK:ACK=1确认字段才有效；
-
-    4.2 RST:RST=1拒绝一个非法的报文段或拒绝打开一个连接；
-
-    4.3 SYN:SYN=1 ACK=0表示连接请求报文段，SYN=1 ACK=1表示同意建立连接；
-
-    4.4 FIN:FIN=1表示此报文段发送发送方的数据已发送完毕，要求释放连接；
-
-5.窗口：允许发送方发送的数据量；
-</code></pre><p>4.滑动窗口模型</p>
-<p>发送缓存VS发送窗口VS接收缓存VS接收窗口？</p>
-<pre><code>1.对接收窗口中不按序到达的数据，接收方只能对按序收到了的数据中的最高序号给出确认；
-
-2.TCP要求接受方必须有累积确认功能，确认推迟的时间不应超过0.5秒；
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2377,7 +2498,7 @@ TCP/IP:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">114</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

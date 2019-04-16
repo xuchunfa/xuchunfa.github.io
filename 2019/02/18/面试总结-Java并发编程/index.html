@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
 <meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-04-15T07:55:59.205Z">
+<meta property="og:updated_time" content="2019-04-15T08:20:19.605Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
@@ -488,6 +488,11 @@ public static void main(String[] args){
 <p> 该锁能够支持一个线程对资源的重复加锁。</p>
 </li>
 </ol>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">ReentrantLock的源码解析</a></p>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock%E4%B8%AD%E7%9A%84Condition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Condition源码解析</a></p>
+<ol start="3">
+<li>AQS的相关工具类CountDownLatch、CyclicBarrier和Semaphore的理解？</li>
+</ol>
 <ol start="4">
 <li><p>synchronized和lock的区别？</p>
 <pre><code>1.synchronized是java关键字，Lock是一个接口；
@@ -499,8 +504,7 @@ public static void main(String[] args){
 4.Readwritelock提高了读操作的效率，在资源竞争激烈的情况下Lock的效率要比synchronized高；
 </code></pre></li>
 </ol>
-<ol start="2">
-<li>Semaphore拿到执行权的线程之间是否互斥？</li>
+<ol start="3">
 <li><p>写一个生产者消费者模式？</p>
 <p> public class TestProducerConsumer {</p>
 <p> private static final int cap = 3;<br> static Queue<integer>  queue = new LinkedList<integer>();<br> static Object lock = new Object();</integer></integer></p>
@@ -801,7 +805,7 @@ public void run() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">114</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

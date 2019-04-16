@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/U289xRb.png">
 <meta property="og:image" content="https://i.imgur.com/4n7P9X3.png">
-<meta property="og:updated_time" content="2019-04-02T08:47:36.514Z">
+<meta property="og:updated_time" content="2019-04-15T08:54:54.481Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 具体步骤： 1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；  2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进">
@@ -458,7 +458,7 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 3.DiscardOldestPolicy:丢弃队列最前面的任务，执行当前任务；
 
 4.CallerRunsPolicy:由调用线程（例如main线程）执行任务；
-</code></pre><p><strong>创建线程池的方式：</strong></p>
+</code></pre><p><strong>创建线程池的方式：(Executors框架提供)</strong></p>
 <pre><code>1.newFixedThreadPool：创建固定数量的线程池。默认使用的是无界队列，maximumPoolSize和keepAliveTime参数无效，不会拒绝任务。
 适合于负载较重的服务器。
 
@@ -729,7 +729,7 @@ public T get() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">114</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

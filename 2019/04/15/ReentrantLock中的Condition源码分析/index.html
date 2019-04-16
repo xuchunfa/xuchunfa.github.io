@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="参考文献 Condition源码详解 上面的源码解析已经很清晰了，下面作简要的记录： 阻塞过程： public final void await() throws InterruptedException {     if (Thread.interrupted())         throw new InterruptedException();      //将节点加入到条件队列的队尾，并且">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T07:55:32.861Z">
+<meta property="og:updated_time" content="2019-04-15T08:35:22.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReentrantLock中的Condition源码分析">
 <meta name="twitter:description" content="参考文献 Condition源码详解 上面的源码解析已经很清晰了，下面作简要的记录： 阻塞过程： public final void await() throws InterruptedException {     if (Thread.interrupted())         throw new InterruptedException();      //将节点加入到条件队列的队尾，并且">
@@ -430,6 +430,8 @@
         if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
             break;
     }
+
+    //节点进入到Sync队列后，跳出上述while循环，通过acquireQueued方法加入同步状态的竞争中去
     if (acquireQueued(node, savedState) &amp;&amp; interruptMode != THROW_IE)
         interruptMode = REINTERRUPT;
     if (node.nextWaiter != null) // clean up if cancelled
@@ -501,6 +503,10 @@ final boolean transferForSignal(Node node) {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/15/CountDownLatch源码解析/" rel="prev" title="CountDownLatch源码解析">
+                CountDownLatch源码解析 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -579,7 +585,7 @@ final boolean transferForSignal(Node node) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">114</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
