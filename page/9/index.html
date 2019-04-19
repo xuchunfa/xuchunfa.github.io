@@ -286,229 +286,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/05/Executors详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/05/Executors详解/" itemprop="url">Executors详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-05T15:24:34+08:00">
-                2018-08-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/05/Executors详解/" class="leancloud_visitors" data-flag-title="Executors详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Excutors框架的类与接口"><a href="#Excutors框架的类与接口" class="headerlink" title="Excutors框架的类与接口"></a>Excutors框架的类与接口</h4><p><img src="https://i.imgur.com/F7UbYhu.png" alt=""></p>
-<ul>
-<li>Callable</li>
-</ul>
-<p>一般是配合ExecutorService使用。</p>
-<pre><code>public interface Callable&lt;V&gt; {
-
-    V call() throws Exception;
-}
-
-//ExecutorService.java
-&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);
-&lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);
-Future&lt;?&gt; submit(Runnable task);
-</code></pre><ul>
-<li>Future</li>
-</ul>
-<p>对于具体的Runnable或者Callable任务的执行结果进行取消、查询是否完成、获取结果.</p>
-<pre><code>public interface Future&lt;V&gt; {
-    boolean cancel(boolean mayInterruptIfRunning);
-    boolean isCancelled();
-    boolean isDone();
-    V get() throws InterruptedException, ExecutionException;
-    V get(long timeout, TimeUnit unit)
-        throws InterruptedException, ExecutionException, TimeoutException;
-}
-</code></pre><ul>
-<li><p>RunnableFuture</p>
-<p>  public interface RunnableFuture<v> extends Runnable, Future<v> {</v></v></p>
-<pre><code>void run();
-</code></pre><p>  }</p>
-</li>
-<li><p>FutureTask</p>
-</li>
-</ul>
-<p>提供的两个构造函数：</p>
-<pre><code>public FutureTask(Callable&lt;V&gt; callable) {
-}
-public FutureTask(Runnable runnable, V result) {
-}
-</code></pre><h4 id="Executors的作用？"><a href="#Executors的作用？" class="headerlink" title="Executors的作用？"></a>Executors的作用？</h4><p>1.Executor框架的工具类，工厂类,用来生成不同类型的线程池。</p>
-<ul>
-<li><p>FixedThreadPool</p>
-</li>
-<li><p>SingleThreadPool</p>
-</li>
-<li><p>CachedThreadPool</p>
-</li>
-</ul>
-<p>具体的实现：</p>
-<pre><code>//创建固定容量大小的缓冲池
-public static ExecutorService newFixedThreadPool(int nThreads) {
-return new ThreadPoolExecutor(nThreads, nThreads,
-                              0L, TimeUnit.MILLISECONDS,
-                              new LinkedBlockingQueue&lt;Runnable&gt;());
-}
-
-//创建容量为1的缓冲池
-public static ExecutorService newSingleThreadExecutor() {
-return new FinalizableDelegatedExecutorService
-    (new ThreadPoolExecutor(1, 1,
-                            0L, TimeUnit.MILLISECONDS,
-                            new LinkedBlockingQueue&lt;Runnable&gt;()));
-}
-
-//创建一个缓冲池，缓冲池容量大小为Integer.MAX_VALUE
-public static ExecutorService newCachedThreadPool() {
-return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                              60L, TimeUnit.SECONDS,
-                              new SynchronousQueue&lt;Runnable&gt;());
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -563,7 +340,18 @@ return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
                     <span itemprop="name">Java并发编程</span>
                   </a>
                 </span>
@@ -617,23 +405,48 @@ return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
 <p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
 <p>3.提高线程的可管理性。</p>
 <h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="https://i.imgur.com/U289xRb.png" alt=""></p>
-<p>具体步骤：</p>
-<pre><code>1.判断核心线程池是否已满，否的话就创建新线程执行任务，是则进入下步；
+<h4 id="线程池中线程创建的时机？"><a href="#线程池中线程创建的时机？" class="headerlink" title="线程池中线程创建的时机？"></a>线程池中线程创建的时机？</h4><pre><code>1.判断核心线程池是否已满，否则提交任务的时候创建新的线程，并由这个线程执行这个任务，是则进入下步；
 
-2.判断工作队列是否已满，否的话任务存储在该工作队列，是则进入下步；
+2.判断工作队列是否已满，否的话任务存储在该工作队列，等待线程池中的线程通过while循环从队列里面
+拉取任务，是则进入下步；
 
-3.判断线程池是否已满，否的话就创建新线程执行任务，是则进入下步；
+3.判断线程池是否已满，否的话就创建新线程执行任务，并由这个线程执行这个任务，是则进入下步；
 
 4.交给饱和策略处理；
+</code></pre><h4 id="任务在执行的过程中发生了异常怎么处理？"><a href="#任务在执行的过程中发生了异常怎么处理？" class="headerlink" title="任务在执行的过程中发生了异常怎么处理？"></a>任务在执行的过程中发生了异常怎么处理？</h4><pre><code>某个任务执行时出现异常，那么执行任务的线程将会关闭（移除），然后启动一个新的线程来代替它，
+新的线程也会不断的从队列里面获取任务执行。
+</code></pre><p>解决办法：</p>
+<pre><code>在执行业务代码时，自己try...catch捕获异常。
+</code></pre><p>看一下源码理解：</p>
+<pre><code>private void processWorkerExit(Worker w, boolean completedAbruptly) {
+    if (completedAbruptly) //执行任务时出现异常
+        decrementWorkerCount();
 
-public static void start(){
-    ServerSocket serverSocket = new ServerSocket(port);
-    Socket socket = null;
-    while ((socket = serverSocket.accept() != null)){
-        thread.execute(new HttpRequestHandler(socket));
+    final ReentrantLock mainLock = this.mainLock;
+    mainLock.lock();
+    try {
+        completedTaskCount += w.completedTasks;
+        workers.remove(w);//移除出现异常的线程
+    } finally {
+        mainLock.unlock();
+    }
+
+    tryTerminate();
+
+    int c = ctl.get();
+    if (runStateLessThan(c, STOP)) {
+        if (!completedAbruptly) {
+            int min = allowCoreThreadTimeOut ? 0 : corePoolSize;
+            if (min == 0 &amp;&amp; ! workQueue.isEmpty())
+                min = 1;
+            if (workerCountOf(c) &gt;= min)//例如如果有空闲线程，就不用创建新的线程来代替
+                return; // replacement not needed
+        }
+        addWorker(null, false);//创建新的线程代替出现异常的线程
     }
 }
-分析：提交的任务将会被线程池里面的线程执行，而不是通过创建新的线程来执行。
+</code></pre><h4 id="Worker加锁的原因？"><a href="#Worker加锁的原因？" class="headerlink" title="Worker加锁的原因？"></a>Worker加锁的原因？</h4><pre><code>因为外部有可能在线程池里面调用了其他方法中断Worker,为了保证任务完整被执行，必须在获得锁的情况下
+才能中断Worker.
 </code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
 <p>在ThreadPoolExecutor类中提供了四个构造方法：</p>
 <pre><code>//ThreadPoolExecutor.java
@@ -658,7 +471,7 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 <p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize（工人+临时工）</p>
 <p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
 <pre><code>类型：BlockingQueue&lt;Runnable&gt;;
-</code></pre><p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。</p>
+</code></pre><p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。如果设置allowCoreThreadTimeOut为true那么这个参数对所有线程有效；</p>
 <p>5.handler：表示当拒绝处理任务时的策略。</p>
 <p>6.poolSize：线程池中当前的线程数。</p>
 <p><strong>拒绝策略(队列和线程池满了)：</strong></p>
@@ -666,9 +479,9 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 
 2.DiscardPolicy:不处理直接抛弃；
 
-3.DiscardOldestPolicy:丢弃队列最前面的任务，执行当前任务；
+3.DiscardOldestPolicy:如果线程池没有关闭，丢弃队列最前面的任务，执行当前任务；
 
-4.CallerRunsPolicy:由调用线程（例如main线程）执行任务；
+4.CallerRunsPolicy:如果线程池没有关闭，由调用线程（例如main线程）执行任务；
 </code></pre><p><strong>创建线程池的方式：(Executors框架提供)</strong></p>
 <pre><code>1.newFixedThreadPool：创建固定数量的线程池。默认使用的是无界队列，maximumPoolSize和keepAliveTime参数无效，不会拒绝任务。
 适合于负载较重的服务器。
@@ -683,7 +496,11 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
                                   60L, TimeUnit.SECONDS,
                       new SynchronousQueue&lt;Runnable&gt;());
 
-    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，如果此时maxPoolSize=0的话会创建一个新线程执行任务；
+    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，如果此时maxPoolSize=0的话会创建一个新线程执行任务；即没有空闲线程接收任务时进入下面这个分支：
+
+        ......
+        else if (!addWorker(command, false))
+            reject(command);
 
 
 
@@ -716,38 +533,227 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 <pre><code>1.shutdown:SHUTDOWN状态，interrupt没有执行任务的线程；
 
 2.shutdownNow:STOP状态，停止所有线程然后进行关闭；
-</code></pre><h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>任务提交到线程池后的执行过程：</p>
-<pre><code>1.如果当前线程池中的线程数目小于corePoolSize，则每来一个任务，就会创建一个线程去执行这个任务；
+</code></pre><h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>核心类图：</p>
+<p><img src="https://i.imgur.com/Z1OJlhe.png" alt=""></p>
+<p>ThreadPoolExecutor源码解析：</p>
+<pre><code>1.将Integer32位分成两部分，高3位表示线程池的状态，低29位表示线程的最大数量；
 
-2.如果当前线程池中的线程数目&gt;=corePoolSize，则每来一个任务，会尝试将其添加到任务缓存队列当中，若添加成功，则该任务会等待空闲线程将其取出去执行；
-若添加失败（一般来说是任务缓存队列已满），则会尝试创建新的线程去执行这个任务；（任务队列满了的话请临时线程来处理新来的任务）
+2.线程池的状态：
 
-3.如果当前线程池中的线程数目达到maximumPoolSize，而且线程池内的阻塞队列已满，RejectedExecutionHandler 根据它的拒绝策略来处理该任务, 
-默认的处理方式是直接抛异常
+    2.1 RUNNING:接收新的任务，处理等待队列中的任务；
 
-4.如果线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止，直至线程池中的线程数目不大于corePoolSize；
-如果允许为核心池中的线程设置存活时间，那么核心池中的线程空闲时间超过keepAliveTime，线程也会被终止。
+    2.2 SHUTDOWN:不接收新的任务，但会处理等待队列中的任务（调用shutdown方法）；
+
+    2.3 STOP:不接收新的任务,不处理等待队列中的任务，interrupt正在执行任务的线程（调用shutdownNow方法）；
+
+    2.4 TIDYING:所有的任务都销毁了，线程池被清空；
+
+    2.5 TERMINATED：terminated()方法执行完成后的状态；
+
+3.状态大小的比较
+
+    RUNNING &lt; SHUTDOWN &lt; STOP &lt; TIDYING &lt; TERMINATED
 </code></pre><p>源码解析：</p>
+<p>ThreadPoolExecutor的execute()方法:</p>
 <pre><code>//ThreadPoolExecutor.java
 public void execute(Runnable command) {
     if (command == null)
         throw new NullPointerException();
 
     int c = ctl.get();
-    if (workerCountOf(c) &lt; corePoolSize) {
+    if (workerCountOf(c) &lt; corePoolSize) {//当前线程数小于核心线程数
         if (addWorker(command, true))
             return;
         c = ctl.get();
     }
+
+    //线程数大于corePoolSize或者addWorker失败，会执行到这
+    /////isRunning的源码
+
+        private static boolean isRunning(int c) {
+            return c &lt; SHUTDOWN;
+        }
+    /////
+
     if (isRunning(c) &amp;&amp; workQueue.offer(command)) {
         int recheck = ctl.get();
+
         if (! isRunning(recheck) &amp;&amp; remove(command))
-            reject(command);
+            reject(command)；//线程池不处于Running状态，移除已经入队的任务
         else if (workerCountOf(recheck) == 0)
+            //任务提交到了队列，但线程数为0，开启新的线程
             addWorker(null, false);
     }
+
+    //执行到这，说明任务队列已满，以maximumPoolSize为界创建线程
     else if (!addWorker(command, false))
-        reject(command);
+        reject(command);//线程数大于maximumPoolSize时执行任务拒绝策略
+}
+</code></pre><p>创建线程（addWorker）:</p>
+<pre><code>private boolean addWorker(Runnable firstTask, boolean core) {
+    retry:
+    for (;;) {
+        int c = ctl.get();
+        int rs = runStateOf(c);
+
+          //当线程池状态为SHUTDOWM、STOP、TIDYING、TERMINATED时
+        //且满足：
+            1.rs != SHUTDOWN
+            2.firstTask != null
+            3.workQueue.isEmpty()队列为空
+
+        //主要就是当线程池关闭时，提交任务会失败
+        //rs == SHUTDOWN &amp;&amp; firstTask = null &amp;! workQueue.isEmpty()仍然成功
+        if (rs &gt;= SHUTDOWN &amp;&amp;
+            ! (rs == SHUTDOWN &amp;&amp;
+               firstTask == null &amp;&amp;
+               ! workQueue.isEmpty()))
+            return false;
+
+        for (;;) {
+            int wc = workerCountOf(c);
+            if (wc &gt;= CAPACITY ||
+                wc &gt;= (core ? corePoolSize : maximumPoolSize))
+                return false;
+            if (compareAndIncrementWorkerCount(c))
+                break retry;//条件校验工作完毕，准备创建线程
+
+            //执行到这说明CAS失败，有其他线程创建完毕
+            c = ctl.get();
+            if (runStateOf(c) != rs)
+                continue retry;//状态变更需要回到最外层的for循环
+        }
+    }
+
+    //开始创建线程
+    boolean workerStarted = false;
+    boolean workerAdded = false;
+    Worker w = null;
+    try {
+        w = new Worker(firstTask);
+        final Thread t = w.thread;
+        if (t != null) {
+            final ReentrantLock mainLock = this.mainLock;
+            mainLock.lock();
+            try {
+
+                int rs = runStateOf(ctl.get());
+                //进入if的条件
+                    1.线程池处于RUUNING状态；
+                    2.线程池处于SHUTDOWN状态，且未提交任务；
+
+                if (rs &lt; SHUTDOWN ||
+                    (rs == SHUTDOWN &amp;&amp; firstTask == null)) {
+                    if (t.isAlive()) 
+                        throw new IllegalThreadStateException();
+                    workers.add(w);
+                    int s = workers.size();
+                    if (s &gt; largestPoolSize)//记录线程池线程曾经达到的最大数量
+                        largestPoolSize = s;
+                    workerAdded = true;
+                }
+            } finally {
+                mainLock.unlock();
+            }
+            if (workerAdded) {
+                t.start();//启动线程，真正执行的是Worker中的run方法
+                workerStarted = true;
+            }
+        }
+    } finally {
+        if (! workerStarted)
+            addWorkerFailed(w);//失败后的处理，移除线程以及workCount的还原
+    }
+    return workerStarted;//返回添加线程是否成功的布尔值
+}
+</code></pre><p>启动线程时调用Worker的run方法：</p>
+<pre><code>public void run() {
+    runWorker(this);
+}
+
+final void runWorker(Worker w) {
+    Thread wt = Thread.currentThread();
+    Runnable task = w.firstTask;
+    w.firstTask = null;
+    w.unlock(); // allow interrupts
+    boolean completedAbruptly = true;
+    try {
+        //执行指定的firstTask或者从任务队列中取任务执行
+        //while循环一直获取任务执行
+        while (task != null || (task = getTask()) != null) {
+            w.lock();
+            //STOP状态中断线程
+            if ((runStateAtLeast(ctl.get(), STOP) ||
+                 (Thread.interrupted() &amp;&amp;
+                  runStateAtLeast(ctl.get(), STOP))) &amp;&amp;
+                !wt.isInterrupted())
+                wt.interrupt();
+            try {
+                beforeExecute(wt, task);
+                Throwable thrown = null;
+                try {
+                    task.run();//真正执行任务
+                } catch (RuntimeException x) {
+                    thrown = x; throw x;
+                } catch (Error x) {
+                    thrown = x; throw x;
+                } catch (Throwable x) {
+                    thrown = x; throw new Error(x);
+                } finally {
+                    afterExecute(task, thrown);
+                }
+            } finally {
+                task = null;
+                w.completedTasks++;
+                w.unlock();
+            }
+        }
+        completedAbruptly = false;
+    } finally {
+        processWorkerExit(w, completedAbruptly);
+    }
+}
+</code></pre><p>看一下获取队列任务的源码：</p>
+<pre><code>private Runnable getTask() {
+    boolean timedOut = false; // Did the last poll() time out?
+
+    for (;;) {
+        int c = ctl.get();
+        int rs = runStateOf(c);
+
+        //两种情况：
+            1.rs &gt;= STOP
+            2.rs = SHUTDOWN &amp;&amp; workQueue.isEmpty()
+            补充：
+                上面说到过，如果rs = SHUTDOWN &amp;&amp; ！workQueue.isEmpty()仍然会
+            执行完队列中的任务；
+        if (rs &gt;= SHUTDOWN &amp;&amp; (rs &gt;= STOP || workQueue.isEmpty())) {
+            decrementWorkerCount();
+            return null;
+        }
+
+        int wc = workerCountOf(c);
+        boolean timed = allowCoreThreadTimeOut || wc &gt; corePoolSize;
+
+        if ((wc &gt; maximumPoolSize || (timed &amp;&amp; timedOut))
+            &amp;&amp; (wc &gt; 1 || workQueue.isEmpty())) {
+            if (compareAndDecrementWorkerCount(c))
+                return null;
+            continue;
+        }
+
+        //wc &lt;= maximumPoolSize &amp;&amp; 没有超时
+        try {
+            Runnable r = timed ?
+                workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) :
+                workQueue.take();//一旦列队为空，线程就会发生阻塞
+            if (r != null)
+                return r;//返回任务
+            timedOut = true;
+        } catch (InterruptedException retry) {
+            timedOut = false;
+        }
+    }
 }
 </code></pre><h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
 <li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
@@ -2462,6 +2468,238 @@ public int findMin(int [] array) {
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/排序算法比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/排序算法比较/" itemprop="url">排序算法比较</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T16:13:19+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/28/排序算法比较/" class="leancloud_visitors" data-flag-title="排序算法比较">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="https://itimetraveler.github.io/gallery/sort-algorithms/big-o.png" alt=""></p>
+<p><img src="https://i.imgur.com/zdj3smH.png" alt=""></p>
+<p><strong>学习过程中一点点积累补充</strong></p>
+<h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
+<ul>
+<li><p>快排分析</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p>
+<p>  时间复杂度：nlogn</p>
+<p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p>
+<p>  时间复杂度：n^2</p>
+<p>  3.一般情况下：略</p>
+<p>  时间复杂度：nlogn</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p>
+<p>  空间复杂度：O(logn)</p>
+<p>  2.最差情况：略</p>
+<p>  空间复杂度：O(n)</p>
+<p>  <strong>补充：</strong>快排是不稳定的。</p>
+</li>
+<li><p>直接插入排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  平均复杂度:O(n^2)</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  空间复杂度：O(1)</p>
+<p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p>
+</li>
+<li><p>冒泡排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)。</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>简单选择排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>堆排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  分析：</p>
+<p>  初始化堆的过程时间：O(n)</p>
+<p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p>
+<p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>归并排序</p>
+<p>  总时间 = 划分时间 + 合并时间</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  最好 = 最坏 = 平均 = O(nlogn)</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  O(n) = O(logn) + O(n)</p>
+</li>
+<li><p>希尔排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  最坏：O(n^2)</p>
+<p>  最好：O(nlogn)</p>
+<p>  平均：O(n^1.5)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>计数排序</p>
+<p>  时间复杂度： </p>
+<p>  O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组</p>
+<pre><code>= O(n) + O(k) + O(n)
+</code></pre><p>  空间复杂度：O(n+k)</p>
+</li>
+</ul>
+<p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
+<p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -2516,7 +2754,7 @@ public int findMin(int [] array) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

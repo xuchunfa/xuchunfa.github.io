@@ -286,6 +286,369 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/02/判断树的子树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/02/判断树的子树/" itemprop="url">判断树的子树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-02T20:24:20+08:00">
+                2019-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/02/判断树的子树/" class="leancloud_visitors" data-flag-title="判断树的子树">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>public static boolean isSubTree(BinaryTreeNode root1,BinaryTreeNode root2){
+
+    if(root2 == null){
+        return true;
+    }
+    if(root1 == null){//root1==null root2!=null
+        return false;
+    }
+    return root1.data == root2.data &amp;&amp; isSubTree(root1.left,root2.left) &amp;&amp; isSubTree(root1.right,root2.right);
+
+}
+
+
+public static boolean HasSubtree(BinaryTreeNode root1,BinaryTreeNode root2) {
+    if(root1 == null || root2 == null){
+        return false;
+    }
+
+    if(isSubTree(root1,root2)){
+        return true;
+    }
+    return HasSubtree(root1.left,root2) || HasSubtree(root1.right,root2);
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/01/判断大于n的最小2的n次方的整数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/01/判断大于n的最小2的n次方的整数/" itemprop="url">判断大于n的最小2的n次方的整数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T15:33:00+08:00">
+                2019-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/位运算/" itemprop="url" rel="index">
+                    <span itemprop="name">位运算</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/01/判断大于n的最小2的n次方的整数/" class="leancloud_visitors" data-flag-title="判断大于n的最小2的n次方的整数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>  //时间复杂度：O(n)
+public int find(int n){
+    if(n == 0 || ((n-1)&amp;n) == 0){
+        return n;
+    }
+    int flag = 1;
+    while (flag &lt; n){
+        flag &lt;&lt;= 1;
+    }
+    return flag;
+}
+
+//最快的办法
+//时间复杂度：
+public int find1(int n){
+    n--;
+    n |= n &gt;&gt; 1;//右移优先于或
+    n |= n &gt;&gt; 2;
+    n |= n &gt;&gt; 4;
+    n |= n &gt;&gt; 8;
+    n |= n &gt;&gt; 16;
+    n++;
+    return n;
+}
+</code></pre><p><strong>小于n的最小2的n次方的整数</strong></p>
+<pre><code>//小于n的最小2的n次方的整数
+public int small(int n){
+    int result = 0;
+    for(int i = n;i &gt;= 0;i--){
+        if(((i-1) &amp; i) == 0){
+            result = i;
+            break;
+        }
+    }
+    return result;
+}    
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/01/判断整数是否是2的整数次方/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -575,7 +938,19 @@ class Solution {
 TCP/IP:
 
     1.网络层只支持无连接的通信，传输层同时支持连接和无连接；
-</code></pre><p>2.传输层</p>
+</code></pre><p>1.TCP/IP五层结构以及相应的功能？</p>
+<p>2.交换机是几层设备？</p>
+<p>3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？</p>
+<p>4.网络层的路由算法有哪些，简述RIP，OSPF过程？</p>
+<p>5.简述ARP协议过程，是如何通过IP地址获取MAC地址的？</p>
+<p>6.ping命令所使用的协议是什么（ICMP），简述其过程？</p>
+<p>7.TCP如何保证可靠传输？</p>
+<p>8.TCP的流量控制，当接收方的接收窗口为0的时候该怎么办？</p>
+<p>9.TCP的拥塞控制（慢启动，拥塞避免，超时间间隔传输及其快速重传，快速恢复）？</p>
+<p>10.流量控制和拥塞控制有什么区别？</p>
+<p>11.TCP的连接管理中可能出现的攻击漏洞（洪泛攻击，自顶向下那本书有讲到）？</p>
+<p>12.应用层有哪些常见协议？</p>
+<p>2.传输层</p>
 <pre><code>2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信；
 </code></pre><p>2.可靠传输的原理？</p>
 <p>重传机制：</p>
@@ -1491,7 +1866,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
 </code></pre></li>
 </ol>
-<p>10.select和epoll的原理和区别？<br>11.协议层有哪些？说说五层协议、OSI、TCP/IP模型？</p>
+<p>10.HTTP中幂等性的理解？</p>
 
           
         
@@ -1662,6 +2037,9 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 <li>性能调优看哪些命令？</li>
 <li>操作系统有哪些页面置换算法？</li>
 <li>线程和进程如何创建？</li>
+<li>NIO和IO的区别？</li>
+<li>Selector工作过程，为什么说他是非阻塞的（select方法是阻塞的，但是注册的描述符不是阻塞的？</li>
+<li>epoll和poll的区别，及其应用场景（因为Selector用到了Reactor模型，所以又提到了select，poll，epoll）？</li>
 </ol>
 
           
@@ -2063,14 +2441,48 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
           
             <ol>
 <li><p>可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</p>
-<pre><code>1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，
-
-会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。
-
-2.使用自身迭代器解决上述问题。
+<p> 例如：</p>
+<pre><code>for(String s : list){//内部创建迭代器
+    if(s.equals(&quot;a&quot;)){
+        list.remove(s);//看源码发现modCount发生了变化；
+    }
+}
 </code></pre></li>
 </ol>
-<ol start="2">
+<p>再看一下迭代器的next()源码：</p>
+<pre><code> public E next() {
+    checkForComodification();//检查modCount是否等于expectedModCount
+    int i = cursor;
+    if (i &gt;= size)
+        throw new NoSuchElementException();
+    Object[] elementData = ArrayList.this.elementData;
+    if (i &gt;= elementData.length)
+        throw new ConcurrentModificationException();
+    cursor = i + 1;
+    return (E) elementData[lastRet = i];
+}
+
+//异常抛出的地方
+final void checkForComodification() {
+    if (modCount != expectedModCount)
+        throw new ConcurrentModificationException();
+}
+</code></pre><p>解决方法：</p>
+<pre><code>//直接for循环
+for(int i = 0;i &lt; list.size();i++){
+    if(list.get(i).equals(&quot;a&quot;)){
+        list.remove(list.get(i));
+    }
+}
+
+//使用迭代的方法
+Iterator&lt;String&gt; iterator = list.iterator();
+while (iterator.hasNext()){
+    if(iterator.next().equals(&quot;a&quot;)) {
+        iterator.remove();
+    }
+}    
+</code></pre><ol start="2">
 <li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
 <li>ArrayList以及LinkedList？</li>
 </ol>
@@ -2109,11 +2521,29 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 
     2.通过Entry&lt;K,V&gt;的 before、after和header组合指针来维护一个双向列表；
 
-3.4 TreeSet的理解
+3.54 TreeMap的理解
+</code></pre><p><a href="http://www.xuchunfa.cn/2018/08/14/%E7%BA%A2%E9%BB%91%E6%A0%91/">红黑树的特点</a></p>
+<pre><code>    1.底层红黑树结构，通过比较键值大小构建红黑树，在插入和删除数据后，自我调整。
+
+        public TreeMap() {comparator = null;}//自然比较器
+
+        public TreeMap(Comparator&lt;? super K&gt; comparator) {//用户自定义比较器
+                this.comparator = comparator;
+        }
+
+    2.使Map集合按键值有序排列；
+
+3.5 TreeSet的理解
 
     1.基于TreeMap实现，底层红黑树结构，特点是：排序和唯一；
 
+        public TreeSet() {
+            this(new TreeMap&lt;E,Object&gt;());
+        }
+
     2.new TreeSet()默认的是自然排序；
+
+    3.使Set集合变得有序；
 </code></pre><ol start="4">
 <li>HashMap线程不安全的原因？</li>
 </ol>
@@ -2232,464 +2662,7 @@ void transfer(Entry[] newTable, boolean rehash) {
 4.JDK1.7 HashMap的get和put操作：
 
     4.1 普通链表结构；
-</code></pre><p>7.TreeMap的实现原理？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Linux基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Linux基础/" itemprop="url">面试总结--Linux基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T20:13:51+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Linux基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Linux基础/" class="leancloud_visitors" data-flag-title="面试总结--Linux基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>cpu 100%怎样定位？</li>
-<li>进程间通信的方式有哪些？</li>
-<li></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Mysql基础/" itemprop="url">面试总结--Mysql基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:54:38+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Mysql基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Mysql基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Mysql基础/" class="leancloud_visitors" data-flag-title="面试总结--Mysql基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.select count(*) 和 select count(列名)？</p>
-<pre><code>前者会包含null的行，后者不会包括；
-</code></pre><ol>
-<li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
-</ol>
-<p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
-<pre><code>1.作为文件系统以及数据库系统的索引结构；
-
-2.B树的关键字和data域放在了一起；
-
-3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针；
-</code></pre><p>B树和B+树的区别？</p>
-<pre><code>1.B树所有节点都带有卫星数据，B+树只有叶子节点带有；
-
-2.B+树的中间节点没有卫星数据，同样大小的磁盘页可以容纳更多的元素；树型更矮胖，减少了查询时候的IO次数；
-
-3.B+树查询性能稳定、范围查询效率更高；
-</code></pre><p>m阶（代表一个树节点最多有多少个查找路径）的B树特点：</p>
-<pre><code>1.每个节点至多有m棵子树；
-
-2.除根节点外每个分支节点至少有 m/2取上整 棵子树；
-
-3.根节点至少有两棵子树；
-
-4.关键字的数量num：大于等于ceil(m/2)-1 ，小于等于 M-1；
-
-5.有k个子树的中间节点包含k-1个元素；
-</code></pre><p>m阶B+树；</p>
-<pre><code>1.有k个子树的中间节点包含k个元素；
-
-2.叶子节点包含了全部元素信息以及指向这些元素记录的指针；
-
-3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大或最小元素；
-</code></pre><ol start="2">
-<li><p>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
-<pre><code>因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；
-</code></pre></li>
-</ol>
-<ol start="3">
-<li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
-</ol>
-<p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
-<pre><code>1.事务特性：原子性、一致性、隔离性和持久性；
-
-2.事务隔离级别：
-
-    2.1 读未提交：出现脏读，读取另一个未提交事务的数据；
-
-    2.2 读已提交：造成不可重复读，即在同一个事务中读到两次不同的结果；
-
-    2.3 可重复读：出现幻读，一个事务中读取的数据一致；
-</code></pre><p>幻读的例子：</p>
-<p><img src="https://i.imgur.com/DUI0Os9.png" alt=""></p>
-<pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
-
-        1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
-
-        2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
-
-3.MySQL的默认隔离级别：可重复读；
-</code></pre><ol start="4">
-<li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
-</ol>
-<p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
-<pre><code>1.普通索引
-
-    eg:ALTER TABLE stu add INDEX index_id(id);
-</code></pre><p>使用索引前：</p>
-<p><img src="https://i.imgur.com/qnwHm9Q.png" alt=""></p>
-<p>使用索引后：</p>
-<p><img src="https://i.imgur.com/CuYvDQi.png" alt=""></p>
-<pre><code>2.唯一索引：索引列的值必须唯一，但允许为空。
-
-    eg:ALTER TABLE stu add UNIQUE index_id(id);
-
-3.主键索引（聚集索引）：特殊的唯一索引，索引列的值不允许为空。
-</code></pre><p><img src="https://i.imgur.com/UvVpFDi.png" alt=""></p>
-<pre><code>4.组合索引：默认最左前缀的结果。组合索引的好处是已经对第二个键值进行了排序，无需额外的排序。
-
-    eg:alter table stu add index id_name_note(id,name(10),note);
-
-     相当于分别建立了：
-
-    1.（id,name,note）索引
-
-    2.（id,name）索引
-
-    3.（id）索引
-
-5.全文索引：格式为Match(列名)Against(关键字)，是搜索引擎使用的一种关键技术；
-</code></pre><p>什么时候使用索引呢？</p>
-<pre><code>1.考虑在where和order by命令上涉及的列上建立索引；
-
-2.和其他表作连接的字段需要加索引；
-</code></pre><p>索引失效的情况：</p>
-<pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引;
-
-2.在列上进行运算将会使索引失效，包括计算表达式、数据库函数；
-
-3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
-
-4.联合索引未使用最左匹配原则，例如组合索引（A，B），where B=b不会使用索引；
-
-5.不要使用 NOT IN、&lt;&gt;、！= 操作索引会失效，但&lt;，&lt;=，=，&gt;=，BETWEEN，IN是可以用到索引的；
-</code></pre><ol start="7">
-<li><p>数据库引擎有哪些？说说他们的区别？</p>
-<p> MyISAM</p>
-<pre><code>1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
-
-2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
-
-3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
-
-辅助索引是独立的。
-</code></pre></li>
-</ol>
-<pre><code>InnoDB:
-
-    1.行级锁、支持事务、支持外键、支持MVCC、MySQL5.6.4版本以后开始支持FULLTEXT类型的索引；
-
-    2.InnoDB是聚集索引，数据文件和索引绑定在一起，必须要有主键，没的话会自动生成主键，主键
-
-    索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
-</code></pre><ol start="8">
-<li></li>
-</ol>
+</code></pre><p>7.ConcurrentHashMap如何保证线程安全，并发度大小，jdk1.8有什么变化?</p>
 
           
         
@@ -2779,7 +2752,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

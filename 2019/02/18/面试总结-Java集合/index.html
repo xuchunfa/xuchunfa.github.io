@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
+<meta name="description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？  例如： for(String s : list){//内部创建迭代器     if(s.equals(&amp;quot;a&amp;quot;)){         list.remove(s);//看源码发现modCount发生了变化；     } }   再看一下迭代器的next()源码：  public E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java集合">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java集合/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
+<meta property="og:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？  例如： for(String s : list){//内部创建迭代器     if(s.equals(&amp;quot;a&amp;quot;)){         list.remove(s);//看源码发现modCount发生了变化；     } }   再看一下迭代器的next()源码：  public E">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-08T02:27:12.150Z">
+<meta property="og:updated_time" content="2019-04-17T12:33:39.161Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
-<meta name="twitter:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？ 1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，  会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。  2.使用自身迭代器解决上述问题。    HashMap p">
+<meta name="twitter:description" content="可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？  例如： for(String s : list){//内部创建迭代器     if(s.equals(&amp;quot;a&amp;quot;)){         list.remove(s);//看源码发现modCount发生了变化；     } }   再看一下迭代器的next()源码：  public E">
 
 
 
@@ -412,14 +412,48 @@
       
         <ol>
 <li><p>可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</p>
-<pre><code>1.会抛ConcurrentModificationException异常，使用foreach会在内部创建迭代器，在使用next()方法时，
-
-会检查modCount != expectedModCount，前者发生了变化而后者没有故报错。
-
-2.使用自身迭代器解决上述问题。
+<p> 例如：</p>
+<pre><code>for(String s : list){//内部创建迭代器
+    if(s.equals(&quot;a&quot;)){
+        list.remove(s);//看源码发现modCount发生了变化；
+    }
+}
 </code></pre></li>
 </ol>
-<ol start="2">
+<p>再看一下迭代器的next()源码：</p>
+<pre><code> public E next() {
+    checkForComodification();//检查modCount是否等于expectedModCount
+    int i = cursor;
+    if (i &gt;= size)
+        throw new NoSuchElementException();
+    Object[] elementData = ArrayList.this.elementData;
+    if (i &gt;= elementData.length)
+        throw new ConcurrentModificationException();
+    cursor = i + 1;
+    return (E) elementData[lastRet = i];
+}
+
+//异常抛出的地方
+final void checkForComodification() {
+    if (modCount != expectedModCount)
+        throw new ConcurrentModificationException();
+}
+</code></pre><p>解决方法：</p>
+<pre><code>//直接for循环
+for(int i = 0;i &lt; list.size();i++){
+    if(list.get(i).equals(&quot;a&quot;)){
+        list.remove(list.get(i));
+    }
+}
+
+//使用迭代的方法
+Iterator&lt;String&gt; iterator = list.iterator();
+while (iterator.hasNext()){
+    if(iterator.next().equals(&quot;a&quot;)) {
+        iterator.remove();
+    }
+}    
+</code></pre><ol start="2">
 <li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
 <li>ArrayList以及LinkedList？</li>
 </ol>
@@ -458,11 +492,29 @@
 
     2.通过Entry&lt;K,V&gt;的 before、after和header组合指针来维护一个双向列表；
 
-3.4 TreeSet的理解
+3.54 TreeMap的理解
+</code></pre><p><a href="http://www.xuchunfa.cn/2018/08/14/%E7%BA%A2%E9%BB%91%E6%A0%91/">红黑树的特点</a></p>
+<pre><code>    1.底层红黑树结构，通过比较键值大小构建红黑树，在插入和删除数据后，自我调整。
+
+        public TreeMap() {comparator = null;}//自然比较器
+
+        public TreeMap(Comparator&lt;? super K&gt; comparator) {//用户自定义比较器
+                this.comparator = comparator;
+        }
+
+    2.使Map集合按键值有序排列；
+
+3.5 TreeSet的理解
 
     1.基于TreeMap实现，底层红黑树结构，特点是：排序和唯一；
 
+        public TreeSet() {
+            this(new TreeMap&lt;E,Object&gt;());
+        }
+
     2.new TreeSet()默认的是自然排序；
+
+    3.使Set集合变得有序；
 </code></pre><ol start="4">
 <li>HashMap线程不安全的原因？</li>
 </ol>
@@ -581,7 +633,7 @@ void transfer(Entry[] newTable, boolean rehash) {
 4.JDK1.7 HashMap的get和put操作：
 
     4.1 普通链表结构；
-</code></pre><p>7.TreeMap的实现原理？</p>
+</code></pre><p>7.ConcurrentHashMap如何保证线程安全，并发度大小，jdk1.8有什么变化?</p>
 
       
     </div>
@@ -697,7 +749,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

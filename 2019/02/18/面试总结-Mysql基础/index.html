@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="1.select count(*) 和 select count(列名)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针； B树和B+树的区别？ 1.B树">
+<meta name="description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Mysql基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.select count(*) 和 select count(列名)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针； B树和B+树的区别？ 1.B树">
+<meta property="og:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/DUI0Os9.png">
 <meta property="og:image" content="https://i.imgur.com/qnwHm9Q.png">
 <meta property="og:image" content="https://i.imgur.com/CuYvDQi.png">
 <meta property="og:image" content="https://i.imgur.com/UvVpFDi.png">
-<meta property="og:updated_time" content="2019-04-09T01:06:48.318Z">
+<meta property="og:updated_time" content="2019-04-17T12:16:40.157Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Mysql基础">
-<meta name="twitter:description" content="1.select count(*) 和 select count(列名)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针； B树和B+树的区别？ 1.B树">
+<meta name="twitter:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
 <meta name="twitter:image" content="https://i.imgur.com/DUI0Os9.png">
 
 
@@ -415,7 +415,7 @@
       
 
       
-        <p>1.select count(*) 和 select count(列名)？</p>
+        <p>1.select count(<em>) 和 select count(列名)以及count(</em>)和count(1)？</p>
 <pre><code>前者会包含null的行，后者不会包括；
 </code></pre><ol>
 <li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
@@ -539,7 +539,9 @@
 
     索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
 </code></pre><ol start="8">
-<li></li>
+<li>Innodb的B+树索引和MyISAM的B+树索引的结构区别？</li>
+<li>为什么索引能够提升性能？</li>
+<li>Mysql主备模式？</li>
 </ol>
 
       
@@ -656,7 +658,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

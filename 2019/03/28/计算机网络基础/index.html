@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="1.TCP/IP vs OSI模型？   OSI:      1.清楚的区分服务、接口和协议，但实现起来困难；      2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；  TCP/IP:      1.网络层只支持无连接的通信，传输层同时支持连接和无连接； 2.传输层 2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信； 2.可靠传输的原理？ 重传机制：">
+<meta name="description" content="1.TCP/IP vs OSI模型？   OSI:      1.清楚的区分服务、接口和协议，但实现起来困难；      2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；  TCP/IP:      1.网络层只支持无连接的通信，传输层同时支持连接和无连接； 1.TCP/IP五层结构以及相应的功能？ 2.交换机是几层设备？ 3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？ 4">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/03/28/计算机网络基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.TCP/IP vs OSI模型？   OSI:      1.清楚的区分服务、接口和协议，但实现起来困难；      2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；  TCP/IP:      1.网络层只支持无连接的通信，传输层同时支持连接和无连接； 2.传输层 2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信； 2.可靠传输的原理？ 重传机制：">
+<meta property="og:description" content="1.TCP/IP vs OSI模型？   OSI:      1.清楚的区分服务、接口和协议，但实现起来困难；      2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；  TCP/IP:      1.网络层只支持无连接的通信，传输层同时支持连接和无连接； 1.TCP/IP五层结构以及相应的功能？ 2.交换机是几层设备？ 3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？ 4">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/6Lm1zUA.png">
 <meta property="og:image" content="https://i.imgur.com/qDA1cTG.png">
 <meta property="og:image" content="https://i.imgur.com/SrXYECp.png">
-<meta property="og:updated_time" content="2019-03-29T08:28:53.920Z">
+<meta property="og:updated_time" content="2019-04-17T11:54:30.809Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机网络基础">
-<meta name="twitter:description" content="1.TCP/IP vs OSI模型？   OSI:      1.清楚的区分服务、接口和协议，但实现起来困难；      2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；  TCP/IP:      1.网络层只支持无连接的通信，传输层同时支持连接和无连接； 2.传输层 2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信； 2.可靠传输的原理？ 重传机制：">
+<meta name="twitter:description" content="1.TCP/IP vs OSI模型？   OSI:      1.清楚的区分服务、接口和协议，但实现起来困难；      2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；  TCP/IP:      1.网络层只支持无连接的通信，传输层同时支持连接和无连接； 1.TCP/IP五层结构以及相应的功能？ 2.交换机是几层设备？ 3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？ 4">
 <meta name="twitter:image" content="https://i.imgur.com/6Lm1zUA.png">
 
 
@@ -426,7 +426,19 @@
 TCP/IP:
 
     1.网络层只支持无连接的通信，传输层同时支持连接和无连接；
-</code></pre><p>2.传输层</p>
+</code></pre><p>1.TCP/IP五层结构以及相应的功能？</p>
+<p>2.交换机是几层设备？</p>
+<p>3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？</p>
+<p>4.网络层的路由算法有哪些，简述RIP，OSPF过程？</p>
+<p>5.简述ARP协议过程，是如何通过IP地址获取MAC地址的？</p>
+<p>6.ping命令所使用的协议是什么（ICMP），简述其过程？</p>
+<p>7.TCP如何保证可靠传输？</p>
+<p>8.TCP的流量控制，当接收方的接收窗口为0的时候该怎么办？</p>
+<p>9.TCP的拥塞控制（慢启动，拥塞避免，超时间间隔传输及其快速重传，快速恢复）？</p>
+<p>10.流量控制和拥塞控制有什么区别？</p>
+<p>11.TCP的连接管理中可能出现的攻击漏洞（洪泛攻击，自顶向下那本书有讲到）？</p>
+<p>12.应用层有哪些常见协议？</p>
+<p>2.传输层</p>
 <pre><code>2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信；
 </code></pre><p>2.可靠传输的原理？</p>
 <p>重传机制：</p>
@@ -579,7 +591,7 @@ TCP/IP:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

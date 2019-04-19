@@ -286,6 +286,305 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/30/工厂方法模式和抽象工厂模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/30/工厂方法模式和抽象工厂模式/" itemprop="url">工厂方法模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-30T11:32:40+08:00">
+                2018-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/30/工厂方法模式和抽象工厂模式/" class="leancloud_visitors" data-flag-title="工厂方法模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>模式分类</li>
+</ul>
+<p><img src="https://i.imgur.com/Hdg4Ylc.png" alt=""></p>
+<p>举个生产手机的例子增加印象：</p>
+<p>1.抽象产品类：</p>
+<pre><code>public abstract class Phone {
+
+//两种手机都可以打电话
+public void Call() {
+   //公共方法的实现
+}
+
+//两种手机都有品牌,但是品牌不同，所以是抽象的
+public abstract void PhoneBrand();
+}
+</code></pre><p>2.具体产品类：</p>
+<pre><code>public class HUAWEIPhone extends Phone {
+   //品牌
+   @Override
+   public void PhoneBrand() {
+   Log.e(&quot;qzs&quot;,&quot;我的品牌是华为&quot;);
+   }
+}
+
+public class MIPhone extends Phone {
+  //品牌
+  @Override
+  public void PhoneBrand() {
+   Log.e(&quot;qzs&quot;,&quot;我的品牌是小米&quot;);
+   }
+}
+</code></pre><p>3.抽象工厂类：</p>
+<pre><code>public abstract class PhoneFactory  {
+       public abstract &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c);
+}
+</code></pre><p>4.具体工厂类：</p>
+<pre><code>public class ConcretePhoneFactory extends PhoneFactory {
+
+  @Override
+   public &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {
+   Phone phone=null;
+   try{
+       phone =(Phone)Class.forName(c.getName()).newInstance();
+       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);
+       phone.PhoneBrand();
+   }catch (Exception e){
+
+   }
+   return (T) phone;
+   }
+}
+</code></pre><p>调用：</p>
+<pre><code>PhoneFactory phoneFactory=new ConcretePhoneFactory();
+Phone huaiweiphone=phoneFactory.createPhone(HUAWEIPhone.class);
+Phone miphone=phoneFactory.createPhone(MIPhone.class);
+</code></pre><ul>
+<li>工厂方法的延申</li>
+</ul>
+<p>1.简单工厂模式（静态工厂模式）</p>
+<p>去掉工厂抽象类，具体工厂类的方法上加上static.</p>
+<pre><code>public class ConcretePhoneFactory {
+
+   public  static &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c) {
+   Phone phone=null;
+   try{
+       phone =(Phone)Class.forName(c.getName()).newInstance();
+       Log.e(&quot;qzs&quot;,&quot;生产了一个手机&quot;);
+       phone.PhoneBrand();
+   }catch (Exception e){
+   }
+   return (T) phone;
+   }
+}
+</code></pre><p>2.多工厂方法模式</p>
+<p>每个产品都有自己的工厂，抽象工厂的方法不用再传参了。</p>
+<p>抽象工厂类：</p>
+<pre><code>public abstract class PhoneFactory  {
+    public abstract  Phone createPhone();
+}
+</code></pre><p>具体工厂类：</p>
+<pre><code>public class ConcreteHUAWEIFactory extends PhoneFactory {
+   @Override
+   public Phone createPhone() {
+   Log.e(&quot;qzs&quot;,&quot;生产了一个华为手机&quot;);
+   return new HUAWEIPhone();
+   }
+}
+
+public class ConcreteMIFactory extends PhoneFactory {
+   @Override
+   public Phone createPhone() {     
+   Log.e(&quot;qzs&quot;,&quot;生产了一个小米手机&quot;);
+   return new MIPhone();
+   }
+}
+</code></pre><p>3.工厂方法模式实现单例模式</p>
+<p>单例类：</p>
+<pre><code>public class Singleton {  
+
+   private Singleton() {  
+
+   }  
+
+   public void doSomething() {  
+   System.out.println(&quot;具体逻辑&quot;);  
+   }  
+}
+</code></pre><p>单例工厂类：</p>
+<pre><code>public class SingletonFactory {  
+
+   private static Singleton singleton;  
+
+   static {  
+   try {  
+       Class clazz = Class.forName(Singleton.class.getName());  
+       Constructor constructor = clazz.getDeclaredConstructor();  
+       constructor.setAccessible(true);  
+       singleton = (Singleton) constructor.newInstance();  
+   } catch (Exception e) {  
+
+   } 
+   }  
+
+   public static Singleton getSingleton() {  
+       return singleton;  
+   }  
+}
+</code></pre><p>特点：</p>
+<ul>
+<li>在工厂方法模式中，客户端不需要知道具体产品类的类名，只需要知道所对应的工厂即可；</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li><p>更符合开-闭原则。新增一种产品时，只需要增加相应的具体产品类和相应的工厂子类即可。例如增加苹果手机，增加一个IPhone具体类和一个IPhoneFactory类即可。</p>
+</li>
+<li><p>符合单一职责原则。每个具体工厂类只负责创建对应的产品。</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>添加新产品时，系统类的个数会成倍增加，增加了额外的开销。</li>
+</ul>
+<hr>
+<h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>工厂方法模式在增加一个具体产品的时候，都要增加对应的工厂。但是抽象工厂模式只有在新增一个类型的具体产品时才需要新增工厂。例如跑车、商务车、越野车是不同的类型。
+
+抽象工厂模式中的具体工厂生产的是：一种类型的具体产品。
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/29/CopyOnWrite容器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2611,192 +2910,6 @@ public UserValidator userValidator;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/06/树算法中好的思想/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/06/树算法中好的思想/" itemprop="url">树算法中好的思想</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T11:16:41+08:00">
-                2018-09-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/06/树算法中好的思想/" class="leancloud_visitors" data-flag-title="树算法中好的思想">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>遍历直到叶子结点</p>
-</blockquote>
-<pre><code>//处理到达叶子结点时候的情况
-boolean isLeaf = pRoot.left == null &amp;&amp; pRoot.right == null;
-
-//前序遍历
-if(pRoot.left != null)
-     sumOfTrace(pRoot.left,sumValue);
-if(pRoot.right != null)
-     sumOfTrace(pRoot.right, sumValue);
-
-//处理到达叶子结点但未满足条件的情况
-......
-</code></pre><blockquote>
-<p>提前结束树的遍历</p>
-</blockquote>
-<pre><code>//如果在左子树中找到结果 结果直接为True
-boolean isExisted = findPath(pRoot.left,node,list);
-
-//若不为True,继续遍历右子树
-if(!isExisted){
-     isExisted = findPath(pRoot.right,node,list);
-}
-</code></pre><blockquote>
-<p>在需要辅助指针的时候可以从另一个函数里面传进去，而不需要定义成员变量</p>
-</blockquote>
-<pre><code>public BinaryTreeNode bstLinkedList(BinaryTreeNode pRoot){
-
-    BinaryTreeNode lastVisited = null;
-
-    //传入初始化为null的指针
-    reverse(pRoot,lastVisited);
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2851,7 +2964,7 @@ if(!isExisted){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

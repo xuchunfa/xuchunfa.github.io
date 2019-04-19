@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
 <meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-04-15T08:20:19.605Z">
+<meta property="og:updated_time" content="2019-04-19T07:46:17.488Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
@@ -493,6 +493,8 @@ public static void main(String[] args){
 <ol start="3">
 <li>AQS的相关工具类CountDownLatch、CyclicBarrier和Semaphore的理解？</li>
 </ol>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">CountDownLatch源码解析</a>    </p>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/CyclicBarrier%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">CyclicBarrier源码解析</a></p>
 <ol start="4">
 <li><p>synchronized和lock的区别？</p>
 <pre><code>1.synchronized是java关键字，Lock是一个接口；
@@ -607,8 +609,10 @@ public void run() {
 <pre><code>是
 </code></pre></li>
 <li><p>新的任务提交到线程池，线程池是怎样处理？</p>
-<p> <a href="http://www.xuchunfa.cn/2018/08/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池详解</a></p>
 </li>
+</ol>
+<p>7.线程池中阻塞队列的理解？</p>
+<ol start="8">
 <li><p>synchronized底层实现原理？</p>
 <pre><code>使用方式：
 
@@ -622,29 +626,100 @@ public void run() {
 
 2.编译之后在同步代码块之前插入Monitorenter指令，同步代码块完成之后或异常之后插入Monitorexit指令；
 </code></pre></li>
-<li><p>锁有哪几种？</p>
-<p>公平锁/非公平锁、可重入锁、独享锁/共享锁（读写锁）、悲观锁/乐观锁、分段锁、自旋锁等；</p>
-<p>1.偏向锁:为了在只有一个线程执行同步块时提高性能。</p>
-<pre><code>优点：加锁和解锁不需要额外的消耗；
+</ol>
+<p>9.CAS算法出现的问题？</p>
+<pre><code>1.ABA问题。在变量前面加上版本号，每次变量更新的时候版本号加1，变化过程从A-B-A变成了1A-2B-3A了。
 
-缺点：线程间如果存在锁竞争会带来额外的锁撤销消耗；
+2.循环时间开销大。CAS操作长时间不成功的话会一直自旋，CPU开销大。
 
-场景：一个线程访问的同步块；
-</code></pre><p>2.轻量级锁：为了在线程近乎交替执行同步块时提高性能；</p>
-<pre><code>优点：竞争的线程不会阻塞；
+3.只能保证一个共享变量的原子操作。引入AtomicReference保证对象之间的原子性，可以把多个共享变量放在一个对象里面进行CAS操作；
+</code></pre><p>10.什么叫自旋锁？</p>
+<pre><code>为了降低阻塞和唤醒线程对性能造成的影响，可以让请求锁失败的线程自旋，即不放弃CPU的执行时间，当前面的锁释放了同步资源以后，
+自旋线程就能不必阻塞直接获取同步资源，从而避免了线程切换的开销。
+</code></pre><ol start="10">
+<li>锁有哪几种？</li>
+</ol>
+<p><a href="https://tech.meituan.com/2018/11/15/java-lock.html" target="_blank" rel="noopener">美团技术讲”锁”事</a></p>
+<pre><code>1.线程是否锁住同步资源分为：
 
-缺点：没得到锁的线程会通过自旋，消耗CPU；
+    是：悲观锁。例如synchronized和Lock的实现类。
 
-场景：追求响应时间、同步块执行时间短；
-</code></pre><p>3.重量级锁：</p>
-<pre><code>优点：竞争线程不自旋不会消耗CPU；
+    否：乐观锁。线程直接获取同步资源数据执行各自的操作，认为自己在使用数据时不会有其他线程修改数据，
+    但在更新数据时会去判断是否有其他线程修改数据，若修改了执行报错或自动重试等等，
+    例如CAS算法。
 
-缺点：线程阻塞、响应时间缓慢；
+2.锁住同步资源失败不阻塞时分为：
 
-场景：追求吞吐量；
-</code></pre></li>
-<li><p>volatile作用，指令重排相关？    </p>
-</li>
+    自旋锁和适应性自旋锁。
+
+    适应性自旋锁：自旋的次数由前一次在同一个锁上的自旋时间以及锁的拥有者的状态决定，如果自旋刚刚成功过，则认为此次自旋等待成功的可能性很大，
+    于是增长自旋等待的时间，对于自旋成功次数很少的某个锁，直接阻塞线程；
+
+3.根据锁的状态分为：
+
+    3.1 对象头的介绍：
+
+        1.Mark Word:存储对象的hashcode、分代年龄、和锁标志位信息；
+
+        2.klass point:对象指向它的类元数据的指针；
+
+        目的：出现不同锁状态的原因，都是为了减少获得锁和释放锁带来的性能消耗，
+
+    3.2 无锁（01）：CAS应用；
+
+    3.3 偏向锁（01）：指一段同步代码一直被一个线程访问，那么该线程会自动获取锁，降低获取锁的代价;
+
+        3.3.1 实现方法：即检测 Mark Word里是否存储着指向当前线程的偏向锁；
+
+        3.3.2 好处：为了在无多线程竞争的情况下尽量减少不必要的轻量级锁执行路径，因为轻量级锁的获取及释放依赖多次CAS原子指令，
+        而偏向锁只需要在置换ThreadID的时候依赖一次CAS原子指令即可
+
+        3.3.3 偏向锁的释放：偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程不会主动释放偏向锁。偏向锁的撤销，
+        需要等待全局安全点（在这个时间点上没有字节码正在执行），它会首先暂停拥有偏向锁的线程，判断锁对象是否处于被锁定状态。
+        撤销偏向锁后恢复到无锁（标志位为“01”）或轻量级锁（标志位为“00”）的状态；
+
+    3.4 轻量级锁（00）：当锁是偏向锁时被其他线程访问，锁升级为轻量级锁，其他线程将会通过自旋尝试获取锁，不阻塞，提高性能；
+
+        3.4.1 具体细节见下：
+
+            在代码进入同步块的时候，如果同步对象锁状态为无锁状态（锁标志位为“01”状态，是否为偏向锁为“0”），虚拟机首先将在当前线程的栈帧中建立一个名为锁记录（Lock Record）的空间，
+            用于存储锁对象目前的Mark Word的拷贝，然后拷贝对象头中的Mark Word复制到锁记录中。
+
+            拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针，并将Lock Record里的owner指针指向对象的Mark Word。
+
+            如果这个更新动作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位设置为“00”，表示此对象处于轻量级锁定状态。
+
+            如果轻量级锁的更新操作失败了，虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行，否则说明多个线程竞争锁。
+
+            若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。
+
+
+    3.5 重量级锁（10）：等待锁的线程都会进入到阻塞状态；
+
+总结：
+
+    偏向锁通过对比Mark Word解决加锁问题，避免执行CAS操作。而轻量级锁是通过用CAS操作和自旋来解决加锁问题，
+    避免线程阻塞和唤醒而影响性能。重量级锁是将除了拥有锁的线程以外的线程都阻塞。
+
+4.根据线程获取锁的顺序分为：
+
+    公平锁：不会出现线程饿死的状态；
+
+
+    非公平锁：特点是线程通过插队尝试获取锁，有几率直接获取锁而不用进入阻塞队列（除非尝试失败），减少了CPU唤醒线程的开销，
+    提高了吞吐率；
+
+4.根据锁是否可以重入分为：
+
+    可重入锁和不可重入锁。
+
+5.根据锁是否可以被多个线程获取分为：
+
+    独享锁（排他锁）：
+
+    共享锁：ReentrantReadWriteLock读写锁
+</code></pre><ol start="9">
+<li>volatile作用，指令重排相关？    </li>
 </ol>
 <p>参考：</p>
 <p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
@@ -685,11 +760,20 @@ public void run() {
     3.7 线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；
 
     3.8 对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；
-</code></pre><ol start="11">
-<li>线程执行过程中遇到异常会发生什么，怎样处理？</li>
+</code></pre><ol start="13">
 <li>线程的状态？</li>
 </ol>
 <p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
+<p>14.中断机制，interrupt和interrupted的区别，哪些状态可以中断并抛出InterruptedException?</p>
+<p>15.sleep和wait的区别?</p>
+<p>16.为什么ReentrantLock的锁粒度小，sychronized不是也可以用方法块来降低锁粒度?</p>
+<p>17.公平锁和非公平锁的定义，及其优缺点，ReentrantLock和synchronized使用公平还是非公平锁?</p>
+<p>18.sychronized的自旋锁、偏向锁、轻量级锁、重量级锁，分别介绍和联系（膨胀）?</p>
+<p>19.简述线程池原理，FixedThreadPool用的阻塞队列是什么?</p>
+<p>20.简述AQS，及其核心组件，哪些地方用到AQS，用到什么设计模式？</p>
+<p>21.volatile关键字，他是如何保证可见性，有序性?</p>
+<p>22.Java内存模型的可见性，原子性，有序性，用什么方法来分别保证这些特性?</p>
+<p>23.CAS操作，及其可能带来问题和可以怎么解决？</p>
 
       
     </div>
@@ -805,7 +889,7 @@ public void run() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

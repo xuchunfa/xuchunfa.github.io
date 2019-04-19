@@ -286,6 +286,192 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/06/树算法中好的思想/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/06/树算法中好的思想/" itemprop="url">树算法中好的思想</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T11:16:41+08:00">
+                2018-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/06/树算法中好的思想/" class="leancloud_visitors" data-flag-title="树算法中好的思想">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>遍历直到叶子结点</p>
+</blockquote>
+<pre><code>//处理到达叶子结点时候的情况
+boolean isLeaf = pRoot.left == null &amp;&amp; pRoot.right == null;
+
+//前序遍历
+if(pRoot.left != null)
+     sumOfTrace(pRoot.left,sumValue);
+if(pRoot.right != null)
+     sumOfTrace(pRoot.right, sumValue);
+
+//处理到达叶子结点但未满足条件的情况
+......
+</code></pre><blockquote>
+<p>提前结束树的遍历</p>
+</blockquote>
+<pre><code>//如果在左子树中找到结果 结果直接为True
+boolean isExisted = findPath(pRoot.left,node,list);
+
+//若不为True,继续遍历右子树
+if(!isExisted){
+     isExisted = findPath(pRoot.right,node,list);
+}
+</code></pre><blockquote>
+<p>在需要辅助指针的时候可以从另一个函数里面传进去，而不需要定义成员变量</p>
+</blockquote>
+<pre><code>public BinaryTreeNode bstLinkedList(BinaryTreeNode pRoot){
+
+    BinaryTreeNode lastVisited = null;
+
+    //传入初始化为null的指针
+    reverse(pRoot,lastVisited);
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/04/Mysql笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1458,179 +1644,6 @@ public static void main(String[] args){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/30/Lock详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/30/Lock详解/" itemprop="url">Lock详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T09:19:08+08:00">
-                2018-08-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/30/Lock详解/" class="leancloud_visitors" data-flag-title="Lock详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>Lock接口</p>
-</blockquote>
-<p>1.lock()：获取锁。</p>
-<p>2.lockInterruptibly():可中断的获取锁，不同于lock(),在锁的获取中可以中断当前线程。</p>
-<p>3.tryLock()：尝试非阻塞的获取锁。</p>
-<p>4.tryLock(long time, TimeUnit unit)：超时获取锁。</p>
-<p>5.unlock()：释放锁。</p>
-<p>6.newCondition()：获取等待通知组件。</p>
-<h4 id="为什么锁的实现中使用组合同步器而不选择继承呢？"><a href="#为什么锁的实现中使用组合同步器而不选择继承呢？" class="headerlink" title="为什么锁的实现中使用组合同步器而不选择继承呢？"></a>为什么锁的实现中使用组合同步器而不选择继承呢？</h4><blockquote>
-<p>队列同步器</p>
-</blockquote>
-<p>1.同步器是实现锁的关键。锁是面象用户的,用户不需要了解其中的底层原理，同步器是面象锁的,是关于锁实现的原理细节。</p>
-<p>2.队列同步器的实现</p>
-<p>独占式同步状态流程图如下：</p>
-<pre><code>//tryAcquire(arg) == false 则获取同步状态失败，线程进入同步队列
-public final void acquire(int arg) {
-    if (!tryAcquire(arg) &amp;&amp;
-        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-        selfInterrupt();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/28/单例模式的不同写法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2505,7 +2518,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">111</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
