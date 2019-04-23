@@ -2439,7 +2439,14 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
       
         
           
-            <ol>
+            <p>1.集合的整体框图</p>
+<p>Collection部分：</p>
+<p><img src="https://i.imgur.com/hUulNOH.png" alt=""></p>
+<p>Map部分：</p>
+<p><img src="https://i.imgur.com/YZ7WYhU.png" alt=""></p>
+<p>2.讲讲CopyOnWriteArrayList容器？</p>
+<p><a href="http://www.xuchunfa.cn/2018/10/29/CopyOnWrite%E5%AE%B9%E5%99%A8/">COW详解</a>    </p>
+<ol>
 <li><p>可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</p>
 <p> 例如：</p>
 <pre><code>for(String s : list){//内部创建迭代器
@@ -2482,7 +2489,8 @@ while (iterator.hasNext()){
         iterator.remove();
     }
 }    
-</code></pre><ol start="2">
+</code></pre><p>1.vector集合的多线程迭代问题？</p>
+<ol start="2">
 <li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
 <li>ArrayList以及LinkedList？</li>
 </ol>

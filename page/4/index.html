@@ -639,8 +639,19 @@ public class ConcreteMIFactory extends PhoneFactory {
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">java集合</span>
                   </a>
                 </span>
 
@@ -689,13 +700,13 @@ public class ConcreteMIFactory extends PhoneFactory {
       
         
           
-            <h4 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h4><p>即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。</p>
-<pre><code>相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被
-阻塞，性能又提升了。
+            <h4 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h4><pre><code>即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。
+</code></pre><p><strong>COW与ReentrantReadWriteLock的区别与联系？</strong></p>
+<pre><code>相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被阻塞，性能又提升了。
 
 不同点：
 
-读写锁：读线程任何时候都是获取到最新的数据，满足数据实时性。原因在于--为了实现数据实时性，
+读写锁：读线程任何时候都是获取到最新的数据，满足数据实时性。原因在于为了实现数据实时性，
 在写锁被获取后，读线程会等待或者当读锁被获取后，写线程会等待，从而解决“脏读”等问题。
 
 COW: 牺牲数据实时性满足数据的最终一致性。即读线程对数据的更新是延时感知的，因此读线程不会存在等待的情况。
@@ -705,17 +716,17 @@ COW: 牺牲数据实时性满足数据的最终一致性。即读线程对数据
 1. 两者都是通过读写分离的思想实现。
 
 2. 读线程间是互不阻塞的。
-</code></pre><ul>
-<li>CopyOnWriteArrayList<e>：</e></li>
-</ul>
+</code></pre><p><strong>CopyOnWriteArrayList<e>源码分析</e></strong></p>
 <p>写操作：需要加锁。</p>
 <pre><code>//CopyOnWriteArrayList.java
 public boolean add(E e) {
     final ReentrantLock lock = this.lock;
-    lock.lock();
+    lock.lock();//保证多线程环境中只出现一个集合副本
     try {
         Object[] elements = getArray();
         int len = elements.length;
+
+        //产生副本数组
         Object[] newElements = Arrays.copyOf(elements, len + 1);
         newElements[len] = e;
         setArray(newElements);//原引用指向新的容器
@@ -740,8 +751,7 @@ final void setArray(Object[] a) {
 <h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><pre><code>1.内存占用问题。
 
 2.数据一致性问题。
-</code></pre><p>- </p>
-
+</code></pre>
           
         
       
