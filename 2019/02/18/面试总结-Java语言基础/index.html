@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-20T12:30:00.428Z">
+<meta property="og:updated_time" content="2019-05-01T13:19:39.166Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java语言基础">
 <meta name="twitter:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
@@ -475,6 +475,61 @@
 2.一般字符串相加不会有多线程操作，推荐使用StringBuilder;
 
 3.如果要对全局变量字符串进行拼接建议使用StringBuffer；
+</code></pre><p>8.String的intern()方法？</p>
+<pre><code>  1.String 的 String pool是一个固定大小的HashTable，默认大小1009；
+
+2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回；
+
+3.String s = new String(&quot;1&quot;)创建了两个对象，一个存放在常量池，另一个存放在Heap区；
+
+4.intern重用String对象，节省了内存消耗；
+</code></pre><p><a href="https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html" target="_blank" rel="noopener">美团技术讲解intern</a></p>
+<pre><code>//JDK1.7情况下（字符串常量池已经移到正常的Heap区）
+public void test1(){
+    String s1 = new String(&quot;1&quot;);
+    s1.intern();
+    String s2 = &quot;1&quot;;
+    System.out.println(s1 == s2);//false
+    String s3 = new String(&quot;2&quot;) + new String(&quot;1&quot;);
+    s3.intern();//直接存储堆中的引用，即 s3.intern()==s3 为true
+    String s4 = &quot;11&quot;;
+    System.out.println(s3 == s4);//true
+}
+
+
+//JDK1.6情况下(字符串常量池放在perm区)
+public void test1(){
+    String s1 = new String(&quot;1&quot;);
+    s1.intern();
+    String s2 = &quot;1&quot;;
+    System.out.println(s1 == s2);//false
+
+    String s3 = new String(&quot;1&quot;) + new String(&quot;1&quot;);
+    s3.intern();
+    String s4 = &quot;11&quot;;
+    System.out.println(s3 == s4);//false
+}
+</code></pre><p>我在JDK1.8环境下运行：</p>
+<pre><code>String s1 = new String(&quot;1&quot;);
+s1.intern();
+String s2 = &quot;1&quot;;
+System.out.println(s1 == s2);//false
+
+
+String s4 = &quot;22&quot;;
+String s3 = new String(&quot;2&quot;) + new String(&quot;2&quot;);
+System.out.println(s3.intern() == s3);//false
+s3.intern();
+System.out.println(s3 == s4);//false
+
+//如果掉个顺序的话
+String s3 = new String(&quot;2&quot;) + new String(&quot;2&quot;);
+
+//这里intern返回的是和s3一样的引用
+System.out.println(s3.intern() == s3);//true
+s3.intern();
+String s4 = &quot;22&quot;;
+System.out.println(s3 == s4);//true
 </code></pre><p>9.Hash冲突解决的办法？</p>
 <pre><code>1.开放定址法（再散列法）
 

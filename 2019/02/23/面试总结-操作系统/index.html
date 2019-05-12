@@ -81,17 +81,20 @@
 
 
 
-<meta name="description" content="操作系统的内存管理机制？ CPU飙升怎么定位问题？ LRU算法？ 性能调优看哪些命令？ 操作系统有哪些页面置换算法？ 线程和进程如何创建？ NIO和IO的区别？ Selector工作过程，为什么说他是非阻塞的（select方法是阻塞的，但是注册的描述符不是阻塞的？ epoll和poll的区别，及其应用场景（因为Selector用到了Reactor模型，所以又提到了select，poll，epol">
+<meta name="description" content="进程和线程的区别？ 1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。  2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。  3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。  4.多进程程序">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--操作系统">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/23/面试总结-操作系统/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="操作系统的内存管理机制？ CPU飙升怎么定位问题？ LRU算法？ 性能调优看哪些命令？ 操作系统有哪些页面置换算法？ 线程和进程如何创建？ NIO和IO的区别？ Selector工作过程，为什么说他是非阻塞的（select方法是阻塞的，但是注册的描述符不是阻塞的？ epoll和poll的区别，及其应用场景（因为Selector用到了Reactor模型，所以又提到了select，poll，epol">
+<meta property="og:description" content="进程和线程的区别？ 1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。  2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。  3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。  4.多进程程序">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-17T12:28:03.746Z">
+<meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
+<meta property="og:image" content="https://i.imgur.com/7QE0Xh5.png">
+<meta property="og:updated_time" content="2019-04-29T03:02:05.671Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--操作系统">
-<meta name="twitter:description" content="操作系统的内存管理机制？ CPU飙升怎么定位问题？ LRU算法？ 性能调优看哪些命令？ 操作系统有哪些页面置换算法？ 线程和进程如何创建？ NIO和IO的区别？ Selector工作过程，为什么说他是非阻塞的（select方法是阻塞的，但是注册的描述符不是阻塞的？ epoll和poll的区别，及其应用场景（因为Selector用到了Reactor模型，所以又提到了select，poll，epol">
+<meta name="twitter:description" content="进程和线程的区别？ 1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。  2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。  3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。  4.多进程程序">
+<meta name="twitter:image" content="https://i.imgur.com/zSkw6Xh.png">
 
 
 
@@ -411,12 +414,143 @@
 
       
         <ol>
+<li><p>进程和线程的区别？</p>
+<pre><code>1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。
+
+2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。
+
+3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。
+
+4.多进程程序更强壮，多线程程序只要有一个线程挂了，进程就死掉了，但不会影响其他进程。
+</code></pre></li>
+</ol>
+<ol start="2">
+<li><p>进程的通信方式？</p>
+<pre><code>1.管道：半双工、数据单向流动、（无名管道）具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程通信。
+
+    1.1  fork()创建子进程，若成功返回子进程的pid,失败返回-1；
+
+    1.2 子进程会复制父进程的几乎所有信息；
+
+2.信号量：控制多个进程访问共享资源。
+
+    2.1 Linux内核中提供了三种信号量：二元信号量（互斥信号量）、计数信号量和读者写者信号量；
+
+    2.2 读者写者信号量：允许多个并发的读者（使用计数信号量），但仅允许一个写者（使用互斥信号量）。
+</code></pre></li>
+</ol>
+<pre><code>3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。
+4.信号：通知接受事件发生。
+5.共享内存：最快IPC通信，因为数据不需要在不同的进程间复制，通常信号量被用来对共享数据的存储同步；
+6.套接字（socket）：可用于不同机器间的进程通信。
+</code></pre><ol>
 <li>操作系统的内存管理机制？</li>
 <li>CPU飙升怎么定位问题？</li>
-<li>LRU算法？</li>
+<li><p>LRU算法？</p>
+<p> 缺点：</p>
+<pre><code>当存在热点数据时，LRU的效率好。偶发性的、周期性的批量操作会导致LRU命中率急剧下降，缓存污染情况比较严重；
+</code></pre><p> LinkHashMap实现：</p>
+<pre><code>public class LRUCache&lt;K,V&gt; {
+    private static final float LOADER = 0.75f;
+    private final int CACHESIZE;
+    private LinkedHashMap&lt;K,V&gt; map;
+    public LRUCache(int cacheSize) {
+        this.CACHESIZE = cacheSize;
+        this.map = new LinkedHashMap&lt;K,V&gt;(cacheSize,LOADER,true){
+            @Override
+            protected boolean removeEldestEntry(Map.Entry eldest) {
+                return size() &gt; CACHESIZE;
+            }
+        };
+    }
+
+    public synchronized V get(K k){
+        return map.get(k);
+    }
+
+    public synchronized void put(K k,V v){
+        map.put(k,v);
+    }
+}
+</code></pre></li>
+</ol>
+<p>源码解析：</p>
+<p>在插入节点后的调整：</p>
+<pre><code>void afterNodeInsertion(boolean evict) { 
+    LinkedHashMap.Entry&lt;K,V&gt; first;
+    //大于指定缓存以后删除头节点，即最近最少访问的节点
+    if (evict &amp;&amp; (first = head) != null &amp;&amp; removeEldestEntry(first)) {
+        K key = first.key;
+        removeNode(hash(key), key, null, false, true);
+    }
+}
+</code></pre><p>访问节点后的调整：</p>
+<pre><code> //构造函数指定accessOrder=true，默认为false
+ void afterNodeAccess(Node&lt;K,V&gt; e) { // move node to last
+    LinkedHashMap.Entry&lt;K,V&gt; last;
+    if (accessOrder &amp;&amp; (last = tail) != e) {//访问的是尾节点不作调整
+        LinkedHashMap.Entry&lt;K,V&gt; p =
+            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;
+        p.after = null;
+        if (b == null)//访问的是头节点
+            head = a;
+        else
+            b.after = a;
+        if (a != null)
+            a.before = b;
+        else
+            last = b;//last指向访问的最后节点的前一个节点
+        if (last == null)
+            head = p;//链表就一个节点的情况
+        else {
+            p.before = last;
+            last.after = p;
+        }
+        tail = p;
+        ++modCount;
+    }
+}
+</code></pre><ol start="4">
 <li>性能调优看哪些命令？</li>
 <li>操作系统有哪些页面置换算法？</li>
-<li>线程和进程如何创建？</li>
+</ol>
+<p><a href="https://blog.csdn.net/jankin6/article/details/78179320" target="_blank" rel="noopener">页面置换算法</a></p>
+<pre><code>缺页错误：
+
+    CPU请求的内存数据在物理内存中不存在，发生缺页错误，此时可能进行磁盘的读写操作；
+
+页面置换算法：
+
+    1.最佳置换算法（OPT）：替换下次访问距当前时间最长的那些页；向后看；
+
+        1.1 操作系统需要知道将来的事件，理想化算法；
+
+        1.2 刚开始物理块全为空，发生的全是缺页中断（请求式分页），以后发生缺页中断的同时也发生了页面置换；
+
+    2.最近最久未使用算法（LRU）：替换主存中上次使用距当前最远的页。向前看；
+
+        2.1 实现起来比较困难，开销大；
+
+
+    3.先进先出算法（FIFO）: 把主存中的物理块看成是循环缓冲区，隐含逻辑是替换驻留在主存中时间最长的页；
+
+    4.时钟算法（CLOCK）: 每一帧关联一个附加位，称为使用位，某一页首次装入主存时，使用位设置为1，该页被访问到时使用位还是设置为1。
+
+    替换页面时，所有候选帧看成环形缓存区，查找使用位为0的帧替换，同时指针指向下一帧，每当遇到使用位为1的帧时，重新置为0；使用位全为0的话，选择第一个置换；
+</code></pre><ol start="6">
+<li><p>线程和进程如何创建？</p>
+<p> 创建进程：</p>
+<pre><code>1.创建进程所需要的PCB，填写必要的管理信息；
+
+2.把该进程转入到就绪状态并插入到就绪队列中去；
+</code></pre></li>
+</ol>
+<p>7.线程和进程的状态？</p>
+<p>线程状态转换：</p>
+<p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
+<p>进程状态转换：</p>
+<p><img src="https://i.imgur.com/7QE0Xh5.png" alt=""></p>
+<ol start="7">
 <li>NIO和IO的区别？</li>
 <li>Selector工作过程，为什么说他是非阻塞的（select方法是阻塞的，但是注册的描述符不是阻塞的？</li>
 <li>epoll和poll的区别，及其应用场景（因为Selector用到了Reactor模型，所以又提到了select，poll，epoll）？</li>

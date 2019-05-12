@@ -81,17 +81,21 @@
 
 
 
-<meta name="description" content="cpu 100%怎样定位？ 进程间通信的方式有哪些？">
+<meta name="description" content="cpu 100%怎样定位？ 进程间通信的方式有哪些？ 查看进程指令？  ps(Process Status)命令：查看当前进程的状态,显示的是进程的快照；  常用命令： 3.1 ps -aux     参数含义：      a:显示当前机器上包括所有用户运行的进程；      u:用户为主的形式显示程序；      x:显示所有程序，不以终端机来区分；  显示列表重要参数：      %CPU、">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Linux基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Linux基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="cpu 100%怎样定位？ 进程间通信的方式有哪些？">
+<meta property="og:description" content="cpu 100%怎样定位？ 进程间通信的方式有哪些？ 查看进程指令？  ps(Process Status)命令：查看当前进程的状态,显示的是进程的快照；  常用命令： 3.1 ps -aux     参数含义：      a:显示当前机器上包括所有用户运行的进程；      u:用户为主的形式显示程序；      x:显示所有程序，不以终端机来区分；  显示列表重要参数：      %CPU、">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-18T12:27:23.930Z">
+<meta property="og:image" content="https://i.imgur.com/RVIhd8B.png">
+<meta property="og:image" content="https://i.imgur.com/5TlLwAX.png">
+<meta property="og:image" content="https://i.imgur.com/TOChx7s.png">
+<meta property="og:updated_time" content="2019-05-11T06:20:03.848Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Linux基础">
-<meta name="twitter:description" content="cpu 100%怎样定位？ 进程间通信的方式有哪些？">
+<meta name="twitter:description" content="cpu 100%怎样定位？ 进程间通信的方式有哪些？ 查看进程指令？  ps(Process Status)命令：查看当前进程的状态,显示的是进程的快照；  常用命令： 3.1 ps -aux     参数含义：      a:显示当前机器上包括所有用户运行的进程；      u:用户为主的形式显示程序；      x:显示所有程序，不以终端机来区分；  显示列表重要参数：      %CPU、">
+<meta name="twitter:image" content="https://i.imgur.com/RVIhd8B.png">
 
 
 
@@ -413,9 +417,136 @@
         <ol>
 <li>cpu 100%怎样定位？</li>
 <li>进程间通信的方式有哪些？</li>
-<li></li>
+<li><p>查看进程指令？</p>
+<p> ps(Process Status)命令：查看当前进程的状态,显示的是进程的快照；</p>
+<p> 常用命令：</p>
+<pre><code>3.1 ps -aux
+</code></pre></li>
 </ol>
+<p><img src="https://i.imgur.com/RVIhd8B.png" alt=""></p>
+<pre><code> 参数含义：
 
+    a:显示当前机器上包括所有用户运行的进程；
+
+    u:用户为主的形式显示程序；
+
+    x:显示所有程序，不以终端机来区分；
+
+显示列表重要参数：
+
+    %CPU、%MEM
+
+    VSZ:该进程使用的虚拟内存量(KB)；
+
+    RSS：该进程占用的固定内存量(KB);
+
+    COMMAND:命令名称和参数；
+
+    STAT:状态位
+
+         S:表示休眠状态；
+
+        Z:僵尸进程；
+
+        &lt;:优先级高的进程；
+
+        N：优先级较低的进程；
+
+        D：无法中断的休眠状态；
+
+3.2 ps -ef
+</code></pre><p><img src="https://i.imgur.com/5TlLwAX.png" alt=""></p>
+<pre><code>    e:显示所有程序，等同于-A参数；
+
+    f:显示树状结构，表达程序间的相互关系，可以看出进程间的父子关系；
+
+3.3 top命令：动态的显示进程信息；
+</code></pre><p><img src="https://i.imgur.com/TOChx7s.png" alt=""></p>
+<pre><code>显示列参数含义：
+
+    %CPU、%MEM
+
+    S:进程的状态；
+
+        D：不可中断的睡眠态；
+
+        R：运行态；
+
+        S：睡眠态；
+
+        T：被跟踪或已停止；
+
+        Z：僵尸态；
+
+    PR:优先级；
+
+    NI:nice的值，负值表示高优先级，正值表示低优先级；
+
+    VIRT:进程使用的虚拟内存总量（KB），VIRT=SWAP+RES;
+
+    SWAP:进程使用的虚拟内存中被换出的大小（KB）；
+
+    RES：进程使用的、未被换出的物理内存大小，RES=CODE+DATA;
+
+    CODE:可执行代码占用的物理内存大小；
+
+    DATA:可执行代码以外部分（数据段+栈）占用的物理内存大小；
+
+    SHR:共享内存大小（KB）;
+</code></pre><p>4.Top命令详解？</p>
+<pre><code>4.1 在top命令中输入字母执行的功能：
+
+    f:参数的具体含义，可以使用空格键 选择/取消 参数显示；
+
+    P:以%CPU排序；
+
+    M:以%MEM排序；
+
+    x:打开/关闭排序列的加亮效果；
+
+    shift+&gt;或shift+&lt;:左右改变排序的列
+
+4.2 top -Hp 进程号：查看进程中各线程占用资源的情况；
+
+4.3 jstack 进程号：可以将问题线程dump到日志文件中去；
+</code></pre><p>5.netstat命令详解？</p>
+<pre><code>5.1 常用实例
+
+    netstat -a : 列出所有端口；
+
+    netstat -ta : 列出所有TCP端口;
+
+    netstat -ua : 列出所有UDP端口;
+
+    netstat -l : 只显示监听端口；
+
+    netstat -tl : 只显示监听的TCP端口；
+
+    netstat -tlnp : 其中-n表示用数字代替主机名，-p用来显示监听的 进程名/进程id;
+
+    netstat -an | grep 端口号：用来检查端口号；
+</code></pre><p>6.free命令详解？</p>
+<pre><code>6.1 free -m ：查看Linux内存使用情况；
+
+        total  used      free    shared  buffers  cached
+Mem:    378     163    215     0       11       57
+-+ buffers/cached:94    284 
+Swap:    1407     0    1407
+
+-buffers/cached : 已用的内存数，等于used-buffers-cached，反应的是被程序实实在在用掉的内存；
+
++buffers/cached : 可以挪用的内存总数，等于free+buffers+cached；
+</code></pre><p>总结：</p>
+<pre><code>1.观察内存使用情况时一般以 -+buffers/cached 为主；
+
+2.buffers/cached的使用是为了提高程序的执行性能；
+
+3.在观察Linux的内存使用情况时，只要没发现用swap的交换空间，就不用担心自己的内存太少。
+</code></pre><p>7.其他命令</p>
+<pre><code>1.    tail -f filename : 默认显示文件的最后10行内容；
+
+    tail -n 20 filename:显示最后20行的内容；
+</code></pre>
       
     </div>
     
