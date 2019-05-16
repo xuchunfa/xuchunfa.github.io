@@ -286,6 +286,651 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/15/建造者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/15/建造者模式/" itemprop="url">建造者模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-15T20:44:57+08:00">
+                2019-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/15/建造者模式/" class="leancloud_visitors" data-flag-title="建造者模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>建造者模式</strong></p>
+<pre><code>用户不必知道对象的构建过程和具体实现细节就能创建出复杂的对象，将将建造复杂对象的过程和组成对象的部件解耦。
+</code></pre><p>Builder:</p>
+<pre><code>//构建部件的抽象类或接口
+public abstract class Builder {
+    protected HomeStruct struct = new HomeStruct();
+    abstract void bulidFoundation();
+    abstract void buildArchitecture();
+    public HomeStruct finishConstruct(){
+        return struct;
+    }
+}
+</code></pre><p>ConcreteBuiler:</p>
+<pre><code>//具体部件构建的实现（木屋材料）
+public class WoodenBuilder extends Builder {
+
+    private String material = &quot;wood&quot;;
+    @Override
+    public void bulidFoundation() {
+        System.out.println(&quot;地基使用：&quot; + material);
+        struct.setFoundation(material);
+    }
+
+    @Override
+    public void buildArchitecture() {
+        System.out.println(&quot;架构使用：&quot; + material);
+        struct.setArchitecture(material);
+    }
+
+    public HomeStruct finishContruct(){
+        return struct;
+    }
+}
+
+//水泥材料
+public class CementBuilder extends Builder {
+
+    private String material = &quot;cement&quot;;
+    @Override
+    public void bulidFoundation() {
+        System.out.println(&quot;地基使用：&quot; + material);
+        struct.setFoundation(material);
+    }
+
+    @Override
+    public void buildArchitecture() {
+        System.out.println(&quot;架构使用：&quot; + material);
+        struct.setArchitecture(material);
+    }
+
+    public HomeStruct finishContruct(){
+        return struct;
+    }
+}
+</code></pre><p>Director:</p>
+<pre><code>//使用不同材料可以构造不同建筑物
+public class Director {
+    private Builder builder;
+
+    public Director(Builder builder) {
+        this.builder = builder;
+    }
+
+    public void construct(){
+        builder.bulidFoundation();
+        builder.buildArchitecture();
+    }
+}
+</code></pre><p>测试:</p>
+<pre><code>public class Construction {
+    @Test
+    public void test(){
+        Builder woodenBuilder = new WoodenBuilder();
+        Director director = new Director(woodenBuilder);
+        director.construct();
+
+        HomeStruct homeStruct = woodenBuilder.finishConstruct();
+        System.out.println(homeStruct.getFoundation());
+        System.out.println(homeStruct.getArchitecture());
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/13/抽象工厂模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/13/抽象工厂模式/" itemprop="url">抽象工厂模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-13T19:51:32+08:00">
+                2019-05-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/13/抽象工厂模式/" class="leancloud_visitors" data-flag-title="抽象工厂模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>抽象工厂类：</p>
+<pre><code>public interface PhoneFactory {
+    HUAWEI produceHW();
+    XIAOMI produceXM();
+}
+</code></pre><p>具体工厂类：</p>
+<pre><code>//生产一代手机的具体工厂
+public class Phone1Factory implements PhoneFactory {
+    @Override
+    public HUAWEI produceHW() {
+        return new HUAWEI1();
+    }
+
+    @Override
+    public XIAOMI produceXM() {
+        return new XIAOMI1();
+    }
+}
+
+//生产二代手机的具体工厂
+public class Phone2Factory implements PhoneFactory {
+    @Override
+    public HUAWEI produceHW() {
+        return new HUAWEI2();
+    }
+
+    @Override
+    public XIAOMI produceXM() {
+        return new XIAOMI2();
+    }
+}
+</code></pre><p>抽象产品类：</p>
+<pre><code>//产品A
+public interface HUAWEI {
+    void huaweiInfo();
+}
+
+//产品B
+public interface XIAOMI {
+    void xiaomiInfo();
+}
+</code></pre><p>具体产品类：</p>
+<pre><code>//产品A1
+public class HUAWEI1 implements HUAWEI {
+    @Override
+    public void huaweiInfo() {
+        System.out.println(&quot;华为1代&quot;);
+    }
+}
+
+//产品A2
+public class HUAWEI2 implements HUAWEI {
+    @Override
+    public void huaweiInfo() {
+        System.out.println(&quot;华为2代&quot;);
+    }
+}
+
+//产品B1
+public class XIAOMI1 implements XIAOMI {
+    @Override
+    public void xiaomiInfo() {
+        System.out.println(&quot;小米1代&quot;);
+    }
+}
+
+//产品B2
+public class XIAOMI2 implements XIAOMI {
+    @Override
+    public void xiaomiInfo() {
+        System.out.println(&quot;小米2代&quot;);
+    }
+}
+</code></pre><p>测试用例：</p>
+<pre><code>PhoneFactory pf1 = new Phone1Factory();
+HUAWEI huawei = pf1.produceHW();
+XIAOMI xiaomi = pf1.produceXM();
+
+huawei.huaweiInfo();//华为1代
+xiaomi.xiaomiInfo();//小米1代
+</code></pre><p><a href="https://blog.51cto.com/zero01/2070033" target="_blank" rel="noopener">理解工厂方法模式和抽象工厂模式</a></p>
+<h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>1.抽象工厂是可以生产多个产品的，并且这些产品属于同一系列，工厂方法模式只能生产一个产品；
+</code></pre><h4 id="抽象工厂模式优点"><a href="#抽象工厂模式优点" class="headerlink" title="抽象工厂模式优点"></a>抽象工厂模式优点</h4><pre><code>1.具体实例的创建过程与客户端分离，客户端通过抽象接口操作实例对象；
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/12/设计模式分类与原则/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/12/设计模式分类与原则/" itemprop="url">设计模式分类与原则</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-12T19:46:55+08:00">
+                2019-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/12/设计模式分类与原则/" class="leancloud_visitors" data-flag-title="设计模式分类与原则">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>设计模式分类</strong></p>
+<ul>
+<li>创建型模式(5种)：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。</li>
+</ul>
+<ul>
+<li><p>结构型模式（7种）：适配器模式、装饰者模式、代理模式、外观模式、桥接模式、组合模式、享元模式。</p>
+</li>
+<li><p>行为模式（11种）：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</p>
+</li>
+</ul>
+<p><strong>设计模式原则</strong></p>
+<ul>
+<li><p>开闭原则：对拓展开放，对修改关闭，多使用接口和抽象类。</p>
+</li>
+<li><p>里氏替换原则</p>
+</li>
+<li><p>依赖倒转原则</p>
+</li>
+<li><p>接口隔离原则：多使用多个隔离的接口，比使用单个接口要好，降低了类与类的耦合性。</p>
+</li>
+<li><p>迪米特原则</p>
+</li>
+<li><p>合成复用原则：尽量多使用合成/聚合方式，而不是继承。</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/19/阻塞队列源码详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2331,538 +2976,6 @@ private final boolean parkAndCheckInterrupt() {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/判断数组是否是BST的后序遍历/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/03/判断数组是否是BST的后序遍历/" itemprop="url">判断数组是否是BST的后序遍历</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T16:42:57+08:00">
-                2019-04-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/03/判断数组是否是BST的后序遍历/" class="leancloud_visitors" data-flag-title="判断数组是否是BST的后序遍历">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>判断数组是否是BST的后序遍历？</strong></p>
-<pre><code>public boolean VerifySquenceOfBST(int [] sequence) {
-    if(sequence == null || sequence.length == 0){
-        return false;
-    }
-    return verify(sequence,0,sequence.length-1);
-}
-public boolean verify(int[] array,int left,int right){
-    if(left &gt;= right)
-        return true;
-    int i = right;
-    while (i &gt;= left &amp;&amp; array[i] &gt;= array[right])
-        i--;
-    for(int j = i;j &gt;= left;j--){
-        if(array[j] &gt; array[right])
-            return false;
-    }
-    return verify(array,left,i) &amp;&amp; verify(array,i+1,right-1);
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/入栈序列和出栈序列是否匹配/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/03/入栈序列和出栈序列是否匹配/" itemprop="url">入栈序列和出栈序列是否匹配</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T11:33:53+08:00">
-                2019-04-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
-                    <span itemprop="name">策略类</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/03/入栈序列和出栈序列是否匹配/" class="leancloud_visitors" data-flag-title="入栈序列和出栈序列是否匹配">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>入栈序列和出栈序列是否匹配？</strong></p>
-<pre><code>public boolean IsPopOrder(int[] pushA,int[] popA) {
-    if(pushA == null || popA == null || pushA.length == 0 || popA.length == 0){
-        return false;
-    }
-    if(pushA.length != popA.length){
-        return false;
-    }
-    int length = pushA.length;
-    int popIndex = 0;
-    Stack&lt;Integer&gt; assit = new Stack&lt;&gt;();
-    for(int i = 0; i &lt; length;i++){
-        assit.push(pushA[i]);
-
-        while (!assit.isEmpty() &amp;&amp; assit.peek() == popA[popIndex] &amp;&amp; popIndex &lt; length){
-            assit.pop();
-            popIndex++;
-        }
-    }
-    return  popIndex == length;
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/自定义栈返回最小值/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/03/自定义栈返回最小值/" itemprop="url">自定义栈返回最小值</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T10:34:44+08:00">
-                2019-04-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
-                    <span itemprop="name">策略类</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/03/自定义栈返回最小值/" class="leancloud_visitors" data-flag-title="自定义栈返回最小值">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>自定义栈 O(1)时间内返回最小值？</strong></p>
-<pre><code>public class MinStack {
-
-Stack&lt;Integer&gt; dataStack = new Stack&lt;&gt;();
-Stack&lt;Integer&gt; assistStack = new Stack&lt;&gt;();
-
-public void push(int node) {
-    dataStack.push(node);
-    if(assistStack.isEmpty() || node &lt; assistStack.peek()){
-        assistStack.push(node);
-    }else {
-        assistStack.push(assistStack.peek());//保证此位置出栈后能正确返回最小值
-    }
-}
-
-public void pop() {
-    if(!dataStack.isEmpty() &amp;&amp; !assistStack.isEmpty()){
-        dataStack.pop();
-        assistStack.pop();
-    }
-}
-
-public int top() {
-    if(dataStack.isEmpty())
-        throw new RuntimeException(&quot;error: stack is empty&quot;);
-
-    return dataStack.peek();
-}
-
-public int min() {
-    if(assistStack.isEmpty()){
-        throw new RuntimeException(&quot;error: stack is empty&quot;);
-    }
-    return assistStack.peek();
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2917,7 +3030,7 @@ public int min() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">114</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

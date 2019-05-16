@@ -286,6 +286,538 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/判断数组是否是BST的后序遍历/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/判断数组是否是BST的后序遍历/" itemprop="url">判断数组是否是BST的后序遍历</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T16:42:57+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/03/判断数组是否是BST的后序遍历/" class="leancloud_visitors" data-flag-title="判断数组是否是BST的后序遍历">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>判断数组是否是BST的后序遍历？</strong></p>
+<pre><code>public boolean VerifySquenceOfBST(int [] sequence) {
+    if(sequence == null || sequence.length == 0){
+        return false;
+    }
+    return verify(sequence,0,sequence.length-1);
+}
+public boolean verify(int[] array,int left,int right){
+    if(left &gt;= right)
+        return true;
+    int i = right;
+    while (i &gt;= left &amp;&amp; array[i] &gt;= array[right])
+        i--;
+    for(int j = i;j &gt;= left;j--){
+        if(array[j] &gt; array[right])
+            return false;
+    }
+    return verify(array,left,i) &amp;&amp; verify(array,i+1,right-1);
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/入栈序列和出栈序列是否匹配/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/入栈序列和出栈序列是否匹配/" itemprop="url">入栈序列和出栈序列是否匹配</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T11:33:53+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/03/入栈序列和出栈序列是否匹配/" class="leancloud_visitors" data-flag-title="入栈序列和出栈序列是否匹配">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>入栈序列和出栈序列是否匹配？</strong></p>
+<pre><code>public boolean IsPopOrder(int[] pushA,int[] popA) {
+    if(pushA == null || popA == null || pushA.length == 0 || popA.length == 0){
+        return false;
+    }
+    if(pushA.length != popA.length){
+        return false;
+    }
+    int length = pushA.length;
+    int popIndex = 0;
+    Stack&lt;Integer&gt; assit = new Stack&lt;&gt;();
+    for(int i = 0; i &lt; length;i++){
+        assit.push(pushA[i]);
+
+        while (!assit.isEmpty() &amp;&amp; assit.peek() == popA[popIndex] &amp;&amp; popIndex &lt; length){
+            assit.pop();
+            popIndex++;
+        }
+    }
+    return  popIndex == length;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/自定义栈返回最小值/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/自定义栈返回最小值/" itemprop="url">自定义栈返回最小值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T10:34:44+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/03/自定义栈返回最小值/" class="leancloud_visitors" data-flag-title="自定义栈返回最小值">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>自定义栈 O(1)时间内返回最小值？</strong></p>
+<pre><code>public class MinStack {
+
+Stack&lt;Integer&gt; dataStack = new Stack&lt;&gt;();
+Stack&lt;Integer&gt; assistStack = new Stack&lt;&gt;();
+
+public void push(int node) {
+    dataStack.push(node);
+    if(assistStack.isEmpty() || node &lt; assistStack.peek()){
+        assistStack.push(node);
+    }else {
+        assistStack.push(assistStack.peek());//保证此位置出栈后能正确返回最小值
+    }
+}
+
+public void pop() {
+    if(!dataStack.isEmpty() &amp;&amp; !assistStack.isEmpty()){
+        dataStack.pop();
+        assistStack.pop();
+    }
+}
+
+public int top() {
+    if(dataStack.isEmpty())
+        throw new RuntimeException(&quot;error: stack is empty&quot;);
+
+    return dataStack.peek();
+}
+
+public int min() {
+    if(assistStack.isEmpty()){
+        throw new RuntimeException(&quot;error: stack is empty&quot;);
+    }
+    return assistStack.peek();
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/02/判断树的子树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1883,941 +2415,6 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/23/面试总结-操作系统/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/23/面试总结-操作系统/" itemprop="url">面试总结--操作系统</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T09:56:09+08:00">
-                2019-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/操作系统/" itemprop="url" rel="index">
-                    <span itemprop="name">操作系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/23/面试总结-操作系统/" class="leancloud_visitors" data-flag-title="面试总结--操作系统">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>进程和线程的区别？</p>
-<pre><code>1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。
-
-2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。
-
-3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。
-
-4.多进程程序更强壮，多线程程序只要有一个线程挂了，进程就死掉了，但不会影响其他进程。
-</code></pre></li>
-</ol>
-<ol start="2">
-<li><p>进程的通信方式？</p>
-<pre><code>1.管道：半双工、数据单向流动、（无名管道）具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程通信。
-
-    1.1  fork()创建子进程，若成功返回子进程的pid,失败返回-1；
-
-    1.2 子进程会复制父进程的几乎所有信息；
-
-2.信号量：控制多个进程访问共享资源。
-
-    2.1 Linux内核中提供了三种信号量：二元信号量（互斥信号量）、计数信号量和读者写者信号量；
-
-    2.2 读者写者信号量：允许多个并发的读者（使用计数信号量），但仅允许一个写者（使用互斥信号量）。
-</code></pre></li>
-</ol>
-<pre><code>3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。
-4.信号：通知接受事件发生。
-5.共享内存：最快IPC通信，因为数据不需要在不同的进程间复制，通常信号量被用来对共享数据的存储同步；
-6.套接字（socket）：可用于不同机器间的进程通信。
-</code></pre><ol>
-<li>操作系统的内存管理机制？</li>
-<li>CPU飙升怎么定位问题？</li>
-<li><p>LRU算法？</p>
-<p> 缺点：</p>
-<pre><code>当存在热点数据时，LRU的效率好。偶发性的、周期性的批量操作会导致LRU命中率急剧下降，缓存污染情况比较严重；
-</code></pre><p> LinkHashMap实现：</p>
-<pre><code>public class LRUCache&lt;K,V&gt; {
-    private static final float LOADER = 0.75f;
-    private final int CACHESIZE;
-    private LinkedHashMap&lt;K,V&gt; map;
-    public LRUCache(int cacheSize) {
-        this.CACHESIZE = cacheSize;
-        this.map = new LinkedHashMap&lt;K,V&gt;(cacheSize,LOADER,true){
-            @Override
-            protected boolean removeEldestEntry(Map.Entry eldest) {
-                return size() &gt; CACHESIZE;
-            }
-        };
-    }
-
-    public synchronized V get(K k){
-        return map.get(k);
-    }
-
-    public synchronized void put(K k,V v){
-        map.put(k,v);
-    }
-}
-</code></pre></li>
-</ol>
-<p>源码解析：</p>
-<p>在插入节点后的调整：</p>
-<pre><code>void afterNodeInsertion(boolean evict) { 
-    LinkedHashMap.Entry&lt;K,V&gt; first;
-    //大于指定缓存以后删除头节点，即最近最少访问的节点
-    if (evict &amp;&amp; (first = head) != null &amp;&amp; removeEldestEntry(first)) {
-        K key = first.key;
-        removeNode(hash(key), key, null, false, true);
-    }
-}
-</code></pre><p>访问节点后的调整：</p>
-<pre><code> //构造函数指定accessOrder=true，默认为false
- void afterNodeAccess(Node&lt;K,V&gt; e) { // move node to last
-    LinkedHashMap.Entry&lt;K,V&gt; last;
-    if (accessOrder &amp;&amp; (last = tail) != e) {//访问的是尾节点不作调整
-        LinkedHashMap.Entry&lt;K,V&gt; p =
-            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;
-        p.after = null;
-        if (b == null)//访问的是头节点
-            head = a;
-        else
-            b.after = a;
-        if (a != null)
-            a.before = b;
-        else
-            last = b;//last指向访问的最后节点的前一个节点
-        if (last == null)
-            head = p;//链表就一个节点的情况
-        else {
-            p.before = last;
-            last.after = p;
-        }
-        tail = p;
-        ++modCount;
-    }
-}
-</code></pre><ol start="4">
-<li>性能调优看哪些命令？</li>
-<li>操作系统有哪些页面置换算法？</li>
-</ol>
-<p><a href="https://blog.csdn.net/jankin6/article/details/78179320" target="_blank" rel="noopener">页面置换算法</a></p>
-<pre><code>缺页错误：
-
-    CPU请求的内存数据在物理内存中不存在，发生缺页错误，此时可能进行磁盘的读写操作；
-
-页面置换算法：
-
-    1.最佳置换算法（OPT）：替换下次访问距当前时间最长的那些页；向后看；
-
-        1.1 操作系统需要知道将来的事件，理想化算法；
-
-        1.2 刚开始物理块全为空，发生的全是缺页中断（请求式分页），以后发生缺页中断的同时也发生了页面置换；
-
-    2.最近最久未使用算法（LRU）：替换主存中上次使用距当前最远的页。向前看；
-
-        2.1 实现起来比较困难，开销大；
-
-
-    3.先进先出算法（FIFO）: 把主存中的物理块看成是循环缓冲区，隐含逻辑是替换驻留在主存中时间最长的页；
-
-    4.时钟算法（CLOCK）: 每一帧关联一个附加位，称为使用位，某一页首次装入主存时，使用位设置为1，该页被访问到时使用位还是设置为1。
-
-    替换页面时，所有候选帧看成环形缓存区，查找使用位为0的帧替换，同时指针指向下一帧，每当遇到使用位为1的帧时，重新置为0；使用位全为0的话，选择第一个置换；
-</code></pre><ol start="6">
-<li><p>线程和进程如何创建？</p>
-<p> 创建进程：</p>
-<pre><code>1.创建进程所需要的PCB，填写必要的管理信息；
-
-2.把该进程转入到就绪状态并插入到就绪队列中去；
-</code></pre></li>
-</ol>
-<p>7.线程和进程的状态？</p>
-<p>线程状态转换：</p>
-<p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
-<p>进程状态转换：</p>
-<p><img src="https://i.imgur.com/7QE0Xh5.png" alt=""></p>
-<ol start="7">
-<li>NIO和IO的区别？</li>
-<li>Selector工作过程，为什么说他是非阻塞的（select方法是阻塞的，但是注册的描述符不是阻塞的？</li>
-<li>epoll和poll的区别，及其应用场景（因为Selector用到了Reactor模型，所以又提到了select，poll，epoll）？</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Spring框架基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Spring框架基础/" itemprop="url">面试总结--Spring框架基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T20:18:34+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Spring框架基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring框架基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Spring框架基础/" class="leancloud_visitors" data-flag-title="面试总结--Spring框架基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>AOP和IOC原理？</li>
-<li>Spring怎样解决循环依赖的问题？</li>
-<li>DispatchServlet怎样分发任务的？</li>
-<li>注解的原理？</li>
-<li>Spring的入口？</li>
-<li>SpringMVC 的 Controller 中返回值有哪些？</li>
-<li><p>Servlet 和 JSP 的区别？</p>
-<pre><code>1.Servlet控制业务流程，JSP动态生成网页；
-
-2.JSP第一次被访问时会被容器编译为Servlet类；
-
-3.Servlet接受Tomcat发送过来的request和response;
-</code></pre><p> Servlet的四大域对象：</p>
-<pre><code>1.Page域：作用域为整个JSP页面；
-
-2.Request域：一次请求一个request;
-
-3.Session域：一次会话一个session;
-
-4.Application域：作用于整个服务器端，服务器开启对象创建，关闭服务器对象销毁；例如ServletContext通过request.getServletContext（)获得；
-</code></pre><p> JSP的九大内置对象：</p>
-<pre><code>1.request、response、pageContext、session、application、out、config、page、exception;
-</code></pre></li>
-<li><p>Servlet创建的过程？</p>
-</li>
-</ol>
-<ol start="8">
-<li><p>Servlet中的filter？</p>
-<p> 生命周期：</p>
-<pre><code>1.init()
-
-2.doFilter(ServletRequest req,ServletResponse resp,Filterchain chain)
-
-3.destroy()
-</code></pre></li>
-</ol>
-<ol start="9">
-<li><p>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</p>
-<p> 生命周期：</p>
-<pre><code>1.加载Servlet类并创建实例，若存在则不会创建了；
-
-2.init():每个Servlet只会被初始化一次；
-
-3.service():执行Post/GET/DELETE等等请求方法；
-
-4.destroy():仅执行一次；
-</code></pre><p> Servlet单实例多线程</p>
-<pre><code>1.设计成单例减少了创建Servlet实例的开销；
-
-2.容器每接收到一个请求就会通过线程池分配到一个线程，同一请求的多个线程并发执行；
-
-3.所以为了线程安全最好不要在Servlet中用实例变量，或使用synchronied同步；
-
-4.不要使用线程不安全的集合；
-</code></pre><p> Servlet如何处理多个请求同时访问？</p>
-<pre><code>1.Servlet加载实例化；
-
-2.容器初始化Servlet;
-
-3.Servlet容器通过调度线程给处理请求；
-
-4.线程执行service()方法；
-
-5.请求结束，放回线程池，等到被调用；
-</code></pre></li>
-</ol>
-<ol start="10">
-<li><p>Servlet中的变量是否需要加锁？</p>
-<p>实例变量需要考虑同步。</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java集合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Java集合/" itemprop="url">面试总结--Java集合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T20:16:24+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/java集合/" itemprop="url" rel="index">
-                    <span itemprop="name">java集合</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Java集合/" class="leancloud_visitors" data-flag-title="面试总结--Java集合">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.集合的整体框图</p>
-<p>Collection部分：</p>
-<p><img src="https://i.imgur.com/hUulNOH.png" alt=""></p>
-<p>Map部分：</p>
-<p><img src="https://i.imgur.com/YZ7WYhU.png" alt=""></p>
-<p>2.讲讲CopyOnWriteArrayList容器？</p>
-<p><a href="http://www.xuchunfa.cn/2018/10/29/CopyOnWrite%E5%AE%B9%E5%99%A8/">COW详解</a>    </p>
-<ol>
-<li><p>可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？</p>
-<p> 例如：</p>
-<pre><code>for(String s : list){//内部创建迭代器
-    if(s.equals(&quot;a&quot;)){
-        list.remove(s);//看源码发现modCount发生了变化；
-    }
-}
-</code></pre></li>
-</ol>
-<p>再看一下迭代器的next()源码：</p>
-<pre><code> public E next() {
-    checkForComodification();//检查modCount是否等于expectedModCount
-    int i = cursor;
-    if (i &gt;= size)
-        throw new NoSuchElementException();
-    Object[] elementData = ArrayList.this.elementData;
-    if (i &gt;= elementData.length)
-        throw new ConcurrentModificationException();
-    cursor = i + 1;
-    return (E) elementData[lastRet = i];
-}
-
-//异常抛出的地方
-final void checkForComodification() {
-    if (modCount != expectedModCount)
-        throw new ConcurrentModificationException();
-}
-</code></pre><p>解决方法：</p>
-<pre><code>//直接for循环
-for(int i = 0;i &lt; list.size();i++){
-    if(list.get(i).equals(&quot;a&quot;)){
-        list.remove(list.get(i));
-    }
-}
-
-//使用迭代的方法
-Iterator&lt;String&gt; iterator = list.iterator();
-while (iterator.hasNext()){
-    if(iterator.next().equals(&quot;a&quot;)) {
-        iterator.remove();
-    }
-}    
-</code></pre><p>1.vector集合的多线程迭代问题？</p>
-<ol start="2">
-<li>HashMap put()元素产生冲突，为什么用LinkedList（拉链法）而不用ArrayList解决，产生冲突时key值不等，新元素怎样加入链表，为什么这么设计（jdk1.8之前）？</li>
-<li>ArrayList以及LinkedList？</li>
-</ol>
-<p>注意：</p>
-<pre><code>1.remove(int index)设计到了本地方法：
-
-    System.arraycopy(array(数据要被拷贝的数组),srcPos(数据被拷贝的起始坐标)，destArray(目的数组)，destPos(目的数组的起始坐标)，len(要被拷贝的数据的长度))；
-</code></pre><p>总结：</p>
-<pre><code>1.LinkedList底层双向链表，Node&lt;E&gt;节点，first和last指针，插入删除效率高，不需要扩容；
-
-2.ArrayList底层数组结构,数组动态扩容，无参构造数组大小为0，当添加第一个元素后，数组扩容为10，当添加第11个元素时进行扩容newCap = oldCap + oldCap*1.5,通过Arrays.copyOf(elementData,newCapacity)返回新数组；
-</code></pre><p>3.Vector、HashSet以及LinkedHashMap、TreeMap、TreeSet的底层理解？</p>
-<p>   3.1.Vector VS ArrayList:</p>
-<pre><code>1.Vector是线程安全的ArrayList;
-
-2.如果Vector指定了增长系数capacityIncrement&gt;0的话，扩容时增长的长度为capacityIncrement，否则增长的长度为oldCapacity。
-
-    int newCapacity = oldCapacity + ((capacityIncrement &gt; 0) ?
-                              capacityIncrement :oldCapacity);
-
-3.2 HashSet的理解
-
-    1.底层HashMap:
-
-      private transient HashMap&lt;E,Object&gt; map;
-
-    2.加入的元素作为key,value都为统一的PRESENT，HashMap新添加的Entry的value会覆盖原来Entry的value值，但key不会有任何变化；
-
-    public boolean add(E e) {
-        return map.put(e, PRESENT)==null;
-    }
-
-3.3 LinkedHashMap的理解
-
-    1.有序的HashMap，可以实现按插入排序（默认）和按访问排序，每次将访问的节点放置链表末尾；
-
-    2.通过Entry&lt;K,V&gt;的 before、after和header组合指针来维护一个双向列表；
-
-3.54 TreeMap的理解
-</code></pre><p><a href="http://www.xuchunfa.cn/2018/08/14/%E7%BA%A2%E9%BB%91%E6%A0%91/">红黑树的特点</a></p>
-<pre><code>    1.底层红黑树结构，通过比较键值大小构建红黑树，在插入和删除数据后，自我调整。
-
-        public TreeMap() {comparator = null;}//自然比较器
-
-        public TreeMap(Comparator&lt;? super K&gt; comparator) {//用户自定义比较器
-                this.comparator = comparator;
-        }
-
-    2.使Map集合按键值有序排列；
-
-3.5 TreeSet的理解
-
-    1.基于TreeMap实现，底层红黑树结构，特点是：排序和唯一；
-
-        public TreeSet() {
-            this(new TreeMap&lt;E,Object&gt;());
-        }
-
-    2.new TreeSet()默认的是自然排序；
-
-    3.使Set集合变得有序；
-</code></pre><ol start="4">
-<li>HashMap线程不安全的原因？</li>
-</ol>
-<p>参考文献：</p>
-<p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a>注：最后一步 next=null </p>
-<p>不安全原因在于多线程发生扩容时：</p>
-<pre><code>void resize(int newCapacity) {
-    Entry[] oldTable = table;
-    int oldCapacity = oldTable.length;
-    if (oldCapacity == MAXIMUM_CAPACITY) {
-        threshold = Integer.MAX_VALUE;
-        return;
-    }
-
-    Entry[] newTable = new Entry[newCapacity];
-    transfer(newTable, initHashSeedAsNeeded(newCapacity));
-    table = newTable;
-    threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
-}
-
-//多线程会形成循环链表
-void transfer(Entry[] newTable, boolean rehash) {
-    int newCapacity = newTable.length;
-    for (Entry&lt;K,V&gt; e : table) {
-        while(null != e) {
-            Entry&lt;K,V&gt; next = e.next;
-            if (rehash) {
-                e.hash = null == e.key ? 0 : hash(e.key);
-            }
-            int i = indexFor(e.hash, newCapacity);
-            e.next = newTable[i];//头插法时间复杂度低，但由于会反序导致线程不安全
-            newTable[i] = e;
-            e = next;
-        }
-    }
-</code></pre><p>5.关于concurrentHashMap的理解</p>
-<p><a href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap%E7%9A%84%E7%90%86%E8%A7%A3/">concurrentHashMap JDK1.7和JDK1.8的理解</a></p>
-<p>注意：</p>
-<pre><code>1.JDK1.8 和JDK1.7 concurrentHashMap不允许key或value为null
-  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
-
-2.JDK1.7 concurrentHashMap的每个Segment中含有一个
-  transient volatile HashEntry&lt;K,V&gt;[]table，保证了entryAt/setEntryAt的可见性；
-</code></pre><p>总结：</p>
-<pre><code>1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
-
-2.JDK1.8 concurrentHashMap的put操作：
-
-    2.1 通过casTabAt(tab, i, null,new Node&lt;K,V&gt;(hash, key, value, null)方法中的
-
-        U.compareAndSwapObject(tab, ((long)i &lt;&lt; ASHIFT) + ABASE, c, v)CAS方法
-
-        在表头Node&lt;K,V&gt;[] table中插入节点；
-
-    2.2 采用synchronized + CAS的思想。synchronized锁住的是hash值相等的链表tab[i]的头节点；
-
-    2.3 采用尾插法插入新节点；
-
-3.JDK1.8 concurrentHashMap的get操作：
-
-    3.1 读操作没有加锁。key的hash值小于0就去红黑树中查找；hash值大于0就去链表中查找。
-
-    3.2 利用volatile线程可见性 (Node&lt;K,V&gt;)U.getObjectVolatile(tab,i);
-
-
-4.JDK1.7 concurrentHashMap的put操作：
-
-    4.1 获取segment的位置后尝试获取锁，获取到锁后node=null;没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
-
-    4.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
-
-        没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
-
-        最大尝试次数MAX_SCAN_RETRIES则加锁等待。
-
-    4.3 因为插入节点采用的头插法，所以在scanAndLockForPut会判断first有无发生变化，发生变化（有线
-
-        程加入节点）则重新遍历链表；
-
-
-5.JDK1.7 concurrentHashMap的get操作：
-
-    5.1 读操作没有加锁。通过volatile读语义保证可见性。只有当put和remove调用
-    setEntryAt（table,i）方法后（已经释放锁），读操作才能读到变化的table;
-
-    5.2 通过UNSAFE.getObjectVolatile(table,i)获得Segment&lt;K,V&gt;或HashEntry&lt;K,V&gt;[]的表头节点
-
-    保证了线程之间的可见性；
-</code></pre><p>6.关于HashMap的理解</p>
-<p>注意：</p>
-<pre><code>1.JDK1.7 和 JDK1.8 的hashMap都允许key为null,放在table[0]里面；
-</code></pre><p>总结：</p>
-<pre><code>1.JDK1.8 HashMap的resize操作：
-
-    1.1 新的数组长度和Threshold是旧数组对应原值的两倍；
-
-    1.2 旧数组中链表在新数组中的位置确定方法：
-
-        //loHead和loTail维护在新数组中位置不变的链表
-        //hiHead和hiTail维护在新数组中位置发生变化的链表
-        if(hash &amp; oldCap == 0){
-            newTab[j] = loHead;//在新数组中的位置保持不变
-        }else{
-            newTab[j+oldCap] = hiHead;//在新数组中的位置变成j+oldCap
-        } 
-
-2.JDK1.8 HashMap的get和put操作：
-
-    2.1 新加了红黑树的数据结构；
-
-
-3.JDK1.7 HashMap的resize操作：
-
-    3.1 重新计算每个元素在新数组中的位置，采用头插法插入元素到新数组中，线程不安全；
-
-4.JDK1.7 HashMap的get和put操作：
-
-    4.1 普通链表结构；
-</code></pre><p>7.ConcurrentHashMap如何保证线程安全，并发度大小，jdk1.8有什么变化?</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2872,7 +2469,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">114</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
