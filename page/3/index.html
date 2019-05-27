@@ -286,6 +286,341 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/14/同步队列源码解析/" itemprop="url">同步队列源码解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T19:12:09+08:00">
+                2019-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/14/同步队列源码解析/" class="leancloud_visitors" data-flag-title="同步队列源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.总结下独占式的获取同步状态的流程，具体源码如下：</p>
+<p>流程</p>
+<pre><code>1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；
+
+1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；
+
+1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；
+
+1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是进入自旋等待；
+</code></pre><p>AQS的acquire方法源码：用户重写tryAcquire方法</p>
+<pre><code>public final void acquire(int arg) {
+if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同步队列
+    acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+    selfInterrupt();
+}
+</code></pre><p>看一下ReentrantLock的tryAcquire（公平锁FairSync）方法：</p>
+<pre><code>protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {//当前没有线程获取到锁
+            if (!hasQueuedPredecessors() &amp;&amp;
+                compareAndSetState(0, acquires)) {
+                setExclusiveOwnerThread(current);
+                return true;
+            }
+        }
+        //当前线程重入到已经获得的锁，不存在并发
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc &lt; 0)
+                throw new Error(&quot;Maximum lock count exceeded&quot;);
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
+}
+</code></pre><p>若获取同步状态失败，进入addWaiter方法：</p>
+<pre><code>private Node addWaiter(Node mode) {
+    Node node = new Node(Thread.currentThread(), mode);
+    // Try the fast path of enq; backup to full enq on failure
+    Node pred = tail;
+    if (pred != null) {
+        node.prev = pred;
+        //确保线程正确有序的加入到同步队列
+        if (compareAndSetTail(pred, node)) {
+            pred.next = node;
+            return node;
+        }
+    }
+    enq(node);
+    return node;
+}
+</code></pre><p>若尾节点被其他线程更改过了或者tail为空，则跳出if进入到enq(node)方法：</p>
+<pre><code>private Node enq(final Node node) {
+    for (;;) {//节点加入到同步队列中去才退出循环
+        Node t = tail;
+        if (t == null) { 
+            if (compareAndSetHead(new Node()))//同步队列的头节点
+                tail = head;
+        } else {
+            node.prev = t;
+            if (compareAndSetTail(t, node)) {
+                t.next = node;
+                return t;
+            }
+        }
+    }
+}
+</code></pre><p>加入到同步队列中的每个节点会通过自旋不断获取同步状态：详见acquire(arg)中的acquireQueued方法</p>
+<pre><code>final boolean acquireQueued(final Node node, int arg) {
+    boolean failed = true;
+    try {
+        //
+        boolean interrupted = false;
+        for (;;) {//不断自旋获取同步状态
+            //直到节点的前一个节点释放锁，并且前一个节点是头节点
+            final Node p = node.predecessor();
+            if (p == head &amp;&amp; tryAcquire(arg)) {
+                setHead(node);
+                p.next = null; // help GC
+                failed = false;
+                return interrupted;
+            }
+
+            //执行到这说明当前节点的前驱不是head或者tryAcquire(arg)失败
+            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)//tryAcquire()方法抛异常时
+            cancelAcquire(node);
+    }
+}
+</code></pre><p>如果当前节点获取锁失败的话，将会进行线程的挂起操作：</p>
+<p>waitStatus的状态分析：代表后继节点的状态。</p>
+<pre><code>ws = 0 : 默认加入节点的状态值；
+
+ws = -1 : 后继节点等待当前节点（前驱节点）被唤醒；
+
+ws = 1：等待节点等待超时或被中断取消了等待；
+
+ws = -2:后继节点等待在Condition队列中，其他线程对Condition调用signal（）方法后，节点将从等待队列转移到同步队列；
+
+private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+    int ws = pred.waitStatus;
+    if (ws == Node.SIGNAL)//前驱节点状态正常，需要将当前节点挂起
+        return true;
+    if (ws &gt; 0) {//说明前驱节点取消了排队，需要向前找到状态正常的节点
+        //waitStatus = 1表示线程取消了排队
+        do {
+            node.prev = pred = pred.prev;
+        } while (pred.waitStatus &gt; 0);
+        pred.next = node;
+    } else {
+        //正常情况下ws=0，CAS将前驱节点设置为Node.SIGNAL
+        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+    }
+    return false;
+}
+
+//前提为true的条件下，LockSupport工具将线程挂起
+private final boolean parkAndCheckInterrupt() {
+    LockSupport.park(this);
+    return Thread.interrupted();
+}
+</code></pre><hr>
+<p>再看一下释放锁的源码：</p>
+<p>AQS中的release(int arg)方法：</p>
+<pre><code>public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null &amp;&amp; h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+</code></pre><p>其中以ReentrantLock为例，重写了tryRelease方法：</p>
+<pre><code>protected final boolean tryRelease(int releases) {
+        int c = getState() - releases;
+        if (Thread.currentThread() != getExclusiveOwnerThread())
+            throw new IllegalMonitorStateException();
+        boolean free = false;
+        if (c == 0) {//没有出现重入直接释放锁
+            free = true;
+            setExclusiveOwnerThread(null);
+        }
+        setState(c);
+        return free;
+    }
+</code></pre><p>LockSupport唤醒线程：</p>
+<pre><code>private void unparkSuccessor(Node node) {
+
+    int ws = node.waitStatus;
+    if (ws &lt; 0)
+        compareAndSetWaitStatus(node, ws, 0);
+
+    Node s = node.next;
+    if (s == null || s.waitStatus &gt; 0) {
+        s = null;
+        //从后往前找到最靠近头节点的即将被唤醒的线程（waitStatus&lt;=0）
+        for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)
+            if (t.waitStatus &lt;= 0)
+                s = t;
+    }
+    if (s != null)
+        LockSupport.unpark(s.thread);
+}
+</code></pre><p>参考文献：</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer" target="_blank" rel="noopener">同步队列源码分析第一篇</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/判断数组是否是BST的后序遍历/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1937,484 +2272,6 @@ public void test(){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/23/面试总结-计算机网络/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/23/面试总结-计算机网络/" itemprop="url">面试总结--计算机网络</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T09:57:49+08:00">
-                2019-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/计算机网络/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/23/面试总结-计算机网络/" class="leancloud_visitors" data-flag-title="面试总结--计算机网络">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>TCP和UDP的区别？</p>
-<pre><code>1.TCP面向连接的，UDP无连接的。
-
-2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达
-
-3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；
-
-4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&quot;点&quot;代表的是socket(IP:PORT)；
-
-5.TCP首部20个字节，UDP是8个字节；
-</code></pre><p> TCP的特点：</p>
-<pre><code>可靠、稳定、慢、效率低、占用系统资源高。
-</code></pre><p> UDP的特点：</p>
-<pre><code>1.传递数据快、不可靠丢包、快速递交比精准递交更重要，例如：视频语音；
-</code></pre><p> 相关问题解释：</p>
-<pre><code>1.TCP连接的发送方和接收方都有缓存，TCP不关心发送到TCP发送方缓存的报文长度，它会根据对方的窗口值和网络拥塞情况来决定一个报文段包含有多少字节。
-
-2.TCP发送方发送4个数据块，接收方可能2个数据块就能把字节流传到应用层；
-</code></pre></li>
-<li><p>TCP如何保证可靠性，拥塞控制如何实现？</p>
-<pre><code>1.确认和重传；
-
-2.数据校验；
-
-3.数据合理分片；
-
-4.流量控制：
-
-    1.当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。
-
-    2.利用可变窗口rwnd值的变化来进行流量控制；
-
-5.拥塞控制；
-
-    5.1 慢开始和拥塞避免
-
-        1.慢开始（指数）：由小到大增加拥塞窗口的值，每经过一个传输轮次，拥塞窗口加倍；
-
-        2.拥塞避免（线性）：cwnd缓慢增大，每经过一个往返时间RRT就把发送方的拥塞窗口cwnd值加1；
-
-        3.加法增大乘法减小（AIMD）:&quot;乘法减小&quot;即不论在慢开始阶段还是在拥塞避免阶段，只要出现超时就把满开始门限ssthresh减半；
-        &quot;加法增大&quot;即执行拥塞避免算法使cwnd缓慢增大；
-
-    5.2 快重传和快恢复
-
-        1.快重传：接收方每收到一个失序的报文段后就立即发出重复确认，当发送方一连收到3个重复确认就立即重传对方尚未接收到的报文段。
-
-        2.快恢复：收到3个重复确认后，ssthresh减半，把cwnd的值设为ssthresh减半后的值；
-</code></pre></li>
-</ol>
-<ol start="3">
-<li><p>输入URL浏览器发生了什么？</p>
-<pre><code>1.DNS域名解析找到IP地址；
-
-    1.1 解析顺序：本地域名服务器、根域名服务器、顶级域名服务器、权限域名服务器;
-
-    1.2 主机向本地域名服务器的查询采用的是递归查询，即替该主机继续查询，本地域名服务器向根域名服务器的查询采用的是迭代查询；
-
-    1.3 根域名服务器的作用：告诉本地域名服务器下一步去哪一个顶级域名服务器查询；
-
-2.TCP连接服务端和客户端；
-
-3.发送HTTP请求；
-
-4.服务器处理请求；
-
-5.返回响应结果；
-
-6.关闭TCP连接（长连接的时候不关闭）；
-
-7.浏览器解析HTML;
-
-8.浏览器布局渲染。
-</code></pre><p> 3.HTTP协议和TCP/IP协议区别？</p>
-<pre><code>1.HTTP协议是应用层协议，主要解决如何包装数据；TCP/IP协议是运输层协议解决数据如何在网络中传输。
-</code></pre></li>
-</ol>
-<ol start="6">
-<li><p>TCP的三次握手和四次挥手以及为什么是四次挥手？</p>
-<p> 总结：</p>
-<pre><code>1.第一次握手：标志位SYN=1 ACK=0,client_sequence=i,客户端SYN_SEND状态；
-
-2.第二次握手：检查并设置标志位ACK=1 SYN=1和发送确认序号ack number=i+1 server_sequence=j,服务端SYN_RECV状态；
-
-3.第三次握手：检查标志位ACK=1和发送确认序号ack=j+1和client_sequence=i+1,（有序）客户端进入ESTABLISH状态.
-(这里要是出现ack丢失的情况不会重传没有数据的ack,而是重传第二次握手时的数据)
-
-当服务端收到确认号以后，服务端进入到ESTABLISH状态，此时TCP连接才正式建立起来。
-</code></pre><p> 三次握手注意地方：</p>
-<pre><code>1.ACK=1时ack number才有效；
-
-2.SYN(SYN=1)报文段不能携带数据；
-
-3.为什么最后一次还要发送确认？
-
-  主要是为了防止已经失效的连接请求报文段突然又传到服务端；第一次的连接请求因为网络原因延迟达到，服务器会认为是新的连接请求，
-  于是发出确认报文段建立连接，但客户端不会理会发过来的确认，所以建立的TCP连接浪费了，而如果有了最后一次确认，
-  客户端就不会向服务端发出确认，服务端就能知道客户端根本没有请求建立连接。
-
-4.几个状态？
-
-  客户端：SYN_SEND、ESTABLISHED.
-
-  服务端：SYN_RECV、ESTABLISHED.
-</code></pre></li>
-</ol>
-<pre><code>四次挥手：
-
-    4.第一次挥手: FIN=1,seq=u,客户端FIN_WAIT1状态；
-
-    5.第二次挥手：ACK=1 seq=v,ack=u+1,服务端CLOSED_WAIT状态（关闭服务器读通道）；客户端收到ACK进入FIN_WAIT2状态（关闭客户端写通道）；
-
-    6.第三次挥手：服务端发送完数据以后，向客户端发送FIN=1 ACK=1 seq=w ack=u+1,服务端进入到LAST_ACK状态；
-
-    7.第四次挥手：ACK=1 seq=u+1 ack=w+1，客户端进入TIME_WAIT状态（关闭客户端读通道），服务器收到ACK后（关闭服务器写通道）；
-
-注：
-
-    1.TIME_WAIT=2MSL(Maximum Segment Lifetime最长报文寿命)的原因？
-
-        1.1 保证Client最后发送的ACK报文段能够到达Server;假如立即关闭的话，ACK报文如果丢失，Server会重传FIN + ACK报文，Client无法收到重传报文段，于是Server无法进入CLOSED状态；
-
-        1.2 防止本次连接中失效的连接请求报文段进入到下一次TCP连接中去，通过这段持续时间能让本次连接产生的所有报文段从网络中消失；
-
-
-    2.为什么是4次挥手？
-
-        2.1 因为TCP是全双工模式。前两次挥手是关闭Client到Server的传输通道，此时Client仍然可以接收Server的数据；后两次挥手是关闭Server到Client的传输通道；
-
-        2.2 这里把ACK报文和FIN报文分开发是为了确保数据能完整得到传输。当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即可能你还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了。
-
-    3.TCP第三次握手ACK丢失后的处理？
-
-        ACK丢失，服务端的TCP连接的撞状态为SYN_RECV，等待3s、6s、12s后重新发送SYN+ACK包，其中服务端重新发送SYN+ACK的次数默认值是5，如果仍未收到ACK,一段时间后服务端自动关闭这个连接，但是Client认为这个连接已经建立，如果Client端向Server写数据，Server端将以RST包(用于强制关闭tcp连接)响应，方能感知到Server的错误。
-
-    4.状态变化
-
-        客户端：ESTABLISHED、FIN_WAIT1、FIN_WAIT2、TIME_WAIT、CLOSED;
-
-        服务端：ESTABLISHED、CLOSE_WAIT、LAST_ACK、CLOSED;
-</code></pre><p>参考文献：</p>
-<p><a href="https://blog.csdn.net/smileiam/article/details/78226816" target="_blank" rel="noopener">TCP的三次握手、四次挥手</a>        </p>
-<ol start="7">
-<li>http协议？http和https的区别？http的结构及状态码？</li>
-</ol>
-<pre><code>1.http请求结构
-
-    1.1 请求行
-
-        eg:POST /addStudent/addStu.html HTTP/1.1
-
-    1.2 请求头
-
-        Accept:客户端接受什么类型的响应；eg:text/html
-
-        Cache-Control:响应数据在客户端的缓存控制；
-
-        Connection:请求完成后是否关掉TCP连接；eg:keep-alive;
-
-        Content-Type:请求的内容类型；eg:application/x-www-form-urlencoded标准的编码格式；
-
-        Cookie:保存server发送过来的set-Cookie内容；
-
-
-    1.3 请求体
-
-        eg:name=xuchunfa&amp;gender=male&amp;age=18
-
-2.http响应结构
-
-    2.1 响应行
-
-        eg:HTTP/1.1 200 OK
-
-    状态码：
-
-        成功状态码：
-
-            1.1 200 OK:处理成功；
-
-            1.2 204 No Content:请求处理成功，但没有资源返回；
-
-        重定向状态码：
-
-            2.1 301 Moved Permanently:请求的网页已被永久移动到新位置。
-
-            2.2 302 Found:服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。
-
-            2.3 303 See Other:请求者应当对不同的位置使用单独的 GET 请求来检索响应时;
-
-            2.4 304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;
-
-            2.5 305 Use Proxy：必须通过代理访问资源，代理的地址在Response的Location中
-
-        客户端错误状态码：
-
-            4.1 400 Bad Request:请求报文中存在语法错误；
-
-            4.2 401 Unauthorized：未授权，需要有通过Http认证的认证信息；
-
-            4.3 403 Forbidden:访问被拒绝；
-
-            4.4 404 Not Found:页面不存在（无法找到请求资源）；
-
-            4.5 405 Method not allowed：禁用请求中指定的方法；
-
-        服务器错误状态码：
-
-            5.1 500 Internal Server Error：服务器内部发生错误；
-
-            5.2 501 Not Implemented:客户端发起的请求超出服务器的能力范围;
-
-            5.2 503 Service Unavailable：服务器处于超负荷或者正在停机维护；
-
-            5.3 505 HTTP Version Not Supported:不支持的HTTP版本；
-
-    2.2 响应头
-
-        Access-Control-Allow-Origin：响应头指定了该响应的资源是否被允许与给定的origin共享；eg:*表示允许所有域都具有访问资源的权限；
-
-        Location:指定的是需要将页面重新定向至的地址;
-
-        Set-cookie:服务器端向客户端发送的cookie；
-
-
-3.http协议
-
-    1.生成针对目标Web服务器的HTTP请求报文；
-
-    2.http协议是无状态的协议，服务器不会记录客户端的信息，解放了服务器但可能会传输大量重复信息。通过Cookie来维系客户端和服务器之间的状态。、
-
-4.http和https区别
-
-     1.HTTPS协议由HTTP+SSL(Secure Sockets Layer)协议构建的可进行加密传输数据、身份认证的网络协议。
-
-    2.HTTP端口号80，HTTPS端口号443;
-
-5.HTTPS工作原理
-
-    1.客户端发起HTTPS请求，三次握手；
-
-    2.服务端配置。配置数字证书，即公钥和密钥（非对称加密）；
-
-    3.服务端传送SSL证书，证书的内容包括：证书的颁发机构、有效期、公钥、证书持有者、签名等，解决了公钥获取的安全性；
-
-    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；(操作系统内置了受信任的证书颁发机构，取出颁发者CA的公钥对证书的签名进行解密，
-    浏览器使用hash算法计算证书的hash值，与证书签名作对比)
-
-    5.传输加密信息。浏览器随机生成一个对称加密的密钥k（临时会话密钥），密钥k是在客户端和服务端共享的，用证书中的公钥加密k,得到密文k&apos;；
-
-    6.服务端解密信息。用私钥拿到k，并使用密钥k加密传输的数据；
-
-    7.传输服务端加密后的信息；
-
-    8.客户端解密信息。使用共享密钥k解密数据。
-
-总结：
-
-    1.加密算法
-
-        对称加密：加密和解密都是通过同一个密钥进行，采用对称加密进行通信存在密钥协商过程的不安全性；
-
-        非对称加密：私钥加密后的密文只要是公钥都可以解密，但公钥加密后的密文只有私钥可以解密；
-
-        注意：
-
-            1.非对称加密算法保证了协商对称加密算法的过程；
-
-            2.非对称加密算法会有公钥被劫持的问题，通过CA颁发的证书保证安全；
-
-            3.最后客户端和服务端协商出了对称加密算法进行信息的加密传输；
-</code></pre><p>7.HTTP1.0/HTTP1.1/HTTP2.0的区别?</p>
-<pre><code>1.HTTP1.1默认长连接Connection:keep-alive,HTTP1.0 每次请求都要创建连接；
-
-2.HTTP1.x的解析是基于文本，而HTTP2.0是基于二进制格式；
-
-3.HTTP1.1中若干个请求排队串行化单线程处理，后面的请求等待前面请求的返回才能获得执行机会，一旦有某请求超时等，后续请求只能被阻塞；HTTP2.0中多个请求可同时在一个连接上并行执行，某个请求任务耗时严重，不会影响到其它连接的正常执行；
-
-4.HTTP2.0中压缩header;
-
-5.HTTP2.0中实现服务端的推送，即服务端推送能把客户端所需要的资源伴随着index.html一起发送到客户端，减少了客户端重复请求的步骤，大大提升了速度；
-</code></pre><p>参考文献：</p>
-<p><a href="https://blog.csdn.net/u010256388/article/details/68491509" target="_blank" rel="noopener">HTTP请求行、请求头、请求体详解</a>    </p>
-<ol start="8">
-<li><p>Get请求和Post请求有什么区别？</p>
-<pre><code>1.Get请求的数据会附在URI之后，Post把提交的数据放在HTTP请求体中；
-
-2.Get的长度受受限于浏览器URI的长度(2K个字节)，所以一般来说，GET请求传递的数据要比POST请求少；
-
-3.POST比GET安全性高。
-
-4.GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会保留；
-
-5.GET只接受ASCII字符，POST没有限制；
-
-6.GET产生一个数据包：对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据
-
-  POST请求产生二个数据包：浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 OK（返回数据）
-</code></pre></li>
-</ol>
-<ol start="9">
-<li><p>Session和Cookie的区别？</p>
-<pre><code>Session:服务器端保存的数据结构；可以放在内存、数据库、文件中等；Session的实现对客户端Cookie有依赖关系。
-
-Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实现Session的一种方式，如果Cookie被禁用会通过URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；
-
-总结:
-
-1.cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存，是针对某一次会话而言；
-
-2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
-</code></pre></li>
-</ol>
-<p>10.HTTP中幂等性的理解？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2469,7 +2326,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

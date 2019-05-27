@@ -286,6 +286,191 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/Java变量/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/13/Java变量/" itemprop="url">成员变量和局部变量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-13T13:29:01+08:00">
+                2018-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/变量/" itemprop="url" rel="index">
+                    <span itemprop="name">变量</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/13/Java变量/" class="leancloud_visitors" data-flag-title="成员变量和局部变量">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><h4 id="栈内存和堆内存的比较？"><a href="#栈内存和堆内存的比较？" class="headerlink" title="栈内存和堆内存的比较？"></a>栈内存和堆内存的比较？</h4><p>  <img src="https://img-blog.csdn.net/20170430132812242?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWFydmVsX19EZWFk/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+</li>
+</ul>
+<pre><code>**堆内存存的内容：**数组元素、类对象、类中的非静态成员变量（实例变量）、包装类数据(Integer等)、
+
+**栈内存内容：**
+
+1.方法中声明的变量(因为方法执行时，被分配的内存就在栈中,即方法栈)：分基本数据类型变量和引用变量，前者的变量名和值都存在方法栈中，后者声明的变量存放在栈中，所指的对象放在堆中。
+
+2.对象的引用
+
+**方法区：**线程共享的内存区域。类里面的静态成员和静态方法、
+
+**常量池：**方法区的一块内存。
+
+**静态域：**方法区的一块内存。存放类中的静态成员变量
+</code></pre><ul>
+<li><p>局部变量保存在栈内存中，随方法的消失而消失;成员变量存储在堆中的对象里，由垃圾回收器负责回收。</p>
+</li>
+<li><p>包装类数据Integer、String等等存在于堆中。</p>
+</li>
+<li><p>JAVA的自动装箱拆箱</p>
+<p>  装箱：</p>
+<pre><code>Integer a = 99;
+(实际执行Integer.valueof(a))
+</code></pre><p>  拆箱：</p>
+<pre><code>int b = a;(实际执行a.intValue())
+</code></pre><p>  对于Integer:</p>
+<pre><code>在(-128,+128]之间有固定的256个值是为了避免多次创建对象，如果值在这个范围里就直接返回Integer对象
+</code></pre></li>
+</ul>
+<pre><code>参考文档一：[https://blog.csdn.net/Marvel__Dead/article/details/69220153](https://blog.csdn.net/Marvel__Dead/article/details/69220153)
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/13/string/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1174,7 +1359,7 @@ npm install hexo-deployer-git --save
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
