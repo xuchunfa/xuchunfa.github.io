@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="代理模式分很多种，下面一一简单总结介绍： 详细内容见博客： 左潇龙讲代理模式  静态代理 1.采用静态代理我们通常会使用组合的方式。  2.代理类一般要持有一个被代理的对象的引用。  3.对于我们不关心的方法，全部委托给被代理的对象处理。  4.自己处理我们关心的方法。  动态代理 1.代理一系列类的某一些方法。">
+<meta name="description" content="总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；  如果加入容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="代理模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/11/08/代理模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="代理模式分很多种，下面一一简单总结介绍： 详细内容见博客： 左潇龙讲代理模式  静态代理 1.采用静态代理我们通常会使用组合的方式。  2.代理类一般要持有一个被代理的对象的引用。  3.对于我们不关心的方法，全部委托给被代理的对象处理。  4.自己处理我们关心的方法。  动态代理 1.代理一系列类的某一些方法。">
+<meta property="og:description" content="总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；  如果加入容">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-13T12:25:00.560Z">
+<meta property="og:updated_time" content="2019-05-23T07:33:55.581Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="代理模式">
-<meta name="twitter:description" content="代理模式分很多种，下面一一简单总结介绍： 详细内容见博客： 左潇龙讲代理模式  静态代理 1.采用静态代理我们通常会使用组合的方式。  2.代理类一般要持有一个被代理的对象的引用。  3.对于我们不关心的方法，全部委托给被代理的对象处理。  4.自己处理我们关心的方法。  动态代理 1.代理一系列类的某一些方法。">
+<meta name="twitter:description" content="总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；  如果加入容">
 
 
 
@@ -399,24 +399,189 @@
       
 
       
-        <p>代理模式分很多种，下面一一简单总结介绍：</p>
-<p>详细内容见博客：</p>
-<p><a href="https://www.cnblogs.com/zuoxiaolong/p/pattern3.html" target="_blank" rel="noopener">左潇龙讲代理模式</a></p>
-<ul>
-<li><p>静态代理</p>
-<pre><code>1.采用静态代理我们通常会使用组合的方式。
+        <p>总结：</p>
+<p>1.代理模式优点：</p>
+<pre><code>1.良好的拓展性。修改被代理的角色不影响调用者使用代理；
 
-2.代理类一般要持有一个被代理的对象的引用。
+2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作；
+</code></pre><p>2.代理模式与装饰者模式区别：</p>
+<pre><code>装饰者模式是&quot;新增行为&quot;，代理模式是&quot;控制访问&quot;；
+</code></pre><p>3.Spring AOP</p>
+<pre><code>如果加入容器的目标对象有接口实现，使用JDK动态代理；
 
-3.对于我们不关心的方法，全部委托给被代理的对象处理。
+如果加入容器的目标对象没有实现接口，使用Cglib代理；
+</code></pre><p><strong>静态代理</strong></p>
+<pre><code>指在程序运行前就已经存在代理类的字节码文件了，即代理类和委托类关系在运行前就已经确定了；
+</code></pre><p>经纪人和演员的例子：（静态代理）</p>
+<pre><code>//Subject角色
+public interface Subject {
+    void perform();
+}
 
-4.自己处理我们关心的方法。
-</code></pre></li>
-<li><p>动态代理</p>
-<pre><code>1.代理一系列类的某一些方法。
-</code></pre></li>
-</ul>
+//RealSubject角色
+public class Actor implements Subject {
+    @Override
+    public void perform() {
+        System.out.println(getClass().getSimpleName() + &quot;: 负责演戏&quot;);
+    }
+}
 
+//Proxy角色
+public class Agent implements Subject {
+
+    private Subject actor;
+
+    public Agent(Subject actor) {
+        this.actor = actor;
+    }
+
+    @Override
+    public void perform() {
+        System.out.println(getClass().getSimpleName() + &quot;: 负责接戏&quot;);
+        actor.perform();
+    }
+}
+</code></pre><p>Client:</p>
+<pre><code>Subject actor = new Actor();
+Agent proxy = new Agent(actor);
+proxy.perform();
+</code></pre><p><strong>Java动态代理</strong></p>
+<p>1.代理类是动态生成的；</p>
+<pre><code>//java.lang.reflect.Proxy 返回值为代理类的实例
+public static Object newProxyInstance(ClassLoader loader,
+                                  Class&lt;?&gt;[] interfaces,
+                                  InvocationHandler h)
+</code></pre><p>Proxy.newProxyInstance()内部实现原理过程：</p>
+<pre><code>//内部包含委托类的引用target，实现代理类到委托类的分派转发
+1.InvocationHandler handler = new InvocationHandlerImpl(..);
+
+//动态创建代理类的类对象
+2.Class clazz = Proxy.getProxyClass(classLoader, new Class[] { Interface.class, ... });
+
+//反射获取代理类类对象的构造函数对象
+3.Constructor constructor = clazz.getConstructor(new Class[] { InvocationHandler.class }); 
+
+//动态创建代理类的实例
+4.Interface Proxy = (Interface)constructor.newInstance(new Object[] {handler});
+</code></pre><p>2.第三个参数由用户实现InvocationHandler接口，重写invoke()方法，实现对被代理对象的方法访问；</p>
+<pre><code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    private Animal animal;
+    System.out.println(&quot;--------start------------&quot;);
+    Object proxyObject = method.invoke(animal,args);
+    System.out.println(&quot;---------end----------&quot;);
+    System.out.println();
+
+    //返回代理对象
+    return proxyObject;
+}
+</code></pre><p>动物实例：</p>
+<pre><code>public interface Animal {
+
+    public void eat(String food);
+    public void sleep(String address);
+
+}
+
+//被代理类
+public class PriorHuman implements Animal {
+
+    public void eat(String food) {
+        System.out.println(&quot;PriorHuman eat &quot; + food);
+    }
+
+    public void sleep(String address) {
+        System.out.println(&quot;PriorHuman sleep at &quot; + address);
+    }
+}
+
+//用户自己的调用处理器
+public class InvocationHandlerImpl implements InvocationHandler {
+
+    //更具有通用性
+    private Object target;
+
+    public InvocationHandlerImpl(Animal animal) {
+        this.target = animal;
+    }
+
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+        System.out.println(&quot;--------start------------&quot;);
+        Object proxyObject = method.invoke(target,args);
+        System.out.println(&quot;---------end----------&quot;);
+        System.out.println();
+
+        //返回代理对象
+        return proxyObject;
+    }
+}
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args) throws Throwable {
+
+    Animal human = new PriorHuman();
+
+    //三个参数
+    ClassLoader classLoader = human.getClass().getClassLoader();
+    Class[] interfaces = human.getClass().getInterfaces();
+    InvocationHandler handler = new InvocationHandlerImpl(human);
+
+    //代理类实例
+    Animal proxy = (Animal) Proxy.newProxyInstance(classLoader,interfaces, handler);
+
+    //实际执行过程是通过反射调用委托类的方法
+    proxy.eat(&quot;hotdog&quot;);
+    proxy.sleep(&quot;Big house&quot;);
+}
+</code></pre><p><strong>Cglib代理（子类代理）</strong></p>
+<pre><code>被代理的对象只是一个单独的对象，没有实现任何接口，这时在内存中构建一个子类对象，实现对
+
+目标对象功能的拓展；
+</code></pre><p>注意：</p>
+<pre><code>final类不会被代理，final或static方法不会被拦截，即不会执行目标对象的额外业务方法；
+</code></pre><p>实例：</p>
+<pre><code>//被代理的对象
+public class UserDao {
+    public void save(){
+        System.out.println(&quot;保存数据.....&quot;);
+    }
+}
+
+//CGLIB代理工厂
+public class ProxyFactory implements MethodInterceptor {
+
+    private Object target;
+    public ProxyFactory(Object target) {
+        this.target = target;
+    }
+
+    //给目标对象创建一个代理对象
+    public Object getProxyInstance(){
+        Enhancer enhancer = new Enhancer();
+        //设置父类
+        enhancer.setSuperclass(target.getClass());
+        //设置回调函数
+        enhancer.setCallback(this);
+
+        //创建子类对象(代理对象)
+        return enhancer.create();
+    }
+
+    //类似于InvocationHandler的作用
+    @Override
+    public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+        System.out.println(&quot;开启事务&quot;);
+        Object result = method.invoke(target,args);
+        System.out.println(&quot;提交事务&quot;);
+        return result;
+    }
+}
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args){
+    UserDao user = new UserDao();
+    UserDao proxy = (UserDao) new ProxyFactory(user).getProxyInstance();
+    proxy.save();
+}
+</code></pre>
       
     </div>
     
@@ -531,7 +696,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

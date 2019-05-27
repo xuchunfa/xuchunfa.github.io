@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-01T13:19:39.166Z">
+<meta property="og:updated_time" content="2019-05-24T08:19:30.023Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java语言基础">
 <meta name="twitter:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
@@ -448,6 +448,45 @@
 2.的确创建了一个对象；
 </code></pre><p> 深拷贝：</p>
 <pre><code>1.重写引用对象的克隆方法，即可实现深拷贝；
+
+class Father implements Cloneable{
+    private String fatherName;
+    private Child child;
+
+    public Father(String fatherName,Child child) {
+        this.fatherName = fatherName;
+        this.child = child;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        //重写clone方法
+        Father father = (Father) super.clone();
+        father.child = (Child) father.child.clone();
+        return father;
+    }
+}
+
+class Child implements Cloneable{
+    private String childName;
+
+    public Child(String childName) {
+        this.childName = childName;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+
+@Test
+public void test() throws CloneNotSupportedException {
+    Child child = new Child(&quot;xiaoxu&quot;);
+    Father father = new Father(&quot;daxu&quot;,child);
+    Father clonedFather = (Father) father.clone();
+    System.out.println(father.child == clonedFather.child);//false
+}
 </code></pre><p> 总结：</p>
 <pre><code>如果一个对象内部只有基本数据类型，那用 clone() 方法获取到的就是这个对象的深拷贝，
 
@@ -475,10 +514,33 @@
 2.一般字符串相加不会有多线程操作，推荐使用StringBuilder;
 
 3.如果要对全局变量字符串进行拼接建议使用StringBuffer；
+</code></pre><p>8.String常见面试题？</p>
+<pre><code>//JDK1.7 以后字符串常量池也在堆里面了
+public class Main {
+    public static void main(String[] args) {
+        String s1 = &quot;hello&quot;;
+        String s2 = &quot;hello&quot;;
+        String s3 = &quot;he&quot; + &quot;llo&quot;;
+        String s4 = &quot;hel&quot; + new String(&quot;lo&quot;);
+        String s5 = new String(&quot;hello&quot;);
+        String s6 = s5.intern();
+        String s7 = &quot;h&quot;;
+        String s8 = &quot;ello&quot;;
+        String s9 = s7 + s8;
+        System.out.println(s1==s2);//true
+        System.out.println(s1==s3);//true 编译优化
+        System.out.println(s1==s4);//false s1常量池地址 s4普通堆地址
+        System.out.println(s1==s9);//false s1常量池地址 s9普通堆地址
+        System.out.println(s4==s5);//false s4普通堆地址 s5普通堆地址
+        System.out.println(s1==s6);//true s1常量池地址 s6常量池地址
+}
+</code></pre><p>String.intern()方法：</p>
+<pre><code>使一个位于堆中的字符串在运行期间动态地加入到字符串常量池中，如果字符串常量池中已有该对象
+对应的字面量，则直接返回该字面量在字符串常量池中的引用。
 </code></pre><p>8.String的intern()方法？</p>
 <pre><code>  1.String 的 String pool是一个固定大小的HashTable，默认大小1009；
 
-2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回；
+2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回它的引用；
 
 3.String s = new String(&quot;1&quot;)创建了两个对象，一个存放在常量池，另一个存放在Heap区；
 
@@ -655,7 +717,7 @@ System.out.println(s3 == s4);//true
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

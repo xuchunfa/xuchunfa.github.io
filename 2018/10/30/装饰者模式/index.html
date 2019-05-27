@@ -81,20 +81,19 @@
 
 
 
-<meta name="description" content="UML类图：  1.Component接口(也可以是抽象类) public interface Component {     void method()； } 2.待装饰的对象: public class ConcreteComponent implements Component{  public void method() {     System.out.println(&amp;quot;原来的">
+<meta name="description" content="装饰者模式 抽象组件（计算蛋糕多少钱） public abstract class Cost {     abstract double getCost(); } 具体组件 public class CakeCost extends Cost {     protected Cost cost;     @Override     double getCost() {         return">
 <meta property="og:type" content="article">
 <meta property="og:title" content="装饰者模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/10/30/装饰者模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="UML类图：  1.Component接口(也可以是抽象类) public interface Component {     void method()； } 2.待装饰的对象: public class ConcreteComponent implements Component{  public void method() {     System.out.println(&amp;quot;原来的">
+<meta property="og:description" content="装饰者模式 抽象组件（计算蛋糕多少钱） public abstract class Cost {     abstract double getCost(); } 具体组件 public class CakeCost extends Cost {     protected Cost cost;     @Override     double getCost() {         return">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/4VrgAqN.jpg">
 <meta property="og:image" content="https://i.imgur.com/RxUg3EW.jpg">
-<meta property="og:updated_time" content="2018-11-08T06:42:39.776Z">
+<meta property="og:updated_time" content="2019-05-22T12:08:03.317Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="装饰者模式">
-<meta name="twitter:description" content="UML类图：  1.Component接口(也可以是抽象类) public interface Component {     void method()； } 2.待装饰的对象: public class ConcreteComponent implements Component{  public void method() {     System.out.println(&amp;quot;原来的">
-<meta name="twitter:image" content="https://i.imgur.com/4VrgAqN.jpg">
+<meta name="twitter:description" content="装饰者模式 抽象组件（计算蛋糕多少钱） public abstract class Cost {     abstract double getCost(); } 具体组件 public class CakeCost extends Cost {     protected Cost cost;     @Override     double getCost() {         return">
+<meta name="twitter:image" content="https://i.imgur.com/RxUg3EW.jpg">
 
 
 
@@ -402,53 +401,41 @@
       
 
       
-        <p>UML类图：</p>
-<p><img src="https://i.imgur.com/4VrgAqN.jpg" alt=""></p>
-<p>1.Component接口(也可以是抽象类)</p>
-<pre><code>public interface Component {
-    void method()；
+        <p><strong>装饰者模式</strong></p>
+<p>抽象组件（计算蛋糕多少钱）</p>
+<pre><code>public abstract class Cost {
+    abstract double getCost();
 }
-</code></pre><p>2.待装饰的对象:</p>
-<pre><code>public class ConcreteComponent implements Component{
+</code></pre><p>具体组件</p>
+<pre><code>public class CakeCost extends Cost {
+    protected Cost cost;
+    @Override
+    double getCost() {
+        return 60;
+    }
+}
+</code></pre><p>抽象装饰者</p>
+<pre><code>public class Decorator extends Cost {
+    protected Cost cost;
+    @Override
+    double getCost() {
+        return cost.getCost();
+    }
+}
+</code></pre><p>具体装饰者</p>
+<pre><code>public class FruitCake extends Decorator  {
+    public FruitCake(Cost cost) {
+        this.cost = cost;
+    }
 
-public void method() {
-    System.out.println(&quot;原来的方法&quot;);
+    //水果蛋糕多10块
+    @Override
+    double getCost() {
+        return cost.getCost() + 10;
+    }
 }
-}
-</code></pre><p>3.抽象装饰器父类（并不是必须的）</p>
-<pre><code>public abstract class Decorator implements Component{
-
-protected Component component;//组合待装饰的接口或者抽象类，更加灵活
-
-public Decorator(Component component) {
-    super();
-    this.component = component;
-}
-
-public void method() {
-    component.method();
-}
-}
-</code></pre><p>4.具体的装饰类：</p>
-<pre><code>package com.decorator;
-
-public class ConcreteDecoratorA extends Decorator{
-
-public ConcreteDecoratorA(Component component) {
-    super(component);
-}
-
-public void methodA(){
-    System.out.println(&quot;被装饰器A扩展的功能&quot;);
-}
-
-public void method(){
-    System.out.println(&quot;针对该方法加一层A包装&quot;);
-    super.method();
-    System.out.println(&quot;A包装结束&quot;);
-}
-}
-</code></pre><ul>
+</code></pre><hr>
+<ul>
 <li>JAVA中的IO就是装饰者模式的具体应用：</li>
 </ul>
 <p><img src="https://i.imgur.com/RxUg3EW.jpg" alt=""></p>
@@ -569,7 +556,7 @@ public void method(){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

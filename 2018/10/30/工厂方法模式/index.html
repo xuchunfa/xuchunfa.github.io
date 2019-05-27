@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="简单工厂模式（静态工厂模式） //通常通过 配置文件 + 反射 + 简单工厂模式 获取实例 public class ConcretePhoneFactory {     public static &amp;lt;T extends Phone&amp;gt; T createPhone(Class&amp;lt;T&amp;gt; c) {    Phone phone=null;    try{        phone">
+<meta name="description" content="简单工厂模式（静态工厂模式） 就只有一个工厂类，负责所有实例的生成；  适用场景：      1.需要创建的对象较少；      2.客户端不关心对象的创建过程； 实例： //通常通过 配置文件 + 反射 + 简单工厂模式 获取实例 public class ConcretePhoneFactory {     public static &amp;lt;T extends Phone&amp;gt; T cre">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工厂方法模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/10/30/工厂方法模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="简单工厂模式（静态工厂模式） //通常通过 配置文件 + 反射 + 简单工厂模式 获取实例 public class ConcretePhoneFactory {     public static &amp;lt;T extends Phone&amp;gt; T createPhone(Class&amp;lt;T&amp;gt; c) {    Phone phone=null;    try{        phone">
+<meta property="og:description" content="简单工厂模式（静态工厂模式） 就只有一个工厂类，负责所有实例的生成；  适用场景：      1.需要创建的对象较少；      2.客户端不关心对象的创建过程； 实例： //通常通过 配置文件 + 反射 + 简单工厂模式 获取实例 public class ConcretePhoneFactory {     public static &amp;lt;T extends Phone&amp;gt; T cre">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-15T11:55:57.152Z">
+<meta property="og:updated_time" content="2019-05-22T06:47:44.444Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工厂方法模式">
-<meta name="twitter:description" content="简单工厂模式（静态工厂模式） //通常通过 配置文件 + 反射 + 简单工厂模式 获取实例 public class ConcretePhoneFactory {     public static &amp;lt;T extends Phone&amp;gt; T createPhone(Class&amp;lt;T&amp;gt; c) {    Phone phone=null;    try{        phone">
+<meta name="twitter:description" content="简单工厂模式（静态工厂模式） 就只有一个工厂类，负责所有实例的生成；  适用场景：      1.需要创建的对象较少；      2.客户端不关心对象的创建过程； 实例： //通常通过 配置文件 + 反射 + 简单工厂模式 获取实例 public class ConcretePhoneFactory {     public static &amp;lt;T extends Phone&amp;gt; T cre">
 
 
 
@@ -400,6 +400,14 @@
 
       
         <p><strong>简单工厂模式（静态工厂模式）</strong></p>
+<pre><code>就只有一个工厂类，负责所有实例的生成；
+
+适用场景：
+
+    1.需要创建的对象较少；
+
+    2.客户端不关心对象的创建过程；
+</code></pre><p>实例：</p>
 <pre><code>//通常通过 配置文件 + 反射 + 简单工厂模式 获取实例
 public class ConcretePhoneFactory {
 
@@ -414,14 +422,14 @@ public class ConcretePhoneFactory {
    return (T) phone;
    }
 }
-</code></pre><p>测试用例：</p>
-<pre><code>缺点：
 
-    核心工厂类负责所有产品的创建，违反了高内聚的责任分配原则；
+缺点：
+
+    1.核心工厂类负责所有产品的创建，违反了高内聚的责任分配原则；
 </code></pre><p><strong>工厂方法模式</strong></p>
-<pre><code>父类决定实例的生成方式，但不决定所要生成的具体的类，具体的处理交给子类，实现了生成实例的框架和实际负责生成实例的类的解耦。
+<pre><code>不再提供一个统一的工厂类来创建所有的对象，而是针对不同的对象提供不同的工厂；
 </code></pre><p>举个生产手机的例子增加印象：</p>
-<p>1.抽象产品类：</p>
+<p>1.抽象产品类：（接口）</p>
 <pre><code>public abstract class Phone {
 
 //两种手机都可以打电话
@@ -457,7 +465,7 @@ private MIPhone(){}
 public abstract class PhoneFactory  {
        public abstract &lt;T extends Phone&gt; T createPhone(Class&lt;T&gt; c);
 }
-</code></pre><p>4.具体工厂类：</p>
+</code></pre><p>4.具体工厂类：反射优化的方法。</p>
 <pre><code>public class ConcretePhoneFactory extends PhoneFactory {
 
   @Override
@@ -474,7 +482,8 @@ public abstract class PhoneFactory  {
    }
 }
 </code></pre><p>调用：</p>
-<pre><code>PhoneFactory phoneFactory=new ConcretePhoneFactory();
+<pre><code>//客户端直接操作 PhoneFactory 和 Phone 接口
+PhoneFactory phoneFactory=new ConcretePhoneFactory();
 Phone huaiweiphone=phoneFactory.createPhone(HUAWEIPhone.class);
 Phone miphone=phoneFactory.createPhone(MIPhone.class);
 </code></pre><p>特点：</p>
@@ -641,7 +650,7 @@ Phone miphone=phoneFactory.createPhone(MIPhone.class);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

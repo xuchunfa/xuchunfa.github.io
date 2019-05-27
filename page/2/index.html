@@ -286,7 +286,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/判断数组是否是BST的后序遍历/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/15/建造者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -305,7 +305,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/03/判断数组是否是BST的后序遍历/" itemprop="url">判断数组是否是BST的后序遍历</a></h1>
+                <a class="post-title-link" href="/2019/05/15/建造者模式/" itemprop="url">建造者模式</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T16:42:57+08:00">
-                2019-04-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-15T20:44:57+08:00">
+                2019-05-15
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -357,7 +357,7 @@
 
           
           
-             <span id="/2019/04/03/判断数组是否是BST的后序遍历/" class="leancloud_visitors" data-flag-title="判断数组是否是BST的后序遍历">
+             <span id="/2019/05/15/建造者模式/" class="leancloud_visitors" data-flag-title="建造者模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -390,24 +390,86 @@
       
         
           
-            <p><strong>判断数组是否是BST的后序遍历？</strong></p>
-<pre><code>public boolean VerifySquenceOfBST(int [] sequence) {
-    if(sequence == null || sequence.length == 0){
-        return false;
+            <p><strong>建造者模式</strong></p>
+<pre><code>用户不必知道对象的构建过程和具体实现细节就能创建出复杂的对象，将建造复杂对象的过程和组成对象的部件解耦。
+</code></pre><p>Builder:</p>
+<pre><code>//构建部件的抽象类或接口
+public abstract class Builder {
+    protected HomeStruct struct = new HomeStruct();
+    abstract void bulidFoundation();
+    abstract void buildArchitecture();
+    public HomeStruct finishConstruct(){
+        return struct;
     }
-    return verify(sequence,0,sequence.length-1);
 }
-public boolean verify(int[] array,int left,int right){
-    if(left &gt;= right)
-        return true;
-    int i = right;
-    while (i &gt;= left &amp;&amp; array[i] &gt;= array[right])
-        i--;
-    for(int j = i;j &gt;= left;j--){
-        if(array[j] &gt; array[right])
-            return false;
+</code></pre><p>ConcreteBuiler:</p>
+<pre><code>//具体部件构建的实现（木屋材料）
+public class WoodenBuilder extends Builder {
+
+    private String material = &quot;wood&quot;;
+    @Override
+    public void bulidFoundation() {
+        System.out.println(&quot;地基使用：&quot; + material);
+        struct.setFoundation(material);
     }
-    return verify(array,left,i) &amp;&amp; verify(array,i+1,right-1);
+
+    @Override
+    public void buildArchitecture() {
+        System.out.println(&quot;架构使用：&quot; + material);
+        struct.setArchitecture(material);
+    }
+
+    public HomeStruct finishContruct(){
+        return struct;
+    }
+}
+
+//水泥材料
+public class CementBuilder extends Builder {
+
+    private String material = &quot;cement&quot;;
+    @Override
+    public void bulidFoundation() {
+        System.out.println(&quot;地基使用：&quot; + material);
+        struct.setFoundation(material);
+    }
+
+    @Override
+    public void buildArchitecture() {
+        System.out.println(&quot;架构使用：&quot; + material);
+        struct.setArchitecture(material);
+    }
+
+    public HomeStruct finishContruct(){
+        return struct;
+    }
+}
+</code></pre><p>Director:</p>
+<pre><code>//使用不同材料可以构造不同建筑物
+public class Director {
+    private Builder builder;
+
+    public Director(Builder builder) {
+        this.builder = builder;
+    }
+
+    public void construct(){
+        builder.bulidFoundation();
+        builder.buildArchitecture();
+    }
+}
+</code></pre><p>测试:</p>
+<pre><code>public class Construction {
+    @Test
+    public void test(){
+        Builder woodenBuilder = new WoodenBuilder();
+        Director director = new Director(woodenBuilder);
+        director.construct();
+
+        HomeStruct homeStruct = woodenBuilder.finishConstruct();
+        System.out.println(homeStruct.getFoundation());
+        System.out.println(homeStruct.getArchitecture());
+    }
 }
 </code></pre>
           
@@ -457,7 +519,7 @@ public boolean verify(int[] array,int left,int right){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/入栈序列和出栈序列是否匹配/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/13/抽象工厂模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -476,7 +538,7 @@ public boolean verify(int[] array,int left,int right){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/03/入栈序列和出栈序列是否匹配/" itemprop="url">入栈序列和出栈序列是否匹配</a></h1>
+                <a class="post-title-link" href="/2019/05/13/抽象工厂模式/" itemprop="url">抽象工厂模式</a></h1>
         
 
         <div class="post-meta">
@@ -488,8 +550,8 @@ public boolean verify(int[] array,int left,int right){
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T11:33:53+08:00">
-                2019-04-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-13T19:51:32+08:00">
+                2019-05-13
               </time>
             
 
@@ -511,8 +573,8 @@ public boolean verify(int[] array,int left,int right){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
-                    <span itemprop="name">策略类</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -528,7 +590,7 @@ public boolean verify(int[] array,int left,int right){
 
           
           
-             <span id="/2019/04/03/入栈序列和出栈序列是否匹配/" class="leancloud_visitors" data-flag-title="入栈序列和出栈序列是否匹配">
+             <span id="/2019/05/13/抽象工厂模式/" class="leancloud_visitors" data-flag-title="抽象工厂模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -561,27 +623,91 @@ public boolean verify(int[] array,int left,int right){
       
         
           
-            <p><strong>入栈序列和出栈序列是否匹配？</strong></p>
-<pre><code>public boolean IsPopOrder(int[] pushA,int[] popA) {
-    if(pushA == null || popA == null || pushA.length == 0 || popA.length == 0){
-        return false;
-    }
-    if(pushA.length != popA.length){
-        return false;
-    }
-    int length = pushA.length;
-    int popIndex = 0;
-    Stack&lt;Integer&gt; assit = new Stack&lt;&gt;();
-    for(int i = 0; i &lt; length;i++){
-        assit.push(pushA[i]);
-
-        while (!assit.isEmpty() &amp;&amp; assit.peek() == popA[popIndex] &amp;&amp; popIndex &lt; length){
-            assit.pop();
-            popIndex++;
-        }
-    }
-    return  popIndex == length;
+            <p><strong>抽象工厂模式</strong></p>
+<pre><code>工厂类不单单是创建一个对象，而是创建一组对象；
+</code></pre><p>抽象工厂类：</p>
+<pre><code>public interface PhoneFactory {
+    HUAWEI produceHW();
+    XIAOMI produceXM();
 }
+</code></pre><p>具体工厂类：</p>
+<pre><code>//生产一代手机的具体工厂
+public class Phone1Factory implements PhoneFactory {
+    @Override
+    public HUAWEI produceHW() {
+        return new HUAWEI1();
+    }
+
+    @Override
+    public XIAOMI produceXM() {
+        return new XIAOMI1();
+    }
+}
+
+//生产二代手机的具体工厂
+public class Phone2Factory implements PhoneFactory {
+    @Override
+    public HUAWEI produceHW() {
+        return new HUAWEI2();
+    }
+
+    @Override
+    public XIAOMI produceXM() {
+        return new XIAOMI2();
+    }
+}
+</code></pre><p>抽象产品类：</p>
+<pre><code>//产品A
+public interface HUAWEI {
+    void huaweiInfo();
+}
+
+//产品B
+public interface XIAOMI {
+    void xiaomiInfo();
+}
+</code></pre><p>具体产品类：</p>
+<pre><code>//产品A1
+public class HUAWEI1 implements HUAWEI {
+    @Override
+    public void huaweiInfo() {
+        System.out.println(&quot;华为1代&quot;);
+    }
+}
+
+//产品A2
+public class HUAWEI2 implements HUAWEI {
+    @Override
+    public void huaweiInfo() {
+        System.out.println(&quot;华为2代&quot;);
+    }
+}
+
+//产品B1
+public class XIAOMI1 implements XIAOMI {
+    @Override
+    public void xiaomiInfo() {
+        System.out.println(&quot;小米1代&quot;);
+    }
+}
+
+//产品B2
+public class XIAOMI2 implements XIAOMI {
+    @Override
+    public void xiaomiInfo() {
+        System.out.println(&quot;小米2代&quot;);
+    }
+}
+</code></pre><p>测试用例：</p>
+<pre><code>PhoneFactory pf1 = new Phone1Factory();
+HUAWEI huawei = pf1.produceHW();
+XIAOMI xiaomi = pf1.produceXM();
+
+huawei.huaweiInfo();//华为1代
+xiaomi.xiaomiInfo();//小米1代
+</code></pre><p><a href="https://blog.51cto.com/zero01/2070033" target="_blank" rel="noopener">理解工厂方法模式和抽象工厂模式</a></p>
+<h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>1.抽象工厂是可以生产多个产品的，并且这些产品属于同一系列，工厂方法模式只能生产一个产品；
+</code></pre><h4 id="抽象工厂模式优点"><a href="#抽象工厂模式优点" class="headerlink" title="抽象工厂模式优点"></a>抽象工厂模式优点</h4><pre><code>1.具体实例的创建过程与客户端分离，客户端通过抽象接口操作实例对象；
 </code></pre>
           
         
@@ -630,7 +756,7 @@ public boolean verify(int[] array,int left,int right){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/自定义栈返回最小值/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/12/设计模式分类与原则/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -649,7 +775,7 @@ public boolean verify(int[] array,int left,int right){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/03/自定义栈返回最小值/" itemprop="url">自定义栈返回最小值</a></h1>
+                <a class="post-title-link" href="/2019/05/12/设计模式分类与原则/" itemprop="url">设计模式分类与原则</a></h1>
         
 
         <div class="post-meta">
@@ -661,8 +787,8 @@ public boolean verify(int[] array,int left,int right){
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T10:34:44+08:00">
-                2019-04-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-12T19:46:55+08:00">
+                2019-05-12
               </time>
             
 
@@ -684,8 +810,8 @@ public boolean verify(int[] array,int left,int right){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
-                    <span itemprop="name">策略类</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -701,7 +827,7 @@ public boolean verify(int[] array,int left,int right){
 
           
           
-             <span id="/2019/04/03/自定义栈返回最小值/" class="leancloud_visitors" data-flag-title="自定义栈返回最小值">
+             <span id="/2019/05/12/设计模式分类与原则/" class="leancloud_visitors" data-flag-title="设计模式分类与原则">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -734,43 +860,65 @@ public boolean verify(int[] array,int left,int right){
       
         
           
-            <p><strong>自定义栈 O(1)时间内返回最小值？</strong></p>
-<pre><code>public class MinStack {
+            <p><strong>设计模式分类</strong></p>
+<ul>
+<li>创建型模式(5种)：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。</li>
+</ul>
+<ul>
+<li><p>结构型模式（7种）：适配器模式、装饰者模式、代理模式、外观模式、桥接模式、组合模式、享元模式。</p>
+</li>
+<li><p>行为模式（11种）：策略模式、模板方法模式、观察者模式、迭代器模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</p>
+</li>
+</ul>
+<p><strong>设计模式功能分类</strong></p>
+<ul>
+<li><p>适应设计模式</p>
+<pre><code>迭代器模式、适配器模式。
+</code></pre></li>
+<li><p>交给子类</p>
+<pre><code>模板方法模式、工厂方法模式
+</code></pre></li>
+<li><p>生成实例</p>
+<pre><code>单例模式、原型模式、建造者模式、抽象工厂模式
+</code></pre></li>
+<li><p>分开考虑</p>
+<pre><code>桥接模式、策略模式
+</code></pre></li>
+<li><p>一致性（继承某类又持有该类的引用）</p>
+<pre><code>组合模式（持有一组引用）、装饰者模式
+</code></pre></li>
+<li><p>访问数据结构</p>
+<pre><code>访问者模式、责任链模式
+</code></pre></li>
+<li><p>简单化</p>
+<pre><code>外观模式、中介者模式（封装交互）
+</code></pre></li>
+<li><p>管理状态</p>
+<pre><code>观察者模式、备忘录模式、状态模式
+</code></pre></li>
+<li><p>避免浪费</p>
+<pre><code>享元模式、代理模式
+</code></pre></li>
+<li><p>用类来表现</p>
+<pre><code>命令模式、解释器模式
+</code></pre></li>
+</ul>
+<p><strong>设计模式原则</strong></p>
+<ul>
+<li><p>开闭原则：对拓展开放，对修改关闭，多使用接口和抽象类。</p>
+</li>
+<li><p>里氏替换原则</p>
+</li>
+<li><p>依赖倒转原则</p>
+</li>
+<li><p>接口隔离原则：多使用多个隔离的接口，比使用单个接口要好，降低了类与类的耦合性。</p>
+</li>
+<li><p>迪米特原则</p>
+</li>
+<li><p>合成复用原则：尽量多使用合成/聚合方式，而不是继承。</p>
+</li>
+</ul>
 
-Stack&lt;Integer&gt; dataStack = new Stack&lt;&gt;();
-Stack&lt;Integer&gt; assistStack = new Stack&lt;&gt;();
-
-public void push(int node) {
-    dataStack.push(node);
-    if(assistStack.isEmpty() || node &lt; assistStack.peek()){
-        assistStack.push(node);
-    }else {
-        assistStack.push(assistStack.peek());//保证此位置出栈后能正确返回最小值
-    }
-}
-
-public void pop() {
-    if(!dataStack.isEmpty() &amp;&amp; !assistStack.isEmpty()){
-        dataStack.pop();
-        assistStack.pop();
-    }
-}
-
-public int top() {
-    if(dataStack.isEmpty())
-        throw new RuntimeException(&quot;error: stack is empty&quot;);
-
-    return dataStack.peek();
-}
-
-public int min() {
-    if(assistStack.isEmpty()){
-        throw new RuntimeException(&quot;error: stack is empty&quot;);
-    }
-    return assistStack.peek();
-}
-}
-</code></pre>
           
         
       
@@ -818,7 +966,7 @@ public int min() {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/02/判断树的子树/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/19/阻塞队列源码详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -837,7 +985,7 @@ public int min() {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/02/判断树的子树/" itemprop="url">判断树的子树</a></h1>
+                <a class="post-title-link" href="/2019/04/19/阻塞队列源码详解/" itemprop="url">阻塞队列源码详解</a></h1>
         
 
         <div class="post-meta">
@@ -849,533 +997,8 @@ public int min() {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-02T20:24:20+08:00">
-                2019-04-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/02/判断树的子树/" class="leancloud_visitors" data-flag-title="判断树的子树">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>public static boolean isSubTree(BinaryTreeNode root1,BinaryTreeNode root2){
-
-    if(root2 == null){
-        return true;
-    }
-    if(root1 == null){//root1==null root2!=null
-        return false;
-    }
-    return root1.data == root2.data &amp;&amp; isSubTree(root1.left,root2.left) &amp;&amp; isSubTree(root1.right,root2.right);
-
-}
-
-
-public static boolean HasSubtree(BinaryTreeNode root1,BinaryTreeNode root2) {
-    if(root1 == null || root2 == null){
-        return false;
-    }
-
-    if(isSubTree(root1,root2)){
-        return true;
-    }
-    return HasSubtree(root1.left,root2) || HasSubtree(root1.right,root2);
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/01/判断大于n的最小2的n次方的整数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/01/判断大于n的最小2的n次方的整数/" itemprop="url">判断大于n的最小2的n次方的整数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T15:33:00+08:00">
-                2019-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/位运算/" itemprop="url" rel="index">
-                    <span itemprop="name">位运算</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/01/判断大于n的最小2的n次方的整数/" class="leancloud_visitors" data-flag-title="判断大于n的最小2的n次方的整数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>  //时间复杂度：O(n)
-public int find(int n){
-    if(n == 0 || ((n-1)&amp;n) == 0){
-        return n;
-    }
-    int flag = 1;
-    while (flag &lt; n){
-        flag &lt;&lt;= 1;
-    }
-    return flag;
-}
-
-//最快的办法
-//时间复杂度：
-public int find1(int n){
-    n--;
-    n |= n &gt;&gt; 1;//右移优先于或
-    n |= n &gt;&gt; 2;
-    n |= n &gt;&gt; 4;
-    n |= n &gt;&gt; 8;
-    n |= n &gt;&gt; 16;
-    n++;
-    return n;
-}
-</code></pre><p><strong>小于n的最小2的n次方的整数</strong></p>
-<pre><code>//小于n的最小2的n次方的整数
-public int small(int n){
-    int result = 0;
-    for(int i = n;i &gt;= 0;i--){
-        if(((i-1) &amp; i) == 0){
-            result = i;
-            break;
-        }
-    }
-    return result;
-}    
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/01/判断整数是否是2的整数次方/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/01/判断整数是否是2的整数次方/" itemprop="url">判断整数是否是2的整数次方</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T15:03:02+08:00">
-                2019-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/位运算/" itemprop="url" rel="index">
-                    <span itemprop="name">位运算</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/01/判断整数是否是2的整数次方/" class="leancloud_visitors" data-flag-title="判断整数是否是2的整数次方">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>//整数为0返回false
-class Solution {
-    public boolean checkPowerOf2(int n) {
-        if (n &lt; 1) {
-            return false;
-        } else {
-            return (n &amp; (n - 1)) == 0;
-    }
-}
-};
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/28/计算机网络基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/28/计算机网络基础/" itemprop="url">计算机网络基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T09:07:05+08:00">
-                2019-03-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-19T15:42:02+08:00">
+                2019-04-19
               </time>
             
 
@@ -1408,8 +1031,8 @@ class Solution {
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/计算机网络/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
                   </a>
                 </span>
 
@@ -1425,7 +1048,7 @@ class Solution {
 
           
           
-             <span id="/2019/03/28/计算机网络基础/" class="leancloud_visitors" data-flag-title="计算机网络基础">
+             <span id="/2019/04/19/阻塞队列源码详解/" class="leancloud_visitors" data-flag-title="阻塞队列源码详解">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1458,68 +1081,236 @@ class Solution {
       
         
           
-            <p>1.TCP/IP vs OSI模型？</p>
-<p><img src="https://i.imgur.com/6Lm1zUA.png" alt=""></p>
-<p><img src="https://i.imgur.com/qDA1cTG.png" alt=""></p>
-<pre><code>OSI:
+            <p><a href="https://www.javadoop.com/post/java-concurrent-queue" target="_blank" rel="noopener">阻塞队列详解</a></p>
+<p>总结：</p>
+<pre><code>1.ArrayBlockingQueue:底层数组，有界队列；
 
-    1.清楚的区分服务、接口和协议，但实现起来困难；
+2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；
 
-    2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；
+3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；
 
-TCP/IP:
+4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值；
+</code></pre><h4 id="ArrayBlockingQueue详解"><a href="#ArrayBlockingQueue详解" class="headerlink" title="ArrayBlockingQueue详解"></a>ArrayBlockingQueue详解</h4><p>核心成员变量：</p>
+<pre><code>final Object[] items;
 
-    1.网络层只支持无连接的通信，传输层同时支持连接和无连接；
-</code></pre><p>1.TCP/IP五层结构以及相应的功能？</p>
-<p>2.交换机是几层设备？</p>
-<p>3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？</p>
-<p>4.网络层的路由算法有哪些，简述RIP，OSPF过程？</p>
-<p>5.简述ARP协议过程，是如何通过IP地址获取MAC地址的？</p>
-<p>6.ping命令所使用的协议是什么（ICMP），简述其过程？</p>
-<p>7.TCP如何保证可靠传输？</p>
-<p>8.TCP的流量控制，当接收方的接收窗口为0的时候该怎么办？</p>
-<p>9.TCP的拥塞控制（慢启动，拥塞避免，超时间间隔传输及其快速重传，快速恢复）？</p>
-<p>10.流量控制和拥塞控制有什么区别？</p>
-<p>11.TCP的连接管理中可能出现的攻击漏洞（洪泛攻击，自顶向下那本书有讲到）？</p>
-<p>12.应用层有哪些常见协议？</p>
-<p>2.传输层</p>
-<pre><code>2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信；
-</code></pre><p>2.可靠传输的原理？</p>
-<p>重传机制：</p>
-<pre><code>1.发送完一个分组后要暂时保存已发送分组的副本；
+int takeIndex;
 
-2.分组和确认分组需要进行编号；
+int putIndex;
 
-3.重传时间应当比数据在分组传输的平均往返时间更长一些；
-</code></pre><p>确认丢失和确认迟到：</p>
-<pre><code>1.接收方丢弃重复的M1，重传确认M1;
+int count;
 
-2.发送方丢弃收到的重复确认；
-</code></pre><p>3.UDP和TCP的报文段？</p>
-<p><img src="https://i.imgur.com/SrXYECp.png" alt=""></p>
-<p>字段解释：</p>
-<pre><code>1.序号：本报文段的字节流数据中一个字节的序号；
+final ReentrantLock lock;
+private final Condition notEmpty;
+private final Condition notFull;
+</code></pre><p>带阻塞插入方法：(offer方法不带阻塞)</p>
+<pre><code>public void put(E e) throws InterruptedException {
+    checkNotNull(e);//插入元素不允许为null
+    final ReentrantLock lock = this.lock;
+    lock.lockInterruptibly();
+    try {
+        while (count == items.length)
+            notFull.await();
+        enqueue(e);//入队
+    } finally {
+        lock.unlock();
+    }
+}
+</code></pre><p>元素入队：</p>
+<pre><code>private void enqueue(E x) {
+    final Object[] items = this.items;
+    items[putIndex] = x;
+    if (++putIndex == items.length)
+        putIndex = 0;
+    count++;
+    notEmpty.signal();//唤醒notEmpty条件队列的头节点
+}
+</code></pre><p>带阻塞获取方法：</p>
+<pre><code>public E take() throws InterruptedException {
+    final ReentrantLock lock = this.lock;
+    lock.lockInterruptibly();
+    try {
+        while (count == 0)
+            notEmpty.await();
+        return dequeue();
+    } finally {
+        lock.unlock();
+    }
+}
+</code></pre><p>元素出队：</p>
+<pre><code>private E dequeue() {
+    final Object[] items = this.items;
+    @SuppressWarnings(&quot;unchecked&quot;)
+    E x = (E) items[takeIndex];
+    items[takeIndex] = null;//help GC
+    if (++takeIndex == items.length)
+        takeIndex = 0;
+    count--;
+    if (itrs != null)
+        itrs.elementDequeued();
+    notFull.signal();//唤醒notFull条件队列的头节点
+    return x;
+}
+</code></pre><h4 id="LinkedBlockingQueue详解"><a href="#LinkedBlockingQueue详解" class="headerlink" title="LinkedBlockingQueue详解"></a>LinkedBlockingQueue详解</h4><p>核心变量：</p>
+<pre><code>private final int capacity;//默认Integer.MAXVALUE
+private final AtomicInteger count = new AtomicInteger();//当前队列元素个数
 
-2.确认号：期望收到对方下一个报文段的第一个数据字节的序号；
+transient Node&lt;E&gt; head;
+private transient Node&lt;E&gt; last;
 
-3.数据偏移：TCP报文段的首部字段；
+//take、poll方法时加锁
+private final ReentrantLock takeLock = new ReentrantLock();
 
-4.控制位
+//offer、offer方法时加锁
+private final ReentrantLock putLock = new ReentrantLock();
 
-    4.1 ACK:ACK=1确认字段才有效；
+private final Condition notEmpty = takeLock.newCondition();
+private final Condition notFull = putLock.newCondition();
+</code></pre><p>put方法源码分析：</p>
+<pre><code>public void put(E e) throws InterruptedException {
+    if (e == null) throw new NullPointerException();
+    int c = -1;//标识是否成功，-1表示不成功
+    Node&lt;E&gt; node = new Node&lt;E&gt;(e);
+    final ReentrantLock putLock = this.putLock;
+    final AtomicInteger count = this.count;
+    putLock.lockInterruptibly();
+    try {
 
-    4.2 RST:RST=1拒绝一个非法的报文段或拒绝打开一个连接；
+        while (count.get() == capacity) {
+            notFull.await();
+        }
+        enqueue(node);
+        c = count.getAndIncrement();//返回的是旧值
+        if (c + 1 &lt; capacity)
+            //还有空间可用，唤醒notFull上的线程，哪些线程
+            notFull.signal();
+    } finally {
+        putLock.unlock();
+    }
 
-    4.3 SYN:SYN=1 ACK=0表示连接请求报文段，SYN=1 ACK=1表示同意建立连接；
+    if (c == 0)
+        signalNotEmpty();//唤醒notEmpty
+}
+</code></pre><p>唤醒notEmpty:</p>
+<pre><code> private void signalNotEmpty() {
+    final ReentrantLock takeLock = this.takeLock;
+    takeLock.lock();
+    try {
+        notEmpty.signal();
+    } finally {
+        takeLock.unlock();
+    }
+}
+</code></pre><p>元素入队：</p>
+<pre><code>private void enqueue(Node&lt;E&gt; node) {
+    last = last.next = node;//初始化时last就不会为空了
+}
+</code></pre><p>take方法源码详解：</p>
+<pre><code>public E take() throws InterruptedException {
+    E x;
+    int c = -1;
+    final AtomicInteger count = this.count;
+    final ReentrantLock takeLock = this.takeLock;
+    takeLock.lockInterruptibly();
+    try {
+        while (count.get() == 0) {
+            notEmpty.await();
+        }
+        x = dequeue();
+        c = count.getAndDecrement();
+        if (c &gt; 1)
+            notEmpty.signal();
+    } finally {
+        takeLock.unlock();
+    }
+    if (c == capacity)
+        signalNotFull();//唤醒notFull
+    return x;
+}
+</code></pre><p>元素出队：</p>
+<pre><code>private E dequeue() {
 
-    4.4 FIN:FIN=1表示此报文段发送发送方的数据已发送完毕，要求释放连接；
+    Node&lt;E&gt; h = head;//头节点内容为空
+    Node&lt;E&gt; first = h.next;
+    h.next = h; // help GC
+    head = first;
+    E x = first.item;
+    first.item = null;
+    return x;
+}
+</code></pre><h4 id="SynchronousQueue源码解析"><a href="#SynchronousQueue源码解析" class="headerlink" title="SynchronousQueue源码解析"></a>SynchronousQueue源码解析</h4><p>有公平和非公平两种队列：默认非公平</p>
+<pre><code>public SynchronousQueue(boolean fair) {
+    transferer = fair ? new TransferQueue&lt;E&gt;() : new TransferStack&lt;E&gt;();
+}
+</code></pre><p>先看一下TransferQueue的put源码：</p>
+<pre><code>public void put(E e) throws InterruptedException {
+    if (e == null) throw new NullPointerException();
+    if (transferer.transfer(e, false, 0) == null) {
+        Thread.interrupted();
+        throw new InterruptedException();
+    }
+    }
+</code></pre><p>核心代码：</p>
+<pre><code>E transfer(E e, boolean timed, long nanos) {
 
-5.窗口：允许发送方发送的数据量；
-</code></pre><p>4.滑动窗口模型</p>
-<p>发送缓存VS发送窗口VS接收缓存VS接收窗口？</p>
-<pre><code>1.对接收窗口中不按序到达的数据，接收方只能对按序收到了的数据中的最高序号给出确认；
+    QNode s = null;
 
-2.TCP要求接受方必须有累积确认功能，确认推迟的时间不应超过0.5秒；
+    boolean isData = (e != null);//e != null代表将元素从生产者转移到消费者
+    for (;;) {
+        QNode t = tail;
+        QNode h = head;
+        if (t == null || h == null)          
+            continue;                       
+
+        //队列为空或者当前线程类型和队列中的一致
+        if (h == t || t.isData == isData) { 
+            QNode tn = t.next;
+            if (t != tail)                  
+                continue;
+            if (tn != null) {               
+                advanceTail(t, tn);//CAS设置tn为尾节点
+                continue;
+            }
+            if (timed &amp;&amp; nanos &lt;= 0)        
+                return null;
+            if (s == null)
+                s = new QNode(e, isData);
+            if (!t.casNext(null, s))//节点插入到尾节点        
+                continue;
+
+            advanceTail(t, s);              
+            Object x = awaitFulfill(s, e, timed, nanos);
+            if (x == s) {                   
+                clean(t, s);
+                return null;
+            }
+
+            if (!s.isOffList()) {           
+                advanceHead(t, s);          
+                if (x != null)              
+                    s.item = s;
+                s.waiter = null;
+            }
+            return (x != null) ? (E)x : e;
+
+        } else {//当前线程类型与队列中类型不匹配，读或写相匹配                           
+            QNode m = h.next;               
+            if (t != tail || m == null || h != head)
+                continue;                   
+
+            Object x = m.item;
+            if (isData == (x != null) ||   
+                x == m ||                   
+                !m.casItem(x, e)) {         
+                advanceHead(h, m);         
+                continue;
+            }
+
+            advanceHead(h, m);              
+            LockSupport.unpark(m.waiter);
+            return (x != null) ? (E)x : e;
+        }
+    }
+}
 </code></pre>
           
         
@@ -1568,7 +1359,7 @@ TCP/IP:
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/27/S型打印二叉树/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/16/ReentrantReadWriteLock源码详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -1587,7 +1378,7 @@ TCP/IP:
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/27/S型打印二叉树/" itemprop="url">S型打印二叉树</a></h1>
+                <a class="post-title-link" href="/2019/04/16/ReentrantReadWriteLock源码详解/" itemprop="url">ReentrantReadWriteLock源码详解</a></h1>
         
 
         <div class="post-meta">
@@ -1599,8 +1390,8 @@ TCP/IP:
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-27T21:36:02+08:00">
-                2019-03-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-16T09:57:13+08:00">
+                2019-04-16
               </time>
             
 
@@ -1622,8 +1413,19 @@ TCP/IP:
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
-                    <span itemprop="name">树</span>
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
                   </a>
                 </span>
 
@@ -1639,7 +1441,7 @@ TCP/IP:
 
           
           
-             <span id="/2019/03/27/S型打印二叉树/" class="leancloud_visitors" data-flag-title="S型打印二叉树">
+             <span id="/2019/04/16/ReentrantReadWriteLock源码详解/" class="leancloud_visitors" data-flag-title="ReentrantReadWriteLock源码详解">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1672,46 +1474,231 @@ TCP/IP:
       
         
           
-            <h2 id="S型打印二叉树？"><a href="#S型打印二叉树？" class="headerlink" title="S型打印二叉树？"></a>S型打印二叉树？</h2><pre><code>//S型层次遍历
-public void levelSOrder(BinaryTreeNode p){
-    Stack&lt;BinaryTreeNode&gt; stack1 = new Stack&lt;&gt;();
-    Stack&lt;BinaryTreeNode&gt; stack2 = new Stack&lt;&gt;();
-    int currentLevel = 1;
-    if(p != null){
-        stack1.push(p);
+            <p>参考文献</p>
+<p><a href="https://www.javadoop.com/post/reentrant-read-write-lock" target="_blank" rel="noopener">读写锁源码详解</a></p>
+<p>文献已经给出详细的解析，作简单总结：</p>
+<p>使用场景：</p>
+<pre><code>1.适用于读多于写的场景；
+</code></pre><p>关键问题：</p>
+<pre><code>1.将state状态一分为二，高16位用于共享模式，低16位用于独占模式；
+
+2.持有写锁的线程去获取读锁的过程称为锁降级；不支持读锁升级为写锁（会产生死锁），可能读锁在竞争写锁
+
+时可能会使自己进入阻塞队列，导致无法被唤醒。
+
+3.在获取写锁前会判断是否有读锁存在的原因：确保写锁的操作对读锁可见，这样读锁才能感知到写锁的操作了；
+</code></pre><p>读锁源码分析：</p>
+<pre><code>public void lock() {
+    sync.acquireShared(1);
+}
+
+public final void acquireShared(int arg) {
+    if (tryAcquireShared(arg) &lt; 0)
+        doAcquireShared(arg);
+}
+
+protected final int tryAcquireShared(int unused) {
+
+    Thread current = Thread.currentThread();
+    int c = getState();
+
+    //exclusiveCount(c) != 0 &amp;&amp; getExclusiveOwnerThread()=current表示锁降级的情况
+    if (exclusiveCount(c) != 0 &amp;&amp;//有线程持有写锁而且还不是当前线程
+        getExclusiveOwnerThread() != current)//注意持有写锁的当前线程还可以继续持有读锁
+        return -1;
+    int r = sharedCount(c);
+    if (!readerShouldBlock() &amp;&amp;//公平锁排队和写锁先于读锁时，readerShouldBlock()返回true
+        r &lt; MAX_COUNT &amp;&amp;
+        //设置高16位的state，失败的话说明发生读锁竞争或者当前写锁和其他读锁的竞争
+        compareAndSetState(c, c + SHARED_UNIT)) {
+        if (r == 0) {
+            firstReader = current;
+            firstReaderHoldCount = 1;
+        } else if (firstReader == current) {
+            firstReaderHoldCount++;
+        } else {
+            HoldCounter rh = cachedHoldCounter;
+            if (rh == null || rh.tid != getThreadId(current))
+                cachedHoldCounter = rh = readHolds.get();
+            else if (rh.count == 0)
+                readHolds.set(rh);
+            rh.count++;
+        }
+        return 1;//成功获取读锁
     }
 
-    while(!stack1.isEmpty() || !stack2.isEmpty()){
-        int levelNumber = !stack1.isEmpty()?stack1.size():stack2.size();
-        for(int i = 0;i &lt; levelNumber;i++){
-            if((currentLevel &amp; 1) == 1){
-                p = stack1.pop();
-                System.out.print(p.data + &quot; &quot;);
-                if(p.right != null){
-                    stack2.push(p.right);
+    return fullTryAcquireShared(current);//尝试再次获取锁
+}
+</code></pre><p>尝试再次获取锁：</p>
+<pre><code>final int fullTryAcquireShared(Thread current) {
+
+    HoldCounter rh = null;
+    for (;;) {
+        int c = getState();
+        if (exclusiveCount(c) != 0) {//还是其他线程获取写锁，阻塞读锁
+            if (getExclusiveOwnerThread() != current)
+                return -1;
+        } else if (readerShouldBlock()) {
+            //1.写锁没有被占
+            //2.阻塞队列有其他线程在等待
+            if (firstReader == current) {
+                // assert firstReaderHoldCount &gt; 0;
+            } else {
+                if (rh == null) {
+                    rh = cachedHoldCounter;
+                    if (rh == null || rh.tid != getThreadId(current)) {
+                        rh = readHolds.get();
+                        if (rh.count == 0)
+                            readHolds.remove();
+                    }
                 }
-                if(p.left != null){
-                    stack2.push(p.left);
-                }
-                if(stack1.empty()){
-                    currentLevel++;
-                }
-            }else {
-                p = stack2.pop();
-                System.out.print(p.data + &quot; &quot;);
-                if(p.left != null){
-                    stack1.push(p.left);
-                }
-                if(p.right != null){
-                    stack1.push(p.right);
-                }
-                if(stack2.empty()){
-                    currentLevel++;
-                }
+                if (rh.count == 0)
+                    return -1;
             }
         }
-        System.out.println();
+        if (sharedCount(c) == MAX_COUNT)
+            throw new Error(&quot;Maximum lock count exceeded&quot;);
+
+        //处理线程重入的情况
+        if (compareAndSetState(c, c + SHARED_UNIT)) {
+            if (sharedCount(c) == 0) {
+                firstReader = current;
+                firstReaderHoldCount = 1;
+            } else if (firstReader == current) {
+                firstReaderHoldCount++;
+            } else {
+                if (rh == null)
+                    rh = cachedHoldCounter;
+                if (rh == null || rh.tid != getThreadId(current))
+                    rh = readHolds.get();
+                else if (rh.count == 0)
+                    readHolds.set(rh);
+                rh.count++;
+                cachedHoldCounter = rh; // cache for release
+            }
+            return 1;
+        }
     }
+</code></pre><p>读锁的释放源码：</p>
+<pre><code> public void unlock() {
+    sync.releaseShared(1);
+}
+
+public final boolean releaseShared(int arg) {
+    if (tryReleaseShared(arg)) {
+        doReleaseShared();
+        return true;
+    }
+    return false;
+}
+
+protected final boolean tryReleaseShared(int unused) {
+    Thread current = Thread.currentThread();
+    if (firstReader == current) {
+        //反正优先处理的是第一个获取读锁的线程
+        if (firstReaderHoldCount == 1)
+            firstReader = null;
+        else
+            firstReaderHoldCount--;
+    } else {
+        HoldCounter rh = cachedHoldCounter;//缓存最近获取读锁的线程，为了提高效率
+        if (rh == null || rh.tid != getThreadId(current))
+            rh = readHolds.get();
+        int count = rh.count;
+        if (count &lt;= 1) {
+            readHolds.remove();//防止内存泄露
+            if (count &lt;= 0)//一次lock()多次unlock()的情况
+                throw unmatchedUnlockException();
+        }
+        --rh.count;
+    }
+    for (;;) {
+        int c = getState();
+        int nextc = c - SHARED_UNIT;//高位减1
+        if (compareAndSetState(c, nextc))
+            return nextc == 0;//读写锁都空了，唤醒后面的所有节点（共享模式的特点）
+    }
+}
+</code></pre><p>最后看一下写锁的源码：</p>
+<p>获取写锁：</p>
+<pre><code>public void lock() {
+        sync.acquire(1);
+    }
+
+public final void acquire(int arg) {
+    if (!tryAcquire(arg) &amp;&amp;
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+        selfInterrupt();
+}
+
+protected final boolean tryAcquire(int acquires) {
+
+    Thread current = Thread.currentThread();
+    int c = getState();
+    int w = exclusiveCount(c);
+    if (c != 0) {
+        //c!=0 &amp;&amp; w=0表示有线程持有读锁，这个线程可能是他自己或者其他线程
+        //c!=0 &amp;&amp; w!=0 &amp;&amp; current != getExclusiveOwnerThread()表示其他线程持有写锁
+        //c!=0 &amp;&amp; w!=0 &amp;&amp; current = getExclusiveOwnerThread()表示先获取写锁，后获取读锁的线程
+        if (w == 0 || current != getExclusiveOwnerThread())
+            return false;
+
+        if (w + exclusiveCount(acquires) &gt; MAX_COUNT)
+            throw new Error(&quot;Maximum lock count exceeded&quot;);
+        //写锁重入
+        setState(c + acquires);
+        return true;
+    }
+
+    //非公平锁writerShouldBlock()=false，直接CAS设置state
+    //公平锁有前驱节点排队的话，writerShouldBlock()=true进入阻塞队列，否则正常设置
+    if (writerShouldBlock() ||
+        !compareAndSetState(c, c + acquires))
+        return false;
+    setExclusiveOwnerThread(current);
+    return true;
+}
+</code></pre><p>看一下写锁是否应该阻塞的情况：</p>
+<pre><code>static final class NonfairSync extends Sync {
+// 如果是非公平模式，那么 lock 的时候就可以直接用 CAS 去抢锁，抢不到再排队
+final boolean writerShouldBlock() {
+    return false; // writers can always barge
+}
+...
+}
+static final class FairSync extends Sync {
+final boolean writerShouldBlock() {
+    // 如果是公平模式，那么如果阻塞队列有线程等待的话，就乖乖去排队
+    return hasQueuedPredecessors();
+}
+...
+}
+</code></pre><p>释放写锁：</p>
+<pre><code>public void unlock() {
+        sync.release(1);
+    }
+
+public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null &amp;&amp; h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+
+protected final boolean tryRelease(int releases) {
+    if (!isHeldExclusively())
+        throw new IllegalMonitorStateException();
+
+    //线程安全，写锁是排他锁
+    int nextc = getState() - releases；
+    boolean free = exclusiveCount(nextc) == 0;
+    if (free)
+        setExclusiveOwnerThread(null);
+    setState(nextc);
+    return free;
 }
 </code></pre>
           
@@ -1761,7 +1748,7 @@ public void levelSOrder(BinaryTreeNode p){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/24/未优化快排/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CyclicBarrier源码解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -1780,7 +1767,7 @@ public void levelSOrder(BinaryTreeNode p){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/24/未优化快排/" itemprop="url">未优化快排</a></h1>
+                <a class="post-title-link" href="/2019/04/15/CyclicBarrier源码解析/" itemprop="url">CyclicBarrier源码解析</a></h1>
         
 
         <div class="post-meta">
@@ -1792,197 +1779,8 @@ public void levelSOrder(BinaryTreeNode p){
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T20:10:30+08:00">
-                2019-03-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排序/" itemprop="url" rel="index">
-                    <span itemprop="name">排序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/03/24/未优化快排/" class="leancloud_visitors" data-flag-title="未优化快排">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>//有序数组直接选择第一个元素作轴效果不理想
-public class NormalQuickSort {
-
-public int partion(int[] a,int start,int end){
-    int pivot = a[start];
-    int i = start;
-    int j = end;
-    while (i &lt; j){
-        while (i &lt; j &amp;&amp; a[j] &gt;= pivot){
-            j--;
-        }
-        a[i] = a[j];
-
-        while (i &lt; j &amp;&amp; a[i] &lt;= pivot){
-            i++;
-        }
-        a[j] = a[i];
-    }
-    a[i] = pivot;
-    return i;
-}
-
-public void sort(int[] a,int start,int end){
-    if(start &lt; end){
-        int partition = partion(a,start,end);
-        sort(a,start,partition-1);
-        sort(a,partition+1,end);
-    }
-}
-
-@Test
-public void test(){
-    int[] a = {6,4,3,3,1,2,9,5};
-    sort(a,0,a.length-1);
-    System.out.println(Arrays.toString(a));
-}
-}    
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/23/面试总结-计算机网络/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/23/面试总结-计算机网络/" itemprop="url">面试总结--计算机网络</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T09:57:49+08:00">
-                2019-02-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:50:10+08:00">
+                2019-04-15
               </time>
             
 
@@ -2015,8 +1813,8 @@ public void test(){
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/计算机网络/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
                   </a>
                 </span>
 
@@ -2032,7 +1830,7 @@ public void test(){
 
           
           
-             <span id="/2019/02/23/面试总结-计算机网络/" class="leancloud_visitors" data-flag-title="面试总结--计算机网络">
+             <span id="/2019/04/15/CyclicBarrier源码解析/" class="leancloud_visitors" data-flag-title="CyclicBarrier源码解析">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2065,321 +1863,1119 @@ public void test(){
       
         
           
-            <ol>
-<li><p>TCP和UDP的区别？</p>
-<pre><code>1.TCP面向连接的，UDP无连接的。
+            <p>参考文献</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CyclicBarrier源码解析</a></p>
+<p>看一下构造函数：</p>
+<pre><code>//parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。
+public CyclicBarrier(int parties) {
+    this(parties, null);
+}
+</code></pre><p>核心await()方法：</p>
+<pre><code>public int await() throws InterruptedException, BrokenBarrierException {
+    try {
+        return dowait(false, 0L);
+    } catch (TimeoutException toe) {
+        throw new Error(toe); // cannot happen
+    }
+}
+</code></pre><p>进入到dowait()方法：</p>
+<pre><code>private int dowait(boolean timed, long nanos)
+    throws InterruptedException, BrokenBarrierException,
+           TimeoutException {
+    final ReentrantLock lock = this.lock;
+    lock.lock();
+    try {
+        final Generation g = generation;
 
-2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达
+        if (g.broken)
+            throw new BrokenBarrierException();
 
-3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；
+        if (Thread.interrupted()) {
+            breakBarrier();
+            throw new InterruptedException();
+        }
 
-4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&quot;点&quot;代表的是socket(IP:PORT)；
+        int index = --count;
+        if (index == 0) {  
+            boolean ranAction = false;
+            try {
+                final Runnable command = barrierCommand;
+                if (command != null)
+                    command.run();
+                ranAction = true;
+                nextGeneration();//唤醒所有线程，开启下一代
+                return 0;
+            } finally {
+                if (!ranAction)//在执行command.run()时发生了异常
+                    breakBarrier();//唤醒所有线程，broker=true
+            }
+        }
 
-5.TCP首部20个字节，UDP是8个字节；
-</code></pre><p> TCP的特点：</p>
-<pre><code>可靠、稳定、慢、效率低、占用系统资源高。
-</code></pre><p> UDP的特点：</p>
-<pre><code>1.传递数据快、不可靠丢包、快速递交比精准递交更重要，例如：视频语音；
-</code></pre><p> 相关问题解释：</p>
-<pre><code>1.TCP连接的发送方和接收方都有缓存，TCP不关心发送到TCP发送方缓存的报文长度，它会根据对方的窗口值和网络拥塞情况来决定一个报文段包含有多少字节。
+        //不是最后一个到达栅栏的线程走到这
+        for (;;) {
+            try {
+                if (!timed)
+                    //Condition trip = reentrantLock.newCondition
+                    trip.await();
+                else if (nanos &gt; 0L)
+                    nanos = trip.awaitNanos(nanos);
+            } catch (InterruptedException ie) {
+                if (g == generation &amp;&amp; ! g.broken) {
+                    breakBarrier();
+                    throw ie;
+                } else {
+                    Thread.currentThread().interrupt();
+                }
+            }
 
-2.TCP发送方发送4个数据块，接收方可能2个数据块就能把字节流传到应用层；
-</code></pre></li>
-<li><p>TCP如何保证可靠性，拥塞控制如何实现？</p>
-<pre><code>1.确认和重传；
+            if (g.broken)
+                throw new BrokenBarrierException();
 
-2.数据校验；
+            if (g != generation)
+                return index;
 
-3.数据合理分片；
+            if (timed &amp;&amp; nanos &lt;= 0L) {
+                breakBarrier();
+                throw new TimeoutException();
+            }
+        }
+    } finally {
+        lock.unlock();
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
 
-4.流量控制：
+    
 
-    1.当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。
+    
 
-    2.利用可变窗口rwnd值的变化来进行流量控制；
+    
 
-5.拥塞控制；
+    <footer class="post-footer">
+      
 
-    5.1 慢开始和拥塞避免
+      
 
-        1.慢开始（指数）：由小到大增加拥塞窗口的值，每经过一个传输轮次，拥塞窗口加倍；
+      
 
-        2.拥塞避免（线性）：cwnd缓慢增大，每经过一个往返时间RRT就把发送方的拥塞窗口cwnd值加1；
-
-        3.加法增大乘法减小（AIMD）:&quot;乘法减小&quot;即不论在慢开始阶段还是在拥塞避免阶段，只要出现超时就把满开始门限ssthresh减半；
-        &quot;加法增大&quot;即执行拥塞避免算法使cwnd缓慢增大；
-
-    5.2 快重传和快恢复
-
-        1.快重传：接收方每收到一个失序的报文段后就立即发出重复确认，当发送方一连收到3个重复确认就立即重传对方尚未接收到的报文段。
-
-        2.快恢复：收到3个重复确认后，ssthresh减半，把cwnd的值设为ssthresh减半后的值；
-</code></pre></li>
-</ol>
-<ol start="3">
-<li><p>输入URL浏览器发生了什么？</p>
-<pre><code>1.DNS域名解析找到IP地址；
-
-    1.1 解析顺序：本地域名服务器、根域名服务器、顶级域名服务器、权限域名服务器;
-
-    1.2 主机向本地域名服务器的查询采用的是递归查询，即替该主机继续查询，本地域名服务器向根域名服务器的查询采用的是迭代查询；
-
-    1.3 根域名服务器的作用：告诉本地域名服务器下一步去哪一个顶级域名服务器查询；
-
-2.TCP连接服务端和客户端；
-
-3.发送HTTP请求；
-
-4.服务器处理请求；
-
-5.返回响应结果；
-
-6.关闭TCP连接（长连接的时候不关闭）；
-
-7.浏览器解析HTML;
-
-8.浏览器布局渲染。
-</code></pre><p> 3.HTTP协议和TCP/IP协议区别？</p>
-<pre><code>1.HTTP协议是应用层协议，主要解决如何包装数据；TCP/IP协议是运输层协议解决数据如何在网络中传输。
-</code></pre></li>
-</ol>
-<ol start="6">
-<li><p>TCP的三次握手和四次挥手以及为什么是四次挥手？</p>
-<p> 总结：</p>
-<pre><code>1.第一次握手：标志位SYN=1 ACK=0,client_sequence=i,客户端SYN_SEND状态；
-
-2.第二次握手：检查并设置标志位ACK=1 SYN=1和发送确认序号ack number=i+1 server_sequence=j,服务端SYN_RECV状态；
-
-3.第三次握手：检查标志位ACK=1和发送确认序号ack=j+1和client_sequence=i+1,（有序）客户端进入ESTABLISH状态.
-(这里要是出现ack丢失的情况不会重传没有数据的ack,而是重传第二次握手时的数据)
-
-当服务端收到确认号以后，服务端进入到ESTABLISH状态，此时TCP连接才正式建立起来。
-</code></pre><p> 三次握手注意地方：</p>
-<pre><code>1.ACK=1时ack number才有效；
-
-2.SYN(SYN=1)报文段不能携带数据；
-
-3.为什么最后一次还要发送确认？
-
-  主要是为了防止已经失效的连接请求报文段突然又传到服务端；第一次的连接请求因为网络原因延迟达到，服务器会认为是新的连接请求，
-  于是发出确认报文段建立连接，但客户端不会理会发过来的确认，所以建立的TCP连接浪费了，而如果有了最后一次确认，
-  客户端就不会向服务端发出确认，服务端就能知道客户端根本没有请求建立连接。
-
-4.几个状态？
-
-  客户端：SYN_SEND、ESTABLISHED.
-
-  服务端：SYN_RECV、ESTABLISHED.
-</code></pre></li>
-</ol>
-<pre><code>四次挥手：
-
-    4.第一次挥手: FIN=1,seq=u,客户端FIN_WAIT1状态；
-
-    5.第二次挥手：ACK=1 seq=v,ack=u+1,服务端CLOSED_WAIT状态（关闭服务器读通道）；客户端收到ACK进入FIN_WAIT2状态（关闭客户端写通道）；
-
-    6.第三次挥手：服务端发送完数据以后，向客户端发送FIN=1 ACK=1 seq=w ack=u+1,服务端进入到LAST_ACK状态；
-
-    7.第四次挥手：ACK=1 seq=u+1 ack=w+1，客户端进入TIME_WAIT状态（关闭客户端读通道），服务器收到ACK后（关闭服务器写通道）；
-
-注：
-
-    1.TIME_WAIT=2MSL(Maximum Segment Lifetime最长报文寿命)的原因？
-
-        1.1 保证Client最后发送的ACK报文段能够到达Server;假如立即关闭的话，ACK报文如果丢失，Server会重传FIN + ACK报文，Client无法收到重传报文段，于是Server无法进入CLOSED状态；
-
-        1.2 防止本次连接中失效的连接请求报文段进入到下一次TCP连接中去，通过这段持续时间能让本次连接产生的所有报文段从网络中消失；
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
 
 
-    2.为什么是4次挥手？
+    
+      
 
-        2.1 因为TCP是全双工模式。前两次挥手是关闭Client到Server的传输通道，此时Client仍然可以接收Server的数据；后两次挥手是关闭Server到Client的传输通道；
+  
 
-        2.2 这里把ACK报文和FIN报文分开发是为了确保数据能完整得到传输。当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了；但未必你所有的数据都全部发送给对方了，所以你可以未必会马上会关闭SOCKET,也即可能你还需要发送一些数据给对方之后，再发送FIN报文给对方来表示你同意现在可以关闭连接了。
+  
+  
+  
 
-    3.TCP第三次握手ACK丢失后的处理？
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch源码解析/">
 
-        ACK丢失，服务端的TCP连接的撞状态为SYN_RECV，等待3s、6s、12s后重新发送SYN+ACK包，其中服务端重新发送SYN+ACK的次数默认值是5，如果仍未收到ACK,一段时间后服务端自动关闭这个连接，但是Client认为这个连接已经建立，如果Client端向Server写数据，Server端将以RST包(用于强制关闭tcp连接)响应，方能感知到Server的错误。
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
 
-    4.状态变化
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
 
-        客户端：ESTABLISHED、FIN_WAIT1、FIN_WAIT2、TIME_WAIT、CLOSED;
+    
+      <header class="post-header">
 
-        服务端：ESTABLISHED、CLOSE_WAIT、LAST_ACK、CLOSED;
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/15/CountDownLatch源码解析/" itemprop="url">CountDownLatch源码解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:06:48+08:00">
+                2019-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/15/CountDownLatch源码解析/" class="leancloud_visitors" data-flag-title="CountDownLatch源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考文献</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p>
+<p>文献已经给出了详细的讲解，这里作简单的总结：</p>
+<p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
+<pre><code>protected int tryAcquireShared(int acquires) {
+        return (getState() == 0) ? 1 : -1;
+    }
+
+protected boolean tryReleaseShared(int releases) {
+    // Decrement count; signal when transition to zero
+    for (;;) {
+        int c = getState();
+        if (c == 0)
+            return false;
+        int nextc = c-1;
+        if (compareAndSetState(c, nextc))
+            return nextc == 0;
+    }
+}
+</code></pre><p>线程阻塞的await()方法：</p>
+<pre><code>public void await() throws InterruptedException {
+    sync.acquireSharedInterruptibly(1);
+}
+
+public final void acquireSharedInterruptibly(int arg)
+        throws InterruptedException {
+    if (Thread.interrupted())
+        throw new InterruptedException();
+    //countdown()方法会使state的值减1，当state还未为0时会进入到该方法
+    if (tryAcquireShared(arg) &lt; 0)
+        doAcquireSharedInterruptibly(arg);
+}
+</code></pre><p>进入到阻塞队列中：</p>
+<pre><code>private void doAcquireSharedInterruptibly(int arg)
+    throws InterruptedException {
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head) {
+                int r = tryAcquireShared(arg);
+                if (r &gt;= 0) {//调用countdown()方法使state=1的线程会唤醒阻塞的线程，并将节点设置为head
+                    setHeadAndPropagate(node, r);
+                    p.next = null; // help GC
+                    failed = false;
+                    return;
+                }
+            }
+            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt())//LockSupport阻塞线程
+                throw new InterruptedException();
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+</code></pre><p>阻塞队列被唤醒的过程：</p>
+<pre><code>private void setHeadAndPropagate(Node node, int propagate) {
+    Node h = head; 
+    setHead(node);
+    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||
+        (h = head) == null || h.waitStatus &lt; 0) {
+        Node s = node.next;
+        if (s == null || s.isShared())
+            doReleaseShared();//继续唤醒下一个节点
+    }
+}
+</code></pre><p>继续唤醒队列中的其他节点：</p>
+<pre><code> private void doReleaseShared() {
+    for (;;) {//不断唤醒线程直到head不再发生变化
+        Node h = head;
+        if (h != null &amp;&amp; h != tail) {
+            int ws = h.waitStatus;
+            if (ws == Node.SIGNAL) {
+                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                    continue;            // loop to recheck cases
+                unparkSuccessor(h);
+            }
+            else if (ws == 0 &amp;&amp;
+                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                continue;                
+        }
+        if (h == head)                   
+            break;
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock中的Condition源码分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/15/ReentrantLock中的Condition源码分析/" itemprop="url">ReentrantLock中的Condition源码分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T14:52:53+08:00">
+                2019-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/15/ReentrantLock中的Condition源码分析/" class="leancloud_visitors" data-flag-title="ReentrantLock中的Condition源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考文献</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-2" target="_blank" rel="noopener">Condition源码详解</a></p>
+<p>上面的源码解析已经很清晰了，下面作简要的记录：</p>
+<p>阻塞过程：</p>
+<pre><code>public final void await() throws InterruptedException {
+    if (Thread.interrupted())
+        throw new InterruptedException();
+
+    //将节点加入到条件队列的队尾，并且清除掉Condition队列中所有取消的节点；
+    Node node = addConditionWaiter();
+
+    //释放掉线程获得锁，返回阻塞前的同步状态；
+    //synchronized中的 wait() 也是释放锁的；
+    int savedState = fullyRelease(node);
+    int interruptMode = 0;
+    while (!isOnSyncQueue(node)) {//判断节点是否在同步队列中
+        LockSupport.park(this);//不在Sync中挂起线程
+        if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
+            break;
+    }
+
+    //节点进入到Sync队列后，跳出上述while循环，通过acquireQueued方法加入同步状态的竞争中去
+    if (acquireQueued(node, savedState) &amp;&amp; interruptMode != THROW_IE)
+        interruptMode = REINTERRUPT;
+    if (node.nextWaiter != null) // clean up if cancelled
+        unlinkCancelledWaiters();
+    if (interruptMode != 0)
+        reportInterruptAfterWait(interruptMode);
+}
+</code></pre><p>唤醒过程：</p>
+<pre><code>public final void signal() {
+    if (!isHeldExclusively())
+        throw new IllegalMonitorStateException();
+    Node first = firstWaiter;
+    if (first != null)
+        doSignal(first);//唤醒Condition头节点
+}
+
+private void doSignal(Node first) {
+        do {
+            if ( (firstWaiter = first.nextWaiter) == null)
+                lastWaiter = null;
+            first.nextWaiter = null;
+        } while (!transferForSignal(first) &amp;&amp;//忽略取消节点，找到头节点并加入到同步队列
+                 (first = firstWaiter) != null);
+    }
+
+//Condition节点转移到Sync队列
+final boolean transferForSignal(Node node) {
+      //节点取消Condition排队
+    if (!compareAndSetWaitStatus(node, Node.CONDITION, 0))
+        return false;
+
+    Node p = enq(node);//返回的前驱节点
+    int ws = p.waitStatus;
+    if (ws &gt; 0 || !compareAndSetWaitStatus(p, ws, Node.SIGNAL))
+        LockSupport.unpark(node.thread);
+
+    return true;//正常情况下加入到阻塞队列
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock源码分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/15/ReentrantLock源码分析/" itemprop="url">ReentrantLock源码分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T11:21:32+08:00">
+                2019-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/15/ReentrantLock源码分析/" class="leancloud_visitors" data-flag-title="ReentrantLock源码分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍：</p>
+<p>主要区别：</p>
+<pre><code>1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；
+
+2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，而公平锁会判断是否有其他线程更早地请求了该锁；
+</code></pre><p>公平锁源码：</p>
+<pre><code>final void lock() {
+        acquire(1);
+    }
+
+protected final boolean tryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) {
+        //判断是否有其他线程正在等待
+        if (!hasQueuedPredecessors() &amp;&amp;
+            compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc &lt; 0)
+            throw new Error(&quot;Maximum lock count exceeded&quot;);
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+</code></pre><p>非公平锁：</p>
+<pre><code>final void lock() {
+    if (compareAndSetState(0, 1))
+        setExclusiveOwnerThread(Thread.currentThread());
+    else
+        acquire(1);
+}
+
+protected final boolean tryAcquire(int acquires) {
+    return nonfairTryAcquire(acquires);
+}
+
+final boolean nonfairTryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) {
+        //直接尝试获取锁不考虑是否有线程等待
+        if (compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc &lt; 0) // overflow
+            throw new Error(&quot;Maximum lock count exceeded&quot;);
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/14/同步队列源码解析/" itemprop="url">同步队列源码解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T19:12:09+08:00">
+                2019-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/14/同步队列源码解析/" class="leancloud_visitors" data-flag-title="同步队列源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.总结下独占式的获取同步状态的流程，具体源码如下：</p>
+<p>流程</p>
+<pre><code>1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；
+
+1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；
+
+1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；
+
+1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是进入自旋等待；
+</code></pre><p>AQS的acquire方法源码：用户重写tryAcquire方法</p>
+<pre><code>public final void acquire(int arg) {
+if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同步队列
+    acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+    selfInterrupt();
+}
+</code></pre><p>看一下ReentrantLock的tryAcquire（公平锁FairSync）方法：</p>
+<pre><code>protected final boolean tryAcquire(int acquires) {
+        final Thread current = Thread.currentThread();
+        int c = getState();
+        if (c == 0) {//当前没有线程获取到锁
+            if (!hasQueuedPredecessors() &amp;&amp;
+                compareAndSetState(0, acquires)) {
+                setExclusiveOwnerThread(current);
+                return true;
+            }
+        }
+        //当前线程重入到已经获得的锁，不存在并发
+        else if (current == getExclusiveOwnerThread()) {
+            int nextc = c + acquires;
+            if (nextc &lt; 0)
+                throw new Error(&quot;Maximum lock count exceeded&quot;);
+            setState(nextc);
+            return true;
+        }
+        return false;
+    }
+}
+</code></pre><p>若获取同步状态失败，进入addWaiter方法：</p>
+<pre><code>private Node addWaiter(Node mode) {
+    Node node = new Node(Thread.currentThread(), mode);
+    // Try the fast path of enq; backup to full enq on failure
+    Node pred = tail;
+    if (pred != null) {
+        node.prev = pred;
+        //确保线程正确有序的加入到同步队列
+        if (compareAndSetTail(pred, node)) {
+            pred.next = node;
+            return node;
+        }
+    }
+    enq(node);
+    return node;
+}
+</code></pre><p>若尾节点被其他线程更改过了或者tail为空，则跳出if进入到enq(node)方法：</p>
+<pre><code>private Node enq(final Node node) {
+    for (;;) {//节点加入到同步队列中去才退出循环
+        Node t = tail;
+        if (t == null) { 
+            if (compareAndSetHead(new Node()))//同步队列的头节点
+                tail = head;
+        } else {
+            node.prev = t;
+            if (compareAndSetTail(t, node)) {
+                t.next = node;
+                return t;
+            }
+        }
+    }
+}
+</code></pre><p>加入到同步队列中的每个节点会通过自旋不断获取同步状态：详见acquire(arg)中的acquireQueued方法</p>
+<pre><code>final boolean acquireQueued(final Node node, int arg) {
+    boolean failed = true;
+    try {
+        //
+        boolean interrupted = false;
+        for (;;) {//不断自旋获取同步状态
+            //直到节点的前一个节点释放锁，并且前一个节点是头节点
+            final Node p = node.predecessor();
+            if (p == head &amp;&amp; tryAcquire(arg)) {
+                setHead(node);
+                p.next = null; // help GC
+                failed = false;
+                return interrupted;
+            }
+
+            //执行到这说明当前节点的前驱不是head或者tryAcquire(arg)失败
+            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)//tryAcquire()方法抛异常时
+            cancelAcquire(node);
+    }
+}
+</code></pre><p>如果当前节点获取锁失败的话，将会进行线程的挂起操作：</p>
+<p>waitStatus的状态分析：代表后继节点的状态。</p>
+<pre><code>ws = 0 : 默认加入节点的状态值；
+
+ws = -1 : 后继节点等待当前节点（前驱节点）被唤醒；
+
+ws = 1：等待节点等待超时或被中断取消了等待；
+
+ws = -2:后继节点等待在Condition队列中，其他线程对Condition调用signal（）方法后，节点将从等待队列转移到同步队列；
+
+private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+    int ws = pred.waitStatus;
+    if (ws == Node.SIGNAL)//前驱节点状态正常，需要将当前节点挂起
+        return true;
+    if (ws &gt; 0) {//说明前驱节点取消了排队，需要向前找到状态正常的节点
+        //waitStatus = 1表示线程取消了排队
+        do {
+            node.prev = pred = pred.prev;
+        } while (pred.waitStatus &gt; 0);
+        pred.next = node;
+    } else {
+        //正常情况下ws=0，CAS将前驱节点设置为Node.SIGNAL
+        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+    }
+    return false;
+}
+
+//前提为true的条件下，LockSupport工具将线程挂起
+private final boolean parkAndCheckInterrupt() {
+    LockSupport.park(this);
+    return Thread.interrupted();
+}
+</code></pre><hr>
+<p>再看一下释放锁的源码：</p>
+<p>AQS中的release(int arg)方法：</p>
+<pre><code>public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null &amp;&amp; h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+</code></pre><p>其中以ReentrantLock为例，重写了tryRelease方法：</p>
+<pre><code>protected final boolean tryRelease(int releases) {
+        int c = getState() - releases;
+        if (Thread.currentThread() != getExclusiveOwnerThread())
+            throw new IllegalMonitorStateException();
+        boolean free = false;
+        if (c == 0) {//没有出现重入直接释放锁
+            free = true;
+            setExclusiveOwnerThread(null);
+        }
+        setState(c);
+        return free;
+    }
+</code></pre><p>LockSupport唤醒线程：</p>
+<pre><code>private void unparkSuccessor(Node node) {
+
+    int ws = node.waitStatus;
+    if (ws &lt; 0)
+        compareAndSetWaitStatus(node, ws, 0);
+
+    Node s = node.next;
+    if (s == null || s.waitStatus &gt; 0) {
+        s = null;
+        //从后往前找到最靠近头节点的即将被唤醒的线程（waitStatus&lt;=0）
+        for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)
+            if (t.waitStatus &lt;= 0)
+                s = t;
+    }
+    if (s != null)
+        LockSupport.unpark(s.thread);
+}
 </code></pre><p>参考文献：</p>
-<p><a href="https://blog.csdn.net/smileiam/article/details/78226816" target="_blank" rel="noopener">TCP的三次握手、四次挥手</a>        </p>
-<ol start="7">
-<li>http协议？http和https的区别？http的结构及状态码？</li>
-</ol>
-<pre><code>1.http请求结构
-
-    1.1 请求行
-
-        eg:POST /addStudent/addStu.html HTTP/1.1
-
-    1.2 请求头
-
-        Accept:客户端接受什么类型的响应；eg:text/html
-
-        Cache-Control:响应数据在客户端的缓存控制；
-
-        Connection:请求完成后是否关掉TCP连接；eg:keep-alive;
-
-        Content-Type:请求的内容类型；eg:application/x-www-form-urlencoded标准的编码格式；
-
-        Cookie:保存server发送过来的set-Cookie内容；
-
-
-    1.3 请求体
-
-        eg:name=xuchunfa&amp;gender=male&amp;age=18
-
-2.http响应结构
-
-    2.1 响应行
-
-        eg:HTTP/1.1 200 OK
-
-    状态码：
-
-        成功状态码：
-
-            1.1 200 OK:处理成功；
-
-            1.2 204 No Content:请求处理成功，但没有资源返回；
-
-        重定向状态码：
-
-            2.1 301 Moved Permanently:请求的网页已被永久移动到新位置。
-
-            2.2 302 Found:服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。
-
-            2.3 303 See Other:请求者应当对不同的位置使用单独的 GET 请求来检索响应时;
-
-            2.4 304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;
-
-            2.5 305 Use Proxy：必须通过代理访问资源，代理的地址在Response的Location中
-
-        客户端错误状态码：
-
-            4.1 400 Bad Request:请求报文中存在语法错误；
-
-            4.2 401 Unauthorized：未授权，需要有通过Http认证的认证信息；
-
-            4.3 403 Forbidden:访问被拒绝；
-
-            4.4 404 Not Found:页面不存在（无法找到请求资源）；
-
-            4.5 405 Method not allowed：禁用请求中指定的方法；
-
-        服务器错误状态码：
-
-            5.1 500 Internal Server Error：服务器内部发生错误；
-
-            5.2 501 Not Implemented:客户端发起的请求超出服务器的能力范围;
-
-            5.2 503 Service Unavailable：服务器处于超负荷或者正在停机维护；
-
-            5.3 505 HTTP Version Not Supported:不支持的HTTP版本；
-
-    2.2 响应头
-
-        Access-Control-Allow-Origin：响应头指定了该响应的资源是否被允许与给定的origin共享；eg:*表示允许所有域都具有访问资源的权限；
-
-        Location:指定的是需要将页面重新定向至的地址;
-
-        Set-cookie:服务器端向客户端发送的cookie；
-
-
-3.http协议
-
-    1.生成针对目标Web服务器的HTTP请求报文；
-
-    2.http协议是无状态的协议，服务器不会记录客户端的信息，解放了服务器但可能会传输大量重复信息。通过Cookie来维系客户端和服务器之间的状态。、
-
-4.http和https区别
-
-     1.HTTPS协议由HTTP+SSL(Secure Sockets Layer)协议构建的可进行加密传输数据、身份认证的网络协议。
-
-    2.HTTP端口号80，HTTPS端口号443;
-
-5.HTTPS工作原理
-
-    1.客户端发起HTTPS请求，三次握手；
-
-    2.服务端配置。配置数字证书，即公钥和密钥（非对称加密）；
-
-    3.服务端传送SSL证书，证书的内容包括：证书的颁发机构、有效期、公钥、证书持有者、签名等，解决了公钥获取的安全性；
-
-    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；(操作系统内置了受信任的证书颁发机构，取出颁发者CA的公钥对证书的签名进行解密，
-    浏览器使用hash算法计算证书的hash值，与证书签名作对比)
-
-    5.传输加密信息。浏览器随机生成一个对称加密的密钥k（临时会话密钥），密钥k是在客户端和服务端共享的，用证书中的公钥加密k,得到密文k&apos;；
-
-    6.服务端解密信息。用私钥拿到k，并使用密钥k加密传输的数据；
-
-    7.传输服务端加密后的信息；
-
-    8.客户端解密信息。使用共享密钥k解密数据。
-
-总结：
-
-    1.加密算法
-
-        对称加密：加密和解密都是通过同一个密钥进行，采用对称加密进行通信存在密钥协商过程的不安全性；
-
-        非对称加密：私钥加密后的密文只要是公钥都可以解密，但公钥加密后的密文只有私钥可以解密；
-
-        注意：
-
-            1.非对称加密算法保证了协商对称加密算法的过程；
-
-            2.非对称加密算法会有公钥被劫持的问题，通过CA颁发的证书保证安全；
-
-            3.最后客户端和服务端协商出了对称加密算法进行信息的加密传输；
-</code></pre><p>7.HTTP1.0/HTTP1.1/HTTP2.0的区别?</p>
-<pre><code>1.HTTP1.1默认长连接Connection:keep-alive,HTTP1.0 每次请求都要创建连接；
-
-2.HTTP1.x的解析是基于文本，而HTTP2.0是基于二进制格式；
-
-3.HTTP1.1中若干个请求排队串行化单线程处理，后面的请求等待前面请求的返回才能获得执行机会，一旦有某请求超时等，后续请求只能被阻塞；HTTP2.0中多个请求可同时在一个连接上并行执行，某个请求任务耗时严重，不会影响到其它连接的正常执行；
-
-4.HTTP2.0中压缩header;
-
-5.HTTP2.0中实现服务端的推送，即服务端推送能把客户端所需要的资源伴随着index.html一起发送到客户端，减少了客户端重复请求的步骤，大大提升了速度；
-</code></pre><p>参考文献：</p>
-<p><a href="https://blog.csdn.net/u010256388/article/details/68491509" target="_blank" rel="noopener">HTTP请求行、请求头、请求体详解</a>    </p>
-<ol start="8">
-<li><p>Get请求和Post请求有什么区别？</p>
-<pre><code>1.Get请求的数据会附在URI之后，Post把提交的数据放在HTTP请求体中；
-
-2.Get的长度受受限于浏览器URI的长度(2K个字节)，所以一般来说，GET请求传递的数据要比POST请求少；
-
-3.POST比GET安全性高。
-
-4.GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会保留；
-
-5.GET只接受ASCII字符，POST没有限制；
-
-6.GET产生一个数据包：对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据
-
-  POST请求产生二个数据包：浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 OK（返回数据）
-</code></pre></li>
-</ol>
-<ol start="9">
-<li><p>Session和Cookie的区别？</p>
-<pre><code>Session:服务器端保存的数据结构；可以放在内存、数据库、文件中等；Session的实现对客户端Cookie有依赖关系。
-
-Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实现Session的一种方式，如果Cookie被禁用会通过URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；
-
-总结:
-
-1.cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存，是针对某一次会话而言；
-
-2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
-</code></pre></li>
-</ol>
-<p>10.HTTP中幂等性的理解？</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer" target="_blank" rel="noopener">同步队列源码分析第一篇</a></p>
 
           
         
@@ -2419,7 +3015,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2469,7 +3065,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

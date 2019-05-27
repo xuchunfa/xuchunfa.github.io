@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="举个公众号订阅-发布消息的例子： 1.抽象观察者： public interface Observer{     public void update (String message); } 2.具体观察者： public class User implements Observer {     private String name;     public User(String name) {">
+<meta name="description" content="观察者（发布-订阅）模式 Observer表示进行观察的人，Observable表示被观察的对象，当被观察对象的状态发生改变时会通知给观察者。 举个公众号订阅-发布消息的例子： 1.抽象观察者： public interface Observer{     public void update (String message); } 2.具体观察者： public class User imple">
 <meta property="og:type" content="article">
 <meta property="og:title" content="观察者模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/10/30/观察者模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="举个公众号订阅-发布消息的例子： 1.抽象观察者： public interface Observer{     public void update (String message); } 2.具体观察者： public class User implements Observer {     private String name;     public User(String name) {">
+<meta property="og:description" content="观察者（发布-订阅）模式 Observer表示进行观察的人，Observable表示被观察的对象，当被观察对象的状态发生改变时会通知给观察者。 举个公众号订阅-发布消息的例子： 1.抽象观察者： public interface Observer{     public void update (String message); } 2.具体观察者： public class User imple">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-30T12:50:13.744Z">
+<meta property="og:updated_time" content="2019-05-25T12:26:42.385Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="观察者模式">
-<meta name="twitter:description" content="举个公众号订阅-发布消息的例子： 1.抽象观察者： public interface Observer{     public void update (String message); } 2.具体观察者： public class User implements Observer {     private String name;     public User(String name) {">
+<meta name="twitter:description" content="观察者（发布-订阅）模式 Observer表示进行观察的人，Observable表示被观察的对象，当被观察对象的状态发生改变时会通知给观察者。 举个公众号订阅-发布消息的例子： 1.抽象观察者： public interface Observer{     public void update (String message); } 2.具体观察者： public class User imple">
 
 
 
@@ -399,7 +399,9 @@
       
 
       
-        <p>举个公众号订阅-发布消息的例子：</p>
+        <p><strong>观察者（发布-订阅）模式</strong></p>
+<pre><code>Observer表示进行观察的人，Observable表示被观察的对象，当被观察对象的状态发生改变时会通知给观察者。
+</code></pre><p>举个公众号订阅-发布消息的例子：</p>
 <p>1.抽象观察者：</p>
 <pre><code>public interface Observer{
     public void update (String message);
@@ -423,32 +425,34 @@
 }
 </code></pre><p>4.具体被观察者：</p>
 <pre><code>public class ConcreteSubject implements Subject {
-private List&lt;Observer&gt; usersList = new ArrayList&lt;Observer&gt;();
-@Override
-public void addObserver (Observer observer) {
-    usersList.add(observer);
-}
-
-@Override
-public void removeObserver (Observer observer) {
-    usersList.remove(observer);
-}
-
-@Override
-public void notify(String message) {
-    for (Observer observer : usersList) {
-        observer.update(message);
+    private List&lt;Observer&gt; usersList = new ArrayList&lt;Observer&gt;();
+    @Override
+    public void addObserver (Observer observer) {
+        usersList.add(observer);
     }
-}
+
+    @Override
+    public void removeObserver (Observer observer) {
+        usersList.remove(observer);
+    }
+
+    @Override
+    public void notify(String message) {
+        for (Observer observer : usersList) {
+            observer.update(message);
+        }
+    }
 }
 </code></pre><ul>
 <li>下面是JDK1.8的观察者模式</li>
 </ul>
-<p>观察者：</p>
+<p>缺点：</p>
+<pre><code>由于Java只能单一继承，如果Subject角色（Observable）已经是某个类的子类了，那么就无法继承java.util.Observable了；
+</code></pre><p>观察者：</p>
 <pre><code>//每一个观察者都必须实现这个接口    
 public interface Observer {
-//第一个代表被观察者
-void update(Observable o, Object arg);
+    //第一个代表被观察者
+    void update(Observable o, Object arg);
 }
 </code></pre><p>被观察者：</p>
 <pre><code>public class Observable {
@@ -459,6 +463,7 @@ void update(Observable o, Object arg);
         obs = new Vector&lt;&gt;();
     }
 
+//保证线程安全
 public synchronized void addObserver(Observer o) {
     if (o == null)
         throw new NullPointerException();
@@ -478,7 +483,7 @@ public void notifyObservers() {
 public void notifyObservers(Object arg) {
 
     //一个临时的数组，用于并发访问被观察者时，留住观察者列表的当前状态
-    Object[] arrLocal;
+    Object[] arrLocal;//线程私有
 
     //注意这个同步块，它表示在获取观察者列表时，该对象是被锁定的
     //也就是说，在我获取到观察者列表之前，不允许其他线程改变观察者列表
@@ -706,7 +711,7 @@ private static class WriterManagerInstance{
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

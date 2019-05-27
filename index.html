@@ -286,7 +286,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/15/建造者模式/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/27/命令模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -305,7 +305,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/15/建造者模式/" itemprop="url">建造者模式</a></h1>
+                <a class="post-title-link" href="/2019/05/27/命令模式/" itemprop="url">命令模式</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-15T20:44:57+08:00">
-                2019-05-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-27T18:19:10+08:00">
+                2019-05-27
               </time>
             
 
@@ -357,7 +357,7 @@
 
           
           
-             <span id="/2019/05/15/建造者模式/" class="leancloud_visitors" data-flag-title="建造者模式">
+             <span id="/2019/05/27/命令模式/" class="leancloud_visitors" data-flag-title="命令模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -390,86 +390,66 @@
       
         
           
-            <p><strong>建造者模式</strong></p>
-<pre><code>用户不必知道对象的构建过程和具体实现细节就能创建出复杂的对象，将将建造复杂对象的过程和组成对象的部件解耦。
-</code></pre><p>Builder:</p>
-<pre><code>//构建部件的抽象类或接口
-public abstract class Builder {
-    protected HomeStruct struct = new HomeStruct();
-    abstract void bulidFoundation();
-    abstract void buildArchitecture();
-    public HomeStruct finishConstruct(){
-        return struct;
-    }
-}
-</code></pre><p>ConcreteBuiler:</p>
-<pre><code>//具体部件构建的实现（木屋材料）
-public class WoodenBuilder extends Builder {
+            <p>Command角色：</p>
+<pre><code>public abstract class Command {
+    protected Receiver receiver;
 
-    private String material = &quot;wood&quot;;
-    @Override
-    public void bulidFoundation() {
-        System.out.println(&quot;地基使用：&quot; + material);
-        struct.setFoundation(material);
+    public Command(Receiver receiver) {
+        this.receiver = receiver;
+    }
+
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
+    }
+
+    abstract void execute();
+}
+</code></pre><p>ConcreteCommand角色：</p>
+<pre><code>public class ConcreteCommand extends Command {
+
+    public ConcreteCommand(Receiver receiver) {
+        super(receiver);
     }
 
     @Override
-    public void buildArchitecture() {
-        System.out.println(&quot;架构使用：&quot; + material);
-        struct.setArchitecture(material);
-    }
-
-    public HomeStruct finishContruct(){
-        return struct;
+    public void execute() {
+        receiver.action();
     }
 }
-
-//水泥材料
-public class CementBuilder extends Builder {
-
-    private String material = &quot;cement&quot;;
+</code></pre><p>Receiver角色：</p>
+<pre><code>public interface Receiver {
+    void action();
+}
+</code></pre><p>ConcreteReceiver角色：</p>
+<pre><code>public class ConcreteReceiver implements Receiver {
     @Override
-    public void bulidFoundation() {
-        System.out.println(&quot;地基使用：&quot; + material);
-        struct.setFoundation(material);
-    }
-
-    @Override
-    public void buildArchitecture() {
-        System.out.println(&quot;架构使用：&quot; + material);
-        struct.setArchitecture(material);
-    }
-
-    public HomeStruct finishContruct(){
-        return struct;
+    public void action() {
+        System.out.println(&quot;executing one kind command&quot;);
     }
 }
-</code></pre><p>Director:</p>
-<pre><code>//使用不同材料可以构造不同建筑物
-public class Director {
-    private Builder builder;
+</code></pre><p>Invoker角色：封装命令请求</p>
+<pre><code>public class Invoker {
+    private Command command;
 
-    public Director(Builder builder) {
-        this.builder = builder;
+    public Invoker(Command command) {
+        this.command = command;
     }
 
-    public void construct(){
-        builder.bulidFoundation();
-        builder.buildArchitecture();
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void call(){
+        command.execute();
     }
 }
-</code></pre><p>测试:</p>
-<pre><code>public class Construction {
-    @Test
-    public void test(){
-        Builder woodenBuilder = new WoodenBuilder();
-        Director director = new Director(woodenBuilder);
-        director.construct();
-
-        HomeStruct homeStruct = woodenBuilder.finishConstruct();
-        System.out.println(homeStruct.getFoundation());
-        System.out.println(homeStruct.getArchitecture());
-    }
+</code></pre><p>Client角色：</p>
+<pre><code>public static void main(String[] args){
+    Receiver receiver = new ConcreteReceiver();
+    Command command = new ConcreteCommand(receiver);
+    //command.execute();
+    Invoker invoker = new Invoker(command);
+    invoker.call();
 }
 </code></pre>
           
@@ -519,7 +499,7 @@ public class Director {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/13/抽象工厂模式/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/27/中介者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -538,7 +518,7 @@ public class Director {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/13/抽象工厂模式/" itemprop="url">抽象工厂模式</a></h1>
+                <a class="post-title-link" href="/2019/05/27/中介者模式/" itemprop="url">中介者模式</a></h1>
         
 
         <div class="post-meta">
@@ -550,8 +530,8 @@ public class Director {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-13T19:51:32+08:00">
-                2019-05-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-27T14:56:22+08:00">
+                2019-05-27
               </time>
             
 
@@ -590,7 +570,7 @@ public class Director {
 
           
           
-             <span id="/2019/05/13/抽象工厂模式/" class="leancloud_visitors" data-flag-title="抽象工厂模式">
+             <span id="/2019/05/27/中介者模式/" class="leancloud_visitors" data-flag-title="中介者模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -623,89 +603,101 @@ public class Director {
       
         
           
-            <p>抽象工厂类：</p>
-<pre><code>public interface PhoneFactory {
-    HUAWEI produceHW();
-    XIAOMI produceXM();
+            <p><strong>中介者模式</strong></p>
+<pre><code> 使用一个中介对象来封装一系列的对象交互，使得各对象间不需要显示地相互引用，
+中介者模式的本质是：封装交互；
+</code></pre><p>Colleague角色：抽象交互对象</p>
+<pre><code>//持有中介者的引用
+public abstract class AbstractDatabase {
+    protected AbstractMediator mediator;
+    public static final String REDIS = &quot;redis&quot;;
+    public static final String MYSQL = &quot;mysql&quot;;
+    public static final String HDFS = &quot;hdfs&quot;;
+
+    public AbstractDatabase(AbstractMediator mediator) {
+        this.mediator = mediator;
+    }
+
+    abstract void addData(String data);
 }
-</code></pre><p>具体工厂类：</p>
-<pre><code>//生产一代手机的具体工厂
-public class Phone1Factory implements PhoneFactory {
-    @Override
-    public HUAWEI produceHW() {
-        return new HUAWEI1();
+</code></pre><p>ConcreteColleague角色:具体交互对象</p>
+<pre><code>public class RedisDatabase extends AbstractDatabase {
+    private List&lt;String&gt; redisSet = new ArrayList&lt;&gt;();
+    public RedisDatabase(AbstractMediator mediator) {
+        super(mediator);
+    }
+
+    public void synInfo(String data){
+        System.out.println(&quot;redis data is synchronizing......&quot;);
+        //交由中介者实现数据同步
+        mediator.sync(AbstractDatabase.REDIS,data);
+        System.out.println(&quot;redis data finished synchronize&quot;);
     }
 
     @Override
-    public XIAOMI produceXM() {
-        return new XIAOMI1();
+    void addData(String data) {
+        System.out.println(&quot;add data to Redis&quot;);
+        redisSet.add(data);
+        synInfo(data);
+    }
+
+    public void redisInfo(){
+        System.out.println(&quot;stored REDIS data number: &quot;+redisSet.size() + &quot; Info : &quot;+redisSet.toString());
     }
 }
 
-//生产二代手机的具体工厂
-public class Phone2Factory implements PhoneFactory {
+MysqlDatabase......
+
+HdfsDatabase......
+</code></pre><p>Mediator角色：抽象中介者</p>
+<pre><code>public abstract class AbstractMediator {
+    protected RedisDatabase redisDatabase;
+    protected MysqlDatabase mysqlDatabase;
+    protected HdfsDatabase hdfsDatabase;
+
+    abstract void sync(String database,String data);
+
+    public void setRedisDatabase(RedisDatabase redisDatabase) {
+        this.redisDatabase = redisDatabase;
+    }
+
+    public void setMysqlDatabase(MysqlDatabase mysqlDatabase) {
+        this.mysqlDatabase = mysqlDatabase;
+    }
+
+    public void setHdfsDatabase(HdfsDatabase hdfsDatabase) {
+        this.hdfsDatabase = hdfsDatabase;
+    }
+}
+</code></pre><p>ConcreteMediator角色:具体中介者</p>
+<pre><code>//实现 redis 和 mysql 的数据同步到 hdfs
+public class SyncMediator extends AbstractMediator {
+
     @Override
-    public HUAWEI produceHW() {
-        return new HUAWEI2();
-    }
-
-    @Override
-    public XIAOMI produceXM() {
-        return new XIAOMI2();
-    }
-}
-</code></pre><p>抽象产品类：</p>
-<pre><code>//产品A
-public interface HUAWEI {
-    void huaweiInfo();
-}
-
-//产品B
-public interface XIAOMI {
-    void xiaomiInfo();
-}
-</code></pre><p>具体产品类：</p>
-<pre><code>//产品A1
-public class HUAWEI1 implements HUAWEI {
-    @Override
-    public void huaweiInfo() {
-        System.out.println(&quot;华为1代&quot;);
+    void sync(String database, String data) {
+        if (database.equals(AbstractDatabase.REDIS)) {
+            hdfsDatabase.addData(data);
+        } else if (database.equals(AbstractDatabase.MYSQL)) {
+            hdfsDatabase.addData(data);
+        }
     }
 }
+</code></pre><p>Client角色：</p>
+<pre><code> public static void main(String[] args){
+    AbstractMediator mediator = new SyncMediator();
+    RedisDatabase redis = new RedisDatabase(mediator);
+    MysqlDatabase mysql = new MysqlDatabase(mediator);
+    HdfsDatabase hdfs = new HdfsDatabase(mediator)；
 
-//产品A2
-public class HUAWEI2 implements HUAWEI {
-    @Override
-    public void huaweiInfo() {
-        System.out.println(&quot;华为2代&quot;);
-    }
+    mediator.setRedisDatabase(redis);
+    mediator.setMysqlDatabase(mysql);
+    mediator.setMysqlDatabase(hdfs);
+
+    redis.addData(&quot;1&quot;);
+    redis.redisInfo();
+    mysql.mysqlInfo();
+    hdfs.hdfsInfo();
 }
-
-//产品B1
-public class XIAOMI1 implements XIAOMI {
-    @Override
-    public void xiaomiInfo() {
-        System.out.println(&quot;小米1代&quot;);
-    }
-}
-
-//产品B2
-public class XIAOMI2 implements XIAOMI {
-    @Override
-    public void xiaomiInfo() {
-        System.out.println(&quot;小米2代&quot;);
-    }
-}
-</code></pre><p>测试用例：</p>
-<pre><code>PhoneFactory pf1 = new Phone1Factory();
-HUAWEI huawei = pf1.produceHW();
-XIAOMI xiaomi = pf1.produceXM();
-
-huawei.huaweiInfo();//华为1代
-xiaomi.xiaomiInfo();//小米1代
-</code></pre><p><a href="https://blog.51cto.com/zero01/2070033" target="_blank" rel="noopener">理解工厂方法模式和抽象工厂模式</a></p>
-<h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>1.抽象工厂是可以生产多个产品的，并且这些产品属于同一系列，工厂方法模式只能生产一个产品；
-</code></pre><h4 id="抽象工厂模式优点"><a href="#抽象工厂模式优点" class="headerlink" title="抽象工厂模式优点"></a>抽象工厂模式优点</h4><pre><code>1.具体实例的创建过程与客户端分离，客户端通过抽象接口操作实例对象；
 </code></pre>
           
         
@@ -754,7 +746,7 @@ xiaomi.xiaomiInfo();//小米1代
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/12/设计模式分类与原则/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/26/访问者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -773,7 +765,7 @@ xiaomi.xiaomiInfo();//小米1代
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/12/设计模式分类与原则/" itemprop="url">设计模式分类与原则</a></h1>
+                <a class="post-title-link" href="/2019/05/26/访问者模式/" itemprop="url">访问者模式</a></h1>
         
 
         <div class="post-meta">
@@ -785,8 +777,8 @@ xiaomi.xiaomiInfo();//小米1代
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-12T19:46:55+08:00">
-                2019-05-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-26T16:20:16+08:00">
+                2019-05-26
               </time>
             
 
@@ -825,7 +817,7 @@ xiaomi.xiaomiInfo();//小米1代
 
           
           
-             <span id="/2019/05/12/设计模式分类与原则/" class="leancloud_visitors" data-flag-title="设计模式分类与原则">
+             <span id="/2019/05/26/访问者模式/" class="leancloud_visitors" data-flag-title="访问者模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -858,423 +850,77 @@ xiaomi.xiaomiInfo();//小米1代
       
         
           
-            <p><strong>设计模式分类</strong></p>
-<ul>
-<li>创建型模式(5种)：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。</li>
-</ul>
-<ul>
-<li><p>结构型模式（7种）：适配器模式、装饰者模式、代理模式、外观模式、桥接模式、组合模式、享元模式。</p>
-</li>
-<li><p>行为模式（11种）：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</p>
-</li>
-</ul>
-<p><strong>设计模式原则</strong></p>
-<ul>
-<li><p>开闭原则：对拓展开放，对修改关闭，多使用接口和抽象类。</p>
-</li>
-<li><p>里氏替换原则</p>
-</li>
-<li><p>依赖倒转原则</p>
-</li>
-<li><p>接口隔离原则：多使用多个隔离的接口，比使用单个接口要好，降低了类与类的耦合性。</p>
-</li>
-<li><p>迪米特原则</p>
-</li>
-<li><p>合成复用原则：尽量多使用合成/聚合方式，而不是继承。</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/19/阻塞队列源码详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/19/阻塞队列源码详解/" itemprop="url">阻塞队列源码详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-19T15:42:02+08:00">
-                2019-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/19/阻塞队列源码详解/" class="leancloud_visitors" data-flag-title="阻塞队列源码详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://www.javadoop.com/post/java-concurrent-queue" target="_blank" rel="noopener">阻塞队列详解</a></p>
-<p>总结：</p>
-<pre><code>1.ArrayBlockingQueue:底层数组，有界队列；
-
-2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；
-
-3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；
-
-4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值；
-</code></pre><h4 id="ArrayBlockingQueue详解"><a href="#ArrayBlockingQueue详解" class="headerlink" title="ArrayBlockingQueue详解"></a>ArrayBlockingQueue详解</h4><p>核心成员变量：</p>
-<pre><code>final Object[] items;
-
-int takeIndex;
-
-int putIndex;
-
-int count;
-
-final ReentrantLock lock;
-private final Condition notEmpty;
-private final Condition notFull;
-</code></pre><p>带阻塞插入方法：(offer方法不带阻塞)</p>
-<pre><code>public void put(E e) throws InterruptedException {
-    checkNotNull(e);//插入元素不允许为null
-    final ReentrantLock lock = this.lock;
-    lock.lockInterruptibly();
-    try {
-        while (count == items.length)
-            notFull.await();
-        enqueue(e);//入队
-    } finally {
-        lock.unlock();
-    }
+            <p><strong>访问者模式</strong></p>
+<pre><code>封装一些作用于某种数据结构中的各元素的操作，可以在不改变这个数据结构的前提下定义作用于这些元素的新操作。
+</code></pre><p>Visitor角色：</p>
+<pre><code>public interface Visitor {
+    //Engine 和 Wheel 类指那些不易发生变化的数据结构
+    void visit(Engine engine);
+    void visit(Wheel wheel);
 }
-</code></pre><p>元素入队：</p>
-<pre><code>private void enqueue(E x) {
-    final Object[] items = this.items;
-    items[putIndex] = x;
-    if (++putIndex == items.length)
-        putIndex = 0;
-    count++;
-    notEmpty.signal();//唤醒notEmpty条件队列的头节点
-}
-</code></pre><p>带阻塞获取方法：</p>
-<pre><code>public E take() throws InterruptedException {
-    final ReentrantLock lock = this.lock;
-    lock.lockInterruptibly();
-    try {
-        while (count == 0)
-            notEmpty.await();
-        return dequeue();
-    } finally {
-        lock.unlock();
-    }
-}
-</code></pre><p>元素出队：</p>
-<pre><code>private E dequeue() {
-    final Object[] items = this.items;
-    @SuppressWarnings(&quot;unchecked&quot;)
-    E x = (E) items[takeIndex];
-    items[takeIndex] = null;//help GC
-    if (++takeIndex == items.length)
-        takeIndex = 0;
-    count--;
-    if (itrs != null)
-        itrs.elementDequeued();
-    notFull.signal();//唤醒notFull条件队列的头节点
-    return x;
-}
-</code></pre><h4 id="LinkedBlockingQueue详解"><a href="#LinkedBlockingQueue详解" class="headerlink" title="LinkedBlockingQueue详解"></a>LinkedBlockingQueue详解</h4><p>核心变量：</p>
-<pre><code>private final int capacity;//默认Integer.MAXVALUE
-private final AtomicInteger count = new AtomicInteger();//当前队列元素个数
-
-transient Node&lt;E&gt; head;
-private transient Node&lt;E&gt; last;
-
-//take、poll方法时加锁
-private final ReentrantLock takeLock = new ReentrantLock();
-
-//offer、offer方法时加锁
-private final ReentrantLock putLock = new ReentrantLock();
-
-private final Condition notEmpty = takeLock.newCondition();
-private final Condition notFull = putLock.newCondition();
-</code></pre><p>put方法源码分析：</p>
-<pre><code>public void put(E e) throws InterruptedException {
-    if (e == null) throw new NullPointerException();
-    int c = -1;//标识是否成功，-1表示不成功
-    Node&lt;E&gt; node = new Node&lt;E&gt;(e);
-    final ReentrantLock putLock = this.putLock;
-    final AtomicInteger count = this.count;
-    putLock.lockInterruptibly();
-    try {
-
-        while (count.get() == capacity) {
-            notFull.await();
-        }
-        enqueue(node);
-        c = count.getAndIncrement();//返回的是旧值
-        if (c + 1 &lt; capacity)
-            //还有空间可用，唤醒notFull上的线程，哪些线程
-            notFull.signal();
-    } finally {
-        putLock.unlock();
+</code></pre><p>具体访问的行为角色：</p>
+<pre><code>//修理零件
+public class RepairVisitor implements Visitor {
+    @Override
+    public void visit(Engine engine) {
+        System.out.println(&quot;repairing engine......&quot;);
     }
 
-    if (c == 0)
-        signalNotEmpty();//唤醒notEmpty
-}
-</code></pre><p>唤醒notEmpty:</p>
-<pre><code> private void signalNotEmpty() {
-    final ReentrantLock takeLock = this.takeLock;
-    takeLock.lock();
-    try {
-        notEmpty.signal();
-    } finally {
-        takeLock.unlock();
+    @Override
+    public void visit(Wheel wheel) {
+        System.out.println(&quot;repairing wheel......&quot;);
     }
 }
-</code></pre><p>元素入队：</p>
-<pre><code>private void enqueue(Node&lt;E&gt; node) {
-    last = last.next = node;//初始化时last就不会为空了
+</code></pre><p>被访问的角色：</p>
+<pre><code>//通常是那些稳定的数据结构
+public interface Visitable {
+    void accept(Visitor visitor);
 }
-</code></pre><p>take方法源码详解：</p>
-<pre><code>public E take() throws InterruptedException {
-    E x;
-    int c = -1;
-    final AtomicInteger count = this.count;
-    final ReentrantLock takeLock = this.takeLock;
-    takeLock.lockInterruptibly();
-    try {
-        while (count.get() == 0) {
-            notEmpty.await();
-        }
-        x = dequeue();
-        c = count.getAndDecrement();
-        if (c &gt; 1)
-            notEmpty.signal();
-    } finally {
-        takeLock.unlock();
+</code></pre><p>具体被访问的角色：</p>
+<pre><code>public class Engine implements Visitable {
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
-    if (c == capacity)
-        signalNotFull();//唤醒notFull
-    return x;
 }
-</code></pre><p>元素出队：</p>
-<pre><code>private E dequeue() {
 
-    Node&lt;E&gt; h = head;//头节点内容为空
-    Node&lt;E&gt; first = h.next;
-    h.next = h; // help GC
-    head = first;
-    E x = first.item;
-    first.item = null;
-    return x;
-}
-</code></pre><h4 id="SynchronousQueue源码解析"><a href="#SynchronousQueue源码解析" class="headerlink" title="SynchronousQueue源码解析"></a>SynchronousQueue源码解析</h4><p>有公平和非公平两种队列：默认非公平</p>
-<pre><code>public SynchronousQueue(boolean fair) {
-    transferer = fair ? new TransferQueue&lt;E&gt;() : new TransferStack&lt;E&gt;();
-}
-</code></pre><p>先看一下TransferQueue的put源码：</p>
-<pre><code>public void put(E e) throws InterruptedException {
-    if (e == null) throw new NullPointerException();
-    if (transferer.transfer(e, false, 0) == null) {
-        Thread.interrupted();
-        throw new InterruptedException();
+public class Wheel implements Visitable {
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
+}
+</code></pre><p>整个对象结构角色：</p>
+<pre><code>public class Car {
+
+    private List&lt;Visitable&gt; components = new ArrayList&lt;&gt;();
+    private Visitor visitor;
+
+    public void addComponent(Visitable visitable){
+        components.add(visitable);
     }
-</code></pre><p>核心代码：</p>
-<pre><code>E transfer(E e, boolean timed, long nanos) {
 
-    QNode s = null;
+    public void setVisitor(Visitor visitor) {
+        this.visitor = visitor;
+    }
 
-    boolean isData = (e != null);//e != null代表将元素从生产者转移到消费者
-    for (;;) {
-        QNode t = tail;
-        QNode h = head;
-        if (t == null || h == null)          
-            continue;                       
-
-        //队列为空或者当前线程类型和队列中的一致
-        if (h == t || t.isData == isData) { 
-            QNode tn = t.next;
-            if (t != tail)                  
-                continue;
-            if (tn != null) {               
-                advanceTail(t, tn);//CAS设置tn为尾节点
-                continue;
-            }
-            if (timed &amp;&amp; nanos &lt;= 0)        
-                return null;
-            if (s == null)
-                s = new QNode(e, isData);
-            if (!t.casNext(null, s))//节点插入到尾节点        
-                continue;
-
-            advanceTail(t, s);              
-            Object x = awaitFulfill(s, e, timed, nanos);
-            if (x == s) {                   
-                clean(t, s);
-                return null;
-            }
-
-            if (!s.isOffList()) {           
-                advanceHead(t, s);          
-                if (x != null)              
-                    s.item = s;
-                s.waiter = null;
-            }
-            return (x != null) ? (E)x : e;
-
-        } else {//当前线程类型与队列中类型不匹配，读或写相匹配                           
-            QNode m = h.next;               
-            if (t != tail || m == null || h != head)
-                continue;                   
-
-            Object x = m.item;
-            if (isData == (x != null) ||   
-                x == m ||                   
-                !m.casItem(x, e)) {         
-                advanceHead(h, m);         
-                continue;
-            }
-
-            advanceHead(h, m);              
-            LockSupport.unpark(m.waiter);
-            return (x != null) ? (E)x : e;
+    //visitor方式一一访问visitable角色
+    public void startVisit(){
+        for(Visitable v : components){
+            v.accept(visitor);
         }
     }
+}
+</code></pre><p>客户端：</p>
+<pre><code>public static void main(String[] args){
+    Car car = new Car();
+    Visitable engine = new Engine();
+    Visitable wheel = new Wheel();
+    car.addComponent(engine);//添加被访问的结构
+    car.addComponent(wheel);
+    Visitor repair = new RepairVisitor();
+    car.setVisitor(repair);//设置访问行为
+    car.startVisit();
 }
 </code></pre>
           
@@ -1324,7 +970,7 @@ private final Condition notFull = putLock.newCondition();
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/16/ReentrantReadWriteLock源码详解/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/26/责任链模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -1343,7 +989,7 @@ private final Condition notFull = putLock.newCondition();
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/16/ReentrantReadWriteLock源码详解/" itemprop="url">ReentrantReadWriteLock源码详解</a></h1>
+                <a class="post-title-link" href="/2019/05/26/责任链模式/" itemprop="url">责任链模式</a></h1>
         
 
         <div class="post-meta">
@@ -1355,8 +1001,8 @@ private final Condition notFull = putLock.newCondition();
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-16T09:57:13+08:00">
-                2019-04-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-26T10:53:11+08:00">
+                2019-05-26
               </time>
             
 
@@ -1378,19 +1024,8 @@ private final Condition notFull = putLock.newCondition();
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -1406,7 +1041,7 @@ private final Condition notFull = putLock.newCondition();
 
           
           
-             <span id="/2019/04/16/ReentrantReadWriteLock源码详解/" class="leancloud_visitors" data-flag-title="ReentrantReadWriteLock源码详解">
+             <span id="/2019/05/26/责任链模式/" class="leancloud_visitors" data-flag-title="责任链模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1439,231 +1074,80 @@ private final Condition notFull = putLock.newCondition();
       
         
           
-            <p>参考文献</p>
-<p><a href="https://www.javadoop.com/post/reentrant-read-write-lock" target="_blank" rel="noopener">读写锁源码详解</a></p>
-<p>文献已经给出详细的解析，作简单总结：</p>
-<p>使用场景：</p>
-<pre><code>1.适用于读多于写的场景；
-</code></pre><p>关键问题：</p>
-<pre><code>1.将state状态一分为二，高16位用于共享模式，低16位用于独占模式；
+            <p>特点：</p>
+<pre><code>把请求的传递从子类中剥夺出来了，子类可以专心处理业务逻辑，子类不再需要进行传递的判断；
+</code></pre><p>问题角色：</p>
+<pre><code>public enum Problem {
+    STRUCTURE(1), ARCHITECTURE(2);
 
-2.持有写锁的线程去获取读锁的过程称为锁降级；不支持读锁升级为写锁（会产生死锁），可能读锁在竞争写锁
-
-时可能会使自己进入阻塞队列，导致无法被唤醒。
-
-3.在获取写锁前会判断是否有读锁存在的原因：确保写锁的操作对读锁可见，这样读锁才能感知到写锁的操作了；
-</code></pre><p>读锁源码分析：</p>
-<pre><code>public void lock() {
-    sync.acquireShared(1);
-}
-
-public final void acquireShared(int arg) {
-    if (tryAcquireShared(arg) &lt; 0)
-        doAcquireShared(arg);
-}
-
-protected final int tryAcquireShared(int unused) {
-
-    Thread current = Thread.currentThread();
-    int c = getState();
-
-    //exclusiveCount(c) != 0 &amp;&amp; getExclusiveOwnerThread()=current表示锁降级的情况
-    if (exclusiveCount(c) != 0 &amp;&amp;//有线程持有写锁而且还不是当前线程
-        getExclusiveOwnerThread() != current)//注意持有写锁的当前线程还可以继续持有读锁
-        return -1;
-    int r = sharedCount(c);
-    if (!readerShouldBlock() &amp;&amp;//公平锁排队和写锁先于读锁时，readerShouldBlock()返回true
-        r &lt; MAX_COUNT &amp;&amp;
-        //设置高16位的state，失败的话说明发生读锁竞争或者当前写锁和其他读锁的竞争
-        compareAndSetState(c, c + SHARED_UNIT)) {
-        if (r == 0) {
-            firstReader = current;
-            firstReaderHoldCount = 1;
-        } else if (firstReader == current) {
-            firstReaderHoldCount++;
-        } else {
-            HoldCounter rh = cachedHoldCounter;
-            if (rh == null || rh.tid != getThreadId(current))
-                cachedHoldCounter = rh = readHolds.get();
-            else if (rh.count == 0)
-                readHolds.set(rh);
-            rh.count++;
-        }
-        return 1;//成功获取读锁
+    private int level;
+    Problem(int  level) {
+        this.level = level;
     }
 
-    return fullTryAcquireShared(current);//尝试再次获取锁
+    public int getLevel() {
+        return level;
+    }
 }
-</code></pre><p>尝试再次获取锁：</p>
-<pre><code>final int fullTryAcquireShared(Thread current) {
+</code></pre><p>Handler角色：</p>
+<pre><code>public abstract class Handler {
+    protected int level;//表示问题的级别
+    private Handler next;
 
-    HoldCounter rh = null;
-    for (;;) {
-        int c = getState();
-        if (exclusiveCount(c) != 0) {//还是其他线程获取写锁，阻塞读锁
-            if (getExclusiveOwnerThread() != current)
-                return -1;
-        } else if (readerShouldBlock()) {
-            //1.写锁没有被占
-            //2.阻塞队列有其他线程在等待
-            if (firstReader == current) {
-                // assert firstReaderHoldCount &gt; 0;
-            } else {
-                if (rh == null) {
-                    rh = cachedHoldCounter;
-                    if (rh == null || rh.tid != getThreadId(current)) {
-                        rh = readHolds.get();
-                        if (rh.count == 0)
-                            readHolds.remove();
-                    }
-                }
-                if (rh.count == 0)
-                    return -1;
-            }
-        }
-        if (sharedCount(c) == MAX_COUNT)
-            throw new Error(&quot;Maximum lock count exceeded&quot;);
+    public Handler(int level) {
+        this.level = level;
+    }
 
-        //处理线程重入的情况
-        if (compareAndSetState(c, c + SHARED_UNIT)) {
-            if (sharedCount(c) == 0) {
-                firstReader = current;
-                firstReaderHoldCount = 1;
-            } else if (firstReader == current) {
-                firstReaderHoldCount++;
-            } else {
-                if (rh == null)
-                    rh = cachedHoldCounter;
-                if (rh == null || rh.tid != getThreadId(current))
-                    rh = readHolds.get();
-                else if (rh.count == 0)
-                    readHolds.set(rh);
-                rh.count++;
-                cachedHoldCounter = rh; // cache for release
-            }
-            return 1;
+    //责任链的入口
+    public final void transfer(Problem problem){
+        if(level == problem.getLevel()){
+            this.report();
+        }else if(this.next != null){
+            this.next.transfer(problem);
+        }else{
+            System.out.println(&quot;Final boss can&apos;t resolve the problem&quot;);
         }
     }
-</code></pre><p>读锁的释放源码：</p>
-<pre><code> public void unlock() {
-    sync.releaseShared(1);
-}
 
-public final boolean releaseShared(int arg) {
-    if (tryReleaseShared(arg)) {
-        doReleaseShared();
-        return true;
-    }
-    return false;
-}
-
-protected final boolean tryReleaseShared(int unused) {
-    Thread current = Thread.currentThread();
-    if (firstReader == current) {
-        //反正优先处理的是第一个获取读锁的线程
-        if (firstReaderHoldCount == 1)
-            firstReader = null;
-        else
-            firstReaderHoldCount--;
-    } else {
-        HoldCounter rh = cachedHoldCounter;//缓存最近获取读锁的线程，为了提高效率
-        if (rh == null || rh.tid != getThreadId(current))
-            rh = readHolds.get();
-        int count = rh.count;
-        if (count &lt;= 1) {
-            readHolds.remove();//防止内存泄露
-            if (count &lt;= 0)//一次lock()多次unlock()的情况
-                throw unmatchedUnlockException();
-        }
-        --rh.count;
-    }
-    for (;;) {
-        int c = getState();
-        int nextc = c - SHARED_UNIT;//高位减1
-        if (compareAndSetState(c, nextc))
-            return nextc == 0;//读写锁都空了，唤醒后面的所有节点（共享模式的特点）
-    }
-}
-</code></pre><p>最后看一下写锁的源码：</p>
-<p>获取写锁：</p>
-<pre><code>public void lock() {
-        sync.acquire(1);
+    public void setNext(Handler next) {
+        this.next = next;
     }
 
-public final void acquire(int arg) {
-    if (!tryAcquire(arg) &amp;&amp;
-        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-        selfInterrupt();
+    abstract void report();
 }
+</code></pre><p>项目经理角色：</p>
+<pre><code>public class Manager extends Handler {
 
-protected final boolean tryAcquire(int acquires) {
-
-    Thread current = Thread.currentThread();
-    int c = getState();
-    int w = exclusiveCount(c);
-    if (c != 0) {
-        //c!=0 &amp;&amp; w=0表示有线程持有读锁，这个线程可能是他自己或者其他线程
-        //c!=0 &amp;&amp; w!=0 &amp;&amp; current != getExclusiveOwnerThread()表示其他线程持有写锁
-        //c!=0 &amp;&amp; w!=0 &amp;&amp; current = getExclusiveOwnerThread()表示先获取写锁，后获取读锁的线程
-        if (w == 0 || current != getExclusiveOwnerThread())
-            return false;
-
-        if (w + exclusiveCount(acquires) &gt; MAX_COUNT)
-            throw new Error(&quot;Maximum lock count exceeded&quot;);
-        //写锁重入
-        setState(c + acquires);
-        return true;
+    //项目经理解决structure问题
+    public Manager() {
+        super(1);
     }
 
-    //非公平锁writerShouldBlock()=false，直接CAS设置state
-    //公平锁有前驱节点排队的话，writerShouldBlock()=true进入阻塞队列，否则正常设置
-    if (writerShouldBlock() ||
-        !compareAndSetState(c, c + acquires))
-        return false;
-    setExclusiveOwnerThread(current);
-    return true;
+    @Override
+    void report() {
+        System.out.println(&quot;项目经理解决软件结构布局&quot;);
+    }
 }
-</code></pre><p>看一下写锁是否应该阻塞的情况：</p>
-<pre><code>static final class NonfairSync extends Sync {
-// 如果是非公平模式，那么 lock 的时候就可以直接用 CAS 去抢锁，抢不到再排队
-final boolean writerShouldBlock() {
-    return false; // writers can always barge
-}
-...
-}
-static final class FairSync extends Sync {
-final boolean writerShouldBlock() {
-    // 如果是公平模式，那么如果阻塞队列有线程等待的话，就乖乖去排队
-    return hasQueuedPredecessors();
-}
-...
-}
-</code></pre><p>释放写锁：</p>
-<pre><code>public void unlock() {
-        sync.release(1);
+</code></pre><p>架构师角色：</p>
+<pre><code>public class Architect extends Handler {
+
+    //架构师解决architecture问题
+    public Architect() {
+        super(2);
     }
 
-public final boolean release(int arg) {
-    if (tryRelease(arg)) {
-        Node h = head;
-        if (h != null &amp;&amp; h.waitStatus != 0)
-            unparkSuccessor(h);
-        return true;
+    @Override
+    void report() {
+        System.out.println(&quot;架构师解决软件架构设计&quot;);
     }
-    return false;
 }
-
-protected final boolean tryRelease(int releases) {
-    if (!isHeldExclusively())
-        throw new IllegalMonitorStateException();
-
-    //线程安全，写锁是排他锁
-    int nextc = getState() - releases；
-    boolean free = exclusiveCount(nextc) == 0;
-    if (free)
-        setExclusiveOwnerThread(null);
-    setState(nextc);
-    return free;
+</code></pre><p>客户端：</p>
+<pre><code>public static void main(String[] args){
+    Manager manager = new Manager();
+    Architect architect = new Architect();
+    manager.setNext(architect);
+    manager.transfer(Problem.STRUCTURE);
+    manager.transfer(Problem.ARCHITECTURE);
 }
 </code></pre>
           
@@ -1713,7 +1197,7 @@ protected final boolean tryRelease(int releases) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CyclicBarrier源码解析/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/25/策略模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -1732,7 +1216,7 @@ protected final boolean tryRelease(int releases) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/15/CyclicBarrier源码解析/" itemprop="url">CyclicBarrier源码解析</a></h1>
+                <a class="post-title-link" href="/2019/05/25/策略模式/" itemprop="url">策略模式</a></h1>
         
 
         <div class="post-meta">
@@ -1744,8 +1228,8 @@ protected final boolean tryRelease(int releases) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:50:10+08:00">
-                2019-04-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-25T19:24:25+08:00">
+                2019-05-25
               </time>
             
 
@@ -1767,19 +1251,8 @@ protected final boolean tryRelease(int releases) {
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -1795,7 +1268,7 @@ protected final boolean tryRelease(int releases) {
 
           
           
-             <span id="/2019/04/15/CyclicBarrier源码解析/" class="leancloud_visitors" data-flag-title="CyclicBarrier源码解析">
+             <span id="/2019/05/25/策略模式/" class="leancloud_visitors" data-flag-title="策略模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1828,84 +1301,103 @@ protected final boolean tryRelease(int releases) {
       
         
           
-            <p>参考文献</p>
-<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CyclicBarrier源码解析</a></p>
-<p>看一下构造函数：</p>
-<pre><code>//parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。
-public CyclicBarrier(int parties) {
-    this(parties, null);
+            <p>枚举方法实现的策略模式：</p>
+<pre><code>public enum StrategyEnum {
+    ADD{
+        @Override
+        public int calculate(int a, int b) {
+            return a + b;
+        }
+    },
+    SUBTRACT{
+        @Override
+        public int calculate(int a, int b) {
+            return a - b;
+        }
+    };
+    //抽象方法放后面
+    public abstract int calculate(int a, int b);
 }
-</code></pre><p>核心await()方法：</p>
-<pre><code>public int await() throws InterruptedException, BrokenBarrierException {
-    try {
-        return dowait(false, 0L);
-    } catch (TimeoutException toe) {
-        throw new Error(toe); // cannot happen
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args){
+    StrategyEnum.ADD.calculate(1,1);
+    StrategyEnum.SUBTRACT.calculate(1,1);
+}
+</code></pre><p>实际应用：</p>
+<pre><code>利用策略模式解决if else 分支过多的情况，项目中使用到了反射和策略模式的方法；
+</code></pre><p>隶属度计算接口：</p>
+<pre><code>public interface MembershipMath {
+    double calculate(double attr);
+}
+</code></pre><p>不同隶属度计算函数类：</p>
+<pre><code>public class MaxNormal implements MembershipMath {
+    private double middle;
+
+    public MaxNormal() {
+    }
+
+    @Override
+    public double calculate(double attr) {
+        DecimalFormat df = new DecimalFormat(&quot;#0.00&quot;);
+        if(Double.compare(attr,middle) &lt; 0){
+            return 0;
+        }else{
+            return Double.parseDouble(df.format(1 - Math.exp(-Math.pow(attr-middle,2))));
+        }
+    }
+
+    public double getMiddle() {
+        return middle;
+    }
+
+    public void setMiddle(double middle) {
+        this.middle = middle;
     }
 }
-</code></pre><p>进入到dowait()方法：</p>
-<pre><code>private int dowait(boolean timed, long nanos)
-    throws InterruptedException, BrokenBarrierException,
-           TimeoutException {
-    final ReentrantLock lock = this.lock;
-    lock.lock();
-    try {
-        final Generation g = generation;
+</code></pre><p>客户端：</p>
+<pre><code>public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    String classPath = &quot;neu.cloud.functionpackage.membershipes.impl.MinTrapezoid&quot;;
+    String minName = &quot;min&quot;;
+    double min = 1;
+    String maxName = &quot;max&quot;;
+    double max = 1;
 
-        if (g.broken)
-            throw new BrokenBarrierException();
+    //获取隶属函数的参数
+    HashMap&lt;String,Double&gt; fieldMap = new HashMap&lt;&gt;();
+    fieldMap.put(minName,min);
+    fieldMap.put(maxName,max);
 
-        if (Thread.interrupted()) {
-            breakBarrier();
-            throw new InterruptedException();
-        }
+    //全限域名获取隶属函数实例
+    Class&lt;?&gt; clazz = Class.forName(classPath);
+    MembershipMath membershipMath = (MembershipMath) clazz.newInstance();
 
-        int index = --count;
-        if (index == 0) {  
-            boolean ranAction = false;
-            try {
-                final Runnable command = barrierCommand;
-                if (command != null)
-                    command.run();
-                ranAction = true;
-                nextGeneration();//唤醒所有线程，开启下一代
-                return 0;
-            } finally {
-                if (!ranAction)//在执行command.run()时发生了异常
-                    breakBarrier();//唤醒所有线程，broker=true
-            }
-        }
+    //反射调用真正实例的setMin、setMax、setMiddle方法，来设置参数
+    invokeSetParams(membershipMath,fieldMap);
 
-        //不是最后一个到达栅栏的线程走到这
-        for (;;) {
-            try {
-                if (!timed)
-                    //Condition trip = reentrantLock.newCondition
-                    trip.await();
-                else if (nanos &gt; 0L)
-                    nanos = trip.awaitNanos(nanos);
-            } catch (InterruptedException ie) {
-                if (g == generation &amp;&amp; ! g.broken) {
-                    breakBarrier();
-                    throw ie;
-                } else {
-                    Thread.currentThread().interrupt();
+    System.out.println(membershipMath.calculate(3));
+}
+
+private static void invokeSetParams(MembershipMath membershipMath, HashMap&lt;String, Double&gt; fieldMap) {
+    Iterator&lt;Map.Entry&lt;String,Double&gt;&gt; params = fieldMap.entrySet().iterator();
+    while (params.hasNext()){
+        StringBuilder sb = new StringBuilder();
+        Map.Entry&lt;String,Double&gt; entry = params.next();
+        String method = entry.getKey();
+        String methodName = sb.append(&quot;set&quot;).append(Character.toUpperCase(method.charAt(0))).
+                append(method.substring(1,method.length())).toString();
+        double methodValue = entry.getValue();
+        Method[] methods = membershipMath.getClass().getMethods();
+        for(Method method1 : methods){
+            if(method1.getName().equals(methodName)){
+                try {
+                    method1.invoke(membershipMath,methodValue);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
                 }
             }
-
-            if (g.broken)
-                throw new BrokenBarrierException();
-
-            if (g != generation)
-                return index;
-
-            if (timed &amp;&amp; nanos &lt;= 0L) {
-                breakBarrier();
-                throw new TimeoutException();
-            }
         }
-    } finally {
-        lock.unlock();
     }
 }
 </code></pre>
@@ -1956,7 +1448,7 @@ public CyclicBarrier(int parties) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch源码解析/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/24/享元模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -1975,7 +1467,7 @@ public CyclicBarrier(int parties) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/15/CountDownLatch源码解析/" itemprop="url">CountDownLatch源码解析</a></h1>
+                <a class="post-title-link" href="/2019/05/24/享元模式/" itemprop="url">享元模式</a></h1>
         
 
         <div class="post-meta">
@@ -1987,8 +1479,8 @@ public CyclicBarrier(int parties) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:06:48+08:00">
-                2019-04-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-24T14:31:10+08:00">
+                2019-05-24
               </time>
             
 
@@ -2010,19 +1502,8 @@ public CyclicBarrier(int parties) {
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -2038,7 +1519,7 @@ public CyclicBarrier(int parties) {
 
           
           
-             <span id="/2019/04/15/CountDownLatch源码解析/" class="leancloud_visitors" data-flag-title="CountDownLatch源码解析">
+             <span id="/2019/05/24/享元模式/" class="leancloud_visitors" data-flag-title="享元模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2071,92 +1552,297 @@ public CyclicBarrier(int parties) {
       
         
           
-            <p>参考文献</p>
-<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p>
-<p>文献已经给出了详细的讲解，这里作简单的总结：</p>
-<p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
-<pre><code>protected int tryAcquireShared(int acquires) {
-        return (getState() == 0) ? 1 : -1;
-    }
+            <p><strong>享元模式</strong></p>
+<pre><code>通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；
 
-protected boolean tryReleaseShared(int releases) {
-    // Decrement count; signal when transition to zero
-    for (;;) {
-        int c = getState();
-        if (c == 0)
-            return false;
-        int nextc = c-1;
-        if (compareAndSetState(c, nextc))
-            return nextc == 0;
-    }
-}
-</code></pre><p>线程阻塞的await()方法：</p>
-<pre><code>public void await() throws InterruptedException {
-    sync.acquireSharedInterruptibly(1);
+设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中；
+</code></pre><p>同名书共享订单实例：</p>
+<pre><code>//抽象享元
+public interface FlyWeight {
+    void sell();
 }
 
-public final void acquireSharedInterruptibly(int arg)
-        throws InterruptedException {
-    if (Thread.interrupted())
-        throw new InterruptedException();
-    //countdown()方法会使state的值减1，当state还未为0时会进入到该方法
-    if (tryAcquireShared(arg) &lt; 0)
-        doAcquireSharedInterruptibly(arg);
-}
-</code></pre><p>进入到阻塞队列中：</p>
-<pre><code>private void doAcquireSharedInterruptibly(int arg)
-    throws InterruptedException {
-    final Node node = addWaiter(Node.SHARED);
-    boolean failed = true;
-    try {
-        for (;;) {
-            final Node p = node.predecessor();
-            if (p == head) {
-                int r = tryAcquireShared(arg);
-                if (r &gt;= 0) {//调用countdown()方法使state=1的线程会唤醒阻塞的线程，并将节点设置为head
-                    setHeadAndPropagate(node, r);
-                    p.next = null; // help GC
-                    failed = false;
-                    return;
-                }
-            }
-            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
-                parkAndCheckInterrupt())//LockSupport阻塞线程
-                throw new InterruptedException();
-        }
-    } finally {
-        if (failed)
-            cancelAcquire(node);
+//具体享元类
+public class BookOrder implements FlyWeight {
+    private String name;
+
+    public BookOrder(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void sell() {
+        System.out.println(&quot;sell a book named by: &quot; + name);
     }
 }
-</code></pre><p>阻塞队列被唤醒的过程：</p>
-<pre><code>private void setHeadAndPropagate(Node node, int propagate) {
-    Node h = head; 
-    setHead(node);
-    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||
-        (h = head) == null || h.waitStatus &lt; 0) {
-        Node s = node.next;
-        if (s == null || s.isShared())
-            doReleaseShared();//继续唤醒下一个节点
+
+//
+public class FlyWeightFactory {
+    //饿汉模式线程安全
+    private static final FlyWeightFactory factory = new FlyWeightFactory();
+    //享元池
+    private HashMap&lt;String,FlyWeight&gt; pool = new HashMap&lt;&gt;();
+    private FlyWeightFactory(){
+    }
+
+    public static FlyWeightFactory getInstance(){
+        return factory;
+    }
+
+    public FlyWeight addOrder(String bookName){
+
+        FlyWeight order = null;
+        if(pool.containsKey(bookName)){
+            order = pool.get(bookName);
+        }else {
+            order = new BookOrder(bookName);
+            pool.put(bookName,order);
+        }
+        return order;
+    }
+
+    public int getAllOrder(){
+        return pool.size();
     }
 }
-</code></pre><p>继续唤醒队列中的其他节点：</p>
-<pre><code> private void doReleaseShared() {
-    for (;;) {//不断唤醒线程直到head不再发生变化
-        Node h = head;
-        if (h != null &amp;&amp; h != tail) {
-            int ws = h.waitStatus;
-            if (ws == Node.SIGNAL) {
-                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
-                    continue;            // loop to recheck cases
-                unparkSuccessor(h);
-            }
-            else if (ws == 0 &amp;&amp;
-                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
-                continue;                
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args){
+    List&lt;FlyWeight&gt; orders = new ArrayList&lt;&gt;();
+    FlyWeightFactory factory = FlyWeightFactory.getInstance();
+    //一本书生成一个订单对象(同名书共享一个订单对象)
+    orders.add(factory.addOrder(&quot;红楼梦&quot;));
+    orders.add(factory.addOrder(&quot;水浒传&quot;));
+    orders.add(factory.addOrder(&quot;红楼梦&quot;));
+
+    //调用享元类接口
+    for(FlyWeight order : orders){
+        order.sell();
+    }
+    System.out.println(&quot;num of book sold: &quot;+orders.size());
+    System.out.println(&quot;num of book order: &quot;+factory.getAllOrder());
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/24/组合模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/24/组合模式/" itemprop="url">组合模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-24T11:41:09+08:00">
+                2019-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/24/组合模式/" class="leancloud_visitors" data-flag-title="组合模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>组合模式</strong></p>
+<pre><code>也叫合成模式，用来描述整体-部分的关系，将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性；
+</code></pre><p>安全式组合模式实例：</p>
+<pre><code>//叶子和非叶子抽象出来的模板方法
+public abstract class Component {
+    protected String name;
+    abstract void display();
+}
+
+//叶子
+public class Leaf extends Component {
+    public Leaf(String name) {
+        this.name = name;
+    }
+
+    @Override
+    void display() {
+        System.out.println(&quot;Name of leaf: &quot; + name);
+    }
+}
+
+//分支
+public class Branch extends Component {
+    public Branch(String name) {
+        this.name = name;
+    }
+
+    private List&lt;Component&gt; children = new ArrayList&lt;&gt;();
+    public Component add(Component node){
+        children.add(node);
+        return node;
+    }
+    public Component remove(Component node){
+        children.remove(node);
+        return node;
+    }
+
+    public List&lt;Component&gt; getChildren() {
+        return children;
+    }
+
+    @Override
+    void display() {
+        System.out.println(&quot;Name of branch: &quot; + name);
+    }
+}
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args){
+    Branch root = new Branch(&quot;root&quot;);
+    Branch branch = new Branch(&quot;branch1&quot;);
+    Component leaf1 = new Leaf(&quot;leaf1&quot;);
+    Component leaf2 = new Leaf(&quot;leaf2&quot;);
+
+    root.add(branch);
+    branch.add(leaf1);
+    branch.add(leaf2);
+
+    root.display();
+    show(root);
+}
+
+private static void show(Branch root) {
+    for(Component node : root.getChildren()){
+        if(node instanceof Leaf){
+            node.display();
+        }else {
+            show((Branch) node);
+            //或者树枝节点的其他方法
+            node.display();
         }
-        if (h == head)                   
-            break;
     }
 }
 </code></pre>
@@ -2207,7 +1893,7 @@ public final void acquireSharedInterruptibly(int arg)
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock中的Condition源码分析/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/23/桥接模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -2226,7 +1912,7 @@ public final void acquireSharedInterruptibly(int arg)
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/15/ReentrantLock中的Condition源码分析/" itemprop="url">ReentrantLock中的Condition源码分析</a></h1>
+                <a class="post-title-link" href="/2019/05/23/桥接模式/" itemprop="url">桥接模式</a></h1>
         
 
         <div class="post-meta">
@@ -2238,8 +1924,8 @@ public final void acquireSharedInterruptibly(int arg)
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T14:52:53+08:00">
-                2019-04-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-23T21:13:01+08:00">
+                2019-05-23
               </time>
             
 
@@ -2261,19 +1947,8 @@ public final void acquireSharedInterruptibly(int arg)
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -2289,7 +1964,7 @@ public final void acquireSharedInterruptibly(int arg)
 
           
           
-             <span id="/2019/04/15/ReentrantLock中的Condition源码分析/" class="leancloud_visitors" data-flag-title="ReentrantLock中的Condition源码分析">
+             <span id="/2019/05/23/桥接模式/" class="leancloud_visitors" data-flag-title="桥接模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2322,65 +1997,39 @@ public final void acquireSharedInterruptibly(int arg)
       
         
           
-            <p>参考文献</p>
-<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-2" target="_blank" rel="noopener">Condition源码详解</a></p>
-<p>上面的源码解析已经很清晰了，下面作简要的记录：</p>
-<p>阻塞过程：</p>
-<pre><code>public final void await() throws InterruptedException {
-    if (Thread.interrupted())
-        throw new InterruptedException();
+            <p><strong>桥接模式</strong></p>
+<pre><code>将抽象部分与它的实现部分分离，使它们都可以独立的变化；好处就是减少类的爆炸增长；
+</code></pre><p>抽象功能角色：</p>
+<pre><code>public abstract class Car {
+    protected Engine engine;
 
-    //将节点加入到条件队列的队尾，并且清除掉Condition队列中所有取消的节点；
-    Node node = addConditionWaiter();
-
-    //释放掉线程获得锁，返回阻塞前的同步状态；
-    //synchronized中的 wait() 也是释放锁的；
-    int savedState = fullyRelease(node);
-    int interruptMode = 0;
-    while (!isOnSyncQueue(node)) {//判断节点是否在同步队列中
-        LockSupport.park(this);//不在Sync中挂起线程
-        if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
-            break;
+    public void setEngine(Engine engine) {
+        this.engine = engine;
     }
-
-    //节点进入到Sync队列后，跳出上述while循环，通过acquireQueued方法加入同步状态的竞争中去
-    if (acquireQueued(node, savedState) &amp;&amp; interruptMode != THROW_IE)
-        interruptMode = REINTERRUPT;
-    if (node.nextWaiter != null) // clean up if cancelled
-        unlinkCancelledWaiters();
-    if (interruptMode != 0)
-        reportInterruptAfterWait(interruptMode);
+    abstract void run();
 }
-</code></pre><p>唤醒过程：</p>
-<pre><code>public final void signal() {
-    if (!isHeldExclusively())
-        throw new IllegalMonitorStateException();
-    Node first = firstWaiter;
-    if (first != null)
-        doSignal(first);//唤醒Condition头节点
-}
+</code></pre><p>具体功能角色：</p>
+<pre><code>//聚合 Engine 
+public class BenZCar extends Car {
+    private static final Logger LOG = LoggerFactory.getLogger(BenZCar.class);
 
-private void doSignal(Node first) {
-        do {
-            if ( (firstWaiter = first.nextWaiter) == null)
-                lastWaiter = null;
-            first.nextWaiter = null;
-        } while (!transferForSignal(first) &amp;&amp;//忽略取消节点，找到头节点并加入到同步队列
-                 (first = firstWaiter) != null);
+    @Override
+    void run() {
+        engine.gear();
+        LOG.info(&quot;running by BenZCar......&quot;);
     }
-
-//Condition节点转移到Sync队列
-final boolean transferForSignal(Node node) {
-      //节点取消Condition排队
-    if (!compareAndSetWaitStatus(node, Node.CONDITION, 0))
-        return false;
-
-    Node p = enq(node);//返回的前驱节点
-    int ws = p.waitStatus;
-    if (ws &gt; 0 || !compareAndSetWaitStatus(p, ws, Node.SIGNAL))
-        LockSupport.unpark(node.thread);
-
-    return true;//正常情况下加入到阻塞队列
+}
+</code></pre><p>抽象实现角色：</p>
+<pre><code>public abstract class Engine {
+    abstract void gear();
+}
+</code></pre><p>具体实现角色：</p>
+<pre><code>public class AutoEngine extends Engine {
+    private static final Logger LOG = LoggerFactory.getLogger(AutoEngine.class);
+    @Override
+    void gear() {
+        LOG.info(&quot;use AutoEngine &quot;);
+    }
 }
 </code></pre>
           
@@ -2430,7 +2079,7 @@ final boolean transferForSignal(Node node) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock源码分析/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/23/外观模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -2449,7 +2098,7 @@ final boolean transferForSignal(Node node) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/15/ReentrantLock源码分析/" itemprop="url">ReentrantLock源码分析</a></h1>
+                <a class="post-title-link" href="/2019/05/23/外观模式/" itemprop="url">外观模式</a></h1>
         
 
         <div class="post-meta">
@@ -2461,8 +2110,8 @@ final boolean transferForSignal(Node node) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T11:21:32+08:00">
-                2019-04-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-23T15:59:06+08:00">
+                2019-05-23
               </time>
             
 
@@ -2484,19 +2133,8 @@ final boolean transferForSignal(Node node) {
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -2512,7 +2150,7 @@ final boolean transferForSignal(Node node) {
 
           
           
-             <span id="/2019/04/15/ReentrantLock源码分析/" class="leancloud_visitors" data-flag-title="ReentrantLock源码分析">
+             <span id="/2019/05/23/外观模式/" class="leancloud_visitors" data-flag-title="外观模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2545,67 +2183,9 @@ final boolean transferForSignal(Node node) {
       
         
           
-            <p>分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍：</p>
-<p>主要区别：</p>
-<pre><code>1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；
-
-2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，而公平锁会判断是否有其他线程更早地请求了该锁；
-</code></pre><p>公平锁源码：</p>
-<pre><code>final void lock() {
-        acquire(1);
-    }
-
-protected final boolean tryAcquire(int acquires) {
-    final Thread current = Thread.currentThread();
-    int c = getState();
-    if (c == 0) {
-        //判断是否有其他线程正在等待
-        if (!hasQueuedPredecessors() &amp;&amp;
-            compareAndSetState(0, acquires)) {
-            setExclusiveOwnerThread(current);
-            return true;
-        }
-    }
-    else if (current == getExclusiveOwnerThread()) {
-        int nextc = c + acquires;
-        if (nextc &lt; 0)
-            throw new Error(&quot;Maximum lock count exceeded&quot;);
-        setState(nextc);
-        return true;
-    }
-    return false;
-}
-</code></pre><p>非公平锁：</p>
-<pre><code>final void lock() {
-    if (compareAndSetState(0, 1))
-        setExclusiveOwnerThread(Thread.currentThread());
-    else
-        acquire(1);
-}
-
-protected final boolean tryAcquire(int acquires) {
-    return nonfairTryAcquire(acquires);
-}
-
-final boolean nonfairTryAcquire(int acquires) {
-    final Thread current = Thread.currentThread();
-    int c = getState();
-    if (c == 0) {
-        //直接尝试获取锁不考虑是否有线程等待
-        if (compareAndSetState(0, acquires)) {
-            setExclusiveOwnerThread(current);
-            return true;
-        }
-    }
-    else if (current == getExclusiveOwnerThread()) {
-        int nextc = c + acquires;
-        if (nextc &lt; 0) // overflow
-            throw new Error(&quot;Maximum lock count exceeded&quot;);
-        setState(nextc);
-        return true;
-    }
-    return false;
-}
+            <p><strong>外观模式（门面模式）</strong></p>
+<pre><code>通过外观类将子系统和客户端解耦，为复杂的子系统调用提供一统一的入口；
+在层次结构中，可以使用外观模式定义系统中每一层的入口，降低层之间的耦合度；
 </code></pre>
           
         
@@ -2654,7 +2234,7 @@ final boolean nonfairTryAcquire(int acquires) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/21/原型模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -2673,7 +2253,7 @@ final boolean nonfairTryAcquire(int acquires) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/14/同步队列源码解析/" itemprop="url">同步队列源码解析</a></h1>
+                <a class="post-title-link" href="/2019/05/21/原型模式/" itemprop="url">原型模式</a></h1>
         
 
         <div class="post-meta">
@@ -2685,8 +2265,8 @@ final boolean nonfairTryAcquire(int acquires) {
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T19:12:09+08:00">
-                2019-04-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-21T20:36:57+08:00">
+                2019-05-21
               </time>
             
 
@@ -2708,19 +2288,8 @@ final boolean nonfairTryAcquire(int acquires) {
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
                   </a>
                 </span>
 
@@ -2736,7 +2305,7 @@ final boolean nonfairTryAcquire(int acquires) {
 
           
           
-             <span id="/2019/04/14/同步队列源码解析/" class="leancloud_visitors" data-flag-title="同步队列源码解析">
+             <span id="/2019/05/21/原型模式/" class="leancloud_visitors" data-flag-title="原型模式">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2769,179 +2338,45 @@ final boolean nonfairTryAcquire(int acquires) {
       
         
           
-            <p>1.总结下独占式的获取同步状态的流程，具体源码如下：</p>
-<p>流程</p>
-<pre><code>1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；
-
-1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；
-
-1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；
-
-1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是进入自旋等待；
-</code></pre><p>AQS的acquire方法源码：用户重写tryAcquire方法</p>
-<pre><code>public final void acquire(int arg) {
-if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同步队列
-    acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-    selfInterrupt();
+            <p><strong>原型模式：</strong></p>
+<pre><code>复制原对象，克隆出与原型对象一模一样的对象；
+</code></pre><p>原型接口：</p>
+<pre><code>public interface Product extends Cloneable{
+    Object cloneProduct();
 }
-</code></pre><p>看一下ReentrantLock的tryAcquire（公平锁FairSync）方法：</p>
-<pre><code>protected final boolean tryAcquire(int acquires) {
-        final Thread current = Thread.currentThread();
-        int c = getState();
-        if (c == 0) {//当前没有线程获取到锁
-            if (!hasQueuedPredecessors() &amp;&amp;
-                compareAndSetState(0, acquires)) {
-                setExclusiveOwnerThread(current);
-                return true;
-            }
+</code></pre><p>具体原型：</p>
+<pre><code>public class ProductA implements Product {
+
+    @Override
+    public Object cloneProduct() {
+        try {
+            return clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
-        //当前线程重入到已经获得的锁，不存在并发
-        else if (current == getExclusiveOwnerThread()) {
-            int nextc = c + acquires;
-            if (nextc &lt; 0)
-                throw new Error(&quot;Maximum lock count exceeded&quot;);
-            setState(nextc);
-            return true;
-        }
-        return false;
+        return null;
     }
 }
-</code></pre><p>若获取同步状态失败，进入addWaiter方法：</p>
-<pre><code>private Node addWaiter(Node mode) {
-    Node node = new Node(Thread.currentThread(), mode);
-    // Try the fast path of enq; backup to full enq on failure
-    Node pred = tail;
-    if (pred != null) {
-        node.prev = pred;
-        //确保线程正确有序的加入到同步队列
-        if (compareAndSetTail(pred, node)) {
-            pred.next = node;
-            return node;
-        }
+</code></pre><p>使用者：</p>
+<pre><code>public class Manager {
+
+    private Product product;
+    public Manager(Product product) {
+        this.product = product;
     }
-    enq(node);
-    return node;
-}
-</code></pre><p>若尾节点被其他线程更改过了或者tail为空，则跳出if进入到enq(node)方法：</p>
-<pre><code>private Node enq(final Node node) {
-    for (;;) {//节点加入到同步队列中去才退出循环
-        Node t = tail;
-        if (t == null) { 
-            if (compareAndSetHead(new Node()))//同步队列的头节点
-                tail = head;
-        } else {
-            node.prev = t;
-            if (compareAndSetTail(t, node)) {
-                t.next = node;
-                return t;
-            }
-        }
+
+    public Product create(){
+        return (Product) product.cloneProduct();
+    }
+
+    public static void main(String[] args){
+        ProductA productA = new ProductA();
+        Manager manager = new Manager(productA);
+        Product clonedProductA = manager.create();
+        System.out.println(productA == clonedProductA);
     }
 }
-</code></pre><p>加入到同步队列中的每个节点会通过自旋不断获取同步状态：详见acquire(arg)中的acquireQueued方法</p>
-<pre><code>final boolean acquireQueued(final Node node, int arg) {
-    boolean failed = true;
-    try {
-        //
-        boolean interrupted = false;
-        for (;;) {//不断自旋获取同步状态
-            //直到节点的前一个节点释放锁，并且前一个节点是头节点
-            final Node p = node.predecessor();
-            if (p == head &amp;&amp; tryAcquire(arg)) {
-                setHead(node);
-                p.next = null; // help GC
-                failed = false;
-                return interrupted;
-            }
-
-            //执行到这说明当前节点的前驱不是head或者tryAcquire(arg)失败
-            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
-                parkAndCheckInterrupt())
-                interrupted = true;
-        }
-    } finally {
-        if (failed)//tryAcquire()方法抛异常时
-            cancelAcquire(node);
-    }
-}
-</code></pre><p>如果当前节点获取锁失败的话，将会进行线程的挂起操作：</p>
-<p>waitStatus的状态分析：代表后继节点的状态。</p>
-<pre><code>ws = 0 : 默认加入节点的状态值；
-
-ws = -1 : 后继节点等待当前节点（前驱节点）被唤醒；
-
-ws = 1：等待节点等待超时或被中断取消了等待；
-
-ws = -2:后继节点等待在Condition队列中，其他线程对Condition调用signal（）方法后，节点将从等待队列转移到同步队列；
-
-private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
-    int ws = pred.waitStatus;
-    if (ws == Node.SIGNAL)//前驱节点状态正常，需要将当前节点挂起
-        return true;
-    if (ws &gt; 0) {//说明前驱节点取消了排队，需要向前找到状态正常的节点
-        //waitStatus = 1表示线程取消了排队
-        do {
-            node.prev = pred = pred.prev;
-        } while (pred.waitStatus &gt; 0);
-        pred.next = node;
-    } else {
-        //正常情况下ws=0，CAS将前驱节点设置为Node.SIGNAL
-        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
-    }
-    return false;
-}
-
-//前提为true的条件下，LockSupport工具将线程挂起
-private final boolean parkAndCheckInterrupt() {
-    LockSupport.park(this);
-    return Thread.interrupted();
-}
-</code></pre><hr>
-<p>再看一下释放锁的源码：</p>
-<p>AQS中的release(int arg)方法：</p>
-<pre><code>public final boolean release(int arg) {
-    if (tryRelease(arg)) {
-        Node h = head;
-        if (h != null &amp;&amp; h.waitStatus != 0)
-            unparkSuccessor(h);
-        return true;
-    }
-    return false;
-}
-</code></pre><p>其中以ReentrantLock为例，重写了tryRelease方法：</p>
-<pre><code>protected final boolean tryRelease(int releases) {
-        int c = getState() - releases;
-        if (Thread.currentThread() != getExclusiveOwnerThread())
-            throw new IllegalMonitorStateException();
-        boolean free = false;
-        if (c == 0) {//没有出现重入直接释放锁
-            free = true;
-            setExclusiveOwnerThread(null);
-        }
-        setState(c);
-        return free;
-    }
-</code></pre><p>LockSupport唤醒线程：</p>
-<pre><code>private void unparkSuccessor(Node node) {
-
-    int ws = node.waitStatus;
-    if (ws &lt; 0)
-        compareAndSetWaitStatus(node, ws, 0);
-
-    Node s = node.next;
-    if (s == null || s.waitStatus &gt; 0) {
-        s = null;
-        //从后往前找到最靠近头节点的即将被唤醒的线程（waitStatus&lt;=0）
-        for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)
-            if (t.waitStatus &lt;= 0)
-                s = t;
-    }
-    if (s != null)
-        LockSupport.unpark(s.thread);
-}
-</code></pre><p>参考文献：</p>
-<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer" target="_blank" rel="noopener">同步队列源码分析第一篇</a></p>
-
+</code></pre>
           
         
       
@@ -2980,7 +2415,7 @@ private final boolean parkAndCheckInterrupt() {
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3030,7 +2465,7 @@ private final boolean parkAndCheckInterrupt() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

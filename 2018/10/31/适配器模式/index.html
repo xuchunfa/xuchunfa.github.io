@@ -81,20 +81,17 @@
 
 
 
-<meta name="description" content="类适配器UML图：  对象适配器UML图：  适配器模式分三种：  类适配器模式  对象适配器模式  特殊的缺省适配模式   详解见博客： java适配器详解">
+<meta name="description" content="适配器模式 将一个类的接口转化成用户需要的另外一个接口； 适配器模式分三种：  类适配器模式  对象适配器模式  特殊的缺省适配模式   详解见博客： java适配器详解 安卓充电器给苹果手机充电 public interface AndriodCharge {     void chargeToAndroid(); } Target角色： public interface IphoneCharg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="适配器模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/10/31/适配器模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="类适配器UML图：  对象适配器UML图：  适配器模式分三种：  类适配器模式  对象适配器模式  特殊的缺省适配模式   详解见博客： java适配器详解">
+<meta property="og:description" content="适配器模式 将一个类的接口转化成用户需要的另外一个接口； 适配器模式分三种：  类适配器模式  对象适配器模式  特殊的缺省适配模式   详解见博客： java适配器详解 安卓充电器给苹果手机充电 public interface AndriodCharge {     void chargeToAndroid(); } Target角色： public interface IphoneCharg">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/0yrww9E.png">
-<meta property="og:image" content="https://i.imgur.com/Q9tMtJ5.png">
-<meta property="og:updated_time" content="2018-11-08T02:19:01.749Z">
+<meta property="og:updated_time" content="2019-05-22T03:34:36.665Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="适配器模式">
-<meta name="twitter:description" content="类适配器UML图：  对象适配器UML图：  适配器模式分三种：  类适配器模式  对象适配器模式  特殊的缺省适配模式   详解见博客： java适配器详解">
-<meta name="twitter:image" content="https://i.imgur.com/0yrww9E.png">
+<meta name="twitter:description" content="适配器模式 将一个类的接口转化成用户需要的另外一个接口； 适配器模式分三种：  类适配器模式  对象适配器模式  特殊的缺省适配模式   详解见博客： java适配器详解 安卓充电器给苹果手机充电 public interface AndriodCharge {     void chargeToAndroid(); } Target角色： public interface IphoneCharg">
 
 
 
@@ -402,11 +399,9 @@
       
 
       
-        <p>类适配器UML图：</p>
-<p><img src="https://i.imgur.com/0yrww9E.png" alt=""></p>
-<p>对象适配器UML图：</p>
-<p><img src="https://i.imgur.com/Q9tMtJ5.png" alt=""></p>
-<p>适配器模式分三种：</p>
+        <p><strong>适配器模式</strong></p>
+<pre><code>将一个类的接口转化成用户需要的另外一个接口；
+</code></pre><p>适配器模式分三种：</p>
 <ul>
 <li><p>类适配器模式</p>
 </li>
@@ -417,7 +412,44 @@
 </ul>
 <p>详解见博客：</p>
 <p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>
+<p>安卓充电器给苹果手机充电</p>
+<pre><code>public interface AndriodCharge {
+    void chargeToAndroid();
+}
+</code></pre><p>Target角色：</p>
+<pre><code>public interface IphoneCharge {
+    void chargeToIphone();
+}
+</code></pre><p>Adaptee角色：</p>
+<pre><code>public class AndriodCharger implements AndriodCharge {
 
+    @Override
+    public void chargeToAndroid() {
+        System.out.println(&quot;使用安卓充电器给手机充电&quot;);
+    }
+}
+</code></pre><p>Adapter角色：</p>
+<pre><code>public class IphoneAdapter implements IphoneCharge {
+    //复用安卓充电器（聚合关系）
+    private AndriodCharger andriodCharger;
+
+    public IphoneAdapter(AndriodCharger andriodCharger) {
+        this.andriodCharger = andriodCharger;
+    }
+
+    @Override
+    public void chargeToIphone() {
+        andriodCharger.chargeToAndroid();
+        System.out.println(&quot;Iphone is charging&quot;);
+    }
+}
+</code></pre><p>Client角色：</p>
+<pre><code>public static void main(String[] args){
+    AndriodCharger ac = new AndriodCharger();
+    IphoneAdapter adapter = new IphoneAdapter(ac);
+    adapter.chargeToIphone();
+}
+</code></pre>
       
     </div>
     
@@ -532,7 +564,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">114</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
