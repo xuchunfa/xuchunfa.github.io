@@ -286,235 +286,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/20/数组中第k大的数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/20/数组中第k大的数/" itemprop="url">数组中第k大的数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T19:42:39+08:00">
-                2018-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/20/数组中第k大的数/" class="leancloud_visitors" data-flag-title="数组中第k大的数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>QuickSelect算法:</p>
-<pre><code>public class TopK {
-
-//递归求解第k大的数
-public static int kthLargest(int[] a,int l,int r,int k){
-    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
-        int partition = QuickSort.versePartition(a,l,r);//分界点前是大数，分界点后是小数
-        if(partition == k - 1)
-            return a[partition];
-        if(partition &lt; k - 1){
-            return kthLargest(a,partition+1,r,k);
-        }
-        if(partition &gt; k - 1){
-            return kthLargest(a,l,partition-1,k);
-        }
-    }
-    return Integer.MAX_VALUE;
-}
-
-//递归求解第k小的数
-public static int kthSmallest(int[] a,int l,int r,int k){
-    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
-        int partition = QuickSort.partition(a,l,r);
-        if(partition == k - 1)
-            return a[partition];
-        if(partition &lt; k - 1){
-            return kthSmallest(a,partition+1,r,k);
-        }
-        if(partition &gt; k - 1){
-            return kthSmallest(a,l,partition-1,k);
-        }
-    }
-    return Integer.MAX_VALUE;
-}
-
-//迭代求解第k小的数
-public static int kthSmallest1(int[] a,int k) {
-    if (k &gt; 0 &amp;&amp; k &lt;= a.length) {
-        int low = 0;
-        int high = a.length-1;
-        while (low &lt;= high){
-            int partition = QuickSort.partition(a,low,high);
-            if(partition == k - 1){
-                return a[partition];
-            }
-            if(partition &lt; k - 1){
-                low = partition+1;
-            }else {
-                high = partition-1;
-            }
-        }
-    }
-    return Integer.MAX_VALUE;
-}
-}
-</code></pre><blockquote>
-<p>多种解法开拓思路</p>
-</blockquote>
-<p>1.把数组从大到小进行排序，再直接通过数组下标获取元素</p>
-<pre><code>时间复杂度：O(nlogn)
-</code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p>
-<pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).
-</code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p>
-<pre><code>时间复杂度：O(n).详细证明见算法导论
-</code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p>
-<pre><code>时间复杂度：O（n+klogn）
-</code></pre><p>5.通过优先队列实现,底层原理基于4方法。</p>
-<pre><code>时间复杂度：O(n)
-
-空间复杂度：O(n)
-</code></pre><h3 id="该题目的变形版本"><a href="#该题目的变形版本" class="headerlink" title="该题目的变形版本?"></a>该题目的变形版本?</h3><blockquote>
-<p>N个数中最大的第K个不同的数？</p>
-</blockquote>
-<p>例如：5，4，4，3 第三大的数是3,而不是4</p>
-<blockquote>
-<p>找第k到第m大的数？</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/19/类文件结构和类加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2501,6 +2272,136 @@ d.可预测的停顿。
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/15/找到链表中的中间结点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/15/找到链表中的中间结点/" itemprop="url">找到链表中的中间结点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T19:46:51+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/15/找到链表中的中间结点/" class="leancloud_visitors" data-flag-title="找到链表中的中间结点">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -2555,7 +2456,7 @@ d.可预测的停顿。
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">125</span>
+                  <span class="site-state-item-count">124</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
