@@ -88,15 +88,15 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/DUI0Os9.png">
-<meta property="og:image" content="https://i.imgur.com/qnwHm9Q.png">
-<meta property="og:image" content="https://i.imgur.com/CuYvDQi.png">
-<meta property="og:image" content="https://i.imgur.com/UvVpFDi.png">
-<meta property="og:updated_time" content="2019-04-17T12:16:40.157Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/幻读.PNG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/noIndex.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/hasIndex.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/primaryIndex.png">
+<meta property="og:updated_time" content="2019-05-29T03:05:37.815Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Mysql基础">
 <meta name="twitter:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
-<meta name="twitter:image" content="https://i.imgur.com/DUI0Os9.png">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/幻读.PNG">
 
 
 
@@ -467,7 +467,7 @@
 
     2.3 可重复读：出现幻读，一个事务中读取的数据一致；
 </code></pre><p>幻读的例子：</p>
-<p><img src="https://i.imgur.com/DUI0Os9.png" alt=""></p>
+<p><img src="/images/幻读.PNG" alt=""></p>
 <pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
 
         1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
@@ -483,15 +483,15 @@
 
     eg:ALTER TABLE stu add INDEX index_id(id);
 </code></pre><p>使用索引前：</p>
-<p><img src="https://i.imgur.com/qnwHm9Q.png" alt=""></p>
+<p><img src="/images/noIndex.png" alt=""></p>
 <p>使用索引后：</p>
-<p><img src="https://i.imgur.com/CuYvDQi.png" alt=""></p>
+<p><img src="/images/hasIndex.png" alt=""></p>
 <pre><code>2.唯一索引：索引列的值必须唯一，但允许为空。
 
     eg:ALTER TABLE stu add UNIQUE index_id(id);
 
 3.主键索引（聚集索引）：特殊的唯一索引，索引列的值不允许为空。
-</code></pre><p><img src="https://i.imgur.com/UvVpFDi.png" alt=""></p>
+</code></pre><p><img src="/images/primaryIndex.png" alt=""></p>
 <pre><code>4.组合索引：默认最左前缀的结果。组合索引的好处是已经对第二个键值进行了排序，无需额外的排序。
 
     eg:alter table stu add index id_name_note(id,name(10),note);

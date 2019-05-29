@@ -2259,7 +2259,8 @@ public int await() throws InterruptedException, BrokenBarrierException {
 <p>  3.将对象的引用指向对应的内存地址。</p>
 </li>
 </ul>
-<p>但是在单线程内2和3可能会发生重排序，于是发生了如下情况：<br><img src="https://i.imgur.com/EXnDWsp.png" alt=""></p>
+<p>但是在单线程内2和3可能会发生重排序，于是发生了如下情况：</p>
+<p><img src="/images/table.PNG" alt=""></p>
 <p>此时线程B访问的是没有经过初始化的对象，会报错，所以使用volatile的根源在于：<strong>禁止A2和A3的重排序</strong>。</p>
 <ul>
 <li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
