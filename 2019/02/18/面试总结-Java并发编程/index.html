@@ -88,13 +88,13 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/7yPyszl.png">
-<meta property="og:image" content="https://i.imgur.com/zSkw6Xh.png">
-<meta property="og:updated_time" content="2019-04-19T14:05:43.461Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/内存模型.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/threadState.PNG">
+<meta property="og:updated_time" content="2019-05-29T02:18:27.125Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
-<meta name="twitter:image" content="https://i.imgur.com/7yPyszl.png">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/内存模型.png">
 
 
 
@@ -740,7 +740,7 @@ public void run() {
 
 4.每个volatile读操作前插入LoadLoad屏障，读操作之后插入LoadStore屏障；
 </code></pre><p>9.java内存模型？</p>
-<p><img src="https://i.imgur.com/7yPyszl.png" alt=""></p>
+<p><img src="/images/内存模型.png" alt=""></p>
 <pre><code>1.JMM是一种规范，用于决解由于多线程通过共享内存（主存）进行通信时，存在本地内存数据不一致，编译器对代码指令重排等带来的问题。
 
 2.java并发编程中保证原子性、可见性和有序性的方法：
@@ -771,7 +771,7 @@ public void run() {
 </code></pre><ol start="13">
 <li>线程的状态？</li>
 </ol>
-<p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
+<p><img src="/images/threadState.PNG" alt=""></p>
 <p>14.中断机制，interrupt和interrupted的区别，哪些状态可以中断并抛出InterruptedException?</p>
 <p>15.sleep和wait的区别?</p>
 <p>16.为什么ReentrantLock的锁粒度小，sychronized不是也可以用方法块来降低锁粒度?</p>

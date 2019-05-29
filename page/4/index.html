@@ -2415,7 +2415,7 @@ public void run() {
 
 4.每个volatile读操作前插入LoadLoad屏障，读操作之后插入LoadStore屏障；
 </code></pre><p>9.java内存模型？</p>
-<p><img src="https://i.imgur.com/7yPyszl.png" alt=""></p>
+<p><img src="/images/内存模型.png" alt=""></p>
 <pre><code>1.JMM是一种规范，用于决解由于多线程通过共享内存（主存）进行通信时，存在本地内存数据不一致，编译器对代码指令重排等带来的问题。
 
 2.java并发编程中保证原子性、可见性和有序性的方法：
@@ -2446,7 +2446,7 @@ public void run() {
 </code></pre><ol start="13">
 <li>线程的状态？</li>
 </ol>
-<p><img src="https://i.imgur.com/zSkw6Xh.png" alt=""></p>
+<p><img src="/images/threadState.PNG" alt=""></p>
 <p>14.中断机制，interrupt和interrupted的区别，哪些状态可以中断并抛出InterruptedException?</p>
 <p>15.sleep和wait的区别?</p>
 <p>16.为什么ReentrantLock的锁粒度小，sychronized不是也可以用方法块来降低锁粒度?</p>
@@ -3415,7 +3415,9 @@ System.out.println(s3 == s4);//true
       
         
           
-            <p>总结：</p>
+            <p>UML图：</p>
+<p><img src="/images/proxy.PNG" alt=""></p>
+<p>总结：</p>
 <p>1.代理模式优点：</p>
 <pre><code>1.良好的拓展性。修改被代理的角色不影响调用者使用代理；
 

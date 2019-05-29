@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="享元模式 通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；  设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中； 同名书共享订单实例： //抽象享元 public interface FlyWeight {     void sell(); }  //具体享元类 public cla">
+<meta name="description" content="UML图：  享元模式 通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；  设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中； 同名书共享订单实例： //抽象享元 public interface FlyWeight {     void sell(); }  //具体享元类 pub">
 <meta property="og:type" content="article">
 <meta property="og:title" content="享元模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/05/24/享元模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="享元模式 通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；  设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中； 同名书共享订单实例： //抽象享元 public interface FlyWeight {     void sell(); }  //具体享元类 public cla">
+<meta property="og:description" content="UML图：  享元模式 通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；  设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中； 同名书共享订单实例： //抽象享元 public interface FlyWeight {     void sell(); }  //具体享元类 pub">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-24T07:48:21.144Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/flyWeight.PNG">
+<meta property="og:updated_time" content="2019-05-29T01:54:33.199Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="享元模式">
-<meta name="twitter:description" content="享元模式 通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；  设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中； 同名书共享订单实例： //抽象享元 public interface FlyWeight {     void sell(); }  //具体享元类 public cla">
+<meta name="twitter:description" content="UML图：  享元模式 通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；  设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中； 同名书共享订单实例： //抽象享元 public interface FlyWeight {     void sell(); }  //具体享元类 pub">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/flyWeight.PNG">
 
 
 
@@ -399,7 +401,9 @@
       
 
       
-        <p><strong>享元模式</strong></p>
+        <p>UML图：</p>
+<p><img src="/images/flyWeight.PNG" alt=""></p>
+<p><strong>享元模式</strong></p>
 <pre><code>通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；
 
 设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中；

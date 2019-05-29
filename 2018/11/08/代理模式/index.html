@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；  如果加入容">
+<meta name="description" content="UML图：  总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；">
 <meta property="og:type" content="article">
 <meta property="og:title" content="代理模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/11/08/代理模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；  如果加入容">
+<meta property="og:description" content="UML图：  总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-23T07:33:55.581Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/proxy.PNG">
+<meta property="og:updated_time" content="2019-05-29T01:40:28.994Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="代理模式">
-<meta name="twitter:description" content="总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；  如果加入容">
+<meta name="twitter:description" content="UML图：  总结： 1.代理模式优点： 1.良好的拓展性。修改被代理的角色不影响调用者使用代理；  2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作； 2.代理模式与装饰者模式区别： 装饰者模式是&amp;quot;新增行为&amp;quot;，代理模式是&amp;quot;控制访问&amp;quot;； 3.Spring AOP 如果加入容器的目标对象有接口实现，使用JDK动态代理；">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/proxy.PNG">
 
 
 
@@ -399,7 +401,9 @@
       
 
       
-        <p>总结：</p>
+        <p>UML图：</p>
+<p><img src="/images/proxy.PNG" alt=""></p>
+<p>总结：</p>
 <p>1.代理模式优点：</p>
 <pre><code>1.良好的拓展性。修改被代理的角色不影响调用者使用代理；
 

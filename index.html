@@ -390,7 +390,9 @@
       
         
           
-            <p>Command角色：</p>
+            <p>UML图：</p>
+<p><img src="/images/command.PNG" alt=""></p>
+<p>Command角色：</p>
 <pre><code>public abstract class Command {
     protected Receiver receiver;
 
@@ -603,7 +605,9 @@
       
         
           
-            <p><strong>中介者模式</strong></p>
+            <p>UML图：</p>
+<p><img src="/images/mediator.PNG" alt=""></p>
+<p><strong>中介者模式</strong></p>
 <pre><code> 使用一个中介对象来封装一系列的对象交互，使得各对象间不需要显示地相互引用，
 中介者模式的本质是：封装交互；
 </code></pre><p>Colleague角色：抽象交互对象</p>
@@ -850,7 +854,9 @@ public class SyncMediator extends AbstractMediator {
       
         
           
-            <p><strong>访问者模式</strong></p>
+            <p>UML图：</p>
+<p><img src="/images/visitor.PNG" alt=""></p>
+<p><strong>访问者模式</strong></p>
 <pre><code>封装一些作用于某种数据结构中的各元素的操作，可以在不改变这个数据结构的前提下定义作用于这些元素的新操作。
 </code></pre><p>Visitor角色：</p>
 <pre><code>public interface Visitor {
@@ -1074,7 +1080,9 @@ public class Wheel implements Visitable {
       
         
           
-            <p>特点：</p>
+            <p>UML图：</p>
+<p><img src="/images/chain.PNG" alt=""></p>
+<p>特点：</p>
 <pre><code>把请求的传递从子类中剥夺出来了，子类可以专心处理业务逻辑，子类不再需要进行传递的判断；
 </code></pre><p>问题角色：</p>
 <pre><code>public enum Problem {
@@ -1301,7 +1309,9 @@ public class Wheel implements Visitable {
       
         
           
-            <p>枚举方法实现的策略模式：</p>
+            <p>UML图：</p>
+<p><img src="/images/strategy.PNG" alt=""></p>
+<p>枚举方法实现的策略模式：</p>
 <pre><code>public enum StrategyEnum {
     ADD{
         @Override
@@ -1552,7 +1562,9 @@ private static void invokeSetParams(MembershipMath membershipMath, HashMap&lt;St
       
         
           
-            <p><strong>享元模式</strong></p>
+            <p>UML图：</p>
+<p><img src="/images/flyWeight.PNG" alt=""></p>
+<p><strong>享元模式</strong></p>
 <pre><code>通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；
 
 设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中；
@@ -1773,7 +1785,11 @@ public class FlyWeightFactory {
       
         
           
-            <p><strong>组合模式</strong></p>
+            <p>组合模式安全模式-UML图：</p>
+<p><img src="/images/safeComponent.PNG" alt=""></p>
+<p>组合模式透明模式-UML图：</p>
+<p><img src="/images/transparentComponent.PNG" alt=""></p>
+<p><strong>组合模式</strong></p>
 <pre><code>也叫合成模式，用来描述整体-部分的关系，将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性；
 </code></pre><p>安全式组合模式实例：</p>
 <pre><code>//叶子和非叶子抽象出来的模板方法
@@ -1997,7 +2013,9 @@ private static void show(Branch root) {
       
         
           
-            <p><strong>桥接模式</strong></p>
+            <p>UML图：</p>
+<p><img src="/images/bridge.PNG" alt=""></p>
+<p><strong>桥接模式</strong></p>
 <pre><code>将抽象部分与它的实现部分分离，使它们都可以独立的变化；好处就是减少类的爆炸增长；
 </code></pre><p>抽象功能角色：</p>
 <pre><code>public abstract class Car {
@@ -2183,7 +2201,9 @@ public class BenZCar extends Car {
       
         
           
-            <p><strong>外观模式（门面模式）</strong></p>
+            <p>UML图：</p>
+<p><img src="/images/facade.PNG" alt=""></p>
+<p><strong>外观模式（门面模式）</strong></p>
 <pre><code>通过外观类将子系统和客户端解耦，为复杂的子系统调用提供一统一的入口；
 在层次结构中，可以使用外观模式定义系统中每一层的入口，降低层之间的耦合度；
 </code></pre>
@@ -2338,7 +2358,9 @@ public class BenZCar extends Car {
       
         
           
-            <p><strong>原型模式：</strong></p>
+            <p>UML图：</p>
+<p><img src="/images/prototype.PNG" alt=""></p>
+<p><strong>原型模式：</strong></p>
 <pre><code>复制原对象，克隆出与原型对象一模一样的对象；
 </code></pre><p>原型接口：</p>
 <pre><code>public interface Product extends Cloneable{

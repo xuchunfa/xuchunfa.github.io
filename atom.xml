@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2019-05-27T11:05:33.508Z</updated>
+  <updated>2019-05-29T02:10:13.819Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -21,20 +21,19 @@
     <link href="http://www.xuchunfa.cn/2019/05/27/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/27/命令模式/</id>
     <published>2019-05-27T10:19:10.000Z</published>
-    <updated>2019-05-27T11:05:33.508Z</updated>
+    <updated>2019-05-29T02:10:13.819Z</updated>
     
-    <content type="html"><![CDATA[<p>Command角色：</p><pre><code>public abstract class Command {    protected Receiver receiver;    public Command(Receiver receiver) {        this.receiver = receiver;    }    public void setReceiver(Receiver receiver) {        this.receiver = receiver;    }    abstract void execute();}</code></pre><p>ConcreteCommand角色：</p><pre><code>public class ConcreteCommand extends Command {    public ConcreteCommand(Receiver receiver) {        super(receiver);    }    @Override    public void execute() {        receiver.action();    }}</code></pre><p>Receiver角色：</p><pre><code>public interface Receiver {    void action();}</code></pre><p>ConcreteReceiver角色：</p><pre><code>public class ConcreteReceiver implements Receiver {    @Override    public void action() {        System.out.println(&quot;executing one kind command&quot;);    }}</code></pre><p>Invoker角色：封装命令请求</p><pre><code>public class Invoker {    private Command command;    public Invoker(Command command) {        this.command = command;    }    public void setCommand(Command command) {        this.command = command;    }    public void call(){        command.execute();    }}</code></pre><p>Client角色：</p><pre><code>public static void main(String[] args){    Receiver receiver = new ConcreteReceiver();    Command command = new ConcreteCommand(receiver);    //command.execute();    Invoker invoker = new Invoker(command);    invoker.call();}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/command.PNG" alt=""></p><p>Command角色：</p><pre><code>public abstract class Command {    protected Receiver receiver;    public Command(Receiver receiver) {        this.receiver = receiver;    }    public void setReceiver(Receiver receiver) {        this.receiver = receiver;    }    abstract void execute();}</code></pre><p>ConcreteCommand角色：</p><pre><code>public class ConcreteCommand extends Command {    public ConcreteCommand(Receiver receiver) {        super(receiver);    }    @Override    public void execute() {        receiver.action();    }}</code></pre><p>Receiver角色：</p><pre><code>public interface Receiver {    void action();}</code></pre><p>ConcreteReceiver角色：</p><pre><code>public class ConcreteReceiver implements Receiver {    @Override    public void action() {        System.out.println(&quot;executing one kind command&quot;);    }}</code></pre><p>Invoker角色：封装命令请求</p><pre><code>public class Invoker {    private Command command;    public Invoker(Command command) {        this.command = command;    }    public void setCommand(Command command) {        this.command = command;    }    public void call(){        command.execute();    }}</code></pre><p>Client角色：</p><pre><code>public static void main(String[] args){    Receiver receiver = new ConcreteReceiver();    Command command = new ConcreteCommand(receiver);    //command.execute();    Invoker invoker = new Invoker(command);    invoker.call();}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Command角色：&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/command.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Command角色：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;public abstract class Command {
-    protected Receiver receiver;
-
-    public Command(Receiver receiver) {
-     
+    protected Receiv
       
     
     </summary>
@@ -49,19 +48,19 @@
     <link href="http://www.xuchunfa.cn/2019/05/27/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/27/中介者模式/</id>
     <published>2019-05-27T06:56:22.000Z</published>
-    <updated>2019-05-27T08:40:49.005Z</updated>
+    <updated>2019-05-29T02:12:35.210Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>中介者模式</strong></p><pre><code> 使用一个中介对象来封装一系列的对象交互，使得各对象间不需要显示地相互引用，中介者模式的本质是：封装交互；</code></pre><p>Colleague角色：抽象交互对象</p><pre><code>//持有中介者的引用public abstract class AbstractDatabase {    protected AbstractMediator mediator;    public static final String REDIS = &quot;redis&quot;;    public static final String MYSQL = &quot;mysql&quot;;    public static final String HDFS = &quot;hdfs&quot;;    public AbstractDatabase(AbstractMediator mediator) {        this.mediator = mediator;    }    abstract void addData(String data);}</code></pre><p>ConcreteColleague角色:具体交互对象</p><pre><code>public class RedisDatabase extends AbstractDatabase {    private List&lt;String&gt; redisSet = new ArrayList&lt;&gt;();    public RedisDatabase(AbstractMediator mediator) {        super(mediator);    }    public void synInfo(String data){        System.out.println(&quot;redis data is synchronizing......&quot;);        //交由中介者实现数据同步        mediator.sync(AbstractDatabase.REDIS,data);        System.out.println(&quot;redis data finished synchronize&quot;);    }    @Override    void addData(String data) {        System.out.println(&quot;add data to Redis&quot;);        redisSet.add(data);        synInfo(data);    }    public void redisInfo(){        System.out.println(&quot;stored REDIS data number: &quot;+redisSet.size() + &quot; Info : &quot;+redisSet.toString());    }}MysqlDatabase......HdfsDatabase......</code></pre><p>Mediator角色：抽象中介者</p><pre><code>public abstract class AbstractMediator {    protected RedisDatabase redisDatabase;    protected MysqlDatabase mysqlDatabase;    protected HdfsDatabase hdfsDatabase;    abstract void sync(String database,String data);    public void setRedisDatabase(RedisDatabase redisDatabase) {        this.redisDatabase = redisDatabase;    }    public void setMysqlDatabase(MysqlDatabase mysqlDatabase) {        this.mysqlDatabase = mysqlDatabase;    }    public void setHdfsDatabase(HdfsDatabase hdfsDatabase) {        this.hdfsDatabase = hdfsDatabase;    }}</code></pre><p>ConcreteMediator角色:具体中介者</p><pre><code>//实现 redis 和 mysql 的数据同步到 hdfspublic class SyncMediator extends AbstractMediator {    @Override    void sync(String database, String data) {        if (database.equals(AbstractDatabase.REDIS)) {            hdfsDatabase.addData(data);        } else if (database.equals(AbstractDatabase.MYSQL)) {            hdfsDatabase.addData(data);        }    }}</code></pre><p>Client角色：</p><pre><code> public static void main(String[] args){    AbstractMediator mediator = new SyncMediator();    RedisDatabase redis = new RedisDatabase(mediator);    MysqlDatabase mysql = new MysqlDatabase(mediator);    HdfsDatabase hdfs = new HdfsDatabase(mediator)；    mediator.setRedisDatabase(redis);    mediator.setMysqlDatabase(mysql);    mediator.setMysqlDatabase(hdfs);    redis.addData(&quot;1&quot;);    redis.redisInfo();    mysql.mysqlInfo();    hdfs.hdfsInfo();}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/mediator.PNG" alt=""></p><p><strong>中介者模式</strong></p><pre><code> 使用一个中介对象来封装一系列的对象交互，使得各对象间不需要显示地相互引用，中介者模式的本质是：封装交互；</code></pre><p>Colleague角色：抽象交互对象</p><pre><code>//持有中介者的引用public abstract class AbstractDatabase {    protected AbstractMediator mediator;    public static final String REDIS = &quot;redis&quot;;    public static final String MYSQL = &quot;mysql&quot;;    public static final String HDFS = &quot;hdfs&quot;;    public AbstractDatabase(AbstractMediator mediator) {        this.mediator = mediator;    }    abstract void addData(String data);}</code></pre><p>ConcreteColleague角色:具体交互对象</p><pre><code>public class RedisDatabase extends AbstractDatabase {    private List&lt;String&gt; redisSet = new ArrayList&lt;&gt;();    public RedisDatabase(AbstractMediator mediator) {        super(mediator);    }    public void synInfo(String data){        System.out.println(&quot;redis data is synchronizing......&quot;);        //交由中介者实现数据同步        mediator.sync(AbstractDatabase.REDIS,data);        System.out.println(&quot;redis data finished synchronize&quot;);    }    @Override    void addData(String data) {        System.out.println(&quot;add data to Redis&quot;);        redisSet.add(data);        synInfo(data);    }    public void redisInfo(){        System.out.println(&quot;stored REDIS data number: &quot;+redisSet.size() + &quot; Info : &quot;+redisSet.toString());    }}MysqlDatabase......HdfsDatabase......</code></pre><p>Mediator角色：抽象中介者</p><pre><code>public abstract class AbstractMediator {    protected RedisDatabase redisDatabase;    protected MysqlDatabase mysqlDatabase;    protected HdfsDatabase hdfsDatabase;    abstract void sync(String database,String data);    public void setRedisDatabase(RedisDatabase redisDatabase) {        this.redisDatabase = redisDatabase;    }    public void setMysqlDatabase(MysqlDatabase mysqlDatabase) {        this.mysqlDatabase = mysqlDatabase;    }    public void setHdfsDatabase(HdfsDatabase hdfsDatabase) {        this.hdfsDatabase = hdfsDatabase;    }}</code></pre><p>ConcreteMediator角色:具体中介者</p><pre><code>//实现 redis 和 mysql 的数据同步到 hdfspublic class SyncMediator extends AbstractMediator {    @Override    void sync(String database, String data) {        if (database.equals(AbstractDatabase.REDIS)) {            hdfsDatabase.addData(data);        } else if (database.equals(AbstractDatabase.MYSQL)) {            hdfsDatabase.addData(data);        }    }}</code></pre><p>Client角色：</p><pre><code> public static void main(String[] args){    AbstractMediator mediator = new SyncMediator();    RedisDatabase redis = new RedisDatabase(mediator);    MysqlDatabase mysql = new MysqlDatabase(mediator);    HdfsDatabase hdfs = new HdfsDatabase(mediator)；    mediator.setRedisDatabase(redis);    mediator.setMysqlDatabase(mysql);    mediator.setMysqlDatabase(hdfs);    redis.addData(&quot;1&quot;);    redis.redisInfo();    mysql.mysqlInfo();    hdfs.hdfsInfo();}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;中介者模式&lt;/strong&gt;&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/mediator.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;中介者模式&lt;/strong&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; 使用一个中介对象来封装一系列的对象交互，使得各对象间不需要显示地相互引用，
-中介者模式的本质是：封装交互；
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Colleague角色：抽象交互对象&lt;/p&gt;
-&lt;pre&gt;
+
       
     
     </summary>
@@ -76,18 +75,18 @@
     <link href="http://www.xuchunfa.cn/2019/05/26/%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/26/访问者模式/</id>
     <published>2019-05-26T08:20:16.000Z</published>
-    <updated>2019-05-26T09:06:50.890Z</updated>
+    <updated>2019-05-29T02:07:59.801Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>访问者模式</strong></p><pre><code>封装一些作用于某种数据结构中的各元素的操作，可以在不改变这个数据结构的前提下定义作用于这些元素的新操作。</code></pre><p>Visitor角色：</p><pre><code>public interface Visitor {    //Engine 和 Wheel 类指那些不易发生变化的数据结构    void visit(Engine engine);    void visit(Wheel wheel);}</code></pre><p>具体访问的行为角色：</p><pre><code>//修理零件public class RepairVisitor implements Visitor {    @Override    public void visit(Engine engine) {        System.out.println(&quot;repairing engine......&quot;);    }    @Override    public void visit(Wheel wheel) {        System.out.println(&quot;repairing wheel......&quot;);    }}</code></pre><p>被访问的角色：</p><pre><code>//通常是那些稳定的数据结构public interface Visitable {    void accept(Visitor visitor);}</code></pre><p>具体被访问的角色：</p><pre><code>public class Engine implements Visitable {    @Override    public void accept(Visitor visitor) {        visitor.visit(this);    }}public class Wheel implements Visitable {    @Override    public void accept(Visitor visitor) {        visitor.visit(this);    }}</code></pre><p>整个对象结构角色：</p><pre><code>public class Car {    private List&lt;Visitable&gt; components = new ArrayList&lt;&gt;();    private Visitor visitor;    public void addComponent(Visitable visitable){        components.add(visitable);    }    public void setVisitor(Visitor visitor) {        this.visitor = visitor;    }    //visitor方式一一访问visitable角色    public void startVisit(){        for(Visitable v : components){            v.accept(visitor);        }    }}</code></pre><p>客户端：</p><pre><code>public static void main(String[] args){    Car car = new Car();    Visitable engine = new Engine();    Visitable wheel = new Wheel();    car.addComponent(engine);//添加被访问的结构    car.addComponent(wheel);    Visitor repair = new RepairVisitor();    car.setVisitor(repair);//设置访问行为    car.startVisit();}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/visitor.PNG" alt=""></p><p><strong>访问者模式</strong></p><pre><code>封装一些作用于某种数据结构中的各元素的操作，可以在不改变这个数据结构的前提下定义作用于这些元素的新操作。</code></pre><p>Visitor角色：</p><pre><code>public interface Visitor {    //Engine 和 Wheel 类指那些不易发生变化的数据结构    void visit(Engine engine);    void visit(Wheel wheel);}</code></pre><p>具体访问的行为角色：</p><pre><code>//修理零件public class RepairVisitor implements Visitor {    @Override    public void visit(Engine engine) {        System.out.println(&quot;repairing engine......&quot;);    }    @Override    public void visit(Wheel wheel) {        System.out.println(&quot;repairing wheel......&quot;);    }}</code></pre><p>被访问的角色：</p><pre><code>//通常是那些稳定的数据结构public interface Visitable {    void accept(Visitor visitor);}</code></pre><p>具体被访问的角色：</p><pre><code>public class Engine implements Visitable {    @Override    public void accept(Visitor visitor) {        visitor.visit(this);    }}public class Wheel implements Visitable {    @Override    public void accept(Visitor visitor) {        visitor.visit(this);    }}</code></pre><p>整个对象结构角色：</p><pre><code>public class Car {    private List&lt;Visitable&gt; components = new ArrayList&lt;&gt;();    private Visitor visitor;    public void addComponent(Visitable visitable){        components.add(visitable);    }    public void setVisitor(Visitor visitor) {        this.visitor = visitor;    }    //visitor方式一一访问visitable角色    public void startVisit(){        for(Visitable v : components){            v.accept(visitor);        }    }}</code></pre><p>客户端：</p><pre><code>public static void main(String[] args){    Car car = new Car();    Visitable engine = new Engine();    Visitable wheel = new Wheel();    car.addComponent(engine);//添加被访问的结构    car.addComponent(wheel);    Visitor repair = new RepairVisitor();    car.setVisitor(repair);//设置访问行为    car.startVisit();}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;访问者模式&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;封装一些作用于某种数据结构中的各元素的操作，可以在不改变这个数据结构的前提下定义作用于这些元素的新操作。
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Visitor角色：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;publ
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/visitor.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;访问者模式&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;封装一些作用于某种数据结构中的各元素的操作，可以在不改变这个数据结构的前提下定义
       
     
     </summary>
@@ -102,19 +101,19 @@
     <link href="http://www.xuchunfa.cn/2019/05/26/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/26/责任链模式/</id>
     <published>2019-05-26T02:53:11.000Z</published>
-    <updated>2019-05-26T04:02:30.066Z</updated>
+    <updated>2019-05-29T02:00:40.514Z</updated>
     
-    <content type="html"><![CDATA[<p>特点：</p><pre><code>把请求的传递从子类中剥夺出来了，子类可以专心处理业务逻辑，子类不再需要进行传递的判断；</code></pre><p>问题角色：</p><pre><code>public enum Problem {    STRUCTURE(1), ARCHITECTURE(2);    private int level;    Problem(int  level) {        this.level = level;    }    public int getLevel() {        return level;    }}</code></pre><p>Handler角色：</p><pre><code>public abstract class Handler {    protected int level;//表示问题的级别    private Handler next;    public Handler(int level) {        this.level = level;    }    //责任链的入口    public final void transfer(Problem problem){        if(level == problem.getLevel()){            this.report();        }else if(this.next != null){            this.next.transfer(problem);        }else{            System.out.println(&quot;Final boss can&apos;t resolve the problem&quot;);        }    }    public void setNext(Handler next) {        this.next = next;    }    abstract void report();}</code></pre><p>项目经理角色：</p><pre><code>public class Manager extends Handler {    //项目经理解决structure问题    public Manager() {        super(1);    }    @Override    void report() {        System.out.println(&quot;项目经理解决软件结构布局&quot;);    }}</code></pre><p>架构师角色：</p><pre><code>public class Architect extends Handler {    //架构师解决architecture问题    public Architect() {        super(2);    }    @Override    void report() {        System.out.println(&quot;架构师解决软件架构设计&quot;);    }}</code></pre><p>客户端：</p><pre><code>public static void main(String[] args){    Manager manager = new Manager();    Architect architect = new Architect();    manager.setNext(architect);    manager.transfer(Problem.STRUCTURE);    manager.transfer(Problem.ARCHITECTURE);}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/chain.PNG" alt=""></p><p>特点：</p><pre><code>把请求的传递从子类中剥夺出来了，子类可以专心处理业务逻辑，子类不再需要进行传递的判断；</code></pre><p>问题角色：</p><pre><code>public enum Problem {    STRUCTURE(1), ARCHITECTURE(2);    private int level;    Problem(int  level) {        this.level = level;    }    public int getLevel() {        return level;    }}</code></pre><p>Handler角色：</p><pre><code>public abstract class Handler {    protected int level;//表示问题的级别    private Handler next;    public Handler(int level) {        this.level = level;    }    //责任链的入口    public final void transfer(Problem problem){        if(level == problem.getLevel()){            this.report();        }else if(this.next != null){            this.next.transfer(problem);        }else{            System.out.println(&quot;Final boss can&apos;t resolve the problem&quot;);        }    }    public void setNext(Handler next) {        this.next = next;    }    abstract void report();}</code></pre><p>项目经理角色：</p><pre><code>public class Manager extends Handler {    //项目经理解决structure问题    public Manager() {        super(1);    }    @Override    void report() {        System.out.println(&quot;项目经理解决软件结构布局&quot;);    }}</code></pre><p>架构师角色：</p><pre><code>public class Architect extends Handler {    //架构师解决architecture问题    public Architect() {        super(2);    }    @Override    void report() {        System.out.println(&quot;架构师解决软件架构设计&quot;);    }}</code></pre><p>客户端：</p><pre><code>public static void main(String[] args){    Manager manager = new Manager();    Architect architect = new Architect();    manager.setNext(architect);    manager.transfer(Problem.STRUCTURE);    manager.transfer(Problem.ARCHITECTURE);}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;特点：&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/chain.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;特点：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;把请求的传递从子类中剥夺出来了，子类可以专心处理业务逻辑，子类不再需要进行传递的判断；
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;问题角色：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public enum Problem {
-    STRUCTURE(1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;问
       
     
     </summary>
@@ -129,20 +128,20 @@
     <link href="http://www.xuchunfa.cn/2019/05/25/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/25/策略模式/</id>
     <published>2019-05-25T11:24:25.000Z</published>
-    <updated>2019-05-26T03:41:33.627Z</updated>
+    <updated>2019-05-29T01:56:41.545Z</updated>
     
-    <content type="html"><![CDATA[<p>枚举方法实现的策略模式：</p><pre><code>public enum StrategyEnum {    ADD{        @Override        public int calculate(int a, int b) {            return a + b;        }    },    SUBTRACT{        @Override        public int calculate(int a, int b) {            return a - b;        }    };    //抽象方法放后面    public abstract int calculate(int a, int b);}</code></pre><p>Client:</p><pre><code>public static void main(String[] args){    StrategyEnum.ADD.calculate(1,1);    StrategyEnum.SUBTRACT.calculate(1,1);}</code></pre><p>实际应用：</p><pre><code>利用策略模式解决if else 分支过多的情况，项目中使用到了反射和策略模式的方法；</code></pre><p>隶属度计算接口：</p><pre><code>public interface MembershipMath {    double calculate(double attr);}</code></pre><p>不同隶属度计算函数类：</p><pre><code>public class MaxNormal implements MembershipMath {    private double middle;    public MaxNormal() {    }    @Override    public double calculate(double attr) {        DecimalFormat df = new DecimalFormat(&quot;#0.00&quot;);        if(Double.compare(attr,middle) &lt; 0){            return 0;        }else{            return Double.parseDouble(df.format(1 - Math.exp(-Math.pow(attr-middle,2))));        }    }    public double getMiddle() {        return middle;    }    public void setMiddle(double middle) {        this.middle = middle;    }}</code></pre><p>客户端：</p><pre><code>public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {    String classPath = &quot;neu.cloud.functionpackage.membershipes.impl.MinTrapezoid&quot;;    String minName = &quot;min&quot;;    double min = 1;    String maxName = &quot;max&quot;;    double max = 1;    //获取隶属函数的参数    HashMap&lt;String,Double&gt; fieldMap = new HashMap&lt;&gt;();    fieldMap.put(minName,min);    fieldMap.put(maxName,max);    //全限域名获取隶属函数实例    Class&lt;?&gt; clazz = Class.forName(classPath);    MembershipMath membershipMath = (MembershipMath) clazz.newInstance();    //反射调用真正实例的setMin、setMax、setMiddle方法，来设置参数    invokeSetParams(membershipMath,fieldMap);    System.out.println(membershipMath.calculate(3));}private static void invokeSetParams(MembershipMath membershipMath, HashMap&lt;String, Double&gt; fieldMap) {    Iterator&lt;Map.Entry&lt;String,Double&gt;&gt; params = fieldMap.entrySet().iterator();    while (params.hasNext()){        StringBuilder sb = new StringBuilder();        Map.Entry&lt;String,Double&gt; entry = params.next();        String method = entry.getKey();        String methodName = sb.append(&quot;set&quot;).append(Character.toUpperCase(method.charAt(0))).                append(method.substring(1,method.length())).toString();        double methodValue = entry.getValue();        Method[] methods = membershipMath.getClass().getMethods();        for(Method method1 : methods){            if(method1.getName().equals(methodName)){                try {                    method1.invoke(membershipMath,methodValue);                } catch (IllegalAccessException e) {                    e.printStackTrace();                } catch (InvocationTargetException e) {                    e.printStackTrace();                }            }        }    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/strategy.PNG" alt=""></p><p>枚举方法实现的策略模式：</p><pre><code>public enum StrategyEnum {    ADD{        @Override        public int calculate(int a, int b) {            return a + b;        }    },    SUBTRACT{        @Override        public int calculate(int a, int b) {            return a - b;        }    };    //抽象方法放后面    public abstract int calculate(int a, int b);}</code></pre><p>Client:</p><pre><code>public static void main(String[] args){    StrategyEnum.ADD.calculate(1,1);    StrategyEnum.SUBTRACT.calculate(1,1);}</code></pre><p>实际应用：</p><pre><code>利用策略模式解决if else 分支过多的情况，项目中使用到了反射和策略模式的方法；</code></pre><p>隶属度计算接口：</p><pre><code>public interface MembershipMath {    double calculate(double attr);}</code></pre><p>不同隶属度计算函数类：</p><pre><code>public class MaxNormal implements MembershipMath {    private double middle;    public MaxNormal() {    }    @Override    public double calculate(double attr) {        DecimalFormat df = new DecimalFormat(&quot;#0.00&quot;);        if(Double.compare(attr,middle) &lt; 0){            return 0;        }else{            return Double.parseDouble(df.format(1 - Math.exp(-Math.pow(attr-middle,2))));        }    }    public double getMiddle() {        return middle;    }    public void setMiddle(double middle) {        this.middle = middle;    }}</code></pre><p>客户端：</p><pre><code>public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {    String classPath = &quot;neu.cloud.functionpackage.membershipes.impl.MinTrapezoid&quot;;    String minName = &quot;min&quot;;    double min = 1;    String maxName = &quot;max&quot;;    double max = 1;    //获取隶属函数的参数    HashMap&lt;String,Double&gt; fieldMap = new HashMap&lt;&gt;();    fieldMap.put(minName,min);    fieldMap.put(maxName,max);    //全限域名获取隶属函数实例    Class&lt;?&gt; clazz = Class.forName(classPath);    MembershipMath membershipMath = (MembershipMath) clazz.newInstance();    //反射调用真正实例的setMin、setMax、setMiddle方法，来设置参数    invokeSetParams(membershipMath,fieldMap);    System.out.println(membershipMath.calculate(3));}private static void invokeSetParams(MembershipMath membershipMath, HashMap&lt;String, Double&gt; fieldMap) {    Iterator&lt;Map.Entry&lt;String,Double&gt;&gt; params = fieldMap.entrySet().iterator();    while (params.hasNext()){        StringBuilder sb = new StringBuilder();        Map.Entry&lt;String,Double&gt; entry = params.next();        String method = entry.getKey();        String methodName = sb.append(&quot;set&quot;).append(Character.toUpperCase(method.charAt(0))).                append(method.substring(1,method.length())).toString();        double methodValue = entry.getValue();        Method[] methods = membershipMath.getClass().getMethods();        for(Method method1 : methods){            if(method1.getName().equals(methodName)){                try {                    method1.invoke(membershipMath,methodValue);                } catch (IllegalAccessException e) {                    e.printStackTrace();                } catch (InvocationTargetException e) {                    e.printStackTrace();                }            }        }    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;枚举方法实现的策略模式：&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/strategy.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;枚举方法实现的策略模式：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;public enum StrategyEnum {
     ADD{
-        @Override
-        public int calculate(int a, int b) {
-          
+        @Over
       
     
     </summary>
@@ -157,18 +156,18 @@
     <link href="http://www.xuchunfa.cn/2019/05/24/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/24/享元模式/</id>
     <published>2019-05-24T06:31:10.000Z</published>
-    <updated>2019-05-24T07:48:21.144Z</updated>
+    <updated>2019-05-29T01:54:33.199Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>享元模式</strong></p><pre><code>通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中；</code></pre><p>同名书共享订单实例：</p><pre><code>//抽象享元public interface FlyWeight {    void sell();}//具体享元类public class BookOrder implements FlyWeight {    private String name;    public BookOrder(String name) {        this.name = name;    }    @Override    public void sell() {        System.out.println(&quot;sell a book named by: &quot; + name);    }}//public class FlyWeightFactory {    //饿汉模式线程安全    private static final FlyWeightFactory factory = new FlyWeightFactory();    //享元池    private HashMap&lt;String,FlyWeight&gt; pool = new HashMap&lt;&gt;();    private FlyWeightFactory(){    }    public static FlyWeightFactory getInstance(){        return factory;    }    public FlyWeight addOrder(String bookName){        FlyWeight order = null;        if(pool.containsKey(bookName)){            order = pool.get(bookName);        }else {            order = new BookOrder(bookName);            pool.put(bookName,order);        }        return order;    }    public int getAllOrder(){        return pool.size();    }}</code></pre><p>Client:</p><pre><code>public static void main(String[] args){    List&lt;FlyWeight&gt; orders = new ArrayList&lt;&gt;();    FlyWeightFactory factory = FlyWeightFactory.getInstance();    //一本书生成一个订单对象(同名书共享一个订单对象)    orders.add(factory.addOrder(&quot;红楼梦&quot;));    orders.add(factory.addOrder(&quot;水浒传&quot;));    orders.add(factory.addOrder(&quot;红楼梦&quot;));    //调用享元类接口    for(FlyWeight order : orders){        order.sell();    }    System.out.println(&quot;num of book sold: &quot;+orders.size());    System.out.println(&quot;num of book order: &quot;+factory.getAllOrder());}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/flyWeight.PNG" alt=""></p><p><strong>享元模式</strong></p><pre><code>通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中；</code></pre><p>同名书共享订单实例：</p><pre><code>//抽象享元public interface FlyWeight {    void sell();}//具体享元类public class BookOrder implements FlyWeight {    private String name;    public BookOrder(String name) {        this.name = name;    }    @Override    public void sell() {        System.out.println(&quot;sell a book named by: &quot; + name);    }}//public class FlyWeightFactory {    //饿汉模式线程安全    private static final FlyWeightFactory factory = new FlyWeightFactory();    //享元池    private HashMap&lt;String,FlyWeight&gt; pool = new HashMap&lt;&gt;();    private FlyWeightFactory(){    }    public static FlyWeightFactory getInstance(){        return factory;    }    public FlyWeight addOrder(String bookName){        FlyWeight order = null;        if(pool.containsKey(bookName)){            order = pool.get(bookName);        }else {            order = new BookOrder(bookName);            pool.put(bookName,order);        }        return order;    }    public int getAllOrder(){        return pool.size();    }}</code></pre><p>Client:</p><pre><code>public static void main(String[] args){    List&lt;FlyWeight&gt; orders = new ArrayList&lt;&gt;();    FlyWeightFactory factory = FlyWeightFactory.getInstance();    //一本书生成一个订单对象(同名书共享一个订单对象)    orders.add(factory.addOrder(&quot;红楼梦&quot;));    orders.add(factory.addOrder(&quot;水浒传&quot;));    orders.add(factory.addOrder(&quot;红楼梦&quot;));    //调用享元类接口    for(FlyWeight order : orders){        order.sell();    }    System.out.println(&quot;num of book sold: &quot;+orders.size());    System.out.println(&quot;num of book order: &quot;+factory.getAllOrder());}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;享元模式&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；
-
-设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/flyWeight.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;享元模式&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取Flyweig
       
     
     </summary>
@@ -183,18 +182,18 @@
     <link href="http://www.xuchunfa.cn/2019/05/24/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/24/组合模式/</id>
     <published>2019-05-24T03:41:09.000Z</published>
-    <updated>2019-05-24T03:54:26.651Z</updated>
+    <updated>2019-05-29T01:52:47.373Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>组合模式</strong></p><pre><code>也叫合成模式，用来描述整体-部分的关系，将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性；</code></pre><p>安全式组合模式实例：</p><pre><code>//叶子和非叶子抽象出来的模板方法public abstract class Component {    protected String name;    abstract void display();}//叶子public class Leaf extends Component {    public Leaf(String name) {        this.name = name;    }    @Override    void display() {        System.out.println(&quot;Name of leaf: &quot; + name);    }}//分支public class Branch extends Component {    public Branch(String name) {        this.name = name;    }    private List&lt;Component&gt; children = new ArrayList&lt;&gt;();    public Component add(Component node){        children.add(node);        return node;    }    public Component remove(Component node){        children.remove(node);        return node;    }    public List&lt;Component&gt; getChildren() {        return children;    }    @Override    void display() {        System.out.println(&quot;Name of branch: &quot; + name);    }}</code></pre><p>Client:</p><pre><code>public static void main(String[] args){    Branch root = new Branch(&quot;root&quot;);    Branch branch = new Branch(&quot;branch1&quot;);    Component leaf1 = new Leaf(&quot;leaf1&quot;);    Component leaf2 = new Leaf(&quot;leaf2&quot;);    root.add(branch);    branch.add(leaf1);    branch.add(leaf2);    root.display();    show(root);}private static void show(Branch root) {    for(Component node : root.getChildren()){        if(node instanceof Leaf){            node.display();        }else {            show((Branch) node);            //或者树枝节点的其他方法            node.display();        }    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>组合模式安全模式-UML图：</p><p><img src="/images/safeComponent.PNG" alt=""></p><p>组合模式透明模式-UML图：</p><p><img src="/images/transparentComponent.PNG" alt=""></p><p><strong>组合模式</strong></p><pre><code>也叫合成模式，用来描述整体-部分的关系，将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性；</code></pre><p>安全式组合模式实例：</p><pre><code>//叶子和非叶子抽象出来的模板方法public abstract class Component {    protected String name;    abstract void display();}//叶子public class Leaf extends Component {    public Leaf(String name) {        this.name = name;    }    @Override    void display() {        System.out.println(&quot;Name of leaf: &quot; + name);    }}//分支public class Branch extends Component {    public Branch(String name) {        this.name = name;    }    private List&lt;Component&gt; children = new ArrayList&lt;&gt;();    public Component add(Component node){        children.add(node);        return node;    }    public Component remove(Component node){        children.remove(node);        return node;    }    public List&lt;Component&gt; getChildren() {        return children;    }    @Override    void display() {        System.out.println(&quot;Name of branch: &quot; + name);    }}</code></pre><p>Client:</p><pre><code>public static void main(String[] args){    Branch root = new Branch(&quot;root&quot;);    Branch branch = new Branch(&quot;branch1&quot;);    Component leaf1 = new Leaf(&quot;leaf1&quot;);    Component leaf2 = new Leaf(&quot;leaf2&quot;);    root.add(branch);    branch.add(leaf1);    branch.add(leaf2);    root.display();    show(root);}private static void show(Branch root) {    for(Component node : root.getChildren()){        if(node instanceof Leaf){            node.display();        }else {            show((Branch) node);            //或者树枝节点的其他方法            node.display();        }    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;组合模式&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;也叫合成模式，用来描述整体-部分的关系，将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性；
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;安全式组合模式实例：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;//叶
+        &lt;p&gt;组合模式安全模式-UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/safeComponent.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;组合模式透明模式-UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/transparentComponent.PN
       
     
     </summary>
@@ -209,18 +208,19 @@
     <link href="http://www.xuchunfa.cn/2019/05/23/%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/23/桥接模式/</id>
     <published>2019-05-23T13:13:01.000Z</published>
-    <updated>2019-05-23T13:21:17.631Z</updated>
+    <updated>2019-05-29T01:47:53.755Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>桥接模式</strong></p><pre><code>将抽象部分与它的实现部分分离，使它们都可以独立的变化；好处就是减少类的爆炸增长；</code></pre><p>抽象功能角色：</p><pre><code>public abstract class Car {    protected Engine engine;    public void setEngine(Engine engine) {        this.engine = engine;    }    abstract void run();}</code></pre><p>具体功能角色：</p><pre><code>//聚合 Engine public class BenZCar extends Car {    private static final Logger LOG = LoggerFactory.getLogger(BenZCar.class);    @Override    void run() {        engine.gear();        LOG.info(&quot;running by BenZCar......&quot;);    }}</code></pre><p>抽象实现角色：</p><pre><code>public abstract class Engine {    abstract void gear();}</code></pre><p>具体实现角色：</p><pre><code>public class AutoEngine extends Engine {    private static final Logger LOG = LoggerFactory.getLogger(AutoEngine.class);    @Override    void gear() {        LOG.info(&quot;use AutoEngine &quot;);    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/bridge.PNG" alt=""></p><p><strong>桥接模式</strong></p><pre><code>将抽象部分与它的实现部分分离，使它们都可以独立的变化；好处就是减少类的爆炸增长；</code></pre><p>抽象功能角色：</p><pre><code>public abstract class Car {    protected Engine engine;    public void setEngine(Engine engine) {        this.engine = engine;    }    abstract void run();}</code></pre><p>具体功能角色：</p><pre><code>//聚合 Engine public class BenZCar extends Car {    private static final Logger LOG = LoggerFactory.getLogger(BenZCar.class);    @Override    void run() {        engine.gear();        LOG.info(&quot;running by BenZCar......&quot;);    }}</code></pre><p>抽象实现角色：</p><pre><code>public abstract class Engine {    abstract void gear();}</code></pre><p>具体实现角色：</p><pre><code>public class AutoEngine extends Engine {    private static final Logger LOG = LoggerFactory.getLogger(AutoEngine.class);    @Override    void gear() {        LOG.info(&quot;use AutoEngine &quot;);    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;桥接模式&lt;/strong&gt;&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/bridge.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;桥接模式&lt;/strong&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;将抽象部分与它的实现部分分离，使它们都可以独立的变化；好处就是减少类的爆炸增长；
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;抽象功能角色：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public abstract clas
+&lt;
       
     
     </summary>
@@ -235,18 +235,19 @@
     <link href="http://www.xuchunfa.cn/2019/05/23/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/23/外观模式/</id>
     <published>2019-05-23T07:59:06.000Z</published>
-    <updated>2019-05-23T08:16:25.287Z</updated>
+    <updated>2019-05-29T01:46:08.288Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>外观模式（门面模式）</strong></p><pre><code>通过外观类将子系统和客户端解耦，为复杂的子系统调用提供一统一的入口；在层次结构中，可以使用外观模式定义系统中每一层的入口，降低层之间的耦合度；</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/facade.PNG" alt=""></p><p><strong>外观模式（门面模式）</strong></p><pre><code>通过外观类将子系统和客户端解耦，为复杂的子系统调用提供一统一的入口；在层次结构中，可以使用外观模式定义系统中每一层的入口，降低层之间的耦合度；</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;外观模式（门面模式）&lt;/strong&gt;&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/facade.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;外观模式（门面模式）&lt;/strong&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;通过外观类将子系统和客户端解耦，为复杂的子系统调用提供一统一的入口；
-在层次结构中，可以使用外观模式定义系统中每一层的入口，降低层之间的耦合度；
-&lt;/code&gt;&lt;/pre&gt;
+在
       
     
     </summary>
@@ -261,18 +262,19 @@
     <link href="http://www.xuchunfa.cn/2019/05/21/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/21/原型模式/</id>
     <published>2019-05-21T12:36:57.000Z</published>
-    <updated>2019-05-22T01:53:30.999Z</updated>
+    <updated>2019-05-29T01:29:52.275Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>原型模式：</strong></p><pre><code>复制原对象，克隆出与原型对象一模一样的对象；</code></pre><p>原型接口：</p><pre><code>public interface Product extends Cloneable{    Object cloneProduct();}</code></pre><p>具体原型：</p><pre><code>public class ProductA implements Product {    @Override    public Object cloneProduct() {        try {            return clone();        } catch (CloneNotSupportedException e) {            e.printStackTrace();        }        return null;    }}</code></pre><p>使用者：</p><pre><code>public class Manager {    private Product product;    public Manager(Product product) {        this.product = product;    }    public Product create(){        return (Product) product.cloneProduct();    }    public static void main(String[] args){        ProductA productA = new ProductA();        Manager manager = new Manager(productA);        Product clonedProductA = manager.create();        System.out.println(productA == clonedProductA);    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/prototype.PNG" alt=""></p><p><strong>原型模式：</strong></p><pre><code>复制原对象，克隆出与原型对象一模一样的对象；</code></pre><p>原型接口：</p><pre><code>public interface Product extends Cloneable{    Object cloneProduct();}</code></pre><p>具体原型：</p><pre><code>public class ProductA implements Product {    @Override    public Object cloneProduct() {        try {            return clone();        } catch (CloneNotSupportedException e) {            e.printStackTrace();        }        return null;    }}</code></pre><p>使用者：</p><pre><code>public class Manager {    private Product product;    public Manager(Product product) {        this.product = product;    }    public Product create(){        return (Product) product.cloneProduct();    }    public static void main(String[] args){        ProductA productA = new ProductA();        Manager manager = new Manager(productA);        Product clonedProductA = manager.create();        System.out.println(productA == clonedProductA);    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;原型模式：&lt;/strong&gt;&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/prototype.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;原型模式：&lt;/strong&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;复制原对象，克隆出与原型对象一模一样的对象；
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;原型接口：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public interface Product extends Clonea
+&lt;/code&gt;&lt;/pre&gt;&lt;p
       
     
     </summary>
@@ -287,18 +289,18 @@
     <link href="http://www.xuchunfa.cn/2019/05/15/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/15/建造者模式/</id>
     <published>2019-05-15T12:44:57.000Z</published>
-    <updated>2019-05-21T12:14:03.304Z</updated>
+    <updated>2019-05-29T01:28:03.500Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>建造者模式</strong></p><pre><code>用户不必知道对象的构建过程和具体实现细节就能创建出复杂的对象，将建造复杂对象的过程和组成对象的部件解耦。</code></pre><p>Builder:</p><pre><code>//构建部件的抽象类或接口public abstract class Builder {    protected HomeStruct struct = new HomeStruct();    abstract void bulidFoundation();    abstract void buildArchitecture();    public HomeStruct finishConstruct(){        return struct;    }}</code></pre><p>ConcreteBuiler:</p><pre><code>//具体部件构建的实现（木屋材料）public class WoodenBuilder extends Builder {    private String material = &quot;wood&quot;;    @Override    public void bulidFoundation() {        System.out.println(&quot;地基使用：&quot; + material);        struct.setFoundation(material);    }    @Override    public void buildArchitecture() {        System.out.println(&quot;架构使用：&quot; + material);        struct.setArchitecture(material);    }    public HomeStruct finishContruct(){        return struct;    }}//水泥材料public class CementBuilder extends Builder {    private String material = &quot;cement&quot;;    @Override    public void bulidFoundation() {        System.out.println(&quot;地基使用：&quot; + material);        struct.setFoundation(material);    }    @Override    public void buildArchitecture() {        System.out.println(&quot;架构使用：&quot; + material);        struct.setArchitecture(material);    }    public HomeStruct finishContruct(){        return struct;    }}</code></pre><p>Director:</p><pre><code>//使用不同材料可以构造不同建筑物public class Director {    private Builder builder;    public Director(Builder builder) {        this.builder = builder;    }    public void construct(){        builder.bulidFoundation();        builder.buildArchitecture();    }}</code></pre><p>测试:</p><pre><code>public class Construction {    @Test    public void test(){        Builder woodenBuilder = new WoodenBuilder();        Director director = new Director(woodenBuilder);        director.construct();        HomeStruct homeStruct = woodenBuilder.finishConstruct();        System.out.println(homeStruct.getFoundation());        System.out.println(homeStruct.getArchitecture());    }}</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/builder.PNG" alt=""></p><p><strong>建造者模式</strong></p><pre><code>用户不必知道对象的构建过程和具体实现细节就能创建出复杂的对象，将建造复杂对象的过程和组成对象的部件解耦。</code></pre><p>Builder:</p><pre><code>//构建部件的抽象类或接口public abstract class Builder {    protected HomeStruct struct = new HomeStruct();    abstract void bulidFoundation();    abstract void buildArchitecture();    public HomeStruct finishConstruct(){        return struct;    }}</code></pre><p>ConcreteBuiler:</p><pre><code>//具体部件构建的实现（木屋材料）public class WoodenBuilder extends Builder {    private String material = &quot;wood&quot;;    @Override    public void bulidFoundation() {        System.out.println(&quot;地基使用：&quot; + material);        struct.setFoundation(material);    }    @Override    public void buildArchitecture() {        System.out.println(&quot;架构使用：&quot; + material);        struct.setArchitecture(material);    }    public HomeStruct finishContruct(){        return struct;    }}//水泥材料public class CementBuilder extends Builder {    private String material = &quot;cement&quot;;    @Override    public void bulidFoundation() {        System.out.println(&quot;地基使用：&quot; + material);        struct.setFoundation(material);    }    @Override    public void buildArchitecture() {        System.out.println(&quot;架构使用：&quot; + material);        struct.setArchitecture(material);    }    public HomeStruct finishContruct(){        return struct;    }}</code></pre><p>Director:</p><pre><code>//使用不同材料可以构造不同建筑物public class Director {    private Builder builder;    public Director(Builder builder) {        this.builder = builder;    }    public void construct(){        builder.bulidFoundation();        builder.buildArchitecture();    }}</code></pre><p>测试:</p><pre><code>public class Construction {    @Test    public void test(){        Builder woodenBuilder = new WoodenBuilder();        Director director = new Director(woodenBuilder);        director.construct();        HomeStruct homeStruct = woodenBuilder.finishConstruct();        System.out.println(homeStruct.getFoundation());        System.out.println(homeStruct.getArchitecture());    }}</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;建造者模式&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;用户不必知道对象的构建过程和具体实现细节就能创建出复杂的对象，将建造复杂对象的过程和组成对象的部件解耦。
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Builder:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;//构建部件
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/builder.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;建造者模式&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;用户不必知道对象的构建过程和具体实现细节就能创建出复杂的对象，将建造复杂对象的过
       
     
     </summary>
@@ -313,19 +315,19 @@
     <link href="http://www.xuchunfa.cn/2019/05/13/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/"/>
     <id>http://www.xuchunfa.cn/2019/05/13/抽象工厂模式/</id>
     <published>2019-05-13T11:51:32.000Z</published>
-    <updated>2019-05-22T06:37:04.790Z</updated>
+    <updated>2019-05-27T13:54:13.675Z</updated>
     
-    <content type="html"><![CDATA[<p><strong>抽象工厂模式</strong></p><pre><code>工厂类不单单是创建一个对象，而是创建一组对象；</code></pre><p>抽象工厂类：</p><pre><code>public interface PhoneFactory {    HUAWEI produceHW();    XIAOMI produceXM();}</code></pre><p>具体工厂类：</p><pre><code>//生产一代手机的具体工厂public class Phone1Factory implements PhoneFactory {    @Override    public HUAWEI produceHW() {        return new HUAWEI1();    }    @Override    public XIAOMI produceXM() {        return new XIAOMI1();    }}//生产二代手机的具体工厂public class Phone2Factory implements PhoneFactory {    @Override    public HUAWEI produceHW() {        return new HUAWEI2();    }    @Override    public XIAOMI produceXM() {        return new XIAOMI2();    }}</code></pre><p>抽象产品类：</p><pre><code>//产品Apublic interface HUAWEI {    void huaweiInfo();}//产品Bpublic interface XIAOMI {    void xiaomiInfo();}</code></pre><p>具体产品类：</p><pre><code>//产品A1public class HUAWEI1 implements HUAWEI {    @Override    public void huaweiInfo() {        System.out.println(&quot;华为1代&quot;);    }}//产品A2public class HUAWEI2 implements HUAWEI {    @Override    public void huaweiInfo() {        System.out.println(&quot;华为2代&quot;);    }}//产品B1public class XIAOMI1 implements XIAOMI {    @Override    public void xiaomiInfo() {        System.out.println(&quot;小米1代&quot;);    }}//产品B2public class XIAOMI2 implements XIAOMI {    @Override    public void xiaomiInfo() {        System.out.println(&quot;小米2代&quot;);    }}</code></pre><p>测试用例：</p><pre><code>PhoneFactory pf1 = new Phone1Factory();HUAWEI huawei = pf1.produceHW();XIAOMI xiaomi = pf1.produceXM();huawei.huaweiInfo();//华为1代xiaomi.xiaomiInfo();//小米1代</code></pre><p><a href="https://blog.51cto.com/zero01/2070033" target="_blank" rel="noopener">理解工厂方法模式和抽象工厂模式</a></p><h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>1.抽象工厂是可以生产多个产品的，并且这些产品属于同一系列，工厂方法模式只能生产一个产品；</code></pre><h4 id="抽象工厂模式优点"><a href="#抽象工厂模式优点" class="headerlink" title="抽象工厂模式优点"></a>抽象工厂模式优点</h4><pre><code>1.具体实例的创建过程与客户端分离，客户端通过抽象接口操作实例对象；</code></pre>]]></content>
+    <content type="html"><![CDATA[<p>UML图：</p><p><img src="/images/AbstractFactory.PNG" alt=""></p><p><strong>抽象工厂模式</strong></p><pre><code>工厂类不单单是创建一个对象，而是创建一组对象；</code></pre><p>抽象工厂类：</p><pre><code>public interface PhoneFactory {    HUAWEI produceHW();    XIAOMI produceXM();}</code></pre><p>具体工厂类：</p><pre><code>//生产一代手机的具体工厂public class Phone1Factory implements PhoneFactory {    @Override    public HUAWEI produceHW() {        return new HUAWEI1();    }    @Override    public XIAOMI produceXM() {        return new XIAOMI1();    }}//生产二代手机的具体工厂public class Phone2Factory implements PhoneFactory {    @Override    public HUAWEI produceHW() {        return new HUAWEI2();    }    @Override    public XIAOMI produceXM() {        return new XIAOMI2();    }}</code></pre><p>抽象产品类：</p><pre><code>//产品Apublic interface HUAWEI {    void huaweiInfo();}//产品Bpublic interface XIAOMI {    void xiaomiInfo();}</code></pre><p>具体产品类：</p><pre><code>//产品A1public class HUAWEI1 implements HUAWEI {    @Override    public void huaweiInfo() {        System.out.println(&quot;华为1代&quot;);    }}//产品A2public class HUAWEI2 implements HUAWEI {    @Override    public void huaweiInfo() {        System.out.println(&quot;华为2代&quot;);    }}//产品B1public class XIAOMI1 implements XIAOMI {    @Override    public void xiaomiInfo() {        System.out.println(&quot;小米1代&quot;);    }}//产品B2public class XIAOMI2 implements XIAOMI {    @Override    public void xiaomiInfo() {        System.out.println(&quot;小米2代&quot;);    }}</code></pre><p>测试用例：</p><pre><code>PhoneFactory pf1 = new Phone1Factory();HUAWEI huawei = pf1.produceHW();XIAOMI xiaomi = pf1.produceXM();huawei.huaweiInfo();//华为1代xiaomi.xiaomiInfo();//小米1代</code></pre><p><a href="https://blog.51cto.com/zero01/2070033" target="_blank" rel="noopener">理解工厂方法模式和抽象工厂模式</a></p><h4 id="抽象工厂模式和工厂方法模式的不同处？"><a href="#抽象工厂模式和工厂方法模式的不同处？" class="headerlink" title="抽象工厂模式和工厂方法模式的不同处？"></a>抽象工厂模式和工厂方法模式的不同处？</h4><pre><code>1.抽象工厂是可以生产多个产品的，并且这些产品属于同一系列，工厂方法模式只能生产一个产品；</code></pre><h4 id="抽象工厂模式优点"><a href="#抽象工厂模式优点" class="headerlink" title="抽象工厂模式优点"></a>抽象工厂模式优点</h4><pre><code>1.具体实例的创建过程与客户端分离，客户端通过抽象接口操作实例对象；</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;strong&gt;抽象工厂模式&lt;/strong&gt;&lt;/p&gt;
+        &lt;p&gt;UML图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/AbstractFactory.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;抽象工厂模式&lt;/strong&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;工厂类不单单是创建一个对象，而是创建一组对象；
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;抽象工厂类：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public interface PhoneFactory {
-    
+&lt;/code&gt;
       
     
     </summary>
