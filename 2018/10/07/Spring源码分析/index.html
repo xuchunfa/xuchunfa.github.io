@@ -81,19 +81,18 @@
 
 
 
-<meta name="description" content="1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()： //AbstractApplicationContext.java public void refresh() throws BeansException, IllegalStateException {     synchronized (this.startupShutd">
+<meta name="description" content="javadoop源码分析 总结： 1.Bean是什么？      Bean 是 BeanDefinition的实例，保存了我们配置的bean的相关信息；  2. ClassPathXmlApplicationContext构造函数中执行 refresh() 方法容器进入初始化流程：      1.准备工作，例如容器启动时间；      2.创建BeanFactory,loadBeanDefinit">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring源码分析">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/10/07/Spring源码分析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()： //AbstractApplicationContext.java public void refresh() throws BeansException, IllegalStateException {     synchronized (this.startupShutd">
+<meta property="og:description" content="javadoop源码分析 总结： 1.Bean是什么？      Bean 是 BeanDefinition的实例，保存了我们配置的bean的相关信息；  2. ClassPathXmlApplicationContext构造函数中执行 refresh() 方法容器进入初始化流程：      1.准备工作，例如容器启动时间；      2.创建BeanFactory,loadBeanDefinit">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/2mEAJAA.png">
-<meta property="og:image" content="https://i.imgur.com/4OETcMX.png">
-<meta property="og:updated_time" content="2018-10-08T13:51:34.443Z">
+<meta property="og:updated_time" content="2019-06-06T12:58:46.626Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring源码分析">
-<meta name="twitter:description" content="1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()： //AbstractApplicationContext.java public void refresh() throws BeansException, IllegalStateException {     synchronized (this.startupShutd">
+<meta name="twitter:description" content="javadoop源码分析 总结： 1.Bean是什么？      Bean 是 BeanDefinition的实例，保存了我们配置的bean的相关信息；  2. ClassPathXmlApplicationContext构造函数中执行 refresh() 方法容器进入初始化流程：      1.准备工作，例如容器启动时间；      2.创建BeanFactory,loadBeanDefinit">
 <meta name="twitter:image" content="https://i.imgur.com/2mEAJAA.png">
 
 
@@ -402,7 +401,32 @@
       
 
       
-        <p>1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()：</p>
+        <p><a href="https://www.javadoop.com/post/spring-ioc" target="_blank" rel="noopener">javadoop源码分析</a></p>
+<p>总结：</p>
+<pre><code>1.Bean是什么？
+
+    Bean 是 BeanDefinition的实例，保存了我们配置的bean的相关信息；
+
+2. ClassPathXmlApplicationContext构造函数中执行 refresh() 方法容器进入初始化流程：
+
+    1.准备工作，例如容器启动时间；
+
+    2.创建BeanFactory,loadBeanDefinitions(beanFactory)方法加载Bean,放到BeanFactory中：
+
+        2.1 解析标签生成 BeanDefinition 实例；
+
+        2.2 注册Bean,注册后的Bean放在beanDefinitionMap中，key为beanName,value为beanDefinition；
+
+    3.手动注册特殊的bean,例如BeanPostProcessor，例如实现了Aware接口的bean,由它来负责回调；
+
+    4.初始化所有非懒加载的Bean，在getBean(beanName)中初始化bean；
+
+        4.1 createBeanInstance(...)方法实例化Bean,通过反射进行实例化；
+
+        4.2 populateBean(...) 设置bean实例的属性值，还有依赖注入；
+
+        4.3 属性注入以后开始进行各种回调initializeBean，例如BeanPostProcessor 的 postProcessBeforeInitialization 回调；    
+</code></pre><p>1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()：</p>
 <pre><code>//AbstractApplicationContext.java
 public void refresh() throws BeansException, IllegalStateException {
     synchronized (this.startupShutdownMonitor) {
@@ -775,9 +799,7 @@ if (mbd == null || !mbd.isSynthetic()) {
 }
 return wrappedBean;
 }
-</code></pre><p>最后贴一张Spring Bean 的生命周期图：</p>
-<p><img src="https://i.imgur.com/4OETcMX.png" alt=""></p>
-
+</code></pre>
       
     </div>
     
@@ -892,7 +914,7 @@ return wrappedBean;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">123</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -903,7 +925,7 @@ return wrappedBean;
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

@@ -286,212 +286,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/31/适配器模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/31/适配器模式/" itemprop="url">适配器模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T10:09:23+08:00">
-                2018-10-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/31/适配器模式/" class="leancloud_visitors" data-flag-title="适配器模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>类适配器UML图：</p>
-<p><img src="/images/classAdapter.PNG" alt=""></p>
-<p>对象适配器UML图：</p>
-<p><img src="/images/objAdapter.PNG" alt=""></p>
-<p><strong>适配器模式</strong></p>
-<pre><code>将一个类的接口转化成用户需要的另外一个接口；
-</code></pre><p>适配器模式分三种：</p>
-<ul>
-<li><p>类适配器模式</p>
-</li>
-<li><p>对象适配器模式</p>
-</li>
-<li><p>特殊的缺省适配模式</p>
-</li>
-</ul>
-<p>详解见博客：</p>
-<p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>
-<p>安卓充电器给苹果手机充电</p>
-<pre><code>public interface AndriodCharge {
-    void chargeToAndroid();
-}
-</code></pre><p>Target角色：</p>
-<pre><code>public interface IphoneCharge {
-    void chargeToIphone();
-}
-</code></pre><p>Adaptee角色：</p>
-<pre><code>public class AndriodCharger implements AndriodCharge {
-
-    @Override
-    public void chargeToAndroid() {
-        System.out.println(&quot;使用安卓充电器给手机充电&quot;);
-    }
-}
-</code></pre><p>Adapter角色：</p>
-<pre><code>public class IphoneAdapter implements IphoneCharge {
-    //复用安卓充电器（聚合关系）
-    private AndriodCharger andriodCharger;
-
-    public IphoneAdapter(AndriodCharger andriodCharger) {
-        this.andriodCharger = andriodCharger;
-    }
-
-    @Override
-    public void chargeToIphone() {
-        andriodCharger.chargeToAndroid();
-        System.out.println(&quot;Iphone is charging&quot;);
-    }
-}
-</code></pre><p>Client角色：</p>
-<pre><code>public static void main(String[] args){
-    AndriodCharger ac = new AndriodCharger();
-    IphoneAdapter adapter = new IphoneAdapter(ac);
-    adapter.chargeToIphone();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/30/装饰者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2310,7 +2104,32 @@ public void execute(Tuple tuple) {
       
         
           
-            <p>1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()：</p>
+            <p><a href="https://www.javadoop.com/post/spring-ioc" target="_blank" rel="noopener">javadoop源码分析</a></p>
+<p>总结：</p>
+<pre><code>1.Bean是什么？
+
+    Bean 是 BeanDefinition的实例，保存了我们配置的bean的相关信息；
+
+2. ClassPathXmlApplicationContext构造函数中执行 refresh() 方法容器进入初始化流程：
+
+    1.准备工作，例如容器启动时间；
+
+    2.创建BeanFactory,loadBeanDefinitions(beanFactory)方法加载Bean,放到BeanFactory中：
+
+        2.1 解析标签生成 BeanDefinition 实例；
+
+        2.2 注册Bean,注册后的Bean放在beanDefinitionMap中，key为beanName,value为beanDefinition；
+
+    3.手动注册特殊的bean,例如BeanPostProcessor，例如实现了Aware接口的bean,由它来负责回调；
+
+    4.初始化所有非懒加载的Bean，在getBean(beanName)中初始化bean；
+
+        4.1 createBeanInstance(...)方法实例化Bean,通过反射进行实例化；
+
+        4.2 populateBean(...) 设置bean实例的属性值，还有依赖注入；
+
+        4.3 属性注入以后开始进行各种回调initializeBean，例如BeanPostProcessor 的 postProcessBeforeInitialization 回调；    
+</code></pre><p>1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()：</p>
 <pre><code>//AbstractApplicationContext.java
 public void refresh() throws BeansException, IllegalStateException {
     synchronized (this.startupShutdownMonitor) {
@@ -2683,9 +2502,7 @@ if (mbd == null || !mbd.isSynthetic()) {
 }
 return wrappedBean;
 }
-</code></pre><p>最后贴一张Spring Bean 的生命周期图：</p>
-<p><img src="https://i.imgur.com/4OETcMX.png" alt=""></p>
-
+</code></pre>
           
         
       
@@ -3135,6 +2952,160 @@ CurrentTime = 1446130273735
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/09/Linux基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/09/Linux基础/" itemprop="url">Linux基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-09T16:47:26+08:00">
+                2018-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/09/Linux基础/" class="leancloud_visitors" data-flag-title="Linux基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.硬链接和软链接</p>
+<p>硬链接装的是原文件的inode节点，软链接装的是原文件所在的路径。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -3189,7 +3160,7 @@ CurrentTime = 1446130273735
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">123</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3200,7 +3171,7 @@ CurrentTime = 1446130273735
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

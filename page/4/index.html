@@ -706,10 +706,69 @@
       
         
           
-            <ol>
-<li>AOP和IOC原理？</li>
-<li>Spring怎样解决循环依赖的问题？</li>
-<li>DispatchServlet怎样分发任务的？</li>
+            <p>1.springIOC容器详解？</p>
+<p><a href="http://www.xuchunfa.cn/2018/10/07/Spring%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Spring启动源码分析</a></p>
+<pre><code>常用的几个 ApplicationContext 的子类：
+
+    1.ClassPathXmlApplicationContext
+
+    2.FileSystemXmlApplicationContext
+
+    3.AnnotationConfigApplicationContext
+</code></pre><ol>
+<li><p>AOP和IOC原理？</p>
+<p> 1.IOC(Inversion of Control控制反转)</p>
+<pre><code>由调用者创建实例转变为交由 Spring容器完成；
+</code></pre><p> 2.DI(Dependency Injection)</p>
+<pre><code>告诉 Spring 我需要什么对象，Spring就会注入需要的对象；
+</code></pre><p> 3.AOP(Aspect Oriented Programming)</p>
+<pre><code>3.1 术语
+
+    Target(目标对象)：需要被代理的类；
+
+    Jointpoint(连接点)：指那些可能被拦截到的方法；
+
+    PointCut(切入点)：已经被增强了的连接点；
+
+    Advice(通知/增强)：切入点中的增强代码部分；
+
+    Weaving(织入)：把增强advice应用到目标对象target来，创建新的代理对象proxy的过程，
+
+    织入过程是代理类将目标类和切面类结合；
+
+    Proxy:代理类；
+
+    Aspect(切面)：是切入点pointcut和通知advice的结合;
+
+3.2 介绍
+
+    1.在Spring 中只需要定义切点和增强处理(Advice)，IOC容器会自动生成AOP代理，默认情况下是Jdk动态代理，即被代理对象需实现接口，
+    若被代理对象只是继承父类，则生成代理的方式为CGLIB代理；
+
+    若强制使用CGLIB代理如下：
+
+    &lt;aop:aspect-autoproxy proxy-target-class=true&gt;
+
+   2.AOP关注的是横切方面的代码，这些代码重复出现在各个业务模块当中，将他们抽取出来形成的就叫&quot;切面&quot;，
+   用户只需关注核心业务代码以及作相关配置，Spring会自动生成AOP代理，将切面内容和核心方法(切入点)织在一起；
+</code></pre></li>
+</ol>
+<ol start="2">
+<li>Spring Bean的生命周期？</li>
+</ol>
+<p><img src="/images/Bean的生命周期.JPG" alt=""></p>
+<ol start="2">
+<li><p>Spring怎样解决循环依赖的问题？</p>
+<pre><code>1.@DependsOn：声明当前bean依赖于另一个bean,所依赖的bean会在当前bean实例化之前被实例化，
+一般用在一个bean没有通过属性或者构造函数显式依赖另一个bean;
+
+2.Spring不允许循环依赖，直接抛异常；
+</code></pre></li>
+<li><p>Spring中的bean覆盖问题？</p>
+<p> Spring允许BeanDefinition覆盖，即不同配置文件中可以出现相同id或name相同的Bean；</p>
+</li>
+<li><p>DispatchServlet怎样分发任务的？</p>
+</li>
 <li>注解的原理？</li>
 <li>Spring的入口？</li>
 <li>SpringMVC 的 Controller 中返回值有哪些？</li>
@@ -1758,172 +1817,6 @@ Swap:    1407     0    1407
 <li>Innodb的B+树索引和MyISAM的B+树索引的结构区别？</li>
 <li>为什么索引能够提升性能？</li>
 <li>Mysql主备模式？</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java设计模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Java设计模式/" itemprop="url">面试总结--Java设计模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:52:34+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Java设计模式/" class="leancloud_visitors" data-flag-title="面试总结--Java设计模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>写一个你认为最好的单例模式？</li>
 </ol>
 
           
@@ -3639,6 +3532,212 @@ public class ProxyFactory implements MethodInterceptor {
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/31/适配器模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/31/适配器模式/" itemprop="url">适配器模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T10:09:23+08:00">
+                2018-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/31/适配器模式/" class="leancloud_visitors" data-flag-title="适配器模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>类适配器UML图：</p>
+<p><img src="/images/classAdapter.PNG" alt=""></p>
+<p>对象适配器UML图：</p>
+<p><img src="/images/objAdapter.PNG" alt=""></p>
+<p><strong>适配器模式</strong></p>
+<pre><code>将一个类的接口转化成用户需要的另外一个接口；
+</code></pre><p>适配器模式分三种：</p>
+<ul>
+<li><p>类适配器模式</p>
+</li>
+<li><p>对象适配器模式</p>
+</li>
+<li><p>特殊的缺省适配模式</p>
+</li>
+</ul>
+<p>详解见博客：</p>
+<p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>
+<p>安卓充电器给苹果手机充电</p>
+<pre><code>public interface AndriodCharge {
+    void chargeToAndroid();
+}
+</code></pre><p>Target角色：</p>
+<pre><code>public interface IphoneCharge {
+    void chargeToIphone();
+}
+</code></pre><p>Adaptee角色：</p>
+<pre><code>public class AndriodCharger implements AndriodCharge {
+
+    @Override
+    public void chargeToAndroid() {
+        System.out.println(&quot;使用安卓充电器给手机充电&quot;);
+    }
+}
+</code></pre><p>Adapter角色：</p>
+<pre><code>public class IphoneAdapter implements IphoneCharge {
+    //复用安卓充电器（聚合关系）
+    private AndriodCharger andriodCharger;
+
+    public IphoneAdapter(AndriodCharger andriodCharger) {
+        this.andriodCharger = andriodCharger;
+    }
+
+    @Override
+    public void chargeToIphone() {
+        andriodCharger.chargeToAndroid();
+        System.out.println(&quot;Iphone is charging&quot;);
+    }
+}
+</code></pre><p>Client角色：</p>
+<pre><code>public static void main(String[] args){
+    AndriodCharger ac = new AndriodCharger();
+    IphoneAdapter adapter = new IphoneAdapter(ac);
+    adapter.chargeToIphone();
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -3693,7 +3792,7 @@ public class ProxyFactory implements MethodInterceptor {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">124</span>
+                  <span class="site-state-item-count">123</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3704,7 +3803,7 @@ public class ProxyFactory implements MethodInterceptor {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
