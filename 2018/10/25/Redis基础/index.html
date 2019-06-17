@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。   2.ttl key ：返回设置了过期时间的key的剩余过期秒数。   **String类型：**  3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。  4.incrby/decrby key integer : 加">
+<meta name="description" content="总结： 1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；  2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；  Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key  seconds value;   2.ttl key ：返回设置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/10/25/Redis基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。   2.ttl key ：返回设置了过期时间的key的剩余过期秒数。   **String类型：**  3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。  4.incrby/decrby key integer : 加">
+<meta property="og:description" content="总结： 1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；  2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；  Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key  seconds value;   2.ttl key ：返回设置">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-26T02:26:21.270Z">
+<meta property="og:updated_time" content="2019-06-16T11:33:02.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis基础">
-<meta name="twitter:description" content="Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。   2.ttl key ：返回设置了过期时间的key的剩余过期秒数。   **String类型：**  3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。  4.incrby/decrby key integer : 加">
+<meta name="twitter:description" content="总结： 1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；  2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；  Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key  seconds value;   2.ttl key ：返回设置">
 
 
 
@@ -399,21 +399,22 @@
       
 
       
-        <ul>
+        <p>总结：</p>
+<pre><code>1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；
+
+2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；
+</code></pre><ul>
 <li><p>Redis 命令</p>
-<p>  1.expire key seconds ：为key指定过期时间，单位是秒。</p>
+<p>  1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key<br>  seconds value;</p>
 <p>  2.ttl key ：返回设置了过期时间的key的剩余过期秒数。</p>
 </li>
 </ul>
-<pre><code>**String类型：**
-
-3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
+<p><strong>String类型：</strong></p>
+<pre><code>3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
 
 4.incrby/decrby key integer : 加减指定值。
-
-**List类型：就是一个每个子元素都是string类型的双向链表。**
-
-5.lpush/rpush key string : 在key对应list的头部/尾部添加字符串元素。
+</code></pre><p><strong>List类型：就是一个每个子元素都是string类型的双向链表。(java LinkList)</strong></p>
+<pre><code>5.lpush/rpush/lpop/rpop key string : 在key对应list的头部/尾部添加/删除字符串元素。
 
 6.llen key : 返回key对应list的长度。
 
@@ -421,9 +422,9 @@
 
 8.ltrim key start end : 让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
 
-**Set类型：**
-
-8.sadd key member ：添加一个string元素到key对应的set集合中。
+9.lindex key index : 相当于java的 get(index)方法，需要对链表进行遍历，不建议使用；
+</code></pre><p><strong>Set类型：（java HashSet）</strong></p>
+<pre><code>8.sadd key member ：添加一个string元素到key对应的set集合中。
 
 9.smembers key ：返回key对应set的所有元素，结果是无序的。
 
@@ -444,32 +445,36 @@
 17.sdiff key1 key2...keyN ：返回所有给定key的差集。
 
 18.sdiffstore dstkey key1...keyN ：同sdiff，并同时保存差集到dstkey下。
+</code></pre><p><strong>Zset类型：(SortedSet和HashMap的结合体)</strong></p>
+<pre><code>19.zadd key score value ：添加元素到集合，元素在集合中存在则更新对应score。
 
-**Zset类型：**
+20.zincrby key incr value ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。
 
-19.zadd key score member ：添加元素到集合，元素在集合中存在则更新对应score。
+21.zrank key value ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。
 
-20.zincrby key incr member ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。
 
-21.zrank key member ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。
-
-22.zrevrank key member ：同上,但是集合中元素是按score从大到小排序。
+22.zrevrank key value ：同上,但是集合中元素是按score从大到小排序。
 
 23.zrange/zrevrange key start end ：从集合中取指定区间的元素。返回的是有序结果，按score有序/逆序。
 
+    eg:zrange books 0 -1;//按score从小到大排序，默认增序；
+
 24.zrangebyscore key min max ：返回集合中score在给定区间的元素。结果按score从小到大排序。
+
+    eg:zrangebyscore books -inf 9 withscores;//得分在负无穷到9之间的元素,并且显示相应分数
 
 25.zcount key min max ：返回集合中score在给定区间的数量。
 
-26.zcard key ：返回集合中元素个数。
+26.zcard key ：返回集合中元素个数。count()函数
 
-27.zscore key element ：返回给定元素对应的score。
+27.zscore key value ：返回给定元素对应的score。
 
 28.zremrangebyrank/zremrangebyscore key min max ：删除集合中排名/Score在给定区间的元素。
 
-**Hash类型：**
-
-29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。
+    eg:zrem books &quot;think in java&quot;;//删除 value
+</code></pre><p><strong>Hash类型：(java HashMap)</strong></p>
+<pre><code>29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。
+eg:hset books java &quot;think in Java&quot;//命令行的字符串包含空格引号括起来
 
 30.hget key field ：获取指定的hash field。
 

@@ -88,10 +88,12 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&amp;quot;点&amp;quot;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-24T06:48:32.602Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/HTTPS.JPG">
+<meta property="og:updated_time" content="2019-06-17T11:30:00.422Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--计算机网络">
 <meta name="twitter:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；TCP是全双工的可靠信道，UDP不可靠信道；通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&amp;quot;点&amp;quot;">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/HTTPS.JPG">
 
 
 
@@ -554,7 +556,7 @@
 </code></pre><p>参考文献：</p>
 <p><a href="https://blog.csdn.net/smileiam/article/details/78226816" target="_blank" rel="noopener">TCP的三次握手、四次挥手</a>        </p>
 <ol start="7">
-<li>http协议？http和https的区别？http的结构及状态码？</li>
+<li>http报文包含哪些内容？http协议？http和https的区别？http的结构及状态码？</li>
 </ol>
 <pre><code>1.http请求结构
 
@@ -649,8 +651,10 @@
     2.HTTP端口号80，HTTPS端口号443;
 
 5.HTTPS工作原理
-
-    1.客户端发起HTTPS请求，三次握手；
+</code></pre><p><a href="https://zhuanlan.zhihu.com/p/27395037" target="_blank" rel="noopener">HTTPS详解</a></p>
+<p>原理图：</p>
+<p><img src="/images/HTTPS.JPG" alt=""></p>
+<pre><code>    1.客户端发起HTTPS请求，三次握手；
 
     2.服务端配置。配置数字证书，即公钥和密钥（非对称加密）；
 

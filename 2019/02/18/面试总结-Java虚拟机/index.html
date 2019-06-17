@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/内存溢出.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/双亲委派.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/类加载器.png">
-<meta property="og:updated_time" content="2019-05-29T02:46:04.092Z">
+<meta property="og:updated_time" content="2019-06-12T11:05:45.478Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java虚拟机">
 <meta name="twitter:description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
@@ -447,12 +447,14 @@
 
     4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量---父类构造函数---子类构造函数
 </code></pre></li>
-</ol>
-<ol start="3">
-<li>对方法区和永久区解的理以及它们之间关系的理解？</li>
+<li><p>对方法区和永久区解的理以及它们之间关系的理解？</p>
+</li>
 <li><p>一个java文件有3个类，编译后有几个class文件？</p>
 <pre><code>答：3个。
 </code></pre></li>
+</ol>
+<p>4.对象的生命周期，如何判断一个对象不可用，要回收？</p>
+<ol start="5">
 <li><p>JVM GC算法的前戏？</p>
 <p> 首先弄清楚判断对象是否存活的算法：</p>
 <pre><code>1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。
@@ -650,7 +652,8 @@
 4.2 Class文件内容组成：类的版本、字段、方法、接口等描述信息和常量池；常量池放编译期生成的(.class文件)各种字面量和符号引用。
 
 5.对象的内存布局：对象头、实例数据和对齐填充。对象头包括：哈希码、GC分代年龄、锁状态标志、线程持有的锁等。
-</code></pre><ol start="6">
+</code></pre><p>5.OOM有哪几类，为什么发生OOM，怎么解决？</p>
+<ol start="6">
 <li>Object object = new Object(); 初始化的顺序是什么？在JVM各区域做了什么？</li>
 </ol>
 <p><a href="https://blog.csdn.net/Rainnnbow/article/details/52149586https://blog.csdn.net/Rainnnbow/article/details/52149586" target="_blank" rel="noopener">new之后JVM都做了什么？</a></p>
@@ -709,6 +712,9 @@
 </li>
 <li><p>syn锁，jvm里面分成偏向锁、轻量级锁、重量级锁，其之间的转换过程是怎么样的，各自适用场景是什么样的，偏向锁情况产生竞争一定会膨胀成轻量级锁吗，为什么只能单向转换，比如偏向锁变成轻量级锁变成重量级锁之后不会在竞争消失之后在回到偏向锁，必须要重启jvm才行，是出于什么情况考虑的？</p>
 </li>
+</ol>
+<ol start="10">
+<li>JVM参数调优？</li>
 </ol>
 
       

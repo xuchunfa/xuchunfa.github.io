@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/内存模型.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/threadState.PNG">
-<meta property="og:updated_time" content="2019-05-29T02:18:27.125Z">
+<meta property="og:updated_time" content="2019-06-12T11:16:33.972Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
@@ -424,6 +424,8 @@
 4.线程池；
 </code></pre></li>
 </ol>
+<p>1.run和start方法区别或联系？</p>
+<p>1.如何让几个线程按顺序先后执行？</p>
 <p>1.一个线程打印奇数另一个线程打印偶数</p>
 <pre><code>static class PrintOddAndEven implements Runnable{
     private static final int NUMBERS = 20;

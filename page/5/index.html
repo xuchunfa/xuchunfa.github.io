@@ -1439,21 +1439,22 @@ final void setArray(Object[] a) {
       
         
           
-            <ul>
+            <p>总结：</p>
+<pre><code>1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；
+
+2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；
+</code></pre><ul>
 <li><p>Redis 命令</p>
-<p>  1.expire key seconds ：为key指定过期时间，单位是秒。</p>
+<p>  1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key<br>  seconds value;</p>
 <p>  2.ttl key ：返回设置了过期时间的key的剩余过期秒数。</p>
 </li>
 </ul>
-<pre><code>**String类型：**
-
-3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
+<p><strong>String类型：</strong></p>
+<pre><code>3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
 
 4.incrby/decrby key integer : 加减指定值。
-
-**List类型：就是一个每个子元素都是string类型的双向链表。**
-
-5.lpush/rpush key string : 在key对应list的头部/尾部添加字符串元素。
+</code></pre><p><strong>List类型：就是一个每个子元素都是string类型的双向链表。(java LinkList)</strong></p>
+<pre><code>5.lpush/rpush/lpop/rpop key string : 在key对应list的头部/尾部添加/删除字符串元素。
 
 6.llen key : 返回key对应list的长度。
 
@@ -1461,9 +1462,9 @@ final void setArray(Object[] a) {
 
 8.ltrim key start end : 让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
 
-**Set类型：**
-
-8.sadd key member ：添加一个string元素到key对应的set集合中。
+9.lindex key index : 相当于java的 get(index)方法，需要对链表进行遍历，不建议使用；
+</code></pre><p><strong>Set类型：（java HashSet）</strong></p>
+<pre><code>8.sadd key member ：添加一个string元素到key对应的set集合中。
 
 9.smembers key ：返回key对应set的所有元素，结果是无序的。
 
@@ -1484,32 +1485,36 @@ final void setArray(Object[] a) {
 17.sdiff key1 key2...keyN ：返回所有给定key的差集。
 
 18.sdiffstore dstkey key1...keyN ：同sdiff，并同时保存差集到dstkey下。
+</code></pre><p><strong>Zset类型：(SortedSet和HashMap的结合体)</strong></p>
+<pre><code>19.zadd key score value ：添加元素到集合，元素在集合中存在则更新对应score。
 
-**Zset类型：**
+20.zincrby key incr value ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。
 
-19.zadd key score member ：添加元素到集合，元素在集合中存在则更新对应score。
+21.zrank key value ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。
 
-20.zincrby key incr member ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。
 
-21.zrank key member ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。
-
-22.zrevrank key member ：同上,但是集合中元素是按score从大到小排序。
+22.zrevrank key value ：同上,但是集合中元素是按score从大到小排序。
 
 23.zrange/zrevrange key start end ：从集合中取指定区间的元素。返回的是有序结果，按score有序/逆序。
 
+    eg:zrange books 0 -1;//按score从小到大排序，默认增序；
+
 24.zrangebyscore key min max ：返回集合中score在给定区间的元素。结果按score从小到大排序。
+
+    eg:zrangebyscore books -inf 9 withscores;//得分在负无穷到9之间的元素,并且显示相应分数
 
 25.zcount key min max ：返回集合中score在给定区间的数量。
 
-26.zcard key ：返回集合中元素个数。
+26.zcard key ：返回集合中元素个数。count()函数
 
-27.zscore key element ：返回给定元素对应的score。
+27.zscore key value ：返回给定元素对应的score。
 
 28.zremrangebyrank/zremrangebyscore key min max ：删除集合中排名/Score在给定区间的元素。
 
-**Hash类型：**
-
-29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。
+    eg:zrem books &quot;think in java&quot;;//删除 value
+</code></pre><p><strong>Hash类型：(java HashMap)</strong></p>
+<pre><code>29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。
+eg:hset books java &quot;think in Java&quot;//命令行的字符串包含空格引号括起来
 
 30.hget key field ：获取指定的hash field。
 
@@ -2129,380 +2134,10 @@ public void execute(Tuple tuple) {
         4.2 populateBean(...) 设置bean实例的属性值，还有依赖注入；
 
         4.3 属性注入以后开始进行各种回调initializeBean，例如BeanPostProcessor 的 postProcessBeforeInitialization 回调；    
-</code></pre><p>1.在初始化ClassPathXmlApplicationContext时会调用到一个比较重要的方法，refresh()：</p>
-<pre><code>//AbstractApplicationContext.java
-public void refresh() throws BeansException, IllegalStateException {
-    synchronized (this.startupShutdownMonitor) {
-        // 准备工作，记录下容器的启动时间、标记“已启动”状态、处理配置文件中的占位符
-        prepareRefresh();
 
-        //解析XML中的&lt;bean&gt;,将最后得到的beanDefinition注册到DefaultListableBeanFactory中去
-        ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+3.spring获取bean的过程
+</code></pre><p><img src="/images/获取Bean.JPG" alt=""></p>
 
-        // 设置 BeanFactory 的类加载器，添加几个 BeanPostProcessor，手动注册几个特殊的 bean
-        prepareBeanFactory(beanFactory);
-
-        try {
-            // 【这里需要知道 BeanFactoryPostProcessor 这个知识点，Bean 如果实现了此接口，
-             // 那么在容器初始化以后，Spring 会负责调用里面的 postProcessBeanFactory 方法。】
-
-            // 这里是提供给子类的扩展点，到这里的时候，所有的 Bean 都加载、注册完成了，但是都还没有初始化
-             // 具体的子类可以在这步的时候添加一些特殊的 BeanFactoryPostProcessor 的实现类或做点什么事
-            postProcessBeanFactory(beanFactory);
-
-            // 调用 BeanFactoryPostProcessor 各个实现类的 postProcessBeanFactory(factory) 方法
-            invokeBeanFactoryPostProcessors(beanFactory);
-
-            // 注册 BeanPostProcessor 的实现类，注意看和 BeanFactoryPostProcessor 的区别
-             // 此接口两个方法: postProcessBeforeInitialization 和 postProcessAfterInitialization
-             // 两个方法分别在 Bean 初始化之前和初始化之后得到执行。注意，到这里 Bean 还没初始化
-            registerBeanPostProcessors(beanFactory);
-
-            // Initialize message source for this context.
-            initMessageSource();
-
-            // Initialize event multicaster for this context.
-            initApplicationEventMulticaster();
-
-            // Initialize other special beans in specific context subclasses.
-            onRefresh();
-
-            // Check for listener beans and register them.
-            registerListeners();
-
-            // 重点，重点，重点
-             // 初始化所有的 singleton beans
-             //（lazy-init 的除外）
-            finishBeanFactoryInitialization(beanFactory);
-
-            // Last step: publish corresponding event.
-            finishRefresh();
-        }
-</code></pre><p>里面做了比较重要的事情：注册加载bean的定义信息，这里有两个重要的接口出现了，按先后顺序：</p>
-<pre><code>//加载Bean的定义信息，包括属性啥的，但是此时还没有实例化Bean
-public interface BeanFactoryPostProcessor {
-
-void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException;
-
-}
-</code></pre><p>接下来：</p>
-<pre><code>public interface BeanPostProcessor {
-
-//Bean 初始化之前执行的方法
-@Nullable
-default Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-    return bean;
-}
-
-//Bean 初始化之后执行的方法
-@Nullable
-default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-    return bean;
-}
-}
-</code></pre><p>详细分析一下AbstractApplicationContext中的refresh()方法，按先后顺序挑重点看：</p>
-<p>1.第一个重要方法：</p>
-<pre><code>//AbstractApplicationContext.java
-ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
-</code></pre><p>里面涉及到了下面过程的分析。</p>
-<p>在里面调用了重要方法：</p>
-<pre><code>//AbstractRefreshableApplicationContext.java它是AbstractApplicationContext的子类
-refreshBeanFactory(){
-
-    DefaultListableBeanFactory beanFactory = createBeanFactory();
-    beanFactory.setSerializationId(getId());
-    customizeBeanFactory(beanFactory);
-    loadBeanDefinitions(beanFactory);
-}
-</code></pre><p>在这里容器中出现了比较重要的实例：DefaultListableBeanFactory。先看一下结构图：</p>
-<p><img src="https://i.imgur.com/2mEAJAA.png" alt=""></p>
-<p>然后调用了方法：</p>
-<pre><code>//AbstractXmlApplicationContext.java
-//根据配置加载各个Bean 到 BeanFactory中去
-protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
-
-    XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
-
-    beanDefinitionReader.setEnvironment(this.getEnvironment());
-    beanDefinitionReader.setResourceLoader(this);
-    beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
-
-    //加载XML文件
-    initBeanDefinitionReader(beanDefinitionReader);
-    loadBeanDefinitions(beanDefinitionReader);
-}
-</code></pre><p>其中加载各个Bean主要通过XmlBeanDefinitionReader实例完成。</p>
-<p>然后经过一系列的巴拉巴拉操作将XML文件中的Bean进行解析，一个Bean解析成一个BeanDefinitionHolder实例：</p>
-<pre><code>//BeanDefinitionHolder.java
-public class BeanDefinitionHolder implements BeanMetadataElement {
-
-private final BeanDefinition beanDefinition;
-
-private final String beanName;
-
-@Nullable
-private final String[] aliases;
-
-.....}
-</code></pre><p>然后开始了注册Bean的重头戏,其实就是将BeanDefinition放到beanDefinitionMap中去。</p>
-<pre><code>//DefaultBeanDefinitionDocumentReader.java
-protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
-    BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
-    if (bdHolder != null) {
-        bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
-        try {
-            //从这里开始注册
-            BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
-        }
-    }
-}
-</code></pre><p>接着来到：</p>
-<pre><code>//BeanDefinitionReaderUtils.java
-public static void registerBeanDefinition(
-        BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
-        throws BeanDefinitionStoreException {
-    String beanName = definitionHolder.getBeanName();
-
-    //真正开始注册
-    registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
-
-    String[] aliases = definitionHolder.getAliases();
-    if (aliases != null) {
-        for (String alias : aliases) {
-            registry.registerAlias(beanName, alias);
-        }
-    }
-}
-</code></pre><p>最后进入：</p>
-<pre><code>//DefaultListableBeanFactory.java
-public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
-        throws BeanDefinitionStoreException {
-
-......
-
-    this.beanDefinitionMap.put(beanName, beanDefinition);
-    this.beanDefinitionNames.add(beanName);
-    this.manualSingletonNames.remove(beanName);
-
-......
-
-}
-</code></pre><p>至此为止，refresh()方法中的第一个方法obtainFreshBeanFactory()分析完毕。</p>
-<hr>
-<p>在执行到第二个重要方法之前已经完成的事：、</p>
-<pre><code>BeanFactory 已经创建完成，并且所有的实现了 BeanFactoryPostProcessor 接口的 Bean 都已经初始化，并且其中的 
-postProcessBeanFactory(factory) 方法已经得到执行了。所有实现了 BeanPostProcessor 接口的 Bean 也都完成了初始化。
-
-剩下的就是初始化其他还没被初始化的 singleton beans 了，我们知道它们是单例的，如果没有设置懒加载，那么 Spring 会在接下来初始化所有的 singleton beans。
-</code></pre><p>第二个重要的方法：</p>
-<pre><code>//AbstractApplicationContext.java
-protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
-    // Initialize conversion service for this context.
-    if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &amp;&amp;
-            beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
-        beanFactory.setConversionService(
-                beanFactory.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
-    }
-
-    // Register a default embedded value resolver if no bean post-processor
-    // (such as a PropertyPlaceholderConfigurer bean) registered any before:
-    // at this point, primarily for resolution in annotation attribute values.
-    if (!beanFactory.hasEmbeddedValueResolver()) {
-        beanFactory.addEmbeddedValueResolver(strVal -&gt; getEnvironment().resolvePlaceholders(strVal));
-    }
-
-    // Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
-    String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
-    for (String weaverAwareName : weaverAwareNames) {
-        getBean(weaverAwareName);
-    }
-
-    // Stop using the temporary ClassLoader for type matching.
-    beanFactory.setTempClassLoader(null);
-
-    // Allow for caching all bean definition metadata, not expecting further changes.
-    beanFactory.freezeConfiguration();
-
-    // Instantiate all remaining (non-lazy-init) singletons.
-    // 开始初始化未设置懒加载的单例Bean
-    beanFactory.preInstantiateSingletons();
-}
-</code></pre><p>一大波准备工作后，进入到初始化的方法：</p>
-<pre><code>//DefaultListableBeanFactory.java
-public void preInstantiateSingletons() throws BeansException {
-
-    ......
-    // 准备实例化单例Bean/FactoryBean
-    for (String beanName : beanNames) {
-        RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
-        if (!bd.isAbstract() &amp;&amp; bd.isSingleton() &amp;&amp; !bd.isLazyInit()) {
-            if (isFactoryBean(beanName)) {
-                Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
-                if (bean instanceof FactoryBean) {
-                    final FactoryBean&lt;?&gt; factory = (FactoryBean&lt;?&gt;) bean;
-                    boolean isEagerInit;
-                    if (System.getSecurityManager() != null &amp;&amp; factory instanceof SmartFactoryBean) {
-                        isEagerInit = AccessController.doPrivileged((PrivilegedAction&lt;Boolean&gt;)
-                                        ((SmartFactoryBean&lt;?&gt;) factory)::isEagerInit,
-                                getAccessControlContext());
-                    }
-                    else {
-                        isEagerInit = (factory instanceof SmartFactoryBean &amp;&amp;
-                                ((SmartFactoryBean&lt;?&gt;) factory).isEagerInit());
-                    }
-                    if (isEagerInit) {
-                        getBean(beanName);
-                    }
-                }
-            }
-            else {
-                //正常的话，创建单例Bean的入口
-                getBean(beanName);
-            }
-        }
-
-    ......
-}
-</code></pre><p>然后进入getBean方法：</p>
-<pre><code>//AbstractBeanFactory.java
-public Object getBean(String name) throws BeansException {
-    return doGetBean(name, null, null, false);
-}
-</code></pre><p>接下来继续调用：</p>
-<pre><code>//AbstractBeanFactory.java
-protected &lt;T&gt; T doGetBean(final String name, @Nullable final Class&lt;T&gt; requiredType,
-        @Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
-
-一系列巴拉巴拉：
-判断是不是sharedInstance、检查Bean是不是已经创建过、注册依赖Bean
-
-//创建单例Bean
-if (mbd.isSingleton()) {
-            sharedInstance = getSingleton(beanName, () -&gt; {
-                try {
-                    //真正创建Bean了
-                    return createBean(beanName, mbd, args);
-                }
-                catch (BeansException ex) {
-                        destroySingleton(beanName);
-                        throw ex;
-                    }
-                });
-            bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
-        }
-......
-
-}
-</code></pre><p>来看看createBean方法做了哪些事情：</p>
-<pre><code>//AbstractAutowireCapableBeanFactory.java
-protected Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
-throws BeanCreationException {
-
-......
-
-try {
-        //这里好像开始使用BeanPostProcessor接口的方法
-        Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
-        if (bean != null) {
-            return bean;
-        }
-    }
-.....
-//继续进入创建Bean的方法
-Object beanInstance = doCreateBean(beanName, mbdToUse, args);
-
-.....
-
-// Initialize the bean instance.
-   Object exposedObject = bean;
-   try {
-  // 这一步也是非常关键的，这一步负责属性装配，因为前面的实例只是实例化了，并没有设值，这里就是设值
-  populateBean(beanName, mbd, instanceWrapper);
-  if (exposedObject != null) {
-     // 还记得 init-method 吗？还有 InitializingBean 接口？还有 BeanPostProcessor 接口？
-     // 这里就是处理 bean 初始化完成后的各种回调
-     exposedObject = initializeBean(beanName, exposedObject, mbd);
-  }
-
-......
-
-}
-</code></pre><p>继续干吧：</p>
-<pre><code>//AbstractAutowireCapableBeanFactory.java
-rotected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args) throws BeanCreationException {
-
-if (instanceWrapper == null) {
-        //终于创建了!!!!
-        instanceWrapper = createBeanInstance(beanName, mbd, args);
-    }
-.....
-
-}
-</code></pre><p>继续进入方法：</p>
-<pre><code>//AbstractAutowireCapableBeanFactory.java
-protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, @Nullable Object[] args) {
-
-巴拉巴拉的采用工厂方法创建Bean实例
-
-......
-}
-</code></pre><p>然后里面还可以继续深入到：</p>
-<pre><code>//SimpleInstantiationStrategy.java
-//这是通过构造方法实例化的，当然也可以使用工厂方法实例化
-public Object instantiate(RootBeanDefinition bd, String beanName, BeanFactory owner) { 
-
-//利用构造方法进行实例化
-BeanUtils.instantiateClass(constructorToUse);
-
-}
-</code></pre><p>到此为止，实例化完成了。。。。。但是属性还没注入。属性是在populateBean方法中注入的：</p>
-<pre><code>//AbstractAutowireCapableBeanFactory.java
-protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
-
-.....
-
- InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
- // 这里有个非常有用的 BeanPostProcessor 进到这里: AutowiredAnnotationBeanPostProcessor
- // 对采用 @Autowired、@Value 注解的依赖进行设值，这里的内容也是非常丰富的，不过本文不会展开说了，感兴趣的读者请自行研究
- pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
- if (pvs == null) {
-     return;
- }
-
-......
-
-}
-</code></pre><p>最后一步initializeBean，处理各种回调：</p>
-<pre><code>protected Object initializeBean(final String beanName, final Object bean, RootBeanDefinition mbd){
-
-else {
-  // 如果 bean 实现了 BeanNameAware、BeanClassLoaderAware 或 BeanFactoryAware 接口，回调
-  invokeAwareMethods(beanName, bean);
-}
-
-Object wrappedBean = bean;
-if (mbd == null || !mbd.isSynthetic()) {
-  // BeanPostProcessor 的 postProcessBeforeInitialization 回调
-  wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
-}
-
-try {
-  // 处理 bean 中定义的 init-method，
-  // 或者如果 bean 实现了 InitializingBean 接口，调用 afterPropertiesSet() 方法
-  invokeInitMethods(beanName, wrappedBean, mbd);
-}
-catch (Throwable ex) {
-  throw new BeanCreationException(
-        (mbd != null ? mbd.getResourceDescription() : null),
-        beanName, &quot;Invocation of init method failed&quot;, ex);
-}
-if (mbd == null || !mbd.isSynthetic()) {
-  //BeanPostProcessor 的 postProcessAfterInitialization 回调
-  wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
-}
-return wrappedBean;
-}
-</code></pre>
           
         
       
