@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/threadState.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/process.PNG">
-<meta property="og:updated_time" content="2019-06-12T11:12:38.492Z">
+<meta property="og:updated_time" content="2019-06-20T11:42:54.701Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--操作系统">
 <meta name="twitter:description" content="进程和线程的区别？ 1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。  2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。  3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。  4.多进程程序">
@@ -425,24 +425,32 @@
 </code></pre></li>
 </ol>
 <ol start="2">
-<li><p>进程的通信方式？</p>
+<li>进程的通信方式？</li>
+</ol>
+<p>本机进程通信：</p>
 <pre><code>1.管道：半双工、数据单向流动、（无名管道）具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程通信。
 
     1.1  fork()创建子进程，若成功返回子进程的pid,失败返回-1；
 
     1.2 子进程会复制父进程的几乎所有信息；
 
-2.信号量：控制多个进程访问共享资源。
+2.信号量：控制多个进程访问共享资源。作为进程间以及同一进程内不同线程之间的同步手段；
 
     2.1 Linux内核中提供了三种信号量：二元信号量（互斥信号量）、计数信号量和读者写者信号量；
 
     2.2 读者写者信号量：允许多个并发的读者（使用计数信号量），但仅允许一个写者（使用互斥信号量）。
-</code></pre></li>
-</ol>
-<pre><code>3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。
-4.信号：通知接受事件发生。
-5.共享内存：最快IPC通信，因为数据不需要在不同的进程间复制，通常信号量被用来对共享数据的存储同步；
-6.套接字（socket）：可用于不同机器间的进程通信。
+
+
+3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。
+
+4.信号：通知接受进程某个事件已经发生。
+
+5.共享内存：最快IPC通信，解决了其他通信方式效率低的的问题，
+           因为数据不需要在不同的进程间复制，通常配合信号量来实现进程间的同步与通信；
+</code></pre><p>网络进程通信：</p>
+<pre><code>6.套接字（socket）：可用于不同机器间的进程通信。
+</code></pre><p>1.Socket的理解？</p>
+<pre><code>TCP/IP协议之上，应用层之下抽象软件层；
 </code></pre><ol>
 <li>操作系统的内存管理机制？</li>
 <li>CPU飙升怎么定位问题？</li>
@@ -671,7 +679,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

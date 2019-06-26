@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="总结： 1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；  2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；  Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key  seconds value;   2.ttl key ：返回设置">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-16T11:33:02.716Z">
+<meta property="og:updated_time" content="2019-06-18T04:18:58.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis基础">
 <meta name="twitter:description" content="总结： 1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；  2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；  Redis 命令   1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key  seconds value;   2.ttl key ：返回设置">
@@ -413,7 +413,7 @@
 <pre><code>3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
 
 4.incrby/decrby key integer : 加减指定值。
-</code></pre><p><strong>List类型：就是一个每个子元素都是string类型的双向链表。(java LinkList)</strong></p>
+</code></pre><p><strong>List类型：就是一个每个子元素都是string类型的双向链表。(java LinkedList)</strong></p>
 <pre><code>5.lpush/rpush/lpop/rpop key string : 在key对应list的头部/尾部添加/删除字符串元素。
 
 6.llen key : 返回key对应list的长度。
@@ -594,7 +594,7 @@ eg:hset books java &quot;think in Java&quot;//命令行的字符串包含空格�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

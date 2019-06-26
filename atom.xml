@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2019-05-29T02:10:13.819Z</updated>
+  <updated>2019-06-20T12:44:13.423Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Socket详解</title>
+    <link href="http://www.xuchunfa.cn/2019/06/20/Socket%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://www.xuchunfa.cn/2019/06/20/Socket详解/</id>
+    <published>2019-06-20T11:44:54.000Z</published>
+    <updated>2019-06-20T12:44:13.423Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/socket.JPG" alt=""></p><p>Socket服务端：</p><pre><code>public class Server {    private ServerSocket serverSocket = null;    private Socket socket = null;    private DataInputStream input = null;    public Server(int port) {        try {            //绑定端口            serverSocket = new ServerSocket(port);            //获取客户端连接请求            socket = serverSocket.accept();            input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));            String line = &quot;&quot;;            while (!line.equals(&quot;exit&quot;)){                //客户端通过writeUTF()写入数据                line = input.readUTF();                System.out.println(&quot;Server read: &quot;+line);            }            System.out.println(&quot;socket closed.....&quot;);            input.close();            socket.close();        } catch (IOException e) {            e.printStackTrace();        }    }    public static void main(String[] args){        Server server = new Server(6000);    }}</code></pre><p>Client客户端：</p><pre><code>public class Client {    private Socket socket = null;    private DataOutputStream out = null;    private BufferedReader input = null;    public Client(String host,int port) {        try {            //与服务器建立连接            socket = new Socket(host,port);            input = new BufferedReader(new InputStreamReader(System.in));            out = new DataOutputStream(socket.getOutputStream());            String line = &quot;&quot;;            while (!line.equals(&quot;exit&quot;)){                line = input.readLine();                System.out.println(&quot;Client write: &quot;+ line);                out.writeUTF(line);            }        } catch (IOException e) {            e.printStackTrace();        } finally {             try {                    out.close();                    input.close();                    socket.close();                  } catch (Exception e) {                         e.printStackTrace();                  }        }    }    public static void main(String[] args){        Client client = new Client(&quot;localhost&quot;,6000);    }}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;/images/socket.JPG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Socket服务端：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class Server {
+    private ServerSocket serverSocket = null
+      
+    
+    </summary>
+    
+      <category term="面试总结" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="计算机网络" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>基于Redis的分布式锁</title>
+    <link href="http://www.xuchunfa.cn/2019/06/18/%E5%9F%BA%E4%BA%8ERedis%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"/>
+    <id>http://www.xuchunfa.cn/2019/06/18/基于Redis的分布式锁/</id>
+    <published>2019-06-18T06:36:47.000Z</published>
+    <updated>2019-06-24T12:06:16.038Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>分布式锁的实现方式？</strong></p><pre><code>1.Memcached分布式锁2.Redis分布式锁3.Zookeeper分布式锁4.Chubby</code></pre><p><strong>基于Redis分布式锁的实现方式？</strong></p><p><a href="https://juejin.im/post/5b16148a518825136137c8db" target="_blank" rel="noopener">小灰详解</a></p><p>使用setnx + expire指令</p><pre><code>问题1：    1.setnx指令和expire指令之间的操作是非原子性的，在执行完setnx指令之后，expire指令之前，如果宕机将会产生死锁；解决办法：    使用set命令将setnx和expire命令合并成一个命令；    例如:jedis.set(key,value,&quot;NX&quot;,&quot;EX&quot;,seconds);成功则返回OK;问题2：    1.可能会发生del(key)的误删，假如线程1在还未执行完代码时，锁就已经过期释放锁了，线程2获取到锁开始执行，      执行中线程1执行完开始del(key),此时如果不加处理的话会释放掉线程2的锁；解决办法：    实现LUA脚本比较: 释放锁的线程Id和此时占有锁的线程Id是否相等;问题3：即在问题2中出现了同一时间两个线程访问代码块的情况；解决办法：    让获取到锁的线程开启一个守护线程，当锁要过期但代码还没执行完的时候，守护线程将会延长锁过期的时间，执行完任务后关闭守护线程；</code></pre><p><strong>分布式锁的标准格式？</strong></p><pre><code>boolean isLocked = jedisPoolManager.tryLock(key,seconds)//获取锁if(!isLocked){    return;}try{    //业务逻辑}catch{    //异常处理}finally{    jedisPoolManager.del(key)}</code></pre><p><strong>Bitmap算法？</strong></p><p><img src="/images/bitmap.JPG" alt=""></p><p><a href="https://juejin.im/post/5c4fd2af51882525da267385" target="_blank" rel="noopener">小灰讲解BitMap</a></p><pre><code>Bitmap就是用一个bit位来映射某个元素的value值，key是该元素值；应用：(内存有限)1.40亿个不重复的整数，未排序，给出一个数，快速判断是否存在该群数字中？2.对10亿个不重复的整数进行排序？3.10亿个数字中查找/去除重复的数字？</code></pre><p>思路：</p><pre><code>//N为数据个数bit.length = N/32 + 1;//设置数字bit[]中为1int row = num &gt;&gt; 5bit[row] |= 1 &lt;&lt; (num &amp; 0x1F)//查找数字是否存在，不存在bit置为1，存在则bit保持不变实现去重int row = num &gt;&gt; 5bit[row] &amp; 1 &lt;&lt; (num &amp; 0x1F)//排序for(int i = 0;i &lt; N;i++)    if(isExist(i))        system.out.print(i)</code></pre><p><strong>布隆过滤器？</strong></p><pre><code>用来告诉你某样东西一定不存在或者可能存在；仅仅存储指纹空间(l/n)1.k个hash函数计算出来的hash值，取模位数组，对应下标的值有一个为0，元素不存在；2.如果全为1，可能存在，这些值可能是其他key带来的；</code></pre><p>优点：</p><pre><code>占用空间小，查询效率越高；</code></pre><p>缺点：</p><pre><code>存在误判，删除困难；</code></pre><p>1.基本用法：</p><pre><code>不怎么精确的set结构。bf.add : 添加元素；bf.exist : 查询元素是否存在；</code></pre><p>2.应用场景</p><pre><code>爬虫系统中URL的去重、去除数据库中不存在row的请求来降低数据库磁盘IO请求数量、垃圾邮件的过滤功能、缓存穿透；</code></pre><p>3.基本原理</p><p><img src="/images/bloom.JPG" alt=""></p><p>参数的计算方式;</p><p><img src="/images/bloom1.JPG" alt=""></p><p>其中的参数：</p><pre><code>l : 位数组的长度；n : 添加的元素个数；k : Hash函数的个数；f : 错误率；</code></pre><p><strong>缓存问题？</strong></p><p>1.缓存穿透</p><pre><code>1.1 什么是缓存穿透？    指查询一个一定不存在的数据，后果是直接访问数据库，恶意攻击将使数据库瘫痪；1.2 解决办法？    1.缓存空对象        返回key的null对象到缓存，并设置过期时间。        存在问题：        1.1 key的数量太多影响缓存内存空间，        1.2 设置过期时间会导致Cache层和Storage层数据短期不一致；            例如：Cache层保存了某个key为null之后，Storage层新增了这个key,但是从缓存得到的还是null;    2.Bloom过滤器         将所有可能存在的key放在一个足够大的bitmap中，不存在的key将会被拦截；</code></pre><p>2.缓存雪崩</p><pre><code>2.1 什么是缓存雪崩？    指所有key的缓存时间相同，在同一时间失效，或者缓存服务器宕机，导致所有请求同时访问数据库，从而使系统崩溃；2.2 解决办法？    1.交错失效时间。进行缓存失效时间设置时，在某个基础时间值上加上两秒内的随机数；    2.增加互斥锁。集群环境下使用分布式锁(setnx + expire)，对于每个key，让一个线程构建缓存，其他线程等待，    之后重新从缓存中获取数据；    3.提高缓存的HA。</code></pre><p>3.缓存击穿</p><pre><code>3.1 什么是缓存击穿？    缓存雪崩的一个特例，缓存雪崩是对于全部数据，而缓存击穿是针对热点数据。3.2 解决办法？    1.对于热点数据进行二级缓存，并对于不同级别的缓存设置不同的失效时间。    2.本地缓存（集群不可用时） + 限流（限制请求量）</code></pre><p>4.热点数据集中失效</p><pre><code>4.1 解决办法？    1.设置不同失效时间；    2.互斥锁；</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;分布式锁的实现方式？&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1.Memcached分布式锁
+
+2.Redis分布式锁
+
+3.Zookeeper分布式锁
+
+4.Chubby
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;基于Redis分布式锁的实现
+      
+    
+    </summary>
+    
+      <category term="Redis" scheme="http://www.xuchunfa.cn/categories/Redis/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>命令模式</title>
@@ -487,62 +546,6 @@
         &lt;p&gt;参考文献&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://www.javadoop.com/post/AbstractQueuedSynchronizer-2&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Condition源码详解&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;
-      
-    
-    </summary>
-    
-      <category term="面试总结" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"/>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>ReentrantLock源码分析</title>
-    <link href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
-    <id>http://www.xuchunfa.cn/2019/04/15/ReentrantLock源码分析/</id>
-    <published>2019-04-15T03:21:32.000Z</published>
-    <updated>2019-04-15T03:50:52.905Z</updated>
-    
-    <content type="html"><![CDATA[<p>分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍：</p><p>主要区别：</p><pre><code>1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，而公平锁会判断是否有其他线程更早地请求了该锁；</code></pre><p>公平锁源码：</p><pre><code>final void lock() {        acquire(1);    }protected final boolean tryAcquire(int acquires) {    final Thread current = Thread.currentThread();    int c = getState();    if (c == 0) {        //判断是否有其他线程正在等待        if (!hasQueuedPredecessors() &amp;&amp;            compareAndSetState(0, acquires)) {            setExclusiveOwnerThread(current);            return true;        }    }    else if (current == getExclusiveOwnerThread()) {        int nextc = c + acquires;        if (nextc &lt; 0)            throw new Error(&quot;Maximum lock count exceeded&quot;);        setState(nextc);        return true;    }    return false;}</code></pre><p>非公平锁：</p><pre><code>final void lock() {    if (compareAndSetState(0, 1))        setExclusiveOwnerThread(Thread.currentThread());    else        acquire(1);}protected final boolean tryAcquire(int acquires) {    return nonfairTryAcquire(acquires);}final boolean nonfairTryAcquire(int acquires) {    final Thread current = Thread.currentThread();    int c = getState();    if (c == 0) {        //直接尝试获取锁不考虑是否有线程等待        if (compareAndSetState(0, acquires)) {            setExclusiveOwnerThread(current);            return true;        }    }    else if (current == getExclusiveOwnerThread()) {        int nextc = c + acquires;        if (nextc &lt; 0) // overflow            throw new Error(&quot;Maximum lock count exceeded&quot;);        setState(nextc);        return true;    }    return false;}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍：&lt;/p&gt;
-&lt;p&gt;主要区别：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方
-      
-    
-    </summary>
-    
-      <category term="面试总结" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"/>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>同步队列源码解析</title>
-    <link href="http://www.xuchunfa.cn/2019/04/14/%E5%90%8C%E6%AD%A5%E9%98%9F%E5%88%97%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
-    <id>http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/</id>
-    <published>2019-04-14T11:12:09.000Z</published>
-    <updated>2019-04-15T03:17:42.986Z</updated>
-    
-    <content type="html"><![CDATA[<p>1.总结下独占式的获取同步状态的流程，具体源码如下：</p><p>流程</p><pre><code>1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是进入自旋等待；</code></pre><p>AQS的acquire方法源码：用户重写tryAcquire方法</p><pre><code>public final void acquire(int arg) {if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同步队列    acquireQueued(addWaiter(Node.EXCLUSIVE), arg))    selfInterrupt();}</code></pre><p>看一下ReentrantLock的tryAcquire（公平锁FairSync）方法：</p><pre><code>protected final boolean tryAcquire(int acquires) {        final Thread current = Thread.currentThread();        int c = getState();        if (c == 0) {//当前没有线程获取到锁            if (!hasQueuedPredecessors() &amp;&amp;                compareAndSetState(0, acquires)) {                setExclusiveOwnerThread(current);                return true;            }        }        //当前线程重入到已经获得的锁，不存在并发        else if (current == getExclusiveOwnerThread()) {            int nextc = c + acquires;            if (nextc &lt; 0)                throw new Error(&quot;Maximum lock count exceeded&quot;);            setState(nextc);            return true;        }        return false;    }}</code></pre><p>若获取同步状态失败，进入addWaiter方法：</p><pre><code>private Node addWaiter(Node mode) {    Node node = new Node(Thread.currentThread(), mode);    // Try the fast path of enq; backup to full enq on failure    Node pred = tail;    if (pred != null) {        node.prev = pred;        //确保线程正确有序的加入到同步队列        if (compareAndSetTail(pred, node)) {            pred.next = node;            return node;        }    }    enq(node);    return node;}</code></pre><p>若尾节点被其他线程更改过了或者tail为空，则跳出if进入到enq(node)方法：</p><pre><code>private Node enq(final Node node) {    for (;;) {//节点加入到同步队列中去才退出循环        Node t = tail;        if (t == null) {             if (compareAndSetHead(new Node()))//同步队列的头节点                tail = head;        } else {            node.prev = t;            if (compareAndSetTail(t, node)) {                t.next = node;                return t;            }        }    }}</code></pre><p>加入到同步队列中的每个节点会通过自旋不断获取同步状态：详见acquire(arg)中的acquireQueued方法</p><pre><code>final boolean acquireQueued(final Node node, int arg) {    boolean failed = true;    try {        //        boolean interrupted = false;        for (;;) {//不断自旋获取同步状态            //直到节点的前一个节点释放锁，并且前一个节点是头节点            final Node p = node.predecessor();            if (p == head &amp;&amp; tryAcquire(arg)) {                setHead(node);                p.next = null; // help GC                failed = false;                return interrupted;            }            //执行到这说明当前节点的前驱不是head或者tryAcquire(arg)失败            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;                parkAndCheckInterrupt())                interrupted = true;        }    } finally {        if (failed)//tryAcquire()方法抛异常时            cancelAcquire(node);    }}</code></pre><p>如果当前节点获取锁失败的话，将会进行线程的挂起操作：</p><p>waitStatus的状态分析：代表后继节点的状态。</p><pre><code>ws = 0 : 默认加入节点的状态值；ws = -1 : 后继节点等待当前节点（前驱节点）被唤醒；ws = 1：等待节点等待超时或被中断取消了等待；ws = -2:后继节点等待在Condition队列中，其他线程对Condition调用signal（）方法后，节点将从等待队列转移到同步队列；private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {    int ws = pred.waitStatus;    if (ws == Node.SIGNAL)//前驱节点状态正常，需要将当前节点挂起        return true;    if (ws &gt; 0) {//说明前驱节点取消了排队，需要向前找到状态正常的节点        //waitStatus = 1表示线程取消了排队        do {            node.prev = pred = pred.prev;        } while (pred.waitStatus &gt; 0);        pred.next = node;    } else {        //正常情况下ws=0，CAS将前驱节点设置为Node.SIGNAL        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);    }    return false;}//前提为true的条件下，LockSupport工具将线程挂起private final boolean parkAndCheckInterrupt() {    LockSupport.park(this);    return Thread.interrupted();}</code></pre><hr><p>再看一下释放锁的源码：</p><p>AQS中的release(int arg)方法：</p><pre><code>public final boolean release(int arg) {    if (tryRelease(arg)) {        Node h = head;        if (h != null &amp;&amp; h.waitStatus != 0)            unparkSuccessor(h);        return true;    }    return false;}</code></pre><p>其中以ReentrantLock为例，重写了tryRelease方法：</p><pre><code>protected final boolean tryRelease(int releases) {        int c = getState() - releases;        if (Thread.currentThread() != getExclusiveOwnerThread())            throw new IllegalMonitorStateException();        boolean free = false;        if (c == 0) {//没有出现重入直接释放锁            free = true;            setExclusiveOwnerThread(null);        }        setState(c);        return free;    }</code></pre><p>LockSupport唤醒线程：</p><pre><code>private void unparkSuccessor(Node node) {    int ws = node.waitStatus;    if (ws &lt; 0)        compareAndSetWaitStatus(node, ws, 0);    Node s = node.next;    if (s == null || s.waitStatus &gt; 0) {        s = null;        //从后往前找到最靠近头节点的即将被唤醒的线程（waitStatus&lt;=0）        for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)            if (t.waitStatus &lt;= 0)                s = t;    }    if (s != null)        LockSupport.unpark(s.thread);}</code></pre><p>参考文献：</p><p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer" target="_blank" rel="noopener">同步队列源码分析第一篇</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;1.总结下独占式的获取同步状态的流程，具体源码如下：&lt;/p&gt;
-&lt;p&gt;流程&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；
-
-1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节
       
     
     </summary>

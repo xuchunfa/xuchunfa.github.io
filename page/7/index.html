@@ -286,6 +286,457 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/28/单例模式的不同写法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/28/单例模式的不同写法/" itemprop="url">单例模式的不同写法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T16:41:34+08:00">
+                2018-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/28/单例模式的不同写法/" class="leancloud_visitors" data-flag-title="单例模式的不同写法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>饿汉模式（在调用对象之前就已经初始化了）</p>
+<p>  1.基于类加载的机制（是线程安全的！！！）</p>
+<p>  public class Singleton {</p>
+<p>  private static final Singleton INSTANCE = new Singleton();</p>
+<p>  private Singleton(){}</p>
+<p>  public static Singleton getInstance(){</p>
+<pre><code>return INSTANCE;
+</code></pre><p>  }<br>  }</p>
+</li>
+</ul>
+<p>这里加final的意思这么理解：</p>
+<p>final关键字可以禁止指令重排，防止在 INSTANCE 还没完全赋值的情况下被使用.</p>
+<p>为什么线程安全参考静态内部单例模式。</p>
+<ul>
+<li><p>懒汉模式（线程不安全）</p>
+<pre><code>   public class Singleton {  
+  private static Singleton instance;  
+  private Singleton (){
+  }   
+  public static Singleton getInstance() {  
+  if (instance == null) {  
+          instance = new Singleton();  
+  }  
+  return instance;  
+  }  
+}  
+</code></pre></li>
+</ul>
+<p>这里为什么不能加final:</p>
+<p>1.因为final static 域必须要（直接赋值）或者（通过静态代码块）来赋值，这样就直接初始化了，没有做到延迟初始化。</p>
+<p>2.如果你是final非static成员，必须在构造器、代码块、或者直接定义赋值；</p>
+<ul>
+<li><p>懒汉模式（线程安全）</p>
+<p>  1.同步开销大,效率不高。</p>
+</li>
+</ul>
+<ul>
+<li><p>双重检查模式（DCL）</p>
+<pre><code>public class Singleton { 
+
+    private static volatile Singleton instance;
+
+    private Singleton(){}
+
+    public static Singleton getInstance(){
+        if(instance == null){
+            synchronied(Singleton.class){
+                if(instance == null){
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+</code></pre></li>
+</ul>
+<ul>
+<li><p>静态内部单例模式</p>
+<pre><code>public class Singleton { 
+private Singleton(){
+    }
+  public static Singleton getInstance(){  
+    return SingletonHolder.sInstance;  
+}  
+private static class SingletonHolder {  
+    private static final Singleton sInstance = new Singleton();  
+}  
+}
+</code></pre></li>
+</ul>
+<hr>
+<p>1.第一次加载Singleton类不会实例化对象,只有在调用getInstance()方法时才会引起SingletonHolder类加载的理解？？？</p>
+<p>1.1 外部类 Singleton 加载的时候静态内部类 SingletonHolder 不会加载，内部类的加载不需要依附外部类，在使用时才会加载。所以当调用内部类 SingletonHolder 的静态域 sInstance 才会引起内部类的加载以及初始化。</p>
+<p>1.2 不过当只调用外部类的静态变量，静态方法时，是不会让静态内部类的被加载。</p>
+<p><strong>2.为什么是线程安全的？？？</strong></p>
+<p>2.1 首先解释一下clinit()方法中包含类中的所有类（static）变量的赋值动作和静态语句块。</p>
+<p>2.2 虚拟机会保证一个类的类构造器clinit()在多线程环境中被正确的加锁、同步，如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的类构造器clinit()，其他线程都需要阻塞等待，直到活动线程执行clinit()方法完毕。</p>
+<p>特别需要注意的是，在这种情形下，其他线程虽然会被阻塞，但如果执行clinit()方法的那条线程退出后，其他线程在唤醒之后不会再次进入执行clinit()方法，因为 在同一个类加载器下，一个类型只会被初始化一次。如果在一个类的clinit()方法中有耗时很长的操作，就可能造成多个线程阻塞，在实际应用中这种阻塞往往是隐藏的.</p>
+<pre><code>一句话概括：java虚拟机保证在多线程的环境下类能够被正确加载。
+</code></pre><ul>
+<li><p>枚举单例模式</p>
+<p>  public enum Singleton {</p>
+<pre><code>INSTANCE;
+private Singleton() {}
+</code></pre><p>  }</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/27/最长不含重复字符的子字符串/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/最长不含重复字符的子字符串/" itemprop="url">最长不含重复字符的子字符串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-27T16:34:48+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                    <span itemprop="name">动态规划</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/27/最长不含重复字符的子字符串/" class="leancloud_visitors" data-flag-title="最长不含重复字符的子字符串">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="最长不含重复字符的子字符串？"><a href="#最长不含重复字符的子字符串？" class="headerlink" title="最长不含重复字符的子字符串？"></a>最长不含重复字符的子字符串？</h4><pre><code>public class MaxDistinctSubString {
+
+//返回字符串长度
+public static String resolve(String str,int length){
+
+    if(str == null || length &lt; 0){
+        throw new RuntimeException(&quot;参数非法&quot;);
+    }
+
+    int distance = 0;
+    int currentLen = 0;
+    int maxLen = 0;
+
+    StringBuffer sb = new StringBuffer();
+
+    //用来存放字符在字符串中的最近访问的index
+    int[] judgeExisted = new int[256];
+    for(int j = 0;j &lt; judgeExisted.length;j++){
+        judgeExisted[j] = -1;
+    }
+
+     int startIndex = 0;
+
+    for(int i = 0;i &lt; length;i++){
+
+        //所有字符0~255
+        int index =str.charAt(i);
+
+        //字符没出现过
+        if(judgeExisted[index] &lt; 0){
+            currentLen = currentLen + 1;
+        }else {
+            distance = i - judgeExisted[index];
+            if(distance &lt;= currentLen){//字符出现在子串的中间
+                currentLen = distance;
+            }else {//d &gt; currentLen
+                currentLen = currentLen + 1;
+            }
+        }
+
+        //更新出现字符的坐标
+        judgeExisted[index] = i;
+
+        if(currentLen &gt; maxLen){
+            maxLen = currentLen;
+            //如果出现了重复的字符的话,i会一直前进但maxLen不会变,所以满足条件时,startIndex已经跳过了出现重复的字符。
+            startIndex = i + 1 - maxLen;
+        }
+    }
+
+
+    return str.substring(startIndex,startIndex + maxLen);
+}
+
+public static void main(String[] args){
+    String str = &quot;arabcacfrg&quot;;
+    System.out.println(MaxDistinctSubString.resolve(str,str.length()));
+}
+</code></pre><p>}</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/27/最大子数组/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1888,511 +2339,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/20/数组中第k大的数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/20/数组中第k大的数/" itemprop="url">数组中第k大的数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T19:42:39+08:00">
-                2018-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/20/数组中第k大的数/" class="leancloud_visitors" data-flag-title="数组中第k大的数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>QuickSelect算法:</p>
-<pre><code>public class TopK {
-
-//递归求解第k大的数
-public static int kthLargest(int[] a,int l,int r,int k){
-    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
-        int partition = QuickSort.versePartition(a,l,r);//分界点前是大数，分界点后是小数
-        if(partition == k - 1)
-            return a[partition];
-        if(partition &lt; k - 1){
-            return kthLargest(a,partition+1,r,k);
-        }
-        if(partition &gt; k - 1){
-            return kthLargest(a,l,partition-1,k);
-        }
-    }
-    return Integer.MAX_VALUE;
-}
-
-//递归求解第k小的数
-public static int kthSmallest(int[] a,int l,int r,int k){
-    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
-        int partition = QuickSort.partition(a,l,r);
-        if(partition == k - 1)
-            return a[partition];
-        if(partition &lt; k - 1){
-            return kthSmallest(a,partition+1,r,k);
-        }
-        if(partition &gt; k - 1){
-            return kthSmallest(a,l,partition-1,k);
-        }
-    }
-    return Integer.MAX_VALUE;
-}
-
-//迭代求解第k小的数
-public static int kthSmallest1(int[] a,int k) {
-    if (k &gt; 0 &amp;&amp; k &lt;= a.length) {
-        int low = 0;
-        int high = a.length-1;
-        while (low &lt;= high){
-            int partition = QuickSort.partition(a,low,high);
-            if(partition == k - 1){
-                return a[partition];
-            }
-            if(partition &lt; k - 1){
-                low = partition+1;
-            }else {
-                high = partition-1;
-            }
-        }
-    }
-    return Integer.MAX_VALUE;
-}
-}
-</code></pre><blockquote>
-<p>多种解法开拓思路</p>
-</blockquote>
-<p>1.把数组从大到小进行排序，再直接通过数组下标获取元素</p>
-<pre><code>时间复杂度：O(nlogn)
-</code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p>
-<pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).
-</code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p>
-<pre><code>时间复杂度：O(n).详细证明见算法导论
-</code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p>
-<pre><code>时间复杂度：O（n+klogn）
-</code></pre><p>5.通过优先队列实现,底层原理基于4方法。</p>
-<pre><code>时间复杂度：O(n)
-
-空间复杂度：O(n)
-</code></pre><h3 id="该题目的变形版本"><a href="#该题目的变形版本" class="headerlink" title="该题目的变形版本?"></a>该题目的变形版本?</h3><blockquote>
-<p>N个数中最大的第K个不同的数？</p>
-</blockquote>
-<p>例如：5，4，4，3 第三大的数是3,而不是4</p>
-<blockquote>
-<p>找第k到第m大的数？</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/19/类文件结构和类加载/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/19/类文件结构和类加载/" itemprop="url">类文件结构和类加载</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-19T19:55:10+08:00">
-                2018-08-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/19/类文件结构和类加载/" class="leancloud_visitors" data-flag-title="类文件结构和类加载">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>类文件结构</p>
-</blockquote>
-<p>1.java方法体中的代码经过javac编译器后，变成字节码存储在方法表的Code属性中。</p>
-<p>2.java虚拟机通过对照指令表，将字节码翻译成了机器能够认识的机器指令。</p>
-<p>对于2操作的规范化说法如下：</p>
-<pre><code>java虚拟机的解释器从字节码流取出操作码，执行操作码所定义的操作。
-
-字节码指令集：由一个字节长度的、代表着某种特定操作含义的数字（称为操作码，Opcode）以及跟随其后的零至多个代表此操作所需参数（称为操作数，Operands）而构成。
-
-操作码的长度：1字节。操作码的种数不超过256.
-</code></pre><blockquote>
-<p>类加载机制</p>
-</blockquote>
-<p>定义：把描述类的数据从class文件加载到内存，并对数据进行校验、转换解析和初始化,最终形成可以被虚拟机直接使用的java类型。</p>
-<p>1.类加载的时机</p>
-<ul>
-<li><p>遇到下面三种情况</p>
-<p>  1.new实例化对象时</p>
-<p>  2.读取或设置一个类的静态字段时</p>
-<p>  3.调用一个类的静态方法时</p>
-</li>
-<li><p>java.lang.reflect包的方法对类进行反射调用时</p>
-</li>
-<li><p>准备初始化子类时会触发父类的初始化</p>
-</li>
-</ul>
-<blockquote>
-<p>类加载过程</p>
-</blockquote>
-<ul>
-<li>加载</li>
-</ul>
-<p>1.获取类的二进制字节流</p>
-<p>2.转化为方法区的运行时数据结构</p>
-<p>3.内存区生成java.lang.Class对象</p>
-<p>连接阶段包括：验证、准备和解析</p>
-<ul>
-<li>验证</li>
-</ul>
-<p>1.是基于二进制字节流进行的</p>
-<ul>
-<li>准备阶段</li>
-</ul>
-<p>1.为类变量(static变量)分配内存以及初始化。</p>
-<ul>
-<li>解析</li>
-</ul>
-<p>1.虚拟机将符号引用替换为直接引用。</p>
-<pre><code>例如：将静态方法、私有方法、实例构造器、父类方法的符号引用直接解析成直接引用。
-</code></pre><p>2.针对类或接口、字段、类方法、接口方法、方法类型、方法句柄以及调用点限定符。</p>
-<ul>
-<li>初始化</li>
-</ul>
-<p>1.执行类构造器<clinit>()方法的过程。</clinit></p>
-<p>2.<clinit>()方法由编译器自动收集类中的所有类变量的复制动作和静态语句块。</clinit></p>
-<blockquote>
-<p>类加载器</p>
-</blockquote>
-<p>1.类加载器干啥用的？</p>
-<pre><code>通过一个类的全限定名来获取描述此类的二进制字节流。
-</code></pre><p>2.类加载器的种类？</p>
-<ul>
-<li><p>启动类加载器</p>
-<pre><code>1.System.class.getClassLoader()结果为null的原因，这并不表示System这个类没有类加载器，
-而是它的加载器比较特殊，是BootstrapClassLoader.
-
-2.加载存放在JAVA_HOME/lib目录中的类库或被-Xbootclasspath参数指定的路径。
-</code></pre></li>
-</ul>
-<ul>
-<li><p>拓展类加载器</p>
-<pre><code>1.加载JAVA_HOME/lib/ext目录或被java.ext.dirs系统变量指定的类库。
-</code></pre></li>
-</ul>
-<ul>
-<li><p>应用程序类加载器(系统类加载器)</p>
-<pre><code>1.加载用户类路径（classpath）下的类库。
-</code></pre></li>
-</ul>
-<h4 id="双亲委派模型？"><a href="#双亲委派模型？" class="headerlink" title="双亲委派模型？"></a>双亲委派模型？</h4><p><img src="https://i.imgur.com/fKQXKAa.jpg" alt=""></p>
-<p>1.检查类是否已经加载。</p>
-<p>2.如果没加载就逐层递归到父类。递归结束的条件是parent==null.</p>
-<p>3.如果最上层Bootstrap都还没找到的话，则出栈，一层层调用自己的findclass方法。</p>
-<p>代码如下：</p>
-<pre><code>protected Class&lt;?&gt; loadClass(String name, boolean resolve)
-    throws ClassNotFoundException
-{
-    synchronized (getClassLoadingLock(name)) {
-        // First, check if the class has already been loaded
-        Class&lt;?&gt; c = findLoadedClass(name);
-        if (c == null) {
-            long t0 = System.nanoTime();
-            try {
-                if (parent != null) {
-                    c = parent.loadClass(name, false);
-                } else {
-                    c = findBootstrapClassOrNull(name);
-                }
-            } catch (ClassNotFoundException e) {
-                // ClassNotFoundException thrown if class not found
-                // from the non-null parent class loader
-            }
-
-            if (c == null) {
-                // If still not found, then invoke findClass in order
-                // to find the class.
-                long t1 = System.nanoTime();
-                c = findClass(name);
-
-                // this is the defining class loader; record the stats
-                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);
-                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
-                sun.misc.PerfCounter.getFindClasses().increment();
-            }
-        }
-        if (resolve) {
-            resolveClass(c);
-        }
-        return c;
-    }
-}
-</code></pre><h3 id="类加载过程的总结"><a href="#类加载过程的总结" class="headerlink" title="类加载过程的总结"></a>类加载过程的总结</h3><p>当有触发类加载的条件时，会将java字节码以二进制流的形式装载到java虚拟机内存中去，并且把二进制流按字节码规范解析成jvm内部运行时的数据结构。最终解析完成的结果是生成了类访问的入口对象java.lang.Class,通过该对象可以访问类在方法区的内容。</p>
-<p>然后会去验证和校验二进制流的合法性，接着发生“赋零”的初始化，紧接着就是将常量池中类的符号引用替代成直接引用。最后发生的才是程序指定的初始化内容。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2447,7 +2393,7 @@ public static int kthSmallest1(int[] a,int k) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.数据类型理解 int(M)： M表示的不是数据的最大长度，只是数据宽度，并不影响存储多少位长度的数据； varchar(M)： M表示的是varchar类型数据在数据库中存储的最大长度，超过则不存； char(N):存放的是字符的个数 2.关键字的执行顺序 （8）SELECT（9）DISTINCT (select_list) （1）FROM (left_table) （3）(join_type">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-06T02:27:33.823Z">
+<meta property="og:updated_time" content="2019-06-20T12:57:39.663Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql笔记">
 <meta name="twitter:description" content="1.数据类型理解 int(M)： M表示的不是数据的最大长度，只是数据宽度，并不影响存储多少位长度的数据； varchar(M)： M表示的是varchar类型数据在数据库中存储的最大长度，超过则不存； char(N):存放的是字符的个数 2.关键字的执行顺序 （8）SELECT（9）DISTINCT (select_list) （1）FROM (left_table) （3）(join_type">
@@ -525,7 +525,7 @@ EXPLAIN SELECT * FROM test_union where k1= 1 AND k3 = 1;//这里只使用到了k
 </ul>
 <p>1.索引包含所有需要查询的字段的值。</p>
 <p>2.它只扫描索引的数据。</p>
-<p>3.覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询。在所有这些场景中，索引中满足查询的成本一般比查询要小的多。</p>
+<p>3.覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询。在所有这些场景中，索引中满足查询的成本一般比查询要小的多</p>
 <p>4.覆盖索引优化查询的例子</p>
 <pre><code>alter table t1 add index liu(inventory_id,return_date)；
 select tid,return_date from t1 order by inventory_id limit 50000,10;
@@ -663,7 +663,7 @@ WHERE MATCH (title,body) AGAINST (&apos;database&apos;);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

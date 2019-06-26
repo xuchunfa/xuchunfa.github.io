@@ -286,6 +286,768 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/24/未优化快排/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/24/未优化快排/" itemprop="url">未优化快排</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T20:10:30+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/03/24/未优化快排/" class="leancloud_visitors" data-flag-title="未优化快排">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>//有序数组直接选择第一个元素作轴效果不理想
+public class NormalQuickSort {
+
+public int partion(int[] a,int start,int end){
+    int pivot = a[start];
+    int i = start;
+    int j = end;
+    while (i &lt; j){
+        while (i &lt; j &amp;&amp; a[j] &gt;= pivot){
+            j--;
+        }
+        a[i] = a[j];
+
+        while (i &lt; j &amp;&amp; a[i] &lt;= pivot){
+            i++;
+        }
+        a[j] = a[i];
+    }
+    a[i] = pivot;
+    return i;
+}
+
+public void sort(int[] a,int start,int end){
+    if(start &lt; end){
+        int partition = partion(a,start,end);
+        sort(a,start,partition-1);
+        sort(a,partition+1,end);
+    }
+}
+
+@Test
+public void test(){
+    int[] a = {6,4,3,3,1,2,9,5};
+    sort(a,0,a.length-1);
+    System.out.println(Arrays.toString(a));
+}
+}    
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/23/面试总结-计算机网络/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/23/面试总结-计算机网络/" itemprop="url">面试总结--计算机网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T09:57:49+08:00">
+                2019-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/23/面试总结-计算机网络/" class="leancloud_visitors" data-flag-title="面试总结--计算机网络">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p>TCP和UDP的区别？</p>
+<pre><code>1.TCP面向连接的，UDP无连接的。
+
+2.TCP传输可靠，UDP尽最大努力交付；
+  TCP是全双工的可靠信道，UDP不可靠信道；
+  通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达；
+
+3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；
+
+4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&quot;点&quot;代表的是socket(IP:PORT)；
+
+5.TCP首部20个字节，UDP是8个字节；
+</code></pre><p> TCP的特点：</p>
+<pre><code>可靠、稳定、慢、效率低、占用系统资源高。
+</code></pre><p> UDP的特点：</p>
+<pre><code>1.传递数据快、不可靠丢包、快速递交比精准递交更重要，例如：视频语音；
+</code></pre><p> 相关问题解释：</p>
+<pre><code>1.TCP连接的发送方和接收方都有缓存，TCP不关心发送到TCP发送方缓存的报文长度，
+它会根据对方的窗口值和网络拥塞情况来决定一个报文段包含有多少字节。
+
+2.TCP发送方发送4个数据块，接收方可能2个数据块就能把字节流传到应用层；
+</code></pre></li>
+<li><p>TCP如何保证可靠性，拥塞控制如何实现？</p>
+<pre><code>1.确认和重传；
+
+2.数据校验；
+
+3.数据合理分片；
+
+4.流量控制：
+
+    1.当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。
+
+    2.利用可变窗口rwnd值的变化来进行流量控制；
+
+5.拥塞控制；
+
+    5.1 慢开始和拥塞避免
+
+        1.慢开始（指数）：由小到大增加拥塞窗口的值，每经过一个传输轮次，拥塞窗口加倍；
+
+        2.拥塞避免（线性）：cwnd缓慢增大，每经过一个往返时间RRT就把发送方的拥塞窗口cwnd值加1；
+
+        3.加法增大乘法减小（AIMD）:&quot;乘法减小&quot;即不论在慢开始阶段还是在拥塞避免阶段，只要出现超时就把满开始门限ssthresh减半；
+        &quot;加法增大&quot;即执行拥塞避免算法使cwnd缓慢增大；
+
+    5.2 快重传和快恢复
+
+        1.快重传：接收方每收到一个失序的报文段后就立即发出重复确认，当发送方一连收到3个重复确认就立即重传对方尚未接收到的报文段。
+
+        2.快恢复：收到3个重复确认后，ssthresh减半，把cwnd的值设为ssthresh减半后的值；
+</code></pre></li>
+</ol>
+<ol start="3">
+<li><p>输入URL浏览器发生了什么？</p>
+<pre><code>1.DNS域名解析找到IP地址；
+
+    1.1 浏览器查询自身的DNS缓存；
+
+    1.2 浏览器向本机查询域名对应的ip地址，host和ip映射放在hosts文件中；
+
+    1.3 本机向本地的DNS服务器请求解析(递归方式)；例如学校(neu)、公司以及运营商的DNS
+
+    1.4 本地的DNS服务器向根服务器发起解析请求（迭代查询），返回顶级国际域名服务器解析地址；
+
+    1.5 本地的DNS服务器向顶级域名服务器(edu)请求解析，返回域名服务商的解析地址；
+
+    1.6 本地的DNS服务器向域名服务商请求解析，获取到ip;
+
+2.TCP连接服务端和客户端；
+
+3.发送HTTP请求；
+
+4.服务器处理请求；(nginx反向代理)
+
+5.返回响应结果；
+
+6.关闭TCP连接（长连接的时候不关闭）；
+
+7.浏览器解析HTML;（若遇到js、css文件再次请求资源，http2.0服务器推送减少请求次数）
+
+8.浏览器布局渲染。
+</code></pre><p> 3.HTTP协议和TCP/IP协议区别？</p>
+<pre><code>1.HTTP协议是应用层协议，主要解决如何包装数据；TCP/IP协议是运输层协议解决数据如何在网络中传输。
+</code></pre></li>
+</ol>
+<ol start="6">
+<li>TCP的三次握手和四次挥手以及为什么是四次挥手？</li>
+</ol>
+<p><img src="/images/三次握手.JPG" alt=""></p>
+<pre><code>总结：
+
+    TCP服务器进程先创建TCP(传输控制块)，等待客户端的连接请求，服务端进入LISTEN状态；
+
+    1.第一次握手：标志位SYN=1 ACK=0,client_sequence=i,客户端SYN_SEND状态；
+
+    2.第二次握手：检查并设置标志位ACK=1 SYN=1和发送确认序号ack number=i+1 server_sequence=j,服务端SYN_RECV状态；
+
+    3.第三次握手：ACK=1 和发送确认序号ack=j+1和client_sequence=i+1,（有序）客户端进入ESTABLISH状态.
+
+    服务器在未收到ACK之前的连接称为半连接；
+
+    当服务端收到确认号以后，服务端进入到ESTABLISH状态，此时TCP连接才正式建立起来。
+
+三次握手注意地方：
+
+    1.ACK=1时ack number才有效，表示我收到了对方发给我的报文；
+
+    2.SYN(SYN=1)报文段不能携带数据；
+
+    3.建立连接的过程中数据包的序号都是加1，数据传输过程中加的是发送数据包的长度；
+
+    4.为什么最后一次还要发送确认？
+
+      主要是为了防止已经失效的连接请求报文段突然又传到服务端。
+
+      如果是两次握手的话：
+
+          第一次的连接请求因为网络原因延迟达到，服务器会认为是新的连接请求，
+          于是发出确认报文段建立连接，导致连接资源的浪费；
+
+      如果三次握手的话：
+
+          有了最后一次确认的话，客户端不会理会发过来的确认（序列号出现问题），
+          服务端收不到确认，就知道客户端没有请求连接；
+
+    5.几个状态？
+
+      客户端：SYN_SEND、ESTABLISHED.
+
+      服务端：LISTEN、SYN_RECV、ESTABLISHED.
+
+    6.什么是SYN攻击？
+
+        Client在短时间内伪造大量不存在的IP地址，不断向Server发送SYN包，伪造的SYN
+        包长时间占用未连接队列，导致正常SYN请求因队满被丢弃，最终导致网络拥塞；
+</code></pre><p><img src="/images/四次挥手.JPG" alt=""></p>
+<pre><code>四次挥手：
+
+    4.第一次挥手: FIN=1,seq=u,客户端FIN_WAIT1状态；
+
+    5.第二次挥手：ACK=1 seq=v,ack=u+1,服务端CLOSED_WAIT状态;客户端向服务端的方向释放了，进入半关闭状态；
+     (客户端没有数据要发送了，但服务器若发送数据，客户端依然接收)
+
+     CLOSED_WAIT状态将持续一段时间，客户端收到ACK进入到FIN_WAIT2状态；
+
+    6.第三次挥手：服务端发送完数据以后，向客户端发送FIN=1 ACK=1 seq=w ack=u+1,服务端进入到LAST_ACK状态；
+
+    7.第四次挥手：ACK=1 seq=u+1 ack=w+1，客户端进入TIME_WAIT状态，TCP连接还没释放，经过2MSL后撤销TCB，客户端进入CLOSED状态；
+
+    服务端收到客户端的ACK后，立即进入CLOSED状态，撤销TCB，关闭TCP连接；
+
+注：
+
+    1.TIME_WAIT=2MSL(Maximum Segment Lifetime两个报文最大生存时间)的原因？
+
+        1.1 保证客户端最后发送的ACK报文段能够到达服务端。
+           （保证TCP协议的全双工连接可靠关闭）
+
+            假如立即关闭的话，ACK报文如果丢失，Server会重传FIN + ACK报文，
+            Client无法收到重传报文段，于是Server无法进入CLOSED状态；
+
+        1.2 保证这次连接的重复数据段从网络中消失。
+
+            例如新建立的连接端口号和旧连接端口相同，旧连接中的延迟数据可能混进新连接中去；
+
+
+    2.为什么是4次挥手？
+
+        多一次的原因是把ACK报文和FIN报文分开发送了。
+
+        2.1 因为TCP是全双工模式。
+            前两次挥手是关闭Client到Server的传输通道，此时Client仍然可以接收Server的数据；后两次挥手是关闭Server到Client的传输通道； 
+
+        2.2 这里把ACK报文和FIN报文分开发是为了确保数据能完整得到传输。
+
+            当收到对方的FIN报文通知时，它仅仅表示对方没有数据发送给你了，但未必你所有的数据都全部发送给对方了，
+            所以你可以未必会马上会关闭SOCKET,也即可能你还需要发送一些数据给对方之后，
+            再发送FIN报文给对方来表示你同意现在可以关闭连接了。
+
+    3.TCP第三次握手ACK丢失后的处理？
+
+        ACK丢失，服务端的TCP连接的撞状态为SYN_RECV，等待3s、6s、12s后重新发送SYN+ACK包，
+        其中服务端重新发送SYN+ACK的次数默认值是5，
+        如果仍未收到ACK,一段时间后服务端自动关闭这个连接；
+        但是Client认为这个连接已经建立，如果Client端向Server写数据，
+        Server端将以RST包(用于强制关闭tcp连接)响应，
+        客户端方能感知到Server的错误。
+
+    4.状态变化
+
+        客户端：ESTABLISHED、FIN_WAIT1、FIN_WAIT2、TIME_WAIT、CLOSED;
+
+        服务端：ESTABLISHED、CLOSE_WAIT、LAST_ACK、CLOSED;
+</code></pre><p>参考文献：</p>
+<p><a href="https://blog.csdn.net/smileiam/article/details/78226816" target="_blank" rel="noopener">TCP的三次握手、四次挥手</a>        </p>
+<ol start="7">
+<li><p>http报文包含哪些内容？http协议？http和https的区别？http的结构及状态码？</p>
+<p> 1.http请求结构</p>
+<pre><code>1.1 请求行
+
+    请求方法 + URL + HTTP版本
+
+    eg:POST /addStudent/addStu.html HTTP/1.1
+
+1.2 请求头
+
+    包含的信息：连接信息、缓存控制、客户端接收的内容类型、具体请求中的媒体类型信息，
+
+    Accept:客户端接受什么类型的响应；eg:text/html
+
+    Cache-Control:响应数据在客户端的缓存控制；
+
+    Connection:请求完成后是否关掉TCP连接；eg:keep-alive;
+
+    Content-Type:请求的媒体类型；eg:application/x-www-form-urlencoded标准的编码格式；
+
+    Cookie:保存server发送过来的set-Cookie内容；
+</code></pre></li>
+</ol>
+<pre><code>    1.3 请求体
+
+        eg:name=xuchunfa&amp;gender=male&amp;age=18
+
+2.http响应结构
+
+    2.1 响应行
+
+        eg:HTTP/1.1 200 OK
+
+    状态码：
+
+        成功状态码：
+
+            1.1 200 OK:处理成功；
+
+            1.2 204 No Content:请求处理成功，但没有资源返回；
+
+        重定向状态码：
+
+            2.1 301 Moved Permanently:请求的网页已被永久移动到新位置。
+
+            2.2 302 Found:服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。
+
+            2.3 303 See Other:请求者应当对不同的位置使用单独的 GET 请求来检索响应时;
+
+            2.4 304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;
+
+            2.5 305 Use Proxy：必须通过代理访问资源，代理的地址在Response的Location中
+
+        客户端错误状态码：
+
+            4.1 400 Bad Request:请求报文中存在语法错误；
+
+            4.2 401 Unauthorized：未授权，需要有通过Http认证的认证信息；
+
+            4.3 403 Forbidden:访问被拒绝；
+
+            4.4 404 Not Found:页面不存在（无法找到请求资源）；
+
+            4.5 405 Method not allowed：禁用请求中指定的方法；
+
+        服务器错误状态码：
+
+            5.1 500 Internal Server Error：服务器内部发生错误；
+
+            5.2 501 Not Implemented:客户端发起的请求超出服务器的能力范围;
+
+            5.2 503 Service Unavailable：服务器处于超负荷或者正在停机维护；
+
+            5.3 505 HTTP Version Not Supported:不支持的HTTP版本；
+
+    2.2 响应头
+
+        Access-Control-Allow-Origin：响应头指定了该响应的资源是否被允许与给定的origin共享；eg:*表示允许所有域都具有访问资源的权限；
+
+        Location:指定的是需要将页面重新定向至的地址;
+
+        Set-cookie:服务器端向客户端发送的cookie；        
+
+3.http协议
+
+    1.生成针对目标Web服务器的HTTP请求报文；
+
+    2.http协议是无状态的协议，服务器不会记录客户端的信息，解放了服务器但可能会传输大量重复信息。通过Cookie来维系客户端和服务器之间的状态。
+
+4.http和https区别
+
+     1.HTTPS协议由HTTP+SSL(Secure Sockets Layer)协议构建的可进行加密传输数据、身份认证的网络协议。
+
+    2.HTTP端口号80，HTTPS端口号443;
+
+5.HTTPS工作原理
+</code></pre><p><a href="https://zhuanlan.zhihu.com/p/27395037" target="_blank" rel="noopener">HTTPS详解</a></p>
+<p>原理图：</p>
+<p><img src="/images/HTTPS.JPG" alt=""></p>
+<pre><code>    1.客户端发起HTTPS请求，三次握手；
+
+    2.服务端配置。配置数字证书，即公钥和密钥（非对称加密）；
+
+    3.服务端传送SSL证书，证书的内容包括：证书的颁发机构、有效期、公钥、证书持有者、签名等，解决了公钥获取的安全性；
+
+    4.客户端解析证书。证书是否有效，是否过期，有效则提取出公钥；(操作系统内置了受信任的证书颁发机构，取出颁发者CA的公钥对证书的签名进行解密，
+    浏览器使用hash算法计算证书的hash值，与证书签名作对比)
+
+    5.传输加密信息。浏览器随机生成一个对称加密的密钥k（临时会话密钥），密钥k是在客户端和服务端共享的，用证书中的公钥加密k,得到密文k&apos;；
+
+    6.服务端解密信息。用私钥拿到k，并使用密钥k加密传输的数据；
+
+    7.传输服务端加密后的信息；
+
+    8.客户端解密信息。使用共享密钥k解密数据。
+
+总结：
+
+    1.加密算法
+
+        对称加密：加密和解密都是通过同一个密钥进行，采用对称加密进行通信存在密钥协商过程的不安全性；
+
+        非对称加密：私钥加密后的密文只要是公钥都可以解密，但公钥加密后的密文只有私钥可以解密；
+
+        注意：
+
+            1.非对称加密算法保证了协商对称加密算法的过程；
+
+            2.非对称加密算法会有公钥被劫持的问题，通过CA颁发的证书保证安全；
+
+            3.最后客户端和服务端协商出了对称加密算法进行信息的加密传输；
+</code></pre><p>7.HTTP1.0/HTTP1.1/HTTP2.0的区别?</p>
+<pre><code>1.HTTP1.0 与 HTTP1.1
+
+    1.HTTP1.1默认长连接Connection:keep-alive,HTTP1.0 每次请求都要创建连接；
+
+    2.HTTP1.1增加了更多的请求头和响应头来改进和扩充HTTP的功能；
+
+    3.HTTP1.1中增加了Host请求头字段，实现了在一台WEB服务器上可以在同一个IP地址
+    和端口号使用不同的主机名来创建多个虚拟WEB站点；
+
+
+2.HTTP1.x 与 HTTP2.0
+
+    1.HTTP2.0传输协议采用二进制协议，HTTP1.x是超文本协议； 
+
+    2.多路复用。
+
+        解决了两个问题：
+
+        2.1 HTTP1.x传输的request和response都是基于文本,所有数据按序传输，
+
+        无法实现并行传输，通过引入二进制数据帧和流的概念,其中帧对数据进行顺序标识，保证并行传输后的顺序不会乱；
+
+        2.2 由于流的并行传输的原因，解决了HTTP1.1 中请求阻塞的问题（同一时间只允许一个请求经过,且有序）;
+
+
+    3.头部压缩。HTTP2.0中压缩header，通讯双方各cache一份header fields表，既避免了
+    重复header的传输，又减少需要传输的大小；
+
+    4.HTTP2.0中实现服务端的推送，即服务端推送能把客户端所需要的资源伴随着
+    index.html一起发送到客户端，减少了客户端重复请求的步骤，大大提升了速度；
+</code></pre><p>参考文献：</p>
+<p><a href="https://blog.csdn.net/u010256388/article/details/68491509" target="_blank" rel="noopener">HTTP请求行、请求头、请求体详解</a>    </p>
+<ol start="8">
+<li><p>Get请求和Post请求有什么区别？</p>
+<pre><code>1.Get请求的数据会附在URI之后，Post把提交的数据放在HTTP请求体中；
+
+2.Get的长度受受限于浏览器URI的长度(2K个字节)，所以一般来说，GET请求传递的数据要比POST请求少；
+
+3.POST比GET安全性高。
+
+4.GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会保留；
+
+5.GET只接受ASCII字符，POST没有限制；
+
+6.GET产生一个数据包：对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据
+
+  POST请求产生二个数据包：浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 OK（返回数据）
+</code></pre></li>
+<li><p>Session和Cookie的区别？</p>
+<pre><code>Session:服务器端保存的数据结构；可以放在内存、数据库、文件中等；Session的实现对客户端Cookie有依赖关系。
+
+Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实现Session的一种方式，如果Cookie被禁用会通过URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；
+
+总结:
+
+1.cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存，是针对某一次会话而言；
+
+2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
+</code></pre></li>
+</ol>
+<p>10.HTTP中幂等性的理解？</p>
+<pre><code>1.指无论调用这个url多少次，都不会有不同的结果；
+
+2.方法本身不会对服务器的资源产生影响；
+
+    例如：GET方法是幂等的，POST方法是非幂等的方法；
+
+3.PUT vs POST方法
+
+    都可以用于更新和新建请求。
+
+    3.1 区别
+
+        对于更新，PUT是将请求完全替换原资源，PUT是完全幂等的，PUT一次和PUT多次返回结果一样，
+        而POST不是幂等的，可能服务器会根据请求时间得到不同资源；
+
+    3.2 怎么重试POST请求？
+
+        在POST请求中隐藏一个唯一的token，服务器将它存放在数据库，
+        当请求再次到达时，比对token，数据库存在就不处理；
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/23/面试总结-操作系统/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -413,24 +1175,32 @@
 </code></pre></li>
 </ol>
 <ol start="2">
-<li><p>进程的通信方式？</p>
+<li>进程的通信方式？</li>
+</ol>
+<p>本机进程通信：</p>
 <pre><code>1.管道：半双工、数据单向流动、（无名管道）具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程通信。
 
     1.1  fork()创建子进程，若成功返回子进程的pid,失败返回-1；
 
     1.2 子进程会复制父进程的几乎所有信息；
 
-2.信号量：控制多个进程访问共享资源。
+2.信号量：控制多个进程访问共享资源。作为进程间以及同一进程内不同线程之间的同步手段；
 
     2.1 Linux内核中提供了三种信号量：二元信号量（互斥信号量）、计数信号量和读者写者信号量；
 
     2.2 读者写者信号量：允许多个并发的读者（使用计数信号量），但仅允许一个写者（使用互斥信号量）。
-</code></pre></li>
-</ol>
-<pre><code>3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。
-4.信号：通知接受事件发生。
-5.共享内存：最快IPC通信，因为数据不需要在不同的进程间复制，通常信号量被用来对共享数据的存储同步；
-6.套接字（socket）：可用于不同机器间的进程通信。
+
+
+3.消息队列：克服了信号承载信号量小，管道只能承载无格式字节流以及缓冲区大小受限的缺点。
+
+4.信号：通知接受进程某个事件已经发生。
+
+5.共享内存：最快IPC通信，解决了其他通信方式效率低的的问题，
+           因为数据不需要在不同的进程间复制，通常配合信号量来实现进程间的同步与通信；
+</code></pre><p>网络进程通信：</p>
+<pre><code>6.套接字（socket）：可用于不同机器间的进程通信。
+</code></pre><p>1.Socket的理解？</p>
+<pre><code>TCP/IP协议之上，应用层之下抽象软件层；
 </code></pre><ol>
 <li>操作系统的内存管理机制？</li>
 <li>CPU飙升怎么定位问题？</li>
@@ -1901,6 +2671,7 @@ Swap:    1407     0    1407
 <li>为什么索引能够提升性能？</li>
 <li>Mysql主备模式？</li>
 <li>数据库三范式？</li>
+<li>Mysql数据库连接池？</li>
 </ol>
 
           
@@ -3288,548 +4059,6 @@ System.out.println(s3 == s4);//true
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/11/08/代理模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/08/代理模式/" itemprop="url">代理模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T19:15:37+08:00">
-                2018-11-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/11/08/代理模式/" class="leancloud_visitors" data-flag-title="代理模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>UML图：</p>
-<p><img src="/images/proxy.PNG" alt=""></p>
-<p>总结：</p>
-<p>1.代理模式优点：</p>
-<pre><code>1.良好的拓展性。修改被代理的角色不影响调用者使用代理；
-
-2.隔离，降低了耦合度。被代理的角色只需关注业务逻辑，通过代理角色可以处理和隔离非业务操作；
-</code></pre><p>2.代理模式与装饰者模式区别：</p>
-<pre><code>装饰者模式是&quot;新增行为&quot;，代理模式是&quot;控制访问&quot;；
-</code></pre><p>3.Spring AOP</p>
-<pre><code>如果加入容器的目标对象有接口实现，使用JDK动态代理；
-
-如果加入容器的目标对象没有实现接口，使用Cglib代理；
-</code></pre><p><strong>静态代理</strong></p>
-<pre><code>指在程序运行前就已经存在代理类的字节码文件了，即代理类和委托类关系在运行前就已经确定了；
-</code></pre><p>经纪人和演员的例子：（静态代理）</p>
-<pre><code>//Subject角色
-public interface Subject {
-    void perform();
-}
-
-//RealSubject角色
-public class Actor implements Subject {
-    @Override
-    public void perform() {
-        System.out.println(getClass().getSimpleName() + &quot;: 负责演戏&quot;);
-    }
-}
-
-//Proxy角色
-public class Agent implements Subject {
-
-    private Subject actor;
-
-    public Agent(Subject actor) {
-        this.actor = actor;
-    }
-
-    @Override
-    public void perform() {
-        System.out.println(getClass().getSimpleName() + &quot;: 负责接戏&quot;);
-        actor.perform();
-    }
-}
-</code></pre><p>Client:</p>
-<pre><code>Subject actor = new Actor();
-Agent proxy = new Agent(actor);
-proxy.perform();
-</code></pre><p><strong>Java动态代理</strong></p>
-<p>1.代理类是动态生成的；</p>
-<pre><code>//java.lang.reflect.Proxy 返回值为代理类的实例
-public static Object newProxyInstance(ClassLoader loader,
-                                  Class&lt;?&gt;[] interfaces,
-                                  InvocationHandler h)
-</code></pre><p>Proxy.newProxyInstance()内部实现原理过程：</p>
-<pre><code>//内部包含委托类的引用target，实现代理类到委托类的分派转发
-1.InvocationHandler handler = new InvocationHandlerImpl(..);
-
-//动态创建代理类的类对象
-2.Class clazz = Proxy.getProxyClass(classLoader, new Class[] { Interface.class, ... });
-
-//反射获取代理类类对象的构造函数对象
-3.Constructor constructor = clazz.getConstructor(new Class[] { InvocationHandler.class }); 
-
-//动态创建代理类的实例
-4.Interface Proxy = (Interface)constructor.newInstance(new Object[] {handler});
-</code></pre><p>2.第三个参数由用户实现InvocationHandler接口，重写invoke()方法，实现对被代理对象的方法访问；</p>
-<pre><code>public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    private Animal animal;
-    System.out.println(&quot;--------start------------&quot;);
-    Object proxyObject = method.invoke(animal,args);
-    System.out.println(&quot;---------end----------&quot;);
-    System.out.println();
-
-    //返回代理对象
-    return proxyObject;
-}
-</code></pre><p>动物实例：</p>
-<pre><code>public interface Animal {
-
-    public void eat(String food);
-    public void sleep(String address);
-
-}
-
-//被代理类
-public class PriorHuman implements Animal {
-
-    public void eat(String food) {
-        System.out.println(&quot;PriorHuman eat &quot; + food);
-    }
-
-    public void sleep(String address) {
-        System.out.println(&quot;PriorHuman sleep at &quot; + address);
-    }
-}
-
-//用户自己的调用处理器
-public class InvocationHandlerImpl implements InvocationHandler {
-
-    //更具有通用性
-    private Object target;
-
-    public InvocationHandlerImpl(Animal animal) {
-        this.target = animal;
-    }
-
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-        System.out.println(&quot;--------start------------&quot;);
-        Object proxyObject = method.invoke(target,args);
-        System.out.println(&quot;---------end----------&quot;);
-        System.out.println();
-
-        //返回代理对象
-        return proxyObject;
-    }
-}
-</code></pre><p>Client:</p>
-<pre><code>public static void main(String[] args) throws Throwable {
-
-    Animal human = new PriorHuman();
-
-    //三个参数
-    ClassLoader classLoader = human.getClass().getClassLoader();
-    Class[] interfaces = human.getClass().getInterfaces();
-    InvocationHandler handler = new InvocationHandlerImpl(human);
-
-    //代理类实例
-    Animal proxy = (Animal) Proxy.newProxyInstance(classLoader,interfaces, handler);
-
-    //实际执行过程是通过反射调用委托类的方法
-    proxy.eat(&quot;hotdog&quot;);
-    proxy.sleep(&quot;Big house&quot;);
-}
-</code></pre><p><strong>Cglib代理（子类代理）</strong></p>
-<pre><code>被代理的对象只是一个单独的对象，没有实现任何接口，这时在内存中构建一个子类对象，实现对
-
-目标对象功能的拓展；
-</code></pre><p>注意：</p>
-<pre><code>final类不会被代理，final或static方法不会被拦截，即不会执行目标对象的额外业务方法；
-</code></pre><p>实例：</p>
-<pre><code>//被代理的对象
-public class UserDao {
-    public void save(){
-        System.out.println(&quot;保存数据.....&quot;);
-    }
-}
-
-//CGLIB代理工厂
-public class ProxyFactory implements MethodInterceptor {
-
-    private Object target;
-    public ProxyFactory(Object target) {
-        this.target = target;
-    }
-
-    //给目标对象创建一个代理对象
-    public Object getProxyInstance(){
-        Enhancer enhancer = new Enhancer();
-        //设置父类
-        enhancer.setSuperclass(target.getClass());
-        //设置回调函数
-        enhancer.setCallback(this);
-
-        //创建子类对象(代理对象)
-        return enhancer.create();
-    }
-
-    //类似于InvocationHandler的作用
-    @Override
-    public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-        System.out.println(&quot;开启事务&quot;);
-        Object result = method.invoke(target,args);
-        System.out.println(&quot;提交事务&quot;);
-        return result;
-    }
-}
-</code></pre><p>Client:</p>
-<pre><code>public static void main(String[] args){
-    UserDao user = new UserDao();
-    UserDao proxy = (UserDao) new ProxyFactory(user).getProxyInstance();
-    proxy.save();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/31/适配器模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/31/适配器模式/" itemprop="url">适配器模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T10:09:23+08:00">
-                2018-10-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/31/适配器模式/" class="leancloud_visitors" data-flag-title="适配器模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>类适配器UML图：</p>
-<p><img src="/images/classAdapter.PNG" alt=""></p>
-<p>对象适配器UML图：</p>
-<p><img src="/images/objAdapter.PNG" alt=""></p>
-<p><strong>适配器模式</strong></p>
-<pre><code>将一个类的接口转化成用户需要的另外一个接口；
-</code></pre><p>适配器模式分三种：</p>
-<ul>
-<li><p>类适配器模式</p>
-</li>
-<li><p>对象适配器模式</p>
-</li>
-<li><p>特殊的缺省适配模式</p>
-</li>
-</ul>
-<p>详解见博客：</p>
-<p><a href="https://www.cnblogs.com/java-my-life/archive/2012/04/13/2442795.html" target="_blank" rel="noopener">java适配器详解</a></p>
-<p>安卓充电器给苹果手机充电</p>
-<pre><code>public interface AndriodCharge {
-    void chargeToAndroid();
-}
-</code></pre><p>Target角色：</p>
-<pre><code>public interface IphoneCharge {
-    void chargeToIphone();
-}
-</code></pre><p>Adaptee角色：</p>
-<pre><code>public class AndriodCharger implements AndriodCharge {
-
-    @Override
-    public void chargeToAndroid() {
-        System.out.println(&quot;使用安卓充电器给手机充电&quot;);
-    }
-}
-</code></pre><p>Adapter角色：</p>
-<pre><code>public class IphoneAdapter implements IphoneCharge {
-    //复用安卓充电器（聚合关系）
-    private AndriodCharger andriodCharger;
-
-    public IphoneAdapter(AndriodCharger andriodCharger) {
-        this.andriodCharger = andriodCharger;
-    }
-
-    @Override
-    public void chargeToIphone() {
-        andriodCharger.chargeToAndroid();
-        System.out.println(&quot;Iphone is charging&quot;);
-    }
-}
-</code></pre><p>Client角色：</p>
-<pre><code>public static void main(String[] args){
-    AndriodCharger ac = new AndriodCharger();
-    IphoneAdapter adapter = new IphoneAdapter(ac);
-    adapter.chargeToIphone();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3884,7 +4113,7 @@ public class ProxyFactory implements MethodInterceptor {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">123</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
