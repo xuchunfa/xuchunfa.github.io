@@ -88,13 +88,13 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.xuchunfa.cn/images/内存模型.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/Markword.jpg">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/threadState.PNG">
-<meta property="og:updated_time" content="2019-06-12T11:16:33.972Z">
+<meta property="og:updated_time" content="2019-06-27T11:29:04.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
-<meta name="twitter:image" content="http://www.xuchunfa.cn/images/内存模型.png">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/Markword.jpg">
 
 
 
@@ -424,8 +424,6 @@
 4.线程池；
 </code></pre></li>
 </ol>
-<p>1.run和start方法区别或联系？</p>
-<p>1.如何让几个线程按顺序先后执行？</p>
 <p>1.一个线程打印奇数另一个线程打印偶数</p>
 <pre><code>static class PrintOddAndEven implements Runnable{
     private static final int NUMBERS = 20;
@@ -462,8 +460,7 @@ public static void main(String[] args){
     oddThread.start();
     evenThread.start();
 }
-</code></pre><ol>
-<li>ReadWriteLock读写之间互斥吗？</li>
+</code></pre><ol start="2">
 <li><p>说说ReentrantLock是基于哪个类的？说说队列同步器？</p>
 <p> 2.1 AbstractQueuedSynchronizer(AQS):</p>
 <pre><code>抽象队列同步器。用于管理同步状态、阻塞和唤醒线程，以及维护被阻塞线程的队列。
@@ -501,14 +498,79 @@ public static void main(String[] args){
 <li><p>synchronized和lock的区别？</p>
 <pre><code>1.synchronized是java关键字，Lock是一个接口；
 
-2.synchronized方法发生异常时会自动释放线程占用的锁，Lock需要显示调用unLock()方法释放锁；
+2.synchronized方法发生异常时会自动释放线程占用的锁，不会出现死锁，
+  Lock需要手动调用unLock()方法释放锁，可能会出现死锁；
 
-3.Lock可以在等待获取锁的过程中响应中断（即可中断线程），通过lockInterruptibly()实现能被中断的获取锁；
+3.Lock可以在等待获取锁的过程中响应中断（即可中断线程），通过       lockInterruptibly()实现能被中断的获取锁；
+synchronized方法内出现等待或阻塞时，其他线程只能无限期等待，性能差；
 
 4.Readwritelock提高了读操作的效率，在资源竞争激烈的情况下Lock的效率要比synchronized高；
+
+5.Lock可以实现公平锁、synchronized不保证公平性；
+</code></pre></li>
+<li><p>synchronized类锁和对象锁的区别？</p>
+<p> 1.类锁：特殊对象Class的锁</p>
+<pre><code>synchronized添加到static静态方法或者synchronized(class)代码块是给
+Class上锁；
+
+1.public synchronized static void sell(){...};
+
+2.public void sell(){
+    int i = 100;
+    synchronized(SynchronizedDemo.class){...}
+}
 </code></pre></li>
 </ol>
-<ol start="3">
+<pre><code>2.方法锁：
+
+    synchronized添加到普通成员方法上是给对象上锁；
+
+    1.public synchronized void sell(){...};
+
+    2.public void sell(){    
+        int i = 100;
+        synchronized(this){...}
+     }
+
+3.区别：
+
+    1.对象锁用来控制实例方法之间的同步，类锁用来控制静态方法之间的同步；
+
+    2.对象锁和类锁是两个不一样的锁，控制不同区域，互不干扰；
+
+4.注意：
+
+    当一个线程访问对象的同步代码块时，另一个线程仍可以访问该对象的非同步
+    方法；
+</code></pre><ol start="4">
+<li><p>synchronized底层实现原理？</p>
+<p> 1.对象头</p>
+<pre><code>1.1 对象的内存存储布局：
+
+    对象头、实例数据、对齐填充。
+
+1.2 对象头组成
+
+    Mark Word、Class Metadata Address、ArrayLength(数组对象才有)；
+
+    1.2.1 Mark Word
+
+        用于存储对象自身的运行时数据，例如：Hashcode、GC分代年龄、锁状态标志
+        线程持有的锁、偏向线程ID等；
+</code></pre></li>
+</ol>
+<p><img src="/images/Markword.jpg" alt=""></p>
+<pre><code>        1.2.2 Class Metadata Address
+
+            类的元数据地址，JVM通过该指针确定该对象是哪个类的实例。
+
+
+2.原理：（重量级锁）
+
+    1.首先synchronized用的锁是存放在对象头里面的，JVM基于进入和退出Monitor（监视器锁互斥）对象实现同步块和同步方法的；
+
+    2.编译之后在同步代码块之前插入Monitorenter指令，同步代码块完成之后或异常之后插入Monitorexit指令；
+</code></pre><ol start="3">
 <li><p>写一个生产者消费者模式？</p>
 <p> public class TestProducerConsumer {</p>
 <p> private static final int cap = 3;<br> static Queue<integer>  queue = new LinkedList<integer>();<br> static Object lock = new Object();</integer></integer></p>
@@ -622,30 +684,32 @@ public void run() {
 <p><a href="http://www.xuchunfa.cn/2018/08/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池详解</a></p>
 <p>7.线程池中阻塞队列的理解？</p>
 <p><a href="http://www.xuchunfa.cn/2019/04/19/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3/">阻塞队列详解</a></p>
-<ol start="8">
-<li><p>synchronized底层实现原理？</p>
-<pre><code>使用方式：
-
- 1.同步普通方法，锁的是当前对象；
-
- 2.同步静态方法，锁的是当前Class的对象;
-
- 3.同步块，锁的是（）内的对象；
-</code></pre><p> 原理；（重量级锁）</p>
-<pre><code>1.首先synchronized用的锁是存放在对象头里面的，JVM基于进入和退出Monitor（监视器锁互斥）对象实现同步块和同步方法的；
-
-2.编译之后在同步代码块之前插入Monitorenter指令，同步代码块完成之后或异常之后插入Monitorexit指令；
-</code></pre></li>
-</ol>
 <p>9.CAS算法出现的问题？</p>
-<pre><code>1.ABA问题。在变量前面加上版本号，每次变量更新的时候版本号加1，变化过程从A-B-A变成了1A-2B-3A了。
+<pre><code>1.CAS机制
 
-2.循环时间开销大。CAS操作长时间不成功的话会一直自旋，CPU开销大。
+    compareAndSwapInt(内存值、预期值、新值)，当更新时比较内存值和预期值是否相等
+    相等的话则更新，否则一直自旋重试；
 
-3.只能保证一个共享变量的原子操作。引入AtomicReference保证对象之间的原子性，可以把多个共享变量放在一个对象里面进行CAS操作；
+2.问题
+
+    1.ABA问题。
+
+     在变量前面加上版本号，每次变量更新的时候版本号加1，变化过程从A-B-A变成了1A-2B-3A了。
+
+    2.循环时间开销大。CAS操作长时间不成功的话会一直自旋，CPU开销大。
+
+    3.只能保证一个共享变量的原子操作。
+
+      引入AtomicReference保证对象之间的原子性，可以把多个共享变量放在一个对象里面进行CAS操作；
 </code></pre><p>10.什么叫自旋锁？</p>
-<pre><code>为了降低阻塞和唤醒线程对性能造成的影响，可以让请求锁失败的线程自旋，即不放弃CPU的执行时间，当前面的锁释放了同步资源以后，
-自旋线程就能不必阻塞直接获取同步资源，从而避免了线程切换的开销。
+<pre><code>自旋锁：
+
+    为了降低阻塞和唤醒线程对性能造成的影响，可以让请求锁失败的线程自旋，即不放弃CPU的执行时间，
+    当前面的锁释放了同步资源以后，自旋线程就能不必阻塞直接获取同步资源，从而避免了线程切换的开销。
+
+特点：
+
+    自旋时间过长影响整体性能，过短达不到延迟阻塞的目的；
 </code></pre><ol start="10">
 <li>锁有哪几种？</li>
 </ol>
@@ -654,24 +718,31 @@ public void run() {
 
     是：悲观锁。例如synchronized和Lock的实现类。
 
-    否：乐观锁。线程直接获取同步资源数据执行各自的操作，认为自己在使用数据时不会有其他线程修改数据，
-    但在更新数据时会去判断是否有其他线程修改数据，若修改了执行报错或自动重试等等，
-    例如CAS算法。
+    否：乐观锁。
+
+        总认为不会产生并发问题，每次去读数据时总认为不会有线程更改数据，所以不加锁
+        的读，但是在更改数据时会判断在这之前有没有其他线程也更改过数据，一般使用
+        版本号控制或CAS操作实现；
+
+        乐观锁不能解决脏数据问题；
 
 2.锁住同步资源失败不阻塞时分为：
 
     自旋锁和适应性自旋锁。
 
-    适应性自旋锁：自旋的次数由前一次在同一个锁上的自旋时间以及锁的拥有者的状态决定，如果自旋刚刚成功过，则认为此次自旋等待成功的可能性很大，
+    适应性自旋锁：自旋的次数由前一次在同一个锁上的自旋时间以及锁的拥有者的状态决定，
+    如果自旋刚刚成功过，则认为此次自旋等待成功的可能性很大，
     于是增长自旋等待的时间，对于自旋成功次数很少的某个锁，直接阻塞线程；
 
 3.根据锁的状态分为：
+
+    无锁、偏向锁、轻量级锁、重量级锁；
 
     3.1 对象头的介绍：
 
         1.Mark Word:存储对象的hashcode、分代年龄、和锁标志位信息；
 
-        2.klass point:对象指向它的类元数据的指针；
+        2.class point:对象指向它的类元数据的指针；
 
         目的：出现不同锁状态的原因，都是为了减少获得锁和释放锁带来的性能消耗，
 
@@ -706,15 +777,20 @@ public void run() {
 
     3.5 重量级锁（10）：等待锁的线程都会进入到阻塞状态；
 
+        由对象内部的 Monitor 实现，本质是依赖于底层操作系统的 Mutex Locks实现
+        实现线程切换需要实现用户态和内核态的切换，代价高；
+
 总结：
 
-    偏向锁通过对比Mark Word解决加锁问题，避免执行CAS操作。而轻量级锁是通过用CAS操作和自旋来解决加锁问题，
-    避免线程阻塞和唤醒而影响性能。重量级锁是将除了拥有锁的线程以外的线程都阻塞。
+    偏向锁通过对比Mark Word解决加锁问题，避免执行CAS操作。
+
+    而轻量级锁是通过用CAS操作和自旋来解决加锁问题，避免线程阻塞和唤醒而影响性能。
+
+    重量级锁是将除了拥有锁的线程以外的线程都阻塞。
 
 4.根据线程获取锁的顺序分为：
 
     公平锁：不会出现线程饿死的状态；
-
 
     非公平锁：特点是线程通过插队尝试获取锁，有几率直接获取锁而不用进入阻塞队列（除非尝试失败），减少了CPU唤醒线程的开销，
     提高了吞吐率；
@@ -728,63 +804,35 @@ public void run() {
     独享锁（排他锁）：
 
     共享锁：ReentrantReadWriteLock读写锁
-</code></pre><ol start="9">
-<li>volatile作用，指令重排相关？    </li>
-</ol>
-<p>参考：</p>
-<p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
-<p><a href="https://www.itcodemonkey.com/article/1725.html" target="_blank" rel="noopener">小灰漫画volatile</a></p>
-<pre><code>1.volatile变量在线程之间具有可见性；基于CPU的内存屏障实现的。
-
-2.volatile变量禁止指令重排；
-
-3.每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；
-
-4.每个volatile读操作前插入LoadLoad屏障，读操作之后插入LoadStore屏障；
-</code></pre><p>9.java内存模型？</p>
-<p><img src="/images/内存模型.png" alt=""></p>
-<pre><code>1.JMM是一种规范，用于决解由于多线程通过共享内存（主存）进行通信时，存在本地内存数据不一致，编译器对代码指令重排等带来的问题。
-
-2.java并发编程中保证原子性、可见性和有序性的方法：
-
-    原子性：synchronized保证方法和代码块内的操作是原子性的。
-
-    可见性：synchronized、volatile和final关键字；
-
-    有序性：synchronized关键字；
-
-3.happens-before原则（8个）：
-
-    3.1 程序次序规则：单线程内顺序发生；
-
-    3.2 锁定规则：unlock操作先于对同一个锁的lock操作；
-
-    3.3 volatile规则：对volatile变量的写操作先于读操作；
-
-    3.4 传递规则:A先于B，B先于C，则A先于C；
-
-    3.5 线程启动规则：Thread对象的start()先于该线程的每一个动作；
-
-    3.6 线程中断规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生；
-
-    3.7 线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；
-
-    3.8 对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；
 </code></pre><ol start="13">
 <li>线程的状态？</li>
 </ol>
 <p><img src="/images/threadState.PNG" alt=""></p>
-<p>14.中断机制，interrupt和interrupted的区别，哪些状态可以中断并抛出InterruptedException?</p>
-<p>15.sleep和wait的区别?</p>
-<p>16.为什么ReentrantLock的锁粒度小，sychronized不是也可以用方法块来降低锁粒度?</p>
-<p>17.公平锁和非公平锁的定义，及其优缺点，ReentrantLock和synchronized使用公平还是非公平锁?</p>
-<p>18.sychronized的自旋锁、偏向锁、轻量级锁、重量级锁，分别介绍和联系（膨胀）?</p>
-<p>19.简述线程池原理，FixedThreadPool用的阻塞队列是什么?</p>
-<p>20.简述AQS，及其核心组件，哪些地方用到AQS，用到什么设计模式？</p>
-<p>21.volatile关键字，他是如何保证可见性，有序性?</p>
-<p>22.Java内存模型的可见性，原子性，有序性，用什么方法来分别保证这些特性?</p>
-<p>23.CAS操作，及其可能带来问题和可以怎么解决？</p>
+<pre><code>六种状态：
 
+    新建（NEW）: 线程还没开始执行；
+    运行（RUNNABLE）: 包含就绪(在等待处理器)和运行；
+    阻塞(BLOCKED): 在等待 monitor lock 去进入Synchronied方法或代码块；
+    等待（WAITING）: wait()；
+    超时等待（TIMED_WAITTING）: wait(long mills)；
+    终止（TERMINATED）: 线程终止；
+</code></pre><p>14.中断机制，interrupt和interrupted的区别，哪些状态可以中断并抛出InterruptedException?</p>
+<pre><code>interrupt: 终止线程，并将标志位设为true；
+
+interrupted：判断线程是否中断，并清除标志位，所以仍为false；
+
+isInterrupted：判断线程是否中断，不会清除标志位，所以为true；
+
+线程调用 wait()、sleep()、join()方法时可以中断并抛出InterruptedException异常，
+
+而且它们被中断以后都会清除中断标记，中断后仍为false；
+</code></pre><p>15.sleep和wait的区别?</p>
+<pre><code>1.sleep是Thread的方法，wait是Object的方法；
+
+2.调用sleep方法的线程不会释放锁，wait方法会释放对象锁；
+
+3.wait只能在同步方法/同步代码块中使用，sleep可以在任何地方；
+</code></pre>
       
     </div>
     
@@ -899,7 +947,7 @@ public void run() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">125</span>
+                  <span class="site-state-item-count">126</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
