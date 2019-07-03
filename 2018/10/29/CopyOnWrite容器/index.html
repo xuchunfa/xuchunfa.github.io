@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="含义：即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。 COW与ReentrantReadWriteLock的区别与联系？ 相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被阻塞，性能又提升了。  不">
+<meta name="description" content="含义：即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器， 然后再往新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。 COW与ReentrantReadWriteLock的区别与联系？ 相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW读线程不会被阻塞，性能又提">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CopyOnWrite容器">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/10/29/CopyOnWrite容器/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="含义：即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。 COW与ReentrantReadWriteLock的区别与联系？ 相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被阻塞，性能又提升了。  不">
+<meta property="og:description" content="含义：即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器， 然后再往新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。 COW与ReentrantReadWriteLock的区别与联系？ 相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW读线程不会被阻塞，性能又提">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-23T13:23:32.240Z">
+<meta property="og:updated_time" content="2019-07-01T06:40:56.637Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CopyOnWrite容器">
-<meta name="twitter:description" content="含义：即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。 COW与ReentrantReadWriteLock的区别与联系？ 相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被阻塞，性能又提升了。  不">
+<meta name="twitter:description" content="含义：即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器， 然后再往新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。 COW与ReentrantReadWriteLock的区别与联系？ 相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW读线程不会被阻塞，性能又提">
 
 
 
@@ -410,9 +410,10 @@
       
 
       
-        <h4 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h4><pre><code>即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。
+        <h4 id="含义："><a href="#含义：" class="headerlink" title="含义："></a>含义：</h4><pre><code>即写时复制的容器，往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，
+然后再往新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。
 </code></pre><p><strong>COW与ReentrantReadWriteLock的区别与联系？</strong></p>
-<pre><code>相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW不会被阻塞，性能又提升了。
+<pre><code>相比于ReentrantReadWriteLock的特性：写锁被写线程获取后，读写线程都会被阻塞。而COW读线程不会被阻塞，性能又提升了。
 
 不同点：
 

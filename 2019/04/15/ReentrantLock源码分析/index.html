@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍： 主要区别： 1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；  2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，而公平锁会判断是否有其他线程更早地请求了该锁； 公平锁源码： fin">
+<meta name="description" content="分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍： 主要区别： 1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；  2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，   而公平锁会判断是否有其他线程更早地请求了该锁； 公平锁源码：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ReentrantLock源码分析">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/04/15/ReentrantLock源码分析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍： 主要区别： 1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；  2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，而公平锁会判断是否有其他线程更早地请求了该锁； 公平锁源码： fin">
+<meta property="og:description" content="分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍： 主要区别： 1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；  2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，   而公平锁会判断是否有其他线程更早地请求了该锁； 公平锁源码：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T03:50:52.905Z">
+<meta property="og:updated_time" content="2019-07-01T07:04:18.868Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReentrantLock源码分析">
-<meta name="twitter:description" content="分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍： 主要区别： 1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；  2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，而公平锁会判断是否有其他线程更早地请求了该锁； 公平锁源码： fin">
+<meta name="twitter:description" content="分公平锁和非公平锁两种，非公平锁的吞吐量更大，因为公平锁会进行大量的线程切换，造成性能下降，分别介绍： 主要区别： 1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；  2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，   而公平锁会判断是否有其他线程更早地请求了该锁； 公平锁源码：">
 
 
 
@@ -414,7 +414,8 @@
 <p>主要区别：</p>
 <pre><code>1.非公平锁在lock()方法中首先会通过CAS抢锁，若成功直接返回；否则和公平锁一样进入到tryAcquire方法；
 
-2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，而公平锁会判断是否有其他线程更早地请求了该锁；
+2.在tryAcquire方法中，若判断锁被释放（state=0），非公平锁会直接CAS抢锁，
+  而公平锁会判断是否有其他线程更早地请求了该锁；
 </code></pre><p>公平锁源码：</p>
 <pre><code>final void lock() {
         acquire(1);

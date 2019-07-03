@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="参考文献 CyclicBarrier源码解析 看一下构造函数： //parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。 public CyclicBarrier(int parties) {     this(parties, null); } 核心await()方法： public int await() throws InterruptedException, B">
+<meta name="description" content="参考文献 CyclicBarrier源码解析 看一下构造函数： //parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。 public CyclicBarrier(int parties) {     this(parties, null); }  public CyclicBarrier(int parties, Runnable barrierAction) {}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CyclicBarrier源码解析">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/04/15/CyclicBarrier源码解析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="参考文献 CyclicBarrier源码解析 看一下构造函数： //parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。 public CyclicBarrier(int parties) {     this(parties, null); } 核心await()方法： public int await() throws InterruptedException, B">
+<meta property="og:description" content="参考文献 CyclicBarrier源码解析 看一下构造函数： //parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。 public CyclicBarrier(int parties) {     this(parties, null); }  public CyclicBarrier(int parties, Runnable barrierAction) {}">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T13:09:05.163Z">
+<meta property="og:updated_time" content="2019-07-01T11:04:26.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CyclicBarrier源码解析">
-<meta name="twitter:description" content="参考文献 CyclicBarrier源码解析 看一下构造函数： //parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。 public CyclicBarrier(int parties) {     this(parties, null); } 核心await()方法： public int await() throws InterruptedException, B">
+<meta name="twitter:description" content="参考文献 CyclicBarrier源码解析 看一下构造函数： //parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。 public CyclicBarrier(int parties) {     this(parties, null); }  public CyclicBarrier(int parties, Runnable barrierAction) {}">
 
 
 
@@ -417,6 +417,13 @@
 public CyclicBarrier(int parties) {
     this(parties, null);
 }
+
+public CyclicBarrier(int parties, Runnable barrierAction) {}
+
+1.parties:表示屏障拦截的线程数量，每个线程调用await()方法告诉CyclicBarrier
+          已经到达屏障位置，线程被阻塞；
+
+2.barrierAction：所有线程到达屏障之后执行的操作；
 </code></pre><p>核心await()方法：</p>
 <pre><code>public int await() throws InterruptedException, BrokenBarrierException {
     try {
@@ -450,7 +457,9 @@ public CyclicBarrier(int parties) {
                 if (command != null)
                     command.run();
                 ranAction = true;
-                nextGeneration();//唤醒所有线程，开启下一代
+                //唤醒所有线程，开启下一代
+                //trip.signalAll()
+                nextGeneration();
                 return 0;
             } finally {
                 if (!ranAction)//在执行command.run()时发生了异常
@@ -463,6 +472,7 @@ public CyclicBarrier(int parties) {
             try {
                 if (!timed)
                     //Condition trip = reentrantLock.newCondition
+                    //线程阻塞
                     trip.await();
                 else if (nanos &gt; 0L)
                     nanos = trip.awaitNanos(nanos);

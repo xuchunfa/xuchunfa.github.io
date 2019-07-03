@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Collection.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Map.PNG">
-<meta property="og:updated_time" content="2019-05-29T02:48:51.962Z">
+<meta property="og:updated_time" content="2019-07-01T03:58:06.345Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
 <meta name="twitter:description" content="1.集合的整体框图 Collection部分：  Map部分：  2.讲讲CopyOnWriteArrayList容器？ COW详解      可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？  例如： for(String s : list){//内部创建迭代器     if(s.equals(&amp;quot;a&amp;quot;)){         lis">
@@ -569,8 +569,45 @@ void transfer(Entry[] newTable, boolean rehash) {
 
 2.JDK1.7 concurrentHashMap的每个Segment中含有一个
   transient volatile HashEntry&lt;K,V&gt;[]table，保证了entryAt/setEntryAt的可见性；
+
+3.获取最新的Segment元素：
+    Segment&lt;K,V&gt; s = (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(segments, u)
+  获取Segment元素中最新的HashEntry元素：
+    HashEntry&lt;K,V&gt; e = (HashEntry&lt;K,V&gt;) UNSAFE.getObjectVolatile
+    (tab, ((long)(((tab.length - 1) &amp; h)) &lt;&lt; TSHIFT) + TBASE)
+
+4.JDK1.8 三个用的较多的CAS操作
+
+    tabAt:获取index处的Node；
+    casTabAt:将newNode与table[i]处的node比较，没其他线程修改则替换；
+    setTabAt:设置table[i]处的node节点，前提实在加锁条件下synchronized；
 </code></pre><p>总结：</p>
-<pre><code>1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
+<pre><code>结论：
+
+    1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。
+    算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
+
+    2.ConcurrentHashMap不允许key或者value为null；
+
+    3.1.7和1.8版本的CHM的读操作都没有加锁；
+
+
+2.JDK1.7 concurrentHashMap的put操作：
+
+    2.1 获取segment的位置后尝试获取锁，获取到锁后node=null;
+        没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
+
+    2.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
+
+        没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
+
+        最大尝试次数MAX_SCAN_RETRIES则加锁等待。
+
+    2.3 scanAndLockForPut()返回时说明获取到锁了，返回的node不为null的话，说明
+        链表中没有对应的key，node=null 则在setEntryAt(tab, index, node)判断
+        node的key是否存在；
+
+    2.4 因为插入节点采用的头插法，所以在scanAndLockForPut会判断first有无发生变化，发生变化（有线程加入节点）则重新遍历链表；
 
 2.JDK1.8 concurrentHashMap的put操作：
 
@@ -584,41 +621,37 @@ void transfer(Entry[] newTable, boolean rehash) {
 
     2.3 采用尾插法插入新节点；
 
+3.JDK1.7 concurrentHashMap的get操作：
+
+    3.1 读操作没有加锁。通过volatile读语义保证可见性。只有当put和remove调用
+    setEntryAt（table,i）方法后（已经释放锁），读操作才能读到变化的table;
+
+    3.2 通过UNSAFE.getObjectVolatile(table,i)获得Segment&lt;K,V&gt;或HashEntry&lt;K,V&gt;[]的表头节点
+
+    保证了线程之间的可见性；
+
 3.JDK1.8 concurrentHashMap的get操作：
 
     3.1 读操作没有加锁。key的hash值小于0就去红黑树中查找；hash值大于0就去链表中查找。
 
     3.2 利用volatile线程可见性 (Node&lt;K,V&gt;)U.getObjectVolatile(tab,i);
-
-
-4.JDK1.7 concurrentHashMap的put操作：
-
-    4.1 获取segment的位置后尝试获取锁，获取到锁后node=null;没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
-
-    4.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
-
-        没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
-
-        最大尝试次数MAX_SCAN_RETRIES则加锁等待。
-
-    4.3 因为插入节点采用的头插法，所以在scanAndLockForPut会判断first有无发生变化，发生变化（有线
-
-        程加入节点）则重新遍历链表；
-
-
-5.JDK1.7 concurrentHashMap的get操作：
-
-    5.1 读操作没有加锁。通过volatile读语义保证可见性。只有当put和remove调用
-    setEntryAt（table,i）方法后（已经释放锁），读操作才能读到变化的table;
-
-    5.2 通过UNSAFE.getObjectVolatile(table,i)获得Segment&lt;K,V&gt;或HashEntry&lt;K,V&gt;[]的表头节点
-
-    保证了线程之间的可见性；
-</code></pre><p>6.关于HashMap的理解</p>
+</code></pre><p>6.关于HashMap的理解？</p>
+<p><a href="http://www.xuchunfa.cn/2018/08/07/HashMap%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">HashMap原理解析</a></p>
 <p>注意：</p>
 <pre><code>1.JDK1.7 和 JDK1.8 的hashMap都允许key为null,放在table[0]里面；
-</code></pre><p>总结：</p>
-<pre><code>1.JDK1.8 HashMap的resize操作：
+
+2.JDK1.8 树化链表时，首先是遍历链表赋值TreeNode的prev和next指针，然后再
+  调用链表头节点的treeify()方法构建红黑树；
+
+3.插入树节点后的详细调整过程；
+</code></pre><p><a href="http://www.xuchunfa.cn/2018/08/14/%E7%BA%A2%E9%BB%91%E6%A0%91/">红黑树节点的调整</a></p>
+<p>总结：</p>
+<pre><code>1.JDK1.7 HashMap的resize操作：
+
+    1.1 重新计算每个元素在新数组中的位置，采用头插法插入元素到新数组中，线程不安全；
+
+
+1.JDK1.8 HashMap的resize操作：
 
     1.1 新的数组长度和Threshold是旧数组对应原值的两倍；
 
@@ -626,26 +659,46 @@ void transfer(Entry[] newTable, boolean rehash) {
 
         //loHead和loTail维护在新数组中位置不变的链表
         //hiHead和hiTail维护在新数组中位置发生变化的链表
+        //以 0和16 oldLen=16 为例说明
         if(hash &amp; oldCap == 0){
             newTab[j] = loHead;//在新数组中的位置保持不变
         }else{
             newTab[j+oldCap] = hiHead;//在新数组中的位置变成j+oldCap
-        } 
+        }
+
+
+2.JDK1.7 HashMap的get和put操作：
+
+    2.1 put操作是头插法
+
+    2.2 普通链表结构；
 
 2.JDK1.8 HashMap的get和put操作：
 
-    2.1 新加了红黑树的数据结构；
+    2.1 put操作是尾插法
 
-
-3.JDK1.7 HashMap的resize操作：
-
-    3.1 重新计算每个元素在新数组中的位置，采用头插法插入元素到新数组中，线程不安全；
-
-4.JDK1.7 HashMap的get和put操作：
-
-    4.1 普通链表结构；
+    2.2 新加了红黑树的数据结构；
 </code></pre><p>7.ConcurrentHashMap如何保证线程安全，并发度大小，jdk1.8有什么变化?</p>
+<p>8.HashMap的长度为什么是2的n次幂？</p>
+<pre><code>只有当数组长度等于2的n次幂时，h&amp;(length-1)才等价于h%length；
+</code></pre><p>9.HashTable和HashMap的区别？</p>
+<pre><code>1.前者线程安全的,但是效率低。
 
+2.前者的键和值都不允许为空，而后者的key和value都允许为空。
+
+3.为什么HashTable的key不允许为null?
+
+    HashTable起初是为并发环境设计。如果get一个null键返回的结果是null，那么有两种可能: 
+    1.hashtable中存放了一个(null, null)键值对。 
+    2.hashtable中不存在null这个key。 这就要求使用者用containsKey()方法来做进一步确认。但是在这两个操作中间很可能发生并发修改导致结果出错。
+    所以一开始就禁止了null键或null值。
+
+4.前者的hash直接使用hashcode，后者hash进行过异或计算；
+
+5.前者初始容量11，后者16；
+
+6.前者扩容容量为2*oldTab+1，后者为2*oldTab；
+</code></pre>
       
     </div>
     

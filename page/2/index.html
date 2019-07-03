@@ -2411,6 +2411,13 @@ protected final boolean tryRelease(int releases) {
 public CyclicBarrier(int parties) {
     this(parties, null);
 }
+
+public CyclicBarrier(int parties, Runnable barrierAction) {}
+
+1.parties:表示屏障拦截的线程数量，每个线程调用await()方法告诉CyclicBarrier
+          已经到达屏障位置，线程被阻塞；
+
+2.barrierAction：所有线程到达屏障之后执行的操作；
 </code></pre><p>核心await()方法：</p>
 <pre><code>public int await() throws InterruptedException, BrokenBarrierException {
     try {
@@ -2444,7 +2451,9 @@ public CyclicBarrier(int parties) {
                 if (command != null)
                     command.run();
                 ranAction = true;
-                nextGeneration();//唤醒所有线程，开启下一代
+                //唤醒所有线程，开启下一代
+                //trip.signalAll()
+                nextGeneration();
                 return 0;
             } finally {
                 if (!ranAction)//在执行command.run()时发生了异常
@@ -2457,6 +2466,7 @@ public CyclicBarrier(int parties) {
             try {
                 if (!timed)
                     //Condition trip = reentrantLock.newCondition
+                    //线程阻塞
                     trip.await();
                 else if (nanos &gt; 0L)
                     nanos = trip.awaitNanos(nanos);
@@ -2649,7 +2659,13 @@ public CyclicBarrier(int parties) {
           
             <p>参考文献</p>
 <p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p>
-<p>文献已经给出了详细的讲解，这里作简单的总结：</p>
+<p><strong>CountDownLatch的作用？</strong></p>
+<pre><code>等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒，
+必要时再对各个任务执行的结果进行汇总；
+
+初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到
+各个线程中去，e.execute(new WorkerRunnable(latch, i))，调用latch.countDown()代表完成一个任务；
+</code></pre><p>文献已经给出了详细的讲解，这里作简单的总结：</p>
 <p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
 <pre><code>protected int tryAcquireShared(int acquires) {
         return (getState() == 0) ? 1 : -1;

@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/ThreadPool.jpg">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/线程池类图.PNG">
 <meta property="og:image" content="https://i.imgur.com/4n7P9X3.png">
-<meta property="og:updated_time" content="2019-05-29T02:53:22.374Z">
+<meta property="og:updated_time" content="2019-07-01T08:49:30.854Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 线程池中线程创建的时机？1.判断核心线程池是否已满，否则提交任务的时候创建新的线程，并由这个线程执行这个任务，是则进入下步；  2.判断工作队列是">
@@ -494,6 +494,8 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 
 3.DiscardOldestPolicy:如果线程池没有关闭，丢弃队列最前面的任务，执行当前任务；
 
+    eg:e.getQueue().poll();
+
 4.CallerRunsPolicy:如果线程池没有关闭，由调用线程（例如main线程）执行任务；
 </code></pre><p><strong>创建线程池的方式：(Executors框架提供)</strong></p>
 <pre><code>1.newFixedThreadPool：创建固定数量的线程池。默认使用的是无界队列，maximumPoolSize和keepAliveTime参数无效，不会拒绝任务。
@@ -503,13 +505,15 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
                                   0L, TimeUnit.MILLISECONDS,
                         new LinkedBlockingQueue&lt;Runnable&gt;());
 
-2.newCachedThreadPool：没有数量限制的线程池。适合处理生存期短的大量异步任务或负载较轻、空闲线程等待执行任务超过60s则销毁线程。
+2.newCachedThreadPool：没有数量限制的线程池。
+                       适合处理生存期短的大量异步任务或负载较轻、空闲线程等待执行任务超过60s则销毁线程。
 
     1.return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                                   60L, TimeUnit.SECONDS,
                       new SynchronousQueue&lt;Runnable&gt;());
 
-    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，如果此时maxPoolSize=0的话会创建一个新线程执行任务；即没有空闲线程接收任务时进入下面这个分支：
+    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，
+    如果此时maxPoolSize=0的话会创建一个新线程执行任务；即没有空闲线程接收任务时进入下面这个分支：
 
         ......
         else if (!addWorker(command, false))
@@ -525,9 +529,13 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
                                 0L, TimeUnit.MILLISECONDS,
                     new LinkedBlockingQueue&lt;Runnable&gt;()));
 
-4.newSingleThreadScheduledExecutor和newScheduledThreadPool：继承ThreadExecutor实现ScheduledExecutorService接口、执行周期任务、给定延迟。
+4.newSingleThreadScheduledExecutor和newScheduledThreadPool：继承ThreadExecutor
+实现ScheduledExecutorService接口、执行周期任务、定期执行命令
 
- return new ScheduledThreadPoolExecutor(corePoolSize);
+super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,
+          new DelayedWorkQueue());
+
+DelayedWorkerQueue是可以提供延迟的阻塞队列，保存的是延迟期到了以后的元素，按延迟时间从短到长排的序；
 
 执行步骤：
 

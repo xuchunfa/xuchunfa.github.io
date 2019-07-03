@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="volatile作用，指令重排相关？      参考： volatile理解 小灰漫画volatile 1.volatile变量在线程之间具有可见性；基于CPU的内存屏障实现的。  2.volatile变量禁止指令重排；  3.每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；  4.每个volatile读操作前插入LoadLoad屏障，读操作之后插">
+<meta name="description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；      1.2 每个volatil">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结-Java并发编程2">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/06/27/面试总结-Java并发编程2/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="volatile作用，指令重排相关？      参考： volatile理解 小灰漫画volatile 1.volatile变量在线程之间具有可见性；基于CPU的内存屏障实现的。  2.volatile变量禁止指令重排；  3.每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；  4.每个volatile读操作前插入LoadLoad屏障，读操作之后插">
+<meta property="og:description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；      1.2 每个volatil">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/内存模型.png">
-<meta property="og:updated_time" content="2019-06-27T11:30:11.698Z">
+<meta property="og:updated_time" content="2019-07-02T07:33:00.842Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java并发编程2">
-<meta name="twitter:description" content="volatile作用，指令重排相关？      参考： volatile理解 小灰漫画volatile 1.volatile变量在线程之间具有可见性；基于CPU的内存屏障实现的。  2.volatile变量禁止指令重排；  3.每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；  4.每个volatile读操作前插入LoadLoad屏障，读操作之后插">
+<meta name="twitter:description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；      1.2 每个volatil">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/内存模型.png">
 
 
@@ -413,21 +413,49 @@
 
       
         <ol>
-<li>volatile作用，指令重排相关？    </li>
+<li>volatile作用，如何保证可见性和有序性？    </li>
 </ol>
 <p>参考：</p>
 <p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
 <p><a href="https://www.itcodemonkey.com/article/1725.html" target="_blank" rel="noopener">小灰漫画volatile</a></p>
-<pre><code>1.volatile变量在线程之间具有可见性；基于CPU的内存屏障实现的。
+<p>有序性</p>
+<pre><code>通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程
+间共享变量的有序性；
 
-2.volatile变量禁止指令重排；
+具体屏障：
 
-3.每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；
+    1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；
 
-4.每个volatile读操作前插入LoadLoad屏障，读操作之后插入LoadStore屏障；
+    1.2 每个volatile读操作前插入LoadLoad屏障，读操作之后插入LoadStore屏障；
+</code></pre><p>可见性</p>
+<pre><code>1.写入一个volatile变量时，JMM会将线程本地内存的共享变量刷新到主内存；
+
+2.读一个volatile变量时，JMM会把线程本地内存中的共享变量置为无效，直接从主存内读取共享变量；
+</code></pre><p>补充：</p>
+<pre><code>volatile 修饰long和double变量，可以解决64位数据读写操作划分为两次32位的操作
+产生的非原子性协定问题；
+
+可以使long和double的赋值是原子的；
 </code></pre><p>2.java内存模型？</p>
 <p><img src="/images/内存模型.png" alt=""></p>
-<pre><code>1.JMM是一种规范，用于决解由于多线程通过共享内存（主存）进行通信时，存在本地内存数据不一致，编译器对代码指令重排等带来的问题。
+<pre><code>1.JMM是一种规范，为了实现让Java程序在各种平台上达到一致的内存访问结果，并且能让
+  Java的并发内存访问操作不会出现歧义；
+
+ 包括了以下内容：
+
+    1.主内存和线程本地工作内存的抽象模型；
+
+    2.主内存和本地内存的交互操作，8个原子操作；
+
+    3.volatile保证可见性和有序性；
+
+    4.8条happens-before原则保证内存模型有序性；
+
+    5.final保证可见性
+
+        5.1 final域写之后插入了storestore屏障，保证了对final域的写入发生在该对象引用被使用之前；
+
+        5.2 final域读之前插入了loadload屏障，保证了先读包含final域的引用，再读引用的final域；
 
 2.java并发编程中保证原子性、可见性和有序性的方法：
 
@@ -456,15 +484,83 @@
     3.8 对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；
 </code></pre><p>16.为什么ReentrantLock的锁粒度小，synchronized不是也可以用方法块来降低锁粒度?</p>
 <p>17.公平锁和非公平锁的定义，及其优缺点，ReentrantLock和synchronized使用公平还是非公平锁?</p>
-<p>19.简述线程池原理，FixedThreadPool用的阻塞队列是什么?</p>
-<p>20.简述AQS，及其核心组件，哪些地方用到AQS，用到什么设计模式？</p>
-<p>21.volatile关键字，他是如何保证可见性，有序性?</p>
-<p>22.Java内存模型的可见性，原子性，有序性，用什么方法来分别保证这些特性?</p>
-<p>23.CAS操作，及其可能带来问题和可以怎么解决？</p>
-<p>24.run和start方法区别或联系？</p>
-<p>25.如何让几个线程按顺序先后执行？</p>
-<p>26.ReadWriteLock读写之间互斥吗？</p>
+<pre><code>前者默认使用的是非公平锁、后者是非公平锁；
 
+公平锁：先到的线程，优先获取到锁；
+
+非公平锁：释放锁的时候，同步队列在唤醒的时候，其他线程抢占式获取到锁；
+
+非公平锁
+
+    优点：吞吐率大；
+
+    缺点：阻塞队列中的线程长期处于饥饿状态；
+</code></pre><p>19.简述线程池原理，FixedThreadPool用的阻塞队列是什么?</p>
+<pre><code>LinkedBlockingQueue
+</code></pre><p>20.简述AQS，及其核心组件，哪些地方用到AQS，用到什么设计模式？</p>
+<pre><code>1.什么是AQS？
+
+    队列同步器。是构建锁或其他同步组件的基础框架，通过使用同步状态变量state
+    以及FIFO同步队列，来完成资源获取线程的排队工作；
+
+ReentrantLock、ReentrantReadWriteLock、CountDownLatch用到了AQS
+
+模板方法设计模式：抽象出了很多父类方法，tryAcquire、tryRelease等；
+</code></pre><p>22.Java内存模型的可见性，原子性，有序性，用什么方法来分别保证这些特性?</p>
+<pre><code>1.Java内存模型中的8中原子操作
+
+    lock、unlock、read、load(主内存向工作内存读数据)、use、assign
+    store、write(工作内存向主内存写数据)
+
+2.
+    synchronized保证原子性、有序性、可见性；
+
+    volatile保证了可见性和有序性；
+</code></pre><p>23.CAS操作，及其可能带来问题和可以怎么解决？</p>
+<pre><code>ABA问题
+</code></pre><p>24.run和start方法区别或联系？</p>
+<pre><code>1.start()启动线程，真正实现多线程，一旦线程被CPU调度，就会去执行run方法
+run()方法是一个普通的对象方法；
+
+2.start()中的run代码没执行完就可以通过线程切换，执行后面的代码，普通run()方法
+必须执行完代码后，才能执行主线程中的其他代码；
+
+3.start()方法不能重复调用，即线程结束后不能再次调用start()方法，普通run
+  方法可以重复调用；
+</code></pre><p>25.如何让几个线程按顺序先后执行？</p>
+<pre><code>1.Join()方法
+
+    Thread t1 = new Thread(new Myworker(null))；
+    Thread t2 = new Thread(new Myworker(t1))；
+    ....
+
+    Myworker{
+        run(){
+            //等待上一个线程结束
+            beforeThread.join();
+            开始自己的操作；
+        }
+    }
+
+2.CountDownLatch实现（信号量同理）
+
+    cdl1 = new CountDownLatch(0)；
+    cdl2 = new CountDownLatch(1)；
+    Mywork(CountDownLatch cdl1,CountDownLatch cdl2){
+        run(){
+            cdl1.await();
+            开始执行自己的操作；
+            cdl2.countDown();//执行下一个线程
+        }
+    }
+
+3.FutureTask的get()阻塞
+
+4.阻塞队列
+</code></pre><p>26.ReadWriteLock读写之间互斥吗？</p>
+<pre><code>读写、写读、写写之间都互斥；
+读读之间不互斥；
+</code></pre>
       
     </div>
     

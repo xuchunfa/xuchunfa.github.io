@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="参考文献 CountDownLatch源码解析 文献已经给出了详细的讲解，这里作简单的总结： 在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法： protected int tryAcquireShared(int acquires) {         return (getState() == 0) ? 1 : -1;">
+<meta name="description" content="参考文献 CountDownLatch源码解析 CountDownLatch的作用？ 等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒， 必要时再对各个任务执行的结果进行汇总；  初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到 各个线程中去，e.execute(new WorkerRunnable(latch, i))">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CountDownLatch源码解析">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/04/15/CountDownLatch源码解析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="参考文献 CountDownLatch源码解析 文献已经给出了详细的讲解，这里作简单的总结： 在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法： protected int tryAcquireShared(int acquires) {         return (getState() == 0) ? 1 : -1;">
+<meta property="og:description" content="参考文献 CountDownLatch源码解析 CountDownLatch的作用？ 等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒， 必要时再对各个任务执行的结果进行汇总；  初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到 各个线程中去，e.execute(new WorkerRunnable(latch, i))">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T12:26:32.644Z">
+<meta property="og:updated_time" content="2019-07-01T10:41:51.869Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CountDownLatch源码解析">
-<meta name="twitter:description" content="参考文献 CountDownLatch源码解析 文献已经给出了详细的讲解，这里作简单的总结： 在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法： protected int tryAcquireShared(int acquires) {         return (getState() == 0) ? 1 : -1;">
+<meta name="twitter:description" content="参考文献 CountDownLatch源码解析 CountDownLatch的作用？ 等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒， 必要时再对各个任务执行的结果进行汇总；  初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到 各个线程中去，e.execute(new WorkerRunnable(latch, i))">
 
 
 
@@ -412,7 +412,13 @@
       
         <p>参考文献</p>
 <p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p>
-<p>文献已经给出了详细的讲解，这里作简单的总结：</p>
+<p><strong>CountDownLatch的作用？</strong></p>
+<pre><code>等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒，
+必要时再对各个任务执行的结果进行汇总；
+
+初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到
+各个线程中去，e.execute(new WorkerRunnable(latch, i))，调用latch.countDown()代表完成一个任务；
+</code></pre><p>文献已经给出了详细的讲解，这里作简单的总结：</p>
 <p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
 <pre><code>protected int tryAcquireShared(int acquires) {
         return (getState() == 0) ? 1 : -1;

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="JDK1.7源码的参数 怎么理解 参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.DEFAULT_INITIAL_CAPACITY:默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i].">
+<meta name="description" content="JDK 1.7的参数： 1.DEFAULT_CONCURRENCY_LEVEL      简单看成是segment的个数，即并发度。默认值：16。  2.MAX_SEGMENTS：      segment的最大个数。值为2^16=65536  3.DEFAULT_INITIAL_CAPACITY:      默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ConcurrentHashMap的理解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="JDK1.7源码的参数 怎么理解 参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.DEFAULT_INITIAL_CAPACITY:默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i].">
+<meta property="og:description" content="JDK 1.7的参数： 1.DEFAULT_CONCURRENCY_LEVEL      简单看成是segment的个数，即并发度。默认值：16。  2.MAX_SEGMENTS：      segment的最大个数。值为2^16=65536  3.DEFAULT_INITIAL_CAPACITY:      默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-22T00:54:30.491Z">
+<meta property="og:updated_time" content="2019-07-01T03:40:08.402Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ConcurrentHashMap的理解">
-<meta name="twitter:description" content="JDK1.7源码的参数 怎么理解 参数   1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。   2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536   3.DEFAULT_INITIAL_CAPACITY:默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i].">
+<meta name="twitter:description" content="JDK 1.7的参数： 1.DEFAULT_CONCURRENCY_LEVEL      简单看成是segment的个数，即并发度。默认值：16。  2.MAX_SEGMENTS：      segment的最大个数。值为2^16=65536  3.DEFAULT_INITIAL_CAPACITY:      默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i">
 
 
 
@@ -399,58 +399,140 @@
       
 
       
-        <p><strong>JDK1.7源码的参数</strong></p>
-<h4 id="怎么理解"><a href="#怎么理解" class="headerlink" title="怎么理解"></a>怎么理解</h4><ul>
-<li><p>参数</p>
-<p>  1.DEFAULT_CONCURRENCY_LEVEL：简单看成是segment的个数，即并发度。默认值：16。</p>
-<p>  2.MAX_SEGMENTS：segment的最大个数。值为2^16=65536</p>
-<p>  3.DEFAULT_INITIAL_CAPACITY:默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i].</p>
-<p>  4.segmentMask:默认值15。</p>
-<p>  5.segmentShift:默认值28。</p>
-</li>
+        <p>JDK 1.7的参数：</p>
+<pre><code>1.DEFAULT_CONCURRENCY_LEVEL
+
+    简单看成是segment的个数，即并发度。默认值：16。
+
+2.MAX_SEGMENTS：
+
+    segment的最大个数。值为2^16=65536
+
+3.DEFAULT_INITIAL_CAPACITY:
+
+    默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i].
+
+4.segmentMask:默认值15。
+
+5.segmentShift:默认值28。
+</code></pre><p>JDK1.8 的参数：</p>
+<pre><code>1.TREEIFY_THRESHOLD：默认值8，链表转红黑树的阈值。
+
+2.table：取消分段锁，直接改用一个table数组；
+
+    table = transient volatile Node&lt;K,V&gt;[]
+</code></pre><ul>
 <li><p>初始化操作</p>
-<p>  1.Segment[i] 为每个段桶的数目(必须为2^n)，默认值为2，负载因子是 0.75，得出初始阈值为 1.5，也就是以后插入第一个元素不会触发扩容，插入第二个会进行第一次扩容。</p>
-</li>
+<pre><code>1.Segment[i] 为每个段中表的默认初始化容量，默认值为2，负载因子是 0.75，得出初始阈值为 1.5，
+也就是以后插入第一个元素不会触发扩容，插入第二个会进行第一次扩容。
+</code></pre></li>
 </ul>
 <ul>
 <li><p>定位Segment的散列算法</p>
-<p>  1.(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask：即让hash值的高4位与掩码做与运算。</p>
-</li>
+<pre><code>1.(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask
+
+  即让hash值的高4位与掩码做与运算。
+</code></pre></li>
 <li><p>定位HashEntry的散列算法</p>
-<p>  int index = (tab.length - 1) &amp; hash;//类似于HashMap中的数组下标</p>
-</li>
-<li><p>Get操作流程（没采用同步设计，采用事后弥补的方式）</p>
-<pre><code> V get(Object key, int hash) {
-  //transient volatile int count; 代表segment中存在entry的个数
-  if (count != 0) { // read-volatile  
-      HashEntry&lt;K,V&gt; e = getFirst(hash); 
-      while (e != null) { 
-         if (e.hash == hash &amp;&amp; key.equals(e.key)) { 
-              V v = e.value; 
-              if (v != null) 
-                 return v; 
-             return readValueUnderLock(e); //另一个线程新增了一个entry。如果另一个线程新增的这个entry又恰好是我们要get的
-         } 
-         e = e.next; 
-     } 
- } 
- return null; 
-}
+<pre><code>int index = (tab.length - 1) &amp; hash;//类似于HashMap中的数组下标
 </code></pre></li>
 </ul>
-<p>getFirst(hash)方法：</p>
-<pre><code>HashEntry&lt;K,V&gt; getFirst(int hash) {
-    HashEntry&lt;K,V&gt;[] tab = table;
-    return tab[hash &amp; (tab.length - 1)]；
+<p>1.JDK 1.7 ConHashMap的put()操作</p>
+<pre><code>else {
+    //node是scanAndLockForPut()获取锁时的返回值
+    if (node != null)
+        node.setNext(first);
+    else
+        node = new HashEntry&lt;K,V&gt;(hash, key, value, first);
+
+    int c = count + 1;
+
+    if (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)
+        rehash(node); 
+    else
+        //头插法插入元素
+        setEntryAt(tab, index, node);
+    ++modCount;
+    count = c;
+    oldValue = null;
+    break;
+    }
 }
-</code></pre><p>另一版本的Get操作流程：(CAS算法无锁化的修改值操作)</p>
-<pre><code>public V get(Object key) {
-    Segment&lt;K,V&gt; s; // manually integrate access methods to reduce overhead
-    HashEntry&lt;K,V&gt;[] tab;
-    int h = hash(key);
-    long u = (((h &gt;&gt;&gt; segmentShift) &amp; segmentMask) &lt;&lt; SSHIFT) + SBASE;
+
+//循环获取锁
+while (!tryLock()) {
+    HashEntry&lt;K,V&gt; f; // to recheck first below
+    if (retries &lt; 0) {
+        if (e == null) {
+            //e = fisrt
+            if (node == null) // speculatively create node
+                node = new HashEntry&lt;K,V&gt;(hash, key, value, null);
+            retries = 0;
+        }
+        else if (key.equals(e.key))
+            retries = 0;
+        else
+            e = e.next;
+    }
+     //尝试获取锁超过一定次数后线程阻塞
+    else if (++retries &gt; MAX_SCAN_RETRIES) {
+        lock();
+        break;
+    }
+    else if ((retries &amp; 1) == 0 &amp;&amp;
+             //这个时候是有大问题了，那就是有新的元素进到了链表，成为了新的表头
+             //所以这边的策略是，相当于重新走一遍这个 scanAndLockForPut 方法
+             (f = entryForHash(this, hash)) != first) {
+        e = first = f; // re-traverse if entry changed
+        retries = -1;
+    }
+}
+    return node;
+}
+</code></pre><p>1.JDK 1.8 ConHashMap的put()操作</p>
+<pre><code> //在表头插入节点
+ else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) {
+    if (casTabAt(tab, i, null,
+                 new Node&lt;K,V&gt;(hash, key, value, null)))
+        break;                   
+    }
+
+synchronized (f) {
+    if (tabAt(tab, i) == f) {
+        if (fh &gt;= 0) {
+            binCount = 1;
+            for (Node&lt;K,V&gt; e = f;; ++binCount) {
+                K ek;
+                ......
+                Node&lt;K,V&gt; pred = e;
+                //尾插法插入节点
+                if ((e = e.next) == null) {
+                    pred.next = new Node&lt;K,V&gt;(hash, key,
+                                              value, null);
+                    break;
+                }
+            }
+        }
+        //红黑树插入节点
+        else if (f instanceof TreeBin) {
+            Node&lt;K,V&gt; p;
+            binCount = 2;
+            if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,
+                                           value)) != null) {
+                oldVal = p.val;
+                if (!onlyIfAbsent)
+                    p.val = value;
+            }
+        }
+    }
+}
+</code></pre><p>2.JDK 1.7 ConHashMap的get()操作</p>
+<pre><code>//没有加锁
+public V get(Object key) {
+
     if ((s = (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(segments, u)) != null &amp;&amp;
         (tab = s.table) != null) {
+          //native方法得到表头节点
         for (HashEntry&lt;K,V&gt; e = (HashEntry&lt;K,V&gt;) UNSAFE.getObjectVolatile
                  (tab, ((long)(((tab.length - 1) &amp; h)) &lt;&lt; TSHIFT) + TBASE);
              e != null; e = e.next) {
@@ -461,117 +543,53 @@
     }
     return null;
 }
-</code></pre><ul>
-<li><p>Put操作流程（头插法加锁完成）</p>
-<pre><code>final V put(K key, int hash, V value, boolean onlyIfAbsent) {
-    HashEntry&lt;K,V&gt; node = tryLock() ? null :
-        scanAndLockForPut(key, hash, value);
-    V oldValue;
-    try {
-        HashEntry&lt;K,V&gt;[] tab = table;
-        int index = (tab.length - 1) &amp; hash;
-        HashEntry&lt;K,V&gt; first = entryAt(tab, index);
-        for (HashEntry&lt;K,V&gt; e = first;;) {
-            if (e != null) {
-                K k;
-                if ((k = e.key) == key ||
-                    (e.hash == hash &amp;&amp; key.equals(k))) {
-                    oldValue = e.value;
-                    if (!onlyIfAbsent) {
-                        e.value = value;
-                        ++modCount;
-                    }
-                    break;
-                }
-                e = e.next;
-            }
-            else {
-                if (node != null)
-                    node.setNext(first);
-                else
-                    node = new HashEntry&lt;K,V&gt;(hash, key, value, first);
-                int c = count + 1;
-                if (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)
-                    rehash(node);
-                else
-                    setEntryAt(tab, index, node);//
-                ++modCount;
-                count = c;
-                oldValue = null;
-                break;
-            }
+</code></pre><p>2.JDK 1.8 ConHashMap的get()操作</p>
+<pre><code>//没有加锁
+public V get(Object key) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; e, p; int n, eh; K ek;
+    int h = spread(key.hashCode());
+    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
+        //底层还是Unsafe的getObjectVolatile方法
+        (e = tabAt(tab, (n - 1) &amp; h)) != null) {
+        if ((eh = e.hash) == h) {
+            if ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek)))
+                return e.val;
         }
-    } finally {
-        unlock();
+        else if (eh &lt; 0)
+            return (p = e.find(h, key)) != null ? p.val : null;
+        while ((e = e.next) != null) {
+            if (e.hash == h &amp;&amp;
+                ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek))))
+                return e.val;
+        }
     }
-    return oldValue;
+    return null;
 }
-</code></pre></li>
-</ul>
-<p>setEntryAt方法：</p>
-<pre><code>static final &lt;K,V&gt; void setEntryAt(HashEntry&lt;K,V&gt;[] tab, int i,
-                                   HashEntry&lt;K,V&gt; e) {
-    UNSAFE.putOrderedObject(tab, ((long)i &lt;&lt; TSHIFT) + TBASE, e);
+</code></pre><p>3.JDK1.7 CHM的size()操作</p>
+<pre><code>//CHM不上锁的前提下逐个计算Segment的更新次数，若相邻两次
+//获取到的Segment更新次数相等则说明无更新操作，则返回总size
+for (int j = 0; j &lt; segments.length; ++j) {
+    Segment&lt;K,V&gt; seg = segmentAt(segments, j);
+    if (seg != null) {
+      sum += seg.modCount;//每个segment的修改次数
+      int c = seg.count;
+      if (c &lt; 0 || (size += c) &lt; 0)
+        overflow = true;
+    }
+  }
+  if (sum == last)
+    break;
+  last = sum;
 }
 </code></pre><p>1.定位到Segment</p>
 <p>2.初始化segment的某一段，ensureSegment(int k)。</p>
 <p>3.获取锁，scanAndLockForPut(key, hash, value);</p>
 <p>4.如果需要的话，进行扩容。segment数组是不能扩容的，扩容的对象是HashEntry数组，该方法不需要考虑并发的，因为此时segment分段锁被独占的。</p>
-<ul>
-<li>Size操作流程</li>
-</ul>
-<p>JDK1.7:</p>
-<p>1.最多计算3次，通过比较所有Segment段modCount的总和，并和前一次作对比，相等则返回size;<br>最多比较两次。</p>
-<p>modCount表示Segment[i]内结构的改变次数；</p>
-<p>count表示Segment[i]内元素的个数；</p>
-<pre><code>public int size() {
-    // Try a few times to get accurate count. On failure due to
-    // continuous async changes in table, resort to locking.
-    final Segment&lt;K,V&gt;[] segments = this.segments;
-    int size;
-    boolean overflow; // true if size overflows 32 bits
-    long sum;         // sum of modCounts
-    long last = 0L;   // previous sum
-    int retries = -1; // first iteration isn&apos;t retry
-    try {
-        for (;;) {
-            if (retries++ == RETRIES_BEFORE_LOCK) {//RETRIES_BEFORE_LOCK = 2
-                for (int j = 0; j &lt; segments.length; ++j)
-                    ensureSegment(j).lock(); // force creation
-            }
-            sum = 0L;
-            size = 0;
-            overflow = false;
-            for (int j = 0; j &lt; segments.length; ++j) {
-                Segment&lt;K,V&gt; seg = segmentAt(segments, j);
-                if (seg != null) {
-                    sum += seg.modCount;
-                    int c = seg.count;
-                    if (c &lt; 0 || (size += c) &lt; 0)
-                        overflow = true;
-                }
-            }
-            if (sum == last)
-                break;
-            last = sum;
-        }
-    } finally {
-        if (retries &gt; RETRIES_BEFORE_LOCK) {
-            for (int j = 0; j &lt; segments.length; ++j)
-                segmentAt(segments, j).unlock();
-        }
-    }
-    return overflow ? Integer.MAX_VALUE : size;
-}
-</code></pre><blockquote>
+<blockquote>
 <p>Segment&lt;K,V&gt;的理解</p>
 </blockquote>
 <p>1.HashEntry&lt;K,V&gt;[] table：每个segment有一个HashEntry数组。</p>
 <p>2.HashEntry&lt;K,V&gt;：一个四元组，next被声明成final,所以每次插入元素都只能头插。node&lt;K,V&gt;的next域呢？</p>
-<p>参考文献</p>
-<p><a href="http://www.importnew.com/28263.html" target="_blank" rel="noopener">Java7/8 中的 HashMap 和 ConcurrentHashMap 全解析</a></p>
-<p><a href="https://blog.csdn.net/liwenxia626/article/details/80607902" target="_blank" rel="noopener">ConcurrentHashMap原理分析（JDK1.7）</a></p>
-<p>JDK1.8的源码分析：</p>
 
       
     </div>
@@ -667,17 +685,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -755,22 +764,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么理解"><span class="nav-number">1.</span> <span class="nav-text">怎么理解</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

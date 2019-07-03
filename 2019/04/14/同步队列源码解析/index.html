@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="1.总结下独占式的获取同步状态的流程，具体源码如下： 流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是">
+<meta name="description" content="1.总结下独占式的获取同步状态的流程，具体源码如下：  流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否者判">
 <meta property="og:type" content="article">
 <meta property="og:title" content="同步队列源码解析">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/04/14/同步队列源码解析/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.总结下独占式的获取同步状态的流程，具体源码如下： 流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是">
+<meta property="og:description" content="1.总结下独占式的获取同步状态的流程，具体源码如下：  流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否者判">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T03:17:42.986Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/AQS.JPG">
+<meta property="og:updated_time" content="2019-07-02T07:54:41.656Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="同步队列源码解析">
-<meta name="twitter:description" content="1.总结下独占式的获取同步状态的流程，具体源码如下： 流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是">
+<meta name="twitter:description" content="1.总结下独占式的获取同步状态的流程，具体源码如下：  流程 1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；  1.2 首先生成节点，再通过CAS的方法加入到队列尾部（for自旋)，若头节点为空，安全设置头节点；  1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；  1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否者判">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/AQS.JPG">
 
 
 
@@ -411,6 +413,7 @@
 
       
         <p>1.总结下独占式的获取同步状态的流程，具体源码如下：</p>
+<p><img src="/images/AQS.JPG" alt=""></p>
 <p>流程</p>
 <pre><code>1.1 获取同步状态，若成功直接退出if语句，失败则准备加入同步队列；
 
@@ -418,7 +421,7 @@
 
 1.3 节点自旋获取同步状态,若前一个节点是头节点，则尝试获取同步状态；否则线程继续自旋；
 
-1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否则还是进入自旋等待；
+1.4 若获取同步状态成功，当前节点设置为头节点，成功返回，否者判断是否应该阻塞；
 </code></pre><p>AQS的acquire方法源码：用户重写tryAcquire方法</p>
 <pre><code>public final void acquire(int arg) {
 if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同步队列
@@ -496,6 +499,9 @@ if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同�
             }
 
             //执行到这说明当前节点的前驱不是head或者tryAcquire(arg)失败
+            //shouldParkAfterFailedAcquire(p, node)判断是否阻塞
+            //parkAndCheckInterrupt()用来阻塞线程
+
             if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
                 parkAndCheckInterrupt())
                 interrupted = true;

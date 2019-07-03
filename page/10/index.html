@@ -390,16 +390,21 @@
       
         
           
-            <h4 id="哈希表的长度为什么要为2-n"><a href="#哈希表的长度为什么要为2-n" class="headerlink" title="哈希表的长度为什么要为2^n?"></a>哈希表的长度为什么要为2^n?</h4><pre><code>因为当哈希表的长度为2^n次方时，hash &amp; (length-1) == hash % length
-</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>1.两个key的hashcode相等的话，那么他们的hash值肯定相等。（eg:&quot;a&quot;和&quot;a&quot;的hashcode相等）
+            <p>JDK1.8 参数</p>
+<pre><code>1.TREEIFY_THRESHOLD：链表节点转树节点的阈值，默认值8；
+
+2.MIN_TREEIFY_CAPACITY：树化的最小容量，默认值64，只有当链表长度大于8，桶数组容量大于32才树化，否则resize()；
+</code></pre><h4 id="哈希表的长度为什么要为2-n"><a href="#哈希表的长度为什么要为2-n" class="headerlink" title="哈希表的长度为什么要为2^n?"></a>哈希表的长度为什么要为2^n?</h4><pre><code>因为当哈希表的长度为2^n次方时，hash &amp; (length-1) == hash % length
+</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>1.两个key的hashcode相等的话，那么他们的hash值肯定相等。
 
 2.
 
+//散列值hash不同的key也在同一条链表中(冲突)
 for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next)
 
 {
-    //因为散列值相等的键值不一定相等(冲突)
     //散列值不等的键值肯定不等，排除一大批元素
+    //散列值相等的键值也可能不等，这种可能性比较小，故继续比较key
     e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))
 }
 </code></pre><p>在这里引申出来一个问题：</p>
@@ -419,16 +424,6 @@ private V putForNullKey(V value) {
     addEntry(0, null, value, 0);
     return null;
 }
-</code></pre><h4 id="HashTable和HashMap的区别"><a href="#HashTable和HashMap的区别" class="headerlink" title="HashTable和HashMap的区别"></a>HashTable和HashMap的区别</h4><pre><code>1.前者线程安全的,但是效率低。
-
-2.前者的键和值都不允许为空，而后者的key和value都允许为空。
-
-3.为什么HashTable的key不允许为null?
-
-    HashTable起初是为并发环境设计。如果get一个null键返回的结果是null，那么有两种可能: 
-    1.hashtable中存放了一个(null, null)键值对。 
-    2.hashtable中不存在null这个key。 这就要求使用者用containsKey()方法来做进一步确认。但是在这两个操作中间很可能发生并发修改导致结果出错。
-    所以一开始就禁止了null键或null值。
 </code></pre><blockquote>
 <p>JDK1.8的源码注释总结</p>
 </blockquote>
@@ -469,375 +464,138 @@ private V putForNullKey(V value) {
 
 为1的情况由hiHead和hiTail这组指针维护。维护的是旧桶的index在新表中发生改变，变为 newTab[j + oldCap] = hiHead。
 </code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p>
-<h4 id="JDK1-8-HashMap源码中方法的理解？"><a href="#JDK1-8-HashMap源码中方法的理解？" class="headerlink" title="JDK1.8 HashMap源码中方法的理解？"></a>JDK1.8 HashMap源码中方法的理解？</h4><p>1.get(Object key)方法：</p>
-<pre><code>//获取链表中的结点
-public V get(Object key) {
-    Node&lt;K,V&gt; e;
-    return (e = getNode(hash(key), key)) == null ? null : e.value;
-}
-
-final Node&lt;K,V&gt; getNode(int hash, Object key) {
-    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;
-    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
-        (first = tab[(n - 1) &amp; hash]) != null) {
-        if (first.hash == hash &amp;&amp; // always check first node
-            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))//第一个结点就是目标结点，其中key有可能为空
-            return first;
-        if ((e = first.next) != null) {//第一个结点排除，继续遍历下一个结点
-            if (first instanceof TreeNode)//红黑树的查找结点方法
-                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);//从树的根节点开始查找
-            do {//从链表的第二个结点开始遍历
-                if (e.hash == hash &amp;&amp;
-                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
-                    return e;
-            } while ((e = e.next) != null);
-        }
+<h4 id="JDK1-8-和-JDK1-7-HashMap源码中方法的理解？"><a href="#JDK1-8-和-JDK1-7-HashMap源码中方法的理解？" class="headerlink" title="JDK1.8 和 JDK1.7 HashMap源码中方法的理解？"></a>JDK1.8 和 JDK1.7 HashMap源码中方法的理解？</h4><p>1.JDK1.7 和 JDK1.8 get()操作，除红黑树结构外差不多</p>
+<pre><code>do {
+    if (e.hash == hash &amp;&amp;
+        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+        return e;
+} while ((e = e.next) != null);
+</code></pre><p>2.JDK1.7 put()操作</p>
+<pre><code>void createEntry(int hash, K key, V value, int bucketIndex) {  
+    Entry&lt;K,V&gt; e = table[bucketIndex]; //获取待插入位置元素
+    //头插法
+    table[bucketIndex] = new Entry&lt;&gt;(hash, key, value, e);
+    size++;//元素个数+1  
+}  
+</code></pre><p>2.JDK1.8 put()操作—链表</p>
+<pre><code>//p是表头节点
+for (int binCount = 0; ; ++binCount) {
+    //等价于p=p.next;
+    if ((e = p.next) == null) {
+        p.next = newNode(hash, key, value, null);//尾插法
+        if (binCount &gt;= TREEIFY_THRESHOLD - 1)
+            treeifyBin(tab, hash);
+        break;
     }
-    return null;//没找到
+    //节点key已经存在跳出
+    if (e.hash == hash &amp;&amp;
+        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+        break;
+    //等价于p=p.next
+    p = e;
 }
-
-//获取红黑树中的结点
-
-final TreeNode&lt;K,V&gt; getTreeNode(int h, Object k) {
-        return ((parent != null) ? root() : this).find(h, k, null);
-    }
-
-//查找红黑树中的结点
-final TreeNode&lt;K,V&gt; find(int h, Object k, Class&lt;?&gt; kc) {
-    TreeNode&lt;K,V&gt; p = this;
-    do {
-        int ph, dir; K pk;
-        TreeNode&lt;K,V&gt; pl = p.left, pr = p.right, q;
-        if ((ph = p.hash) &gt; h)
-            p = pl;
-        else if (ph &lt; h)
-            p = pr;
-        else if ((pk = p.key) == k || (k != null &amp;&amp; k.equals(pk)))
-            return p;
-        else if (pl == null)
-            p = pr;
-        else if (pr == null)
-            p = pl;
-        else if ((kc != null ||
-                (kc = comparableClassFor(k)) != null) &amp;&amp;
-                (dir = compareComparables(kc, k, pk)) != 0)
-            p = (dir &lt; 0) ? pl : pr;
-        else if ((q = pr.find(h, k, kc)) != null)//先去右子树中去查找
-            return q;//找到直接返回
-        else
-            p = pl;//去左子树中去查找
-    } while (p != null);
-    return null;
-}
-</code></pre><p>2.put(K key,V value)方法：</p>
-<pre><code>public V put(K key, V value) {
-    return putVal(hash(key), key, value, false, true);
-}
-
-//插入key-value对
-final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
-               boolean evict) {
-    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;
-    if ((tab = table) == null || (n = tab.length) == 0)
-        n = (tab = resize()).length;//哈希表为空的话,resize()初始化。默认初始容量16,负载因子0.75
-    if ((p = tab[i = (n - 1) &amp; hash]) == null)
-        tab[i] = newNode(hash, key, value, null);//如果哈希表的索引位置还没元素,就直接插入
-    else {
-        Node&lt;K,V&gt; e; K k;
-        if (p.hash == hash &amp;&amp;
-                ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
-            e = p;//目标key已经存在，目标结点直接替代
-        else if (p instanceof TreeNode)
-            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
-        else {
-            for (int binCount = 0; ; ++binCount) {
-                if ((e = p.next) == null) {
-                    p.next = newNode(hash, key, value, null);//尾插法
-                    if (binCount &gt;= TREEIFY_THRESHOLD - 1) //插入第7个结点后将链表转化成树
-                        treeifyBin(tab, hash);//形成树结点
-                    break;
-                }
-                if (e.hash == hash &amp;&amp;
-                        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
-                    break;
-                p = e;
-            }
-        }
-        if (e != null) { // existing mapping for key
-            V oldValue = e.value;
-            if (!onlyIfAbsent || oldValue == null)
-                e.value = value;
-            afterNodeAccess(e);
-            return oldValue;
-        }
-    }
-    ++modCount;
-    if (++size &gt; threshold)
-        resize();
-    afterNodeInsertion(evict);
-    return null;
-}
-</code></pre><p>2.1 往红黑树中插入结点</p>
-<pre><code>//红黑树中通过比较hash值的大小插入树结点
-final TreeNode&lt;K,V&gt; putTreeVal(HashMap&lt;K,V&gt; map, Node&lt;K,V&gt;[] tab,
-                               int h, K k, V v) {
-    Class&lt;?&gt; kc = null;
-    boolean searched = false;
-    TreeNode&lt;K,V&gt; root = (parent != null) ? root() : this;
-    for (TreeNode&lt;K,V&gt; p = root;;) {
-        int dir, ph; K pk;
-        if ((ph = p.hash) &gt; h)//传入结点的hash值小于p结点的hash值的话
-            dir = -1;//选择左子树
-        else if (ph &lt; h)
-            dir = 1;//选择右子树
-        else if ((pk = p.key) == k || (k != null &amp;&amp; k.equals(pk)))
-            return p;//返回第一个结点,默认是根结点
-        else if ((kc == null &amp;&amp;
-                (kc = comparableClassFor(k)) == null) ||//k所属的类没有实现Comparable接口
-                (dir = compareComparables(kc, k, pk)) == 0) {//或者类k的大小相等
-            if (!searched) {
-                TreeNode&lt;K,V&gt; q, ch;
-                searched = true;
-                if (((ch = p.left) != null &amp;&amp;
-                        (q = ch.find(h, k, kc)) != null) ||//左子树不为空,去左子树查找
-                        ((ch = p.right) != null &amp;&amp;
-                                (q = ch.find(h, k, kc)) != null))//右子树不为空,去右子树查找
-                    return q;
-            }
-            dir = tieBreakOrder(k, pk);//其他比较key的方法
-        }
-
-        TreeNode&lt;K,V&gt; xp = p;
-        if ((p = (dir &lt;= 0) ? p.left : p.right) == null) {//找到要插入x结点的位置
-            Node&lt;K,V&gt; xpn = xp.next;//树结点仍然有next结点,同时要维护红黑树结点和链表结点,两者可以互相转换
-            TreeNode&lt;K,V&gt; x = map.newTreeNode(h, k, v, xpn);//x结点在xp和xpn之间
-            if (dir &lt;= 0)
-                xp.left = x;
-            else
-                xp.right = x;
-            xp.next = x;
-            x.parent = x.prev = xp;
-            if (xpn != null)
-                ((TreeNode&lt;K,V&gt;)xpn).prev = x;
-            moveRootToFront(tab, balanceInsertion(root, x));//红黑树插入结点后的调整
-            return null;
-        }
-    }
-}
-</code></pre><p>2.2 插入树结点后的结点调整</p>
-<pre><code>//插入树结点后的红黑树结点的调整
+</code></pre><p>2.JDK1.8 put()操作—红黑树</p>
+<pre><code> //插入后的调整
 static &lt;K,V&gt; TreeNode&lt;K,V&gt; balanceInsertion(TreeNode&lt;K,V&gt; root,
-                                            TreeNode&lt;K,V&gt; x) {
-    x.red = true;//插入的结点默认红色
+                                                TreeNode&lt;K,V&gt; x) {
+    x.red = true;
     for (TreeNode&lt;K,V&gt; xp, xpp, xppl, xppr;;) {
-        if ((xp = x.parent) == null) {//插入的结点为根结点,则变为黑色
+        if ((xp = x.parent) == null) {//插入的第一个节点
             x.red = false;
             return x;
         }
-        else if (!xp.red || (xpp = xp.parent) == null)//xp为黑色
-            return root;//x为根结点的子结点,为啥要返回根结点???
+        else if (!xp.red || (xpp = xp.parent) == null)
+            return root;
         if (xp == (xppl = xpp.left)) {
-            if ((xppr = xpp.right) != null &amp;&amp; xppr.red) {//父结点和叔叔结点都为红
-                xppr.red = false;//叔叔结点涂为黑色
-                xp.red = false;//父结点涂为黑色
-                xpp.red = true;//祖父结点涂为红色
-                x = xpp;//当前结点指向祖父结点
-            }
-            else {
-                if (x == xp.right) {//叔叔结点为黑色,当前结点是父结点的右结点
-                    root = rotateLeft(root, x = xp);//以父结点为轴左旋
-                    xpp = (xp = x.parent) == null ? null : xp.parent;
-                }
-                if (xp != null) {//叔叔结点为黑色,当前结点是父结点的左结点
-                    xp.red = false;//父结点涂为黑色
-                    if (xpp != null) {
-                        xpp.red = true;//祖父结点涂为红色
-                        root = rotateRight(root, xpp);//以祖父结点为轴进行右旋
-                    }
-                }
-            }
-        }
-        else {//父结点是祖父结点的右结点,与上面相反
-            if (xppl != null &amp;&amp; xppl.red) {
-                xppl.red = false;
+            //插入节点的父节点是祖父节点的左子树，为red，父节点的叔叔节点
+            //也为red
+            if ((xppr = xpp.right) != null &amp;&amp; xppr.red) {
+                xppr.red = false;
                 xp.red = false;
                 xpp.red = true;
                 x = xpp;
             }
             else {
-                if (x == xp.left) {
-                    root = rotateRight(root, x = xp);
+                //插入节点是父节点的右子树，且都为red，叔叔节点为black，左旋
+                if (x == xp.right) {
+                    root = rotateLeft(root, x = xp);
                     xpp = (xp = x.parent) == null ? null : xp.parent;
                 }
+                //插入节点是父节点的左子树，父节点为black，叔叔节点为black，右旋
                 if (xp != null) {
                     xp.red = false;
                     if (xpp != null) {
                         xpp.red = true;
-                        root = rotateLeft(root, xpp);
+                        root = rotateRight(root, xpp);
                     }
-                }
-            }
-        }
-    }
-}
-</code></pre><p>2.3 插入链表的结点数目大于等于7时,转化为树结点，形成红黑树：</p>
-<pre><code>//将链表结点转化为树结点,但仍然维护链表的结构
-final void treeifyBin(Node&lt;K,V&gt;[] tab, int hash) {
-    int n, index; Node&lt;K,V&gt; e;
-    if (tab == null || (n = tab.length) &lt; MIN_TREEIFY_CAPACITY)//64
-        resize();//此时使用默认参数新建哈希表
-    else if ((e = tab[index = (n - 1) &amp; hash]) != null) {
-        TreeNode&lt;K,V&gt; hd = null, tl = null;
-        do {
-            TreeNode&lt;K,V&gt; p = replacementTreeNode(e, null);//将e节点变为树结点
-            if (tl == null)//tl代表树的尾结点
-                hd = p;//hd代表头结点
-            else {
-                p.prev = tl;
-                tl.next = p;
-            }
-            tl = p;//尾结点指向新插入的结点
-        } while ((e = e.next) != null);
-        if ((tab[index] = hd) != null)//桶的坐标指向红黑树的头结点
-            hd.treeify(tab);
-    }
-}
-
-//真正形成红黑树的结构
-final void treeify(Node&lt;K,V&gt;[] tab) {
-    TreeNode&lt;K,V&gt; root = null;
-    for (TreeNode&lt;K,V&gt; x = this, next; x != null; x = next) {
-        next = (TreeNode&lt;K,V&gt;)x.next;
-        x.left = x.right = null;
-        if (root == null) {//根节点为黑色
-            x.parent = null;
-            x.red = false;
-            root = x;
+</code></pre><p>3.JDK1.7 resize()操作</p>
+<pre><code>//将老的表中的数据拷贝到新的结构中  
+void transfer(Entry[] newTable, boolean rehash) {  
+    int newCapacity = newTable.length;
+    for (Entry&lt;K,V&gt; e : table) { 
+        while(null != e) { 
+            Entry&lt;K,V&gt; next = e.next;  
+            if (rehash) { 
+                e.hash = null == e.key ? 0 : hash(e.key);  
+            }  
+            int i = indexFor(e.hash, newCapacity);  
+            e.next = newTable[i];
+            newTable[i] = e;//头插法插入到新的table中去，线程不安全
+            e = next;
+        }  
+    }  
+}  
+</code></pre><p>3.JDK1.8 resize()操作</p>
+<pre><code>else { 
+    Node&lt;K,V&gt; loHead = null, loTail = null;
+    Node&lt;K,V&gt; hiHead = null, hiTail = null;
+    Node&lt;K,V&gt; next;
+    do {
+        next = e.next;
+        //在oldTab中的index在newTab仍保持不变
+        if ((e.hash &amp; oldCap) == 0) {
+            if (loTail == null)
+                loHead = e;
+            else
+                loTail.next = e;
+            loTail = e;
         }
         else {
-            K k = x.key;
-            int h = x.hash;
-            Class&lt;?&gt; kc = null;
-            for (TreeNode&lt;K,V&gt; p = root;;) {
-                int dir, ph;
-                K pk = p.key;
-                if ((ph = p.hash) &gt; h)//插入结点的哈希值小于根节点
-                    dir = -1;//插入左子树
-                else if (ph &lt; h)
-                    dir = 1;
-                else if ((kc == null &amp;&amp;
-                        (kc = comparableClassFor(k)) == null) ||
-                        (dir = compareComparables(kc, k, pk)) == 0)
-                    dir = tieBreakOrder(k, pk);
-
-                TreeNode&lt;K,V&gt; xp = p;
-                if ((p = (dir &lt;= 0) ? p.left : p.right) == null) {
-                    x.parent = xp;
-                    if (dir &lt;= 0)
-                        xp.left = x;
-                    else
-                        xp.right = x;
-                    root = balanceInsertion(root, x);//调整红黑树的结构
-                    break;
-                }
-            }
+            if (hiTail == null)
+                hiHead = e;
+            else
+                hiTail.next = e;
+            hiTail = e;
         }
+    } while ((e = next) != null);
+    if (loTail != null) {
+        loTail.next = null;
+        newTab[j] = loHead;
     }
-    moveRootToFront(tab, root);
-}
-</code></pre><p>3.resize()方法：</p>
-<pre><code>//构建默认哈希表和扩容
-final Node&lt;K,V&gt;[] resize() {
-    Node&lt;K,V&gt;[] oldTab = table;
-    int oldCap = (oldTab == null) ? 0 : oldTab.length;
-    int oldThr = threshold;
-    int newCap, newThr = 0;
-    if (oldCap &gt; 0) {
-        if (oldCap &gt;= MAXIMUM_CAPACITY) {//2^30
-            threshold = Integer.MAX_VALUE;
-            return oldTab;
-        }
-        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;
-                oldCap &gt;= DEFAULT_INITIAL_CAPACITY)//扩容两倍后的容量小于2^30 而且原表的容量大于等于默认的16
-            newThr = oldThr &lt;&lt; 1; // 是 threshold = capacity * load factor 扩容两倍。注意扩容的对象,threshold默认是16
+    if (hiTail != null) {
+        hiTail.next = null;
+        newTab[j + oldCap] = hiHead;
     }
-    else if (oldThr &gt; 0) // initial capacity was placed in threshold
-        newCap = oldThr;
-    else {               // zero initial threshold signifies using defaults
-        newCap = DEFAULT_INITIAL_CAPACITY;//16
-        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);//16*0.75=12
-    }
-    if (newThr == 0) {
-        float ft = (float)newCap * loadFactor;
-        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?
-                (int)ft : Integer.MAX_VALUE);
-    }
-    threshold = newThr;
-    @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
-    Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];
-    table = newTab;
-    if (oldTab != null) {
-        for (int j = 0; j &lt; oldCap; ++j) {
-            Node&lt;K,V&gt; e;
-            if ((e = oldTab[j]) != null) {
-                oldTab[j] = null;
-                if (e.next == null)
-                    newTab[e.hash &amp; (newCap - 1)] = e;
-                else if (e instanceof TreeNode)
-                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);//还原成链表或修剪树
-                else { // preserve order
-                    Node&lt;K,V&gt; loHead = null, loTail = null;
-                    Node&lt;K,V&gt; hiHead = null, hiTail = null;
-                    Node&lt;K,V&gt; next;
-                    do {
-                        next = e.next;
-                        if ((e.hash &amp; oldCap) == 0) {//旧表的元素和旧表的长度作与运算,为0时表示元素在新表中的index不变
-                            if (loTail == null)
-                                loHead = e;
-                            else
-                                loTail.next = e;
-                            loTail = e;
-                        }
-                        else {//为1表示元素在新表中的Index为:oldIndex + oldCap(旧索引+旧表长度)
-                            if (hiTail == null)
-                                hiHead = e;
-                            else
-                                hiTail.next = e;
-                            hiTail = e;
-                        }
-                    } while ((e = next) != null);
-                    if (loTail != null) {
-                        loTail.next = null;
-                        newTab[j] = loHead;
-                    }
-                    if (hiTail != null) {
-                        hiTail.next = null;
-                        newTab[j + oldCap] = hiHead;
-                    }
-                }
-            }
-        }
-    }
-    return newTab;
 }
 </code></pre><p><strong>4.JDK1.7版本hashMap线程不安全的原因？</strong></p>
 <p>1.因为扩容后可能会出现结点顺序反掉的情况。</p>
 <p>源码：</p>
 <pre><code>void transfer(Entry[] newTable, boolean rehash) {  
-        while(null != e) {  
-            Entry&lt;K,V&gt; next = e.next;           
-            if (rehash) {  
-                e.hash = null == e.key ? 0 : hash(e.key);  
-            }  
-            int i = indexFor(e.hash, newCapacity);   
-            e.next = newTable[i];  
-            newTable[i] = e;  
-            e = next;  
-        } 
+    while(null != e) {  
+        Entry&lt;K,V&gt; next = e.next;           
+        if (rehash) {  
+            e.hash = null == e.key ? 0 : hash(e.key);  
+        }  
+        int i = indexFor(e.hash, newCapacity);   
+        e.next = newTable[i];  
+        newTable[i] = e;  
+        e = next;  
+    } 
     }  
 }
-</code></pre><p>在进行哈希表扩容的时候，如果是多线程的话，则会因为transfer()(采用的头插法)原因，会出现循环链表的情况。</p>
 
+在进行哈希表扩容的时候，如果是多线程的话，则会因为transfer()(采用的头插法)原因，会出现循环链表的情况。
+</code></pre>
           
         
       
@@ -1853,6 +1611,8 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
 
 3.DiscardOldestPolicy:如果线程池没有关闭，丢弃队列最前面的任务，执行当前任务；
 
+    eg:e.getQueue().poll();
+
 4.CallerRunsPolicy:如果线程池没有关闭，由调用线程（例如main线程）执行任务；
 </code></pre><p><strong>创建线程池的方式：(Executors框架提供)</strong></p>
 <pre><code>1.newFixedThreadPool：创建固定数量的线程池。默认使用的是无界队列，maximumPoolSize和keepAliveTime参数无效，不会拒绝任务。
@@ -1862,13 +1622,15 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
                                   0L, TimeUnit.MILLISECONDS,
                         new LinkedBlockingQueue&lt;Runnable&gt;());
 
-2.newCachedThreadPool：没有数量限制的线程池。适合处理生存期短的大量异步任务或负载较轻、空闲线程等待执行任务超过60s则销毁线程。
+2.newCachedThreadPool：没有数量限制的线程池。
+                       适合处理生存期短的大量异步任务或负载较轻、空闲线程等待执行任务超过60s则销毁线程。
 
     1.return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
                                   60L, TimeUnit.SECONDS,
                       new SynchronousQueue&lt;Runnable&gt;());
 
-    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，如果此时maxPoolSize=0的话会创建一个新线程执行任务；即没有空闲线程接收任务时进入下面这个分支：
+    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，
+    如果此时maxPoolSize=0的话会创建一个新线程执行任务；即没有空闲线程接收任务时进入下面这个分支：
 
         ......
         else if (!addWorker(command, false))
@@ -1884,9 +1646,13 @@ public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTim
                                 0L, TimeUnit.MILLISECONDS,
                     new LinkedBlockingQueue&lt;Runnable&gt;()));
 
-4.newSingleThreadScheduledExecutor和newScheduledThreadPool：继承ThreadExecutor实现ScheduledExecutorService接口、执行周期任务、给定延迟。
+4.newSingleThreadScheduledExecutor和newScheduledThreadPool：继承ThreadExecutor
+实现ScheduledExecutorService接口、执行周期任务、定期执行命令
 
- return new ScheduledThreadPoolExecutor(corePoolSize);
+super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,
+          new DelayedWorkQueue());
+
+DelayedWorkerQueue是可以提供延迟的阻塞队列，保存的是延迟期到了以后的元素，按延迟时间从短到长排的序；
 
 执行步骤：
 
