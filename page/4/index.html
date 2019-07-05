@@ -286,6 +286,358 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/28/计算机网络基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/28/计算机网络基础/" itemprop="url">计算机网络基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T09:07:05+08:00">
+                2019-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/03/28/计算机网络基础/" class="leancloud_visitors" data-flag-title="计算机网络基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.TCP/IP vs OSI模型？</p>
+<p><img src="/images/OSI.png" alt=""></p>
+<p><img src="/images/网络模型.PNG" alt=""></p>
+<pre><code>OSI:
+
+    1.清楚的区分服务、接口和协议，但实现起来困难；
+
+    2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；
+
+TCP/IP:
+
+    1.网络层只支持无连接的通信，传输层同时支持连接和无连接；
+</code></pre><p>1.OSI七层网络模型每一层都做了什么？</p>
+<pre><code>应用层：网上冲浪、文件传输、电子邮件，远程连接等；
+
+表示层：数据格式化、代码转换、数据加密；
+
+会话层：解除/建立与其他节点的联系；
+
+传输层：提供端对端的接口；
+
+网络层：为数据包选择路由；
+
+数据链路层：传输有地址的帧、差错检测；
+
+物理层：以二进制的数据形式在物理介质上传输数据；
+</code></pre><p>1.TCP/IP五层结构以及相应的功能？</p>
+<pre><code>应用层、传输层、网络层、网络接口层；
+</code></pre><p>2.交换机是几层设备？</p>
+<pre><code>是二层设备。
+
+1.二层设备是工作在数据链路层的设备。
+
+    交换机可以识别数据包中MAC地址，根据MAC地址进行转发，并将这些MAC地址和
+    对应的端口记录在内部的地址表中，没找到通过广播学习再记录；
+
+2.三层设备是工作在网络层的设备。
+
+    路由器，通过IP地址确定数据包的转发；
+</code></pre><p>3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？</p>
+<pre><code>1.通过MAC帧帧头中的目的MAC地址找到目的主机；
+
+2.循环冗余检测CRC(Cyclic Redundancy Check)
+</code></pre><p>4.网络层的路由算法有哪些，简述RIP，OSPF过程？</p>
+<pre><code>1.RIP(Routing Information Protocol)路由信息协议
+
+    表单项：目的网络 距离 下一跳路由器
+
+    1.1 对地址为X的相邻路由器(R1)发来的路由更新信息，首先将它的下一跳地址全部改为X，而且距离加1；
+
+    1.2 比较要更新的路由器R2和R1的路由表
+
+        1.2.1 R2中没有R1中的目的网络，直接添加到R2；
+
+        1.2.2 R2中有R1中的目的网络，而且R2中下一跳路由器是R1，R2更新为      R1中的表单项；
+
+        1.2.3 R2中有R1中的目的网络，而且R2中下一跳路由器不是R1，R2更新为
+              两者之中距离短的表单项；
+</code></pre><p>5.简述ARP协议过程，是如何通过IP地址获取MAC地址的？</p>
+<pre><code>1.过程：
+
+    1.1 在本机ARP缓存表中查看有无目的主机的MAC地址，有的话直接在
+        MAC帧中写入目的主机的MAC地址；
+
+    1.2 源主机通过向交换机/WIFI设备发送请求广播包，告诉所有机器我的IP、
+        我的MAC地址、我想知道目的IP的硬件地址？
+
+    1.3 其他主机收到包以后判断目的IP是不是自己，不是则丢弃；是的话先将
+        IP-MAC映射缓存在ARP缓存表，然后返回ARP回应包，通过单播的形式
+        告诉源主机自己的IP-MAC信息；
+
+    1.4 源主机收到ARP响应分组以后，ARP缓存表中写入目的主机的IP-MAC；
+
+2.总结：
+
+    2.1 ARP通过一问一答实现交互，问是通过广播形式，答是通过单播形式；
+
+    2.2 ARP请求先有自我介绍，后有询问；
+</code></pre><p>6.ping命令所使用的协议是什么（ICMP），简述其过程？</p>
+<pre><code>国际控制报文协议(Internet Control Message Protocol)，ICMP的两个重要
+应用PING 和 Traceroute
+
+1.Ping(Packet InterNet Groper):
+
+    分组网间探测，用来测试两个主机之间的连通性，使用到了ICMP的回送请求
+    报文和回送回答报文；
+
+2.跨网段的ping过程
+
+    ARP广播学习到网关的MAC地址，再封装ICMP请求报文发送给网关路由器，
+    路由器查路由表找到目的主机的IP，网关找不到目的主机的MAC时，继续
+    学习MAC，找到目的主机后返回ICMP报文；
+
+3.Traceroute
+
+    用来侦测主机到目的主机之间所经过的路由情况；
+</code></pre><p>7.TCP如何保证可靠传输？</p>
+<pre><code>1.确认和重传机制；
+
+2.流量控制和拥塞控制；
+</code></pre><p>8.TCP的流量控制，当接收方的接收窗口为0的时候该怎么办？</p>
+<pre><code>rwnd=0 发送方不允许发送数据；
+
+1.流量控制？
+
+    让发送方的发送速率不要太快，让接收方来得及接收；
+
+2.实现方式？
+
+    以字节为单位的滑动窗口机制。发送方的发送窗口不能超过接收方给出接收窗口
+    (rwnd值)的值；
+</code></pre><p>9.TCP的拥塞控制（慢启动，拥塞避免，超时间间隔传输及其快速重传，快速恢复）？</p>
+<pre><code>1.拥塞控制？
+
+    拥塞：对资源的总需求 &gt; 可用资源
+
+    拥塞控制：防止过多的数据注入到网络中，使网络中的路由器和链路不过载；
+
+2.实现方式？
+
+    2.1 慢开始：(指数增长)
+
+        在主机刚刚开始发送报文段时可先将拥塞窗口 cwnd 设置为一个最大报文段 MSS 的数值；
+        在每收到一个对新的报文段的确认后，将拥塞窗口增加至多一个 MSS 的数值。
+
+    2.2 拥塞避免：(线性增长)
+
+         cwnd = ssthresh(慢开始门限)时开始执行拥塞避免算法，cwnd线性增长；
+        网络发生阻塞时(慢开始或拥塞避免阶段)，ssthresh减半，cwnd=1，开始
+        执行慢开始算法；
+
+    2.3    快重传：(尽早重传未被确认的报文段)
+
+        接收方每收到一个失序的报文段，就立即发出重复确认，如果当发送端接收到三个重复的确认ACK时，
+        则断定分组丢失，立即重传丢失的报文段，而不必等待重传计时器超时；
+
+    2.4 快恢复：
+
+        当发送端收到连续三个重复的 ACK 时，设置 ssthresh = ssthresh+3*MSS(网络并不阻塞还减少了3个MSS)；        
+</code></pre><p>10.流量控制和拥塞控制有什么区别？</p>
+<pre><code>拥塞控制是一个全局性的过程，涉及到网络中所有的主机、路由器等与传输性能
+相关的因素；
+
+流量控制是指点对点通信量的控制，是个端对端问题；
+</code></pre><p>11.TCP的连接管理中可能出现的攻击漏洞（洪泛攻击，自顶向下那本书有讲到）？</p>
+<p>12.应用层有哪些常见协议？</p>
+<pre><code>括号里表示要使用到的运输层协议。
+
+1.DNS(UDP)、TFTP(UDP)、NFS(网络文件系统UDP)
+
+2.HTTP(TCP)、SMTP(电子邮件TCP)、TELNET(远程连接TCP)、FTP(文件传送TCP)
+</code></pre><p>2.传输层</p>
+<pre><code>2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信；
+</code></pre><p>2.可靠传输的原理？</p>
+<p>重传机制：</p>
+<pre><code>1.发送完一个分组后要暂时保存已发送分组的副本；
+
+2.分组和确认分组需要进行编号；
+
+3.重传时间应当比数据在分组传输的平均往返时间更长一些；
+</code></pre><p>确认丢失和确认迟到：</p>
+<pre><code>1.接收方丢弃重复的M1，重传确认M1;
+
+2.发送方丢弃收到的重复确认；
+</code></pre><p>3.UDP和TCP的报文段？</p>
+<p><img src="/images/报文段.PNG" alt=""></p>
+<p>字段解释：</p>
+<pre><code>1.序号：本报文段的字节流数据中一个字节的序号；
+
+2.确认号：期望收到对方下一个报文段的第一个数据字节的序号；
+
+3.数据偏移：TCP报文段的首部字段；
+
+4.控制位
+
+    4.1 ACK:ACK=1确认字段才有效；
+
+    4.2 RST:RST=1拒绝一个非法的报文段或拒绝打开一个连接；
+
+    4.3 SYN:SYN=1 ACK=0表示连接请求报文段，SYN=1 ACK=1表示同意建立连接；
+
+    4.4 FIN:FIN=1表示此报文段发送发送方的数据已发送完毕，要求释放连接；
+
+5.窗口：允许发送方发送的数据量；
+</code></pre><p>4.滑动窗口模型</p>
+<p>发送缓存VS发送窗口VS接收缓存VS接收窗口？</p>
+<pre><code>1.对接收窗口中不按序到达的数据，接收方只能对按序收到了的数据中的最高序号给出确认；
+
+2.TCP要求接受方必须有累积确认功能，确认推迟的时间不应超过0.5秒；
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/27/S型打印二叉树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -793,7 +1145,7 @@ public void test(){
 
 3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；
 
-4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多。&quot;点&quot;代表的是socket(IP:PORT)；
+4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多的交互通信。&quot;点&quot;代表的是socket(IP:PORT)；
 
 5.TCP首部20个字节，UDP是8个字节；
 </code></pre><p> TCP的特点：</p>
@@ -3086,11 +3438,30 @@ Swap:    1407     0    1407
 <li><p>线程创建的方法？</p>
 <pre><code>1.继承Thread重写run方法；
 
+    java单继承，会有缺陷；
+
 2.实现Runnable接口，new Thread(接口实现)；
 
-3.实现Callable&lt;V&gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&lt;V&gt; callable)，最后创建 new Thread(FutureTask&lt;V&gt; future)；
+    Runnable无返回结果
+    Callable有返回结果
 
-4.线程池；
+3.实现Callable&lt;V&gt;接口重写call方法
+
+    MyCall implements Callable&lt;Integer&gt;{...重写call方法..}
+
+    FutureTask&lt;Integer&gt; future = new FutureTask&lt;Integer&gt;(
+    new MyCall())
+
+    thread = new Thread(future，&quot;name&quot;)
+    Integer res = future.get()//会阻塞，直到返回结果值
+
+4.线程池
+
+    1.降低资源消耗
+
+    2.提高响应速度
+
+    3.提高线程的可管理性
 </code></pre></li>
 </ol>
 <p>1.一个线程打印奇数另一个线程打印偶数</p>
@@ -3501,361 +3872,6 @@ isInterrupted：判断线程是否中断，不会清除标志位，所以为true
 2.调用sleep方法的线程不会释放锁，wait方法会释放对象锁；
 
 3.wait只能在同步方法/同步代码块中使用，sleep可以在任何地方；
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Java语言基础/" itemprop="url">面试总结--Java语言基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:41:52+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/java语言基础/" itemprop="url" rel="index">
-                    <span itemprop="name">java语言基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Java语言基础/" class="leancloud_visitors" data-flag-title="面试总结--Java语言基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.java基本数据类型？</p>
-<pre><code>byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)
-</code></pre><ol>
-<li>private修饰的方法可以通过反射访问，那么private的意义何在？</li>
-<li><p>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</p>
-<pre><code>约束限制，减少出错。
-</code></pre></li>
-<li><p>接口和抽象的区别？</p>
-<pre><code>1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。
-
-2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是自底向上设计的，接口是自顶向下设计的。
-
-3.门和报警器的例子。将门抽象为一个类，实现报警功能的接口。抽象类是一种“is-a”的关系，接口代表的是“like-a”的关系。
-</code></pre></li>
-<li><p>重写和重载的区别？</p>
-<p> 重载：</p>
-<pre><code>1.函数名相同，参数列表不同；
-
-2.前期绑定，即编译期绑定，编译器确定调用哪个方法；
-</code></pre><p> 重写：</p>
-<pre><code>1.子类重写父类中的方法，函数名和参数列表都相同;
-
-2.动态绑定，多态
-</code></pre></li>
-<li><p>Object类有哪些方法？以及具体用到哪？</p>
-<pre><code> 1.getClass()、hashCode()、equals(Object)、clone()、toString()、notify()、notifyAll()、wait(long)、wait(）、finalize();
-
-2.wait()和notify():生产者消费者模式中常用到；
-</code></pre></li>
-</ol>
-<ol start="6">
-<li><p>java的浅拷贝和深拷贝？</p>
-<p> 浅拷贝：</p>
-<pre><code>1.属性为引用类型，拷贝的是内存地址，如果一个对象改变了引用对象指向的对象的内容，那么拷贝对象中也会发生变化；
-
-2.的确创建了一个对象；
-</code></pre><p> 深拷贝：</p>
-<pre><code>1.重写引用对象的克隆方法，即可实现深拷贝；
-
-class Father implements Cloneable{
-    private String fatherName;
-    private Child child;
-
-    public Father(String fatherName,Child child) {
-        this.fatherName = fatherName;
-        this.child = child;
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        //重写clone方法
-        Father father = (Father) super.clone();
-        father.child = (Child) father.child.clone();
-        return father;
-    }
-}
-
-class Child implements Cloneable{
-    private String childName;
-
-    public Child(String childName) {
-        this.childName = childName;
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-
-@Test
-public void test() throws CloneNotSupportedException {
-    Child child = new Child(&quot;xiaoxu&quot;);
-    Father father = new Father(&quot;daxu&quot;,child);
-    Father clonedFather = (Father) father.clone();
-    System.out.println(father.child == clonedFather.child);//false
-}
-</code></pre><p> 总结：</p>
-<pre><code>如果一个对象内部只有基本数据类型，那用 clone() 方法获取到的就是这个对象的深拷贝，
-
-而如果其内部还有引用数据类型，那用 clone() 方法就是一次浅拷贝的操作。
-</code></pre></li>
-</ol>
-<ol start="7">
-<li><p>equals和==的区别以及hashcode和equals之间的关系？</p>
-<pre><code>1.==表示地址是否相等，equals表示内容是否相等；
-</code></pre><p> hashcode和equals之间的关系：</p>
-<pre><code>1.两个对象equals相等，则hashcode相等；
-
-2.两个对象hashcode相等，equals不一定相等；
-
-3.当equals()被重写的时候，hashcode（）也要被重写，保证相等的对象的hashcode相等；
-
-4.java的集合中通常使用equals（）判断对象是否相等，使用hashcode能够加快效率；
-</code></pre></li>
-</ol>
-<p>8.StringBuffer和StringBuilder的区别？</p>
-<pre><code>String常量字符串进行拼接通常是最慢的，而且开销大。
-
-1.StringBuilder适合单线程、速度快、线程不安全；StringBuffer线程安全；
-
-2.一般字符串相加不会有多线程操作，推荐使用StringBuilder;
-
-3.如果要对全局变量字符串进行拼接建议使用StringBuffer；
-</code></pre><p>8.String常见面试题？</p>
-<pre><code>//JDK1.7 以后字符串常量池也在堆里面了
-public class Main {
-    public static void main(String[] args) {
-        String s1 = &quot;hello&quot;;
-        String s2 = &quot;hello&quot;;
-        String s3 = &quot;he&quot; + &quot;llo&quot;;
-        String s4 = &quot;hel&quot; + new String(&quot;lo&quot;);
-        String s5 = new String(&quot;hello&quot;);
-        String s6 = s5.intern();
-        String s7 = &quot;h&quot;;
-        String s8 = &quot;ello&quot;;
-        String s9 = s7 + s8;
-        System.out.println(s1==s2);//true
-        System.out.println(s1==s3);//true 编译优化
-        System.out.println(s1==s4);//false s1常量池地址 s4普通堆地址
-        System.out.println(s1==s9);//false s1常量池地址 s9普通堆地址
-        System.out.println(s4==s5);//false s4普通堆地址 s5普通堆地址
-        System.out.println(s1==s6);//true s1常量池地址 s6常量池地址
-}
-</code></pre><p>String.intern()方法：</p>
-<pre><code>使一个位于堆中的字符串在运行期间动态地加入到字符串常量池中，如果字符串常量池中已有该对象
-对应的字面量，则直接返回该字面量在字符串常量池中的引用。
-</code></pre><p>8.String的intern()方法？</p>
-<pre><code>  1.String 的 String pool是一个固定大小的HashTable，默认大小1009；
-
-2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回它的引用；
-
-3.String s = new String(&quot;1&quot;)创建了两个对象，一个存放在常量池，另一个存放在Heap区；
-
-4.intern重用String对象，节省了内存消耗；
-</code></pre><p><a href="https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html" target="_blank" rel="noopener">美团技术讲解intern</a></p>
-<pre><code>//JDK1.7情况下（字符串常量池已经移到正常的Heap区）
-public void test1(){
-    String s1 = new String(&quot;1&quot;);
-    s1.intern();
-    String s2 = &quot;1&quot;;
-    System.out.println(s1 == s2);//false
-    String s3 = new String(&quot;2&quot;) + new String(&quot;1&quot;);
-    s3.intern();//直接存储堆中的引用，即 s3.intern()==s3 为true
-    String s4 = &quot;11&quot;;
-    System.out.println(s3 == s4);//true
-}
-
-
-//JDK1.6情况下(字符串常量池放在perm区)
-public void test1(){
-    String s1 = new String(&quot;1&quot;);
-    s1.intern();
-    String s2 = &quot;1&quot;;
-    System.out.println(s1 == s2);//false
-
-    String s3 = new String(&quot;1&quot;) + new String(&quot;1&quot;);
-    s3.intern();
-    String s4 = &quot;11&quot;;
-    System.out.println(s3 == s4);//false
-}
-</code></pre><p>我在JDK1.8环境下运行：</p>
-<pre><code>String s1 = new String(&quot;1&quot;);
-s1.intern();
-String s2 = &quot;1&quot;;
-System.out.println(s1 == s2);//false
-
-
-String s4 = &quot;22&quot;;
-String s3 = new String(&quot;2&quot;) + new String(&quot;2&quot;);
-System.out.println(s3.intern() == s3);//false
-s3.intern();
-System.out.println(s3 == s4);//false
-
-//如果掉个顺序的话
-String s3 = new String(&quot;2&quot;) + new String(&quot;2&quot;);
-
-//这里intern返回的是和s3一样的引用
-System.out.println(s3.intern() == s3);//true
-s3.intern();
-String s4 = &quot;22&quot;;
-System.out.println(s3 == s4);//true
-</code></pre><p>9.Hash冲突解决的办法？</p>
-<pre><code>1.开放定址法（再散列法）
-
-    hash = (HASH(key) + di) % m;
-
-    1.1 di = 1 则称线性探测再散列；
-
-    1.2 di取平方，用冲突的单元d[i]+1的平方，2的平方等等，则称二次探测再散列；
-
-2.链地址法
 </code></pre>
           
         

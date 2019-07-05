@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.xuchunfa.cn/"/>
-  <updated>2019-07-02T07:33:00.842Z</updated>
+  <updated>2019-07-04T12:28:07.039Z</updated>
   <id>http://www.xuchunfa.cn/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ThreadLocal详解</title>
+    <link href="http://www.xuchunfa.cn/2019/07/04/ThreadLocal%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://www.xuchunfa.cn/2019/07/04/ThreadLocal详解/</id>
+    <published>2019-07-04T12:27:16.000Z</published>
+    <updated>2019-07-04T12:28:07.039Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol><li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li><li><p>set方法</p><p> //ThreadLocal.java<br> public void set(T value) {</p><pre><code>// 得到当前线程对象Thread t = Thread.currentThread();// 这里获取ThreadLocalMapThreadLocalMap map = getMap(t);// 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去// 例如数据库中的 connection 对象if (map != null)    map.set(this, value);else    createMap(t, value);</code></pre><p> }</p><p> void createMap(Thread t, T firstValue) {</p><pre><code>//key为 ThreadLocal 对象t.threadLocals = new ThreadLocalMap(this, firstValue);</code></pre><p> }</p></li></ol><p>看看ThreadLocalMap</p><pre><code>//ThreadLocal.javastatic class ThreadLocalMap {    static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {        /** The value associated with this ThreadLocal. */        Object value;        Entry(ThreadLocal&lt;?&gt; k, Object v) {            super(k);            value = v;        }    }    //....很长}</code></pre><p>ThreadLocalMap是ThreadLocal的一个内部类。用Entry类来进行存储,我们的值都是存储到这个Map上的，key是当前ThreadLocal对象！</p><p>该ThreadLocalMap从Thread中获取：</p><pre><code>//Thread.javaThreadLocalMap getMap(Thread t) {    return t.threadLocals;}</code></pre><p>get方法：</p><pre><code>//ThreadLocal.javapublic T get() {    Thread t = Thread.currentThread();    ThreadLocalMap map = getMap(t);    if (map != null) {        //this代表ThreadLocal对象        ThreadLocalMap.Entry e = map.getEntry(this);        if (e != null) {            @SuppressWarnings(&quot;unchecked&quot;)            T result = (T)e.value;            return result;        }    }    return setInitialValue();}</code></pre><p>总结：</p><pre><code>1.ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。2.调用ThreadLocal的get()方法时，实际上就是往ThreadLocalMap获取值，key是ThreadLocal对象3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。</code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p><p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;ThreadLocal解析&quot;&gt;&lt;a href=&quot;#ThreadLocal解析&quot; class=&quot;headerlink&quot; title=&quot;ThreadLocal解析&quot;&gt;&lt;/a&gt;ThreadLocal解析&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;线程内的局部变量。线程间的ThreadL
+      
+    
+    </summary>
+    
+      <category term="面试总结" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>面试总结-Java并发编程2</title>
@@ -522,32 +548,6 @@
       
         &lt;p&gt;参考文献&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://www.javadoop.com/post/AbstractQueuedSynchronizer-3&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;CyclicBarrier源码解析&lt;/a&gt;&lt;/p&gt;
-      
-    
-    </summary>
-    
-      <category term="面试总结" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"/>
-    
-      <category term="Java并发编程" scheme="http://www.xuchunfa.cn/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>CountDownLatch源码解析</title>
-    <link href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
-    <id>http://www.xuchunfa.cn/2019/04/15/CountDownLatch源码解析/</id>
-    <published>2019-04-15T12:06:48.000Z</published>
-    <updated>2019-07-01T10:41:51.869Z</updated>
-    
-    <content type="html"><![CDATA[<p>参考文献</p><p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p><p><strong>CountDownLatch的作用？</strong></p><pre><code>等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒，必要时再对各个任务执行的结果进行汇总；初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到各个线程中去，e.execute(new WorkerRunnable(latch, i))，调用latch.countDown()代表完成一个任务；</code></pre><p>文献已经给出了详细的讲解，这里作简单的总结：</p><p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p><pre><code>protected int tryAcquireShared(int acquires) {        return (getState() == 0) ? 1 : -1;    }protected boolean tryReleaseShared(int releases) {    // Decrement count; signal when transition to zero    for (;;) {        int c = getState();        if (c == 0)            return false;        int nextc = c-1;        if (compareAndSetState(c, nextc))            return nextc == 0;    }}</code></pre><p>线程阻塞的await()方法：</p><pre><code>public void await() throws InterruptedException {    sync.acquireSharedInterruptibly(1);}public final void acquireSharedInterruptibly(int arg)        throws InterruptedException {    if (Thread.interrupted())        throw new InterruptedException();    //countdown()方法会使state的值减1，当state还未为0时会进入到该方法    if (tryAcquireShared(arg) &lt; 0)        doAcquireSharedInterruptibly(arg);}</code></pre><p>进入到阻塞队列中：</p><pre><code>private void doAcquireSharedInterruptibly(int arg)    throws InterruptedException {    final Node node = addWaiter(Node.SHARED);    boolean failed = true;    try {        for (;;) {            final Node p = node.predecessor();            if (p == head) {                int r = tryAcquireShared(arg);                if (r &gt;= 0) {//调用countdown()方法使state=1的线程会唤醒阻塞的线程，并将节点设置为head                    setHeadAndPropagate(node, r);                    p.next = null; // help GC                    failed = false;                    return;                }            }            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;                parkAndCheckInterrupt())//LockSupport阻塞线程                throw new InterruptedException();        }    } finally {        if (failed)            cancelAcquire(node);    }}</code></pre><p>阻塞队列被唤醒的过程：</p><pre><code>private void setHeadAndPropagate(Node node, int propagate) {    Node h = head;     setHead(node);    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||        (h = head) == null || h.waitStatus &lt; 0) {        Node s = node.next;        if (s == null || s.isShared())            doReleaseShared();//继续唤醒下一个节点    }}</code></pre><p>继续唤醒队列中的其他节点：</p><pre><code> private void doReleaseShared() {    for (;;) {//不断唤醒线程直到head不再发生变化        Node h = head;        if (h != null &amp;&amp; h != tail) {            int ws = h.waitStatus;            if (ws == Node.SIGNAL) {                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))                    continue;            // loop to recheck cases                unparkSuccessor(h);            }            else if (ws == 0 &amp;&amp;                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))                continue;                        }        if (h == head)                               break;    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;参考文献&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.javadoop.com/post/AbstractQueuedSynchronizer-3&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;CountDownLatch源码解析&lt;/a&gt;&lt;/p
       
     
     </summary>

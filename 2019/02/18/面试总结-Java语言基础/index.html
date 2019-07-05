@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-24T08:19:30.023Z">
+<meta property="og:updated_time" content="2019-07-04T13:36:51.725Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java语言基础">
 <meta name="twitter:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
@@ -602,6 +602,23 @@ System.out.println(s3 == s4);//true
     1.2 di取平方，用冲突的单元d[i]+1的平方，2的平方等等，则称二次探测再散列；
 
 2.链地址法
+</code></pre><p>10.final关键字详解？</p>
+<pre><code>1.类常量(static)必须在声明时初始化，final成员常量可以在构造函数初始化；
+
+2.JDK1.7之前匿名内部类访问局部变量加final的原因？
+
+    2.1 内部类对象与局部变量对象生命周期不一致
+
+        1.局部变量随方法的出栈消失，匿名类对象可能仍然活着；
+
+        2.加上final后编译器会将内部类对象要访问的所有final局部变量
+          拷贝一份作为自己的成员变量；
+
+    2.2 加上final后使拷贝到内部类的变量与外部类中的该变量保持一致；
+
+    2.3 JDK1.8 局部变量被匿名内部类访问会相当于自动加final
+
+3.final变量在多线程中并发安全，无需额外同步开销
 </code></pre>
       
     </div>

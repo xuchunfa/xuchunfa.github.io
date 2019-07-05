@@ -286,6 +286,236 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/07/04/ThreadLocal详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/04/ThreadLocal详解/" itemprop="url">ThreadLocal详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-04T20:27:16+08:00">
+                2019-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/07/04/ThreadLocal详解/" class="leancloud_visitors" data-flag-title="ThreadLocal详解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
+<li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
+<li><p>set方法</p>
+<p> //ThreadLocal.java<br> public void set(T value) {</p>
+<pre><code>// 得到当前线程对象
+Thread t = Thread.currentThread();
+
+// 这里获取ThreadLocalMap
+ThreadLocalMap map = getMap(t);
+
+// 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
+// 例如数据库中的 connection 对象
+if (map != null)
+    map.set(this, value);
+else
+    createMap(t, value);
+</code></pre><p> }</p>
+<p> void createMap(Thread t, T firstValue) {</p>
+<pre><code>//key为 ThreadLocal 对象
+t.threadLocals = new ThreadLocalMap(this, firstValue);
+</code></pre><p> }</p>
+</li>
+</ol>
+<p>看看ThreadLocalMap</p>
+<pre><code>//ThreadLocal.java
+static class ThreadLocalMap {
+    static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {
+        /** The value associated with this ThreadLocal. */
+        Object value;
+
+        Entry(ThreadLocal&lt;?&gt; k, Object v) {
+            super(k);
+            value = v;
+        }
+    }
+    //....很长
+}
+</code></pre><p>ThreadLocalMap是ThreadLocal的一个内部类。用Entry类来进行存储,我们的值都是存储到这个Map上的，key是当前ThreadLocal对象！</p>
+<p>该ThreadLocalMap从Thread中获取：</p>
+<pre><code>//Thread.java
+ThreadLocalMap getMap(Thread t) {
+    return t.threadLocals;
+}
+</code></pre><p>get方法：</p>
+<pre><code>//ThreadLocal.java
+public T get() {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null) {
+        //this代表ThreadLocal对象
+        ThreadLocalMap.Entry e = map.getEntry(this);
+        if (e != null) {
+            @SuppressWarnings(&quot;unchecked&quot;)
+            T result = (T)e.value;
+            return result;
+        }
+    }
+    return setInitialValue();
+}
+</code></pre><p>总结：</p>
+<pre><code>1.ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。
+
+2.调用ThreadLocal的get()方法时，实际上就是往ThreadLocalMap获取值，key是ThreadLocal对象
+
+3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
+</code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
+<p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/06/27/面试总结-Java并发编程2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2485,234 +2715,6 @@ public class FlyWeightFactory {
     }
     System.out.println(&quot;num of book sold: &quot;+orders.size());
     System.out.println(&quot;num of book order: &quot;+factory.getAllOrder());
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/24/组合模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/24/组合模式/" itemprop="url">组合模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-24T11:41:09+08:00">
-                2019-05-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/05/24/组合模式/" class="leancloud_visitors" data-flag-title="组合模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>组合模式安全模式-UML图：</p>
-<p><img src="/images/safeComponent.PNG" alt=""></p>
-<p>组合模式透明模式-UML图：</p>
-<p><img src="/images/transparentComponent.PNG" alt=""></p>
-<p><strong>组合模式</strong></p>
-<pre><code>也叫合成模式，用来描述整体-部分的关系，将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性；
-</code></pre><p>安全式组合模式实例：</p>
-<pre><code>//叶子和非叶子抽象出来的模板方法
-public abstract class Component {
-    protected String name;
-    abstract void display();
-}
-
-//叶子
-public class Leaf extends Component {
-    public Leaf(String name) {
-        this.name = name;
-    }
-
-    @Override
-    void display() {
-        System.out.println(&quot;Name of leaf: &quot; + name);
-    }
-}
-
-//分支
-public class Branch extends Component {
-    public Branch(String name) {
-        this.name = name;
-    }
-
-    private List&lt;Component&gt; children = new ArrayList&lt;&gt;();
-    public Component add(Component node){
-        children.add(node);
-        return node;
-    }
-    public Component remove(Component node){
-        children.remove(node);
-        return node;
-    }
-
-    public List&lt;Component&gt; getChildren() {
-        return children;
-    }
-
-    @Override
-    void display() {
-        System.out.println(&quot;Name of branch: &quot; + name);
-    }
-}
-</code></pre><p>Client:</p>
-<pre><code>public static void main(String[] args){
-    Branch root = new Branch(&quot;root&quot;);
-    Branch branch = new Branch(&quot;branch1&quot;);
-    Component leaf1 = new Leaf(&quot;leaf1&quot;);
-    Component leaf2 = new Leaf(&quot;leaf2&quot;);
-
-    root.add(branch);
-    branch.add(leaf1);
-    branch.add(leaf2);
-
-    root.display();
-    show(root);
-}
-
-private static void show(Branch root) {
-    for(Component node : root.getChildren()){
-        if(node instanceof Leaf){
-            node.display();
-        }else {
-            show((Branch) node);
-            //或者树枝节点的其他方法
-            node.display();
-        }
-    }
 }
 </code></pre>
           

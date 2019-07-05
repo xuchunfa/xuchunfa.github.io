@@ -286,6 +286,263 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/15/CountDownLatch源码解析/" itemprop="url">CountDownLatch源码解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:06:48+08:00">
+                2019-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/15/CountDownLatch源码解析/" class="leancloud_visitors" data-flag-title="CountDownLatch源码解析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考文献</p>
+<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p>
+<p><strong>CountDownLatch的作用？</strong></p>
+<pre><code>等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒，
+必要时再对各个任务执行的结果进行汇总；
+
+初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到
+各个线程中去，e.execute(new WorkerRunnable(latch, i))，调用latch.countDown()代表完成一个任务；
+</code></pre><p>文献已经给出了详细的讲解，这里作简单的总结：</p>
+<p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
+<pre><code>protected int tryAcquireShared(int acquires) {
+        return (getState() == 0) ? 1 : -1;
+    }
+
+protected boolean tryReleaseShared(int releases) {
+    // Decrement count; signal when transition to zero
+    for (;;) {
+        int c = getState();
+        if (c == 0)
+            return false;
+        int nextc = c-1;
+        if (compareAndSetState(c, nextc))
+            return nextc == 0;
+    }
+}
+</code></pre><p>线程阻塞的await()方法：</p>
+<pre><code>public void await() throws InterruptedException {
+    sync.acquireSharedInterruptibly(1);
+}
+
+public final void acquireSharedInterruptibly(int arg)
+        throws InterruptedException {
+    if (Thread.interrupted())
+        throw new InterruptedException();
+    //countdown()方法会使state的值减1，当state还未为0时会进入到该方法
+    if (tryAcquireShared(arg) &lt; 0)
+        doAcquireSharedInterruptibly(arg);
+}
+</code></pre><p>进入到阻塞队列中：</p>
+<pre><code>private void doAcquireSharedInterruptibly(int arg)
+    throws InterruptedException {
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head) {
+                int r = tryAcquireShared(arg);
+                if (r &gt;= 0) {//调用countdown()方法使state=1的线程会唤醒阻塞的线程，并将节点设置为head
+                    setHeadAndPropagate(node, r);
+                    p.next = null; // help GC
+                    failed = false;
+                    return;
+                }
+            }
+            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt())//LockSupport阻塞线程
+                throw new InterruptedException();
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+</code></pre><p>阻塞队列被唤醒的过程：</p>
+<pre><code>private void setHeadAndPropagate(Node node, int propagate) {
+    Node h = head; 
+    setHead(node);
+    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||
+        (h = head) == null || h.waitStatus &lt; 0) {
+        Node s = node.next;
+        if (s == null || s.isShared())
+            doReleaseShared();//继续唤醒下一个节点
+    }
+}
+</code></pre><p>继续唤醒队列中的其他节点：</p>
+<pre><code> private void doReleaseShared() {
+    for (;;) {//不断唤醒线程直到head不再发生变化
+        Node h = head;
+        if (h != null &amp;&amp; h != tail) {
+            int ws = h.waitStatus;
+            if (ws == Node.SIGNAL) {
+                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                    continue;            // loop to recheck cases
+                unparkSuccessor(h);
+            }
+            else if (ws == 0 &amp;&amp;
+                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                continue;                
+        }
+        if (h == head)                   
+            break;
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock中的Condition源码分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2082,358 +2339,6 @@ class Solution {
     }
 }
 };
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/03/28/计算机网络基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/28/计算机网络基础/" itemprop="url">计算机网络基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T09:07:05+08:00">
-                2019-03-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/计算机网络/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/03/28/计算机网络基础/" class="leancloud_visitors" data-flag-title="计算机网络基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.TCP/IP vs OSI模型？</p>
-<p><img src="/images/OSI.png" alt=""></p>
-<p><img src="/images/网络模型.PNG" alt=""></p>
-<pre><code>OSI:
-
-    1.清楚的区分服务、接口和协议，但实现起来困难；
-
-    2.网络层支持无连接和面向连接，传输层只支持面向连接的通信；
-
-TCP/IP:
-
-    1.网络层只支持无连接的通信，传输层同时支持连接和无连接；
-</code></pre><p>1.OSI七层网络模型每一层都做了什么？</p>
-<pre><code>应用层：网上冲浪、文件传输、电子邮件，远程连接等；
-
-表示层：数据格式化、代码转换、数据加密；
-
-会话层：解除/建立与其他节点的联系；
-
-传输层：提供端对端的接口；
-
-网络层：为数据包选择路由；
-
-数据链路层：传输有地址的帧、差错检测；
-
-物理层：以二进制的数据形式在物理介质上传输数据；
-</code></pre><p>1.TCP/IP五层结构以及相应的功能？</p>
-<pre><code>应用层、传输层、网络层、网络接口层；
-</code></pre><p>2.交换机是几层设备？</p>
-<pre><code>是二层设备。
-
-1.二层设备是工作在数据链路层的设备。
-
-    交换机可以识别数据包中MAC地址，根据MAC地址进行转发，并将这些MAC地址和
-    对应的端口记录在内部的地址表中，没找到通过广播学习再记录；
-
-2.三层设备是工作在网络层的设备。
-
-    路由器，通过IP地址确定数据包的转发；
-</code></pre><p>3.链路层通过什么访问主机以及链路层的差错检测有哪些措施？</p>
-<pre><code>1.通过MAC帧帧头中的目的MAC地址找到目的主机；
-
-2.循环冗余检测CRC(Cyclic Redundancy Check)
-</code></pre><p>4.网络层的路由算法有哪些，简述RIP，OSPF过程？</p>
-<pre><code>1.RIP(Routing Information Protocol)路由信息协议
-
-    表单项：目的网络 距离 下一跳路由器
-
-    1.1 对地址为X的相邻路由器(R1)发来的路由更新信息，首先将它的下一跳地址全部改为X，而且距离加1；
-
-    1.2 比较要更新的路由器R2和R1的路由表
-
-        1.2.1 R2中没有R1中的目的网络，直接添加到R2；
-
-        1.2.2 R2中有R1中的目的网络，而且R2中下一跳路由器是R1，R2更新为      R1中的表单项；
-
-        1.2.3 R2中有R1中的目的网络，而且R2中下一跳路由器不是R1，R2更新为
-              两者之中距离短的表单项；
-</code></pre><p>5.简述ARP协议过程，是如何通过IP地址获取MAC地址的？</p>
-<pre><code>1.过程：
-
-    1.1 在本机ARP缓存表中查看有无目的主机的MAC地址，有的话直接在
-        MAC帧中写入目的主机的MAC地址；
-
-    1.2 源主机通过向交换机/WIFI设备发送请求广播包，告诉所有机器我的IP、
-        我的MAC地址、我想知道目的IP的硬件地址？
-
-    1.3 其他主机收到包以后判断目的IP是不是自己，不是则丢弃；是的话先将
-        IP-MAC映射缓存在ARP缓存表，然后返回ARP回应包，通过单播的形式
-        告诉源主机自己的IP-MAC信息；
-
-    1.4 源主机收到ARP响应分组以后，ARP缓存表中写入目的主机的IP-MAC；
-
-2.总结：
-
-    2.1 ARP通过一问一答实现交互，问是通过广播形式，答是通过单播形式；
-
-    2.2 ARP请求先有自我介绍，后有询问；
-</code></pre><p>6.ping命令所使用的协议是什么（ICMP），简述其过程？</p>
-<pre><code>国际控制报文协议(Internet Control Message Protocol)，ICMP的两个重要
-应用PING 和 Traceroute
-
-1.Ping(Packet InterNet Groper):
-
-    分组网间探测，用来测试两个主机之间的连通性，使用到了ICMP的回送请求
-    报文和回送回答报文；
-
-2.跨网段的ping过程
-
-    ARP广播学习到网关的MAC地址，再封装ICMP请求报文发送给网关路由器，
-    路由器查路由表找到目的主机的IP，网关找不到目的主机的MAC时，继续
-    学习MAC，找到目的主机后返回ICMP报文；
-
-3.Traceroute
-
-    用来侦测主机到目的主机之间所经过的路由情况；
-</code></pre><p>7.TCP如何保证可靠传输？</p>
-<pre><code>1.确认和重传机制；
-
-2.流量控制和拥塞控制；
-</code></pre><p>8.TCP的流量控制，当接收方的接收窗口为0的时候该怎么办？</p>
-<pre><code>rwnd=0 发送方不允许发送数据；
-
-1.流量控制？
-
-    让发送方的发送速率不要太快，让接收方来得及接收；
-
-2.实现方式？
-
-    以字节为单位的滑动窗口机制。发送方的发送窗口不能超过接收方给出接收窗口
-    (rwnd值)的值；
-</code></pre><p>9.TCP的拥塞控制（慢启动，拥塞避免，超时间间隔传输及其快速重传，快速恢复）？</p>
-<pre><code>1.拥塞控制？
-
-    拥塞：对资源的总需求 &gt; 可用资源
-
-    拥塞控制：防止过多的数据注入到网络中，使网络中的路由器和链路不过载；
-
-2.实现方式？
-
-    2.1 慢开始：(指数增长)
-
-        在主机刚刚开始发送报文段时可先将拥塞窗口 cwnd 设置为一个最大报文段 MSS 的数值；
-        在每收到一个对新的报文段的确认后，将拥塞窗口增加至多一个 MSS 的数值。
-
-    2.2 拥塞避免：(线性增长)
-
-         cwnd = ssthresh(慢开始门限)时开始执行拥塞避免算法，cwnd线性增长；
-        网络发生阻塞时(慢开始或拥塞避免阶段)，ssthresh减半，cwnd=1，开始
-        执行慢开始算法；
-
-    2.3    快重传：(尽早重传未被确认的报文段)
-
-        接收方每收到一个失序的报文段，就立即发出重复确认，如果当发送端接收到三个重复的确认ACK时，
-        则断定分组丢失，立即重传丢失的报文段，而不必等待重传计时器超时；
-
-    2.4 快恢复：
-
-        当发送端收到连续三个重复的 ACK 时，设置 ssthresh = ssthresh+3*MSS(网络并不阻塞还减少了3个MSS)；        
-</code></pre><p>10.流量控制和拥塞控制有什么区别？</p>
-<pre><code>拥塞控制是一个全局性的过程，涉及到网络中所有的主机、路由器等与传输性能
-相关的因素；
-
-流量控制是指点对点通信量的控制，是个端对端问题；
-</code></pre><p>11.TCP的连接管理中可能出现的攻击漏洞（洪泛攻击，自顶向下那本书有讲到）？</p>
-<p>12.应用层有哪些常见协议？</p>
-<pre><code>括号里表示要使用到的运输层协议。
-
-1.DNS(UDP)、TFTP(UDP)、NFS(网络文件系统UDP)
-
-2.HTTP(TCP)、SMTP(电子邮件TCP)、TELNET(远程连接TCP)、FTP(文件传送TCP)
-</code></pre><p>2.传输层</p>
-<pre><code>2.1 传输层为应用进程之间提供了端对端的逻辑通信;网络层为主机之间提供逻辑通信；
-</code></pre><p>2.可靠传输的原理？</p>
-<p>重传机制：</p>
-<pre><code>1.发送完一个分组后要暂时保存已发送分组的副本；
-
-2.分组和确认分组需要进行编号；
-
-3.重传时间应当比数据在分组传输的平均往返时间更长一些；
-</code></pre><p>确认丢失和确认迟到：</p>
-<pre><code>1.接收方丢弃重复的M1，重传确认M1;
-
-2.发送方丢弃收到的重复确认；
-</code></pre><p>3.UDP和TCP的报文段？</p>
-<p><img src="/images/报文段.PNG" alt=""></p>
-<p>字段解释：</p>
-<pre><code>1.序号：本报文段的字节流数据中一个字节的序号；
-
-2.确认号：期望收到对方下一个报文段的第一个数据字节的序号；
-
-3.数据偏移：TCP报文段的首部字段；
-
-4.控制位
-
-    4.1 ACK:ACK=1确认字段才有效；
-
-    4.2 RST:RST=1拒绝一个非法的报文段或拒绝打开一个连接；
-
-    4.3 SYN:SYN=1 ACK=0表示连接请求报文段，SYN=1 ACK=1表示同意建立连接；
-
-    4.4 FIN:FIN=1表示此报文段发送发送方的数据已发送完毕，要求释放连接；
-
-5.窗口：允许发送方发送的数据量；
-</code></pre><p>4.滑动窗口模型</p>
-<p>发送缓存VS发送窗口VS接收缓存VS接收窗口？</p>
-<pre><code>1.对接收窗口中不按序到达的数据，接收方只能对按序收到了的数据中的最高序号给出确认；
-
-2.TCP要求接受方必须有累积确认功能，确认推迟的时间不应超过0.5秒；
 </code></pre>
           
         

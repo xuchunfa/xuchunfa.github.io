@@ -90,8 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/ThreadPool.jpg">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/线程池类图.PNG">
-<meta property="og:image" content="https://i.imgur.com/4n7P9X3.png">
-<meta property="og:updated_time" content="2019-07-01T08:49:30.854Z">
+<meta property="og:updated_time" content="2019-07-04T12:28:03.179Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 线程池中线程创建的时机？1.判断核心线程池是否已满，否则提交任务的时候创建新的线程，并由这个线程执行这个任务，是则进入下步；  2.判断工作队列是">
@@ -776,74 +775,7 @@ final void runWorker(Worker w) {
         }
     }
 }
-</code></pre><h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
-<li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
-<li><p>set方法</p>
-<p> //ThreadLocal.java<br> public void set(T value) {</p>
-<pre><code>// 得到当前线程对象
-Thread t = Thread.currentThread();
-
-// 这里获取ThreadLocalMap
-ThreadLocalMap map = getMap(t);
-
-// 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
-// 例如数据库中的 connection 对象
-if (map != null)
-    map.set(this, value);
-else
-    createMap(t, value);
-</code></pre><p> }</p>
-<p> void createMap(Thread t, T firstValue) {</p>
-<pre><code>//key为 ThreadLocal 对象
-t.threadLocals = new ThreadLocalMap(this, firstValue);
-</code></pre><p> }</p>
-</li>
-</ol>
-<p>看看ThreadLocalMap</p>
-<pre><code>//ThreadLocal.java
-static class ThreadLocalMap {
-    static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {
-        /** The value associated with this ThreadLocal. */
-        Object value;
-
-        Entry(ThreadLocal&lt;?&gt; k, Object v) {
-            super(k);
-            value = v;
-        }
-    }
-    //....很长
-}
-</code></pre><p>ThreadLocalMap是ThreadLocal的一个内部类。用Entry类来进行存储,我们的值都是存储到这个Map上的，key是当前ThreadLocal对象！</p>
-<p>该ThreadLocalMap从Thread中获取：</p>
-<pre><code>//Thread.java
-ThreadLocalMap getMap(Thread t) {
-    return t.threadLocals;
-}
-</code></pre><p>get方法：</p>
-<pre><code>//ThreadLocal.java
-public T get() {
-    Thread t = Thread.currentThread();
-    ThreadLocalMap map = getMap(t);
-    if (map != null) {
-        //this代表ThreadLocal对象
-        ThreadLocalMap.Entry e = map.getEntry(this);
-        if (e != null) {
-            @SuppressWarnings(&quot;unchecked&quot;)
-            T result = (T)e.value;
-            return result;
-        }
-    }
-    return setInitialValue();
-}
-</code></pre><p>总结：</p>
-<pre><code>1.ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。
-
-2.调用ThreadLocal的get()方法时，实际上就是往ThreadLocalMap获取值，key是ThreadLocal对象
-
-3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
-</code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
-<p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
-
+</code></pre>
       
     </div>
     
@@ -1036,7 +968,7 @@ public T get() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要使用线程池？"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用线程池？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池执行流程？"><span class="nav-number">2.</span> <span class="nav-text">线程池执行流程？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池中线程创建的时机？"><span class="nav-number">3.</span> <span class="nav-text">线程池中线程创建的时机？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#任务在执行的过程中发生了异常怎么处理？"><span class="nav-number">4.</span> <span class="nav-text">任务在执行的过程中发生了异常怎么处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Worker加锁的原因？"><span class="nav-number">5.</span> <span class="nav-text">Worker加锁的原因？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池的创建？"><span class="nav-number">6.</span> <span class="nav-text">线程池的创建？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadExecutor详解"><span class="nav-number">7.</span> <span class="nav-text">ThreadExecutor详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadLocal解析"><span class="nav-number">8.</span> <span class="nav-text">ThreadLocal解析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要使用线程池？"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用线程池？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池执行流程？"><span class="nav-number">2.</span> <span class="nav-text">线程池执行流程？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池中线程创建的时机？"><span class="nav-number">3.</span> <span class="nav-text">线程池中线程创建的时机？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#任务在执行的过程中发生了异常怎么处理？"><span class="nav-number">4.</span> <span class="nav-text">任务在执行的过程中发生了异常怎么处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Worker加锁的原因？"><span class="nav-number">5.</span> <span class="nav-text">Worker加锁的原因？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池的创建？"><span class="nav-number">6.</span> <span class="nav-text">线程池的创建？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadExecutor详解"><span class="nav-number">7.</span> <span class="nav-text">ThreadExecutor详解</span></a></li></ol></div>
             
 
           </div>

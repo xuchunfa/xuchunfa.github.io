@@ -286,6 +286,222 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/逆序对的个数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/逆序对的个数/" itemprop="url">逆序对的个数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T10:28:22+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/03/逆序对的个数/" class="leancloud_visitors" data-flag-title="逆序对的个数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="逆序对的个数？"><a href="#逆序对的个数？" class="headerlink" title="逆序对的个数？"></a>逆序对的个数？</h4><pre><code>public class InversePairNum {
+
+private int count = 0;
+private int[] temp;//保存排好序的中间结果，再将结果拷贝到原数组
+
+public int resolve(int[] num,int length){
+    temp = new int[length];
+    divideSort(num,0,length-1);
+    return count;
+}
+
+private void divideSort(int[] num, int left, int right) {
+    if(left &lt; right){
+        int mid = (left + right)/2;
+
+        //分成一个一个元素
+        divideSort(num,left,mid);
+        divideSort(num,mid+1,right);
+
+        mergeSort(num,left,mid,right);
+    }
+}
+
+private void mergeSort(int[] num, int left, int mid, int right) {
+
+    int leftEnd = mid;
+    int rightEnd = right;
+
+    int tempIndex = right;
+
+    //指针从后往前移
+    while (leftEnd &gt;= left &amp;&amp; rightEnd &gt;= mid + 1) {
+        if (num[leftEnd] &gt; num[rightEnd]) {
+            temp[tempIndex--] = num[leftEnd--];
+
+            //不是 right - mid 右边的指针是往前挪的
+            count += rightEnd - mid;
+        } else {
+            temp[tempIndex--] = num[rightEnd--];
+        }
+    }
+
+    //剩余元素
+    while (leftEnd &gt;= left) {
+        temp[tempIndex--] = num[leftEnd--];
+    }
+
+    while (rightEnd &gt;= mid + 1) {
+        temp[tempIndex--] = num[rightEnd--];
+    }
+
+    //利用临时数组temp来使得num数组左右两边都是有序的(递增的)
+    for (int i = left; i &lt;= right; i++) {
+        num[i] = temp[i];
+    }
+}
+
+public static void main(String[] args){
+    InversePairNum test = new InversePairNum();
+    int[] num = {4,6,3,1,5,7,2};
+    System.out.println(test.resolve(num,num.length));
+}
+
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -397,246 +613,6 @@
 <p>5.为什么静态方法只能访问静态域？</p>
 <pre><code>静态域是属于类的，程序在进行编译的时候就会加载到虚拟机内存的方法区，直到程序退出都会一直存在，而非静态域是和对象挂钩的，需要 new 一个对象，实例域才会在堆中分配内存，对象都还没有怎么能访问非静态域呢？
 </code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/28/单例模式的不同写法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/28/单例模式的不同写法/" itemprop="url">单例模式的不同写法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-28T16:41:34+08:00">
-                2018-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/28/单例模式的不同写法/" class="leancloud_visitors" data-flag-title="单例模式的不同写法">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>饿汉模式（在调用对象之前就已经初始化了）</p>
-<p>  1.基于类加载的机制（是线程安全的！！！）</p>
-<p>  public class Singleton {</p>
-<p>  private static final Singleton INSTANCE = new Singleton();</p>
-<p>  private Singleton(){}</p>
-<p>  public static Singleton getInstance(){</p>
-<pre><code>return INSTANCE;
-</code></pre><p>  }<br>  }</p>
-</li>
-</ul>
-<p>这里加final的意思这么理解：</p>
-<p>final关键字可以禁止指令重排，防止在 INSTANCE 还没完全赋值的情况下被使用.</p>
-<p>为什么线程安全参考静态内部单例模式。</p>
-<ul>
-<li><p>懒汉模式（线程不安全）</p>
-<pre><code>   public class Singleton {  
-  private static Singleton instance;  
-  private Singleton (){
-  }   
-  public static Singleton getInstance() {  
-  if (instance == null) {  
-          instance = new Singleton();  
-  }  
-  return instance;  
-  }  
-}  
-</code></pre></li>
-</ul>
-<p>这里为什么不能加final:</p>
-<p>1.因为final static 域必须要（直接赋值）或者（通过静态代码块）来赋值，这样就直接初始化了，没有做到延迟初始化。</p>
-<p>2.如果你是final非static成员，必须在构造器、代码块、或者直接定义赋值；</p>
-<ul>
-<li><p>懒汉模式（线程安全）</p>
-<p>  1.同步开销大,效率不高。</p>
-</li>
-</ul>
-<ul>
-<li><p>双重检查模式（DCL）</p>
-<pre><code>public class Singleton { 
-
-    private static volatile Singleton instance;
-
-    private Singleton(){}
-
-    public static Singleton getInstance(){
-        if(instance == null){
-            synchronied(Singleton.class){
-                if(instance == null){
-                    instance = new Singleton();
-                }
-            }
-        }
-        return instance;
-    }
-</code></pre></li>
-</ul>
-<ul>
-<li><p>静态内部单例模式</p>
-<pre><code>public class Singleton { 
-private Singleton(){
-    }
-  public static Singleton getInstance(){  
-    return SingletonHolder.sInstance;  
-}  
-private static class SingletonHolder {  
-    private static final Singleton sInstance = new Singleton();  
-}  
-}
-</code></pre></li>
-</ul>
-<hr>
-<p>1.第一次加载Singleton类不会实例化对象,只有在调用getInstance()方法时才会引起SingletonHolder类加载的理解？？？</p>
-<p>1.1 外部类 Singleton 加载的时候静态内部类 SingletonHolder 不会加载，内部类的加载不需要依附外部类，在使用时才会加载。所以当调用内部类 SingletonHolder 的静态域 sInstance 才会引起内部类的加载以及初始化。</p>
-<p>1.2 不过当只调用外部类的静态变量，静态方法时，是不会让静态内部类的被加载。</p>
-<p><strong>2.为什么是线程安全的？？？</strong></p>
-<p>2.1 首先解释一下clinit()方法中包含类中的所有类（static）变量的赋值动作和静态语句块。</p>
-<p>2.2 虚拟机会保证一个类的类构造器clinit()在多线程环境中被正确的加锁、同步，如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的类构造器clinit()，其他线程都需要阻塞等待，直到活动线程执行clinit()方法完毕。</p>
-<p>特别需要注意的是，在这种情形下，其他线程虽然会被阻塞，但如果执行clinit()方法的那条线程退出后，其他线程在唤醒之后不会再次进入执行clinit()方法，因为 在同一个类加载器下，一个类型只会被初始化一次。如果在一个类的clinit()方法中有耗时很长的操作，就可能造成多个线程阻塞，在实际应用中这种阻塞往往是隐藏的.</p>
-<pre><code>一句话概括：java虚拟机保证在多线程的环境下类能够被正确加载。
-</code></pre><ul>
-<li><p>枚举单例模式</p>
-<p>  public enum Singleton {</p>
-<pre><code>INSTANCE;
-private Singleton() {}
-</code></pre><p>  }</p>
-</li>
-</ul>
-
           
         
       

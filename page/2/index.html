@@ -286,6 +286,234 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/24/组合模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/24/组合模式/" itemprop="url">组合模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-24T11:41:09+08:00">
+                2019-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/24/组合模式/" class="leancloud_visitors" data-flag-title="组合模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>组合模式安全模式-UML图：</p>
+<p><img src="/images/safeComponent.PNG" alt=""></p>
+<p>组合模式透明模式-UML图：</p>
+<p><img src="/images/transparentComponent.PNG" alt=""></p>
+<p><strong>组合模式</strong></p>
+<pre><code>也叫合成模式，用来描述整体-部分的关系，将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性；
+</code></pre><p>安全式组合模式实例：</p>
+<pre><code>//叶子和非叶子抽象出来的模板方法
+public abstract class Component {
+    protected String name;
+    abstract void display();
+}
+
+//叶子
+public class Leaf extends Component {
+    public Leaf(String name) {
+        this.name = name;
+    }
+
+    @Override
+    void display() {
+        System.out.println(&quot;Name of leaf: &quot; + name);
+    }
+}
+
+//分支
+public class Branch extends Component {
+    public Branch(String name) {
+        this.name = name;
+    }
+
+    private List&lt;Component&gt; children = new ArrayList&lt;&gt;();
+    public Component add(Component node){
+        children.add(node);
+        return node;
+    }
+    public Component remove(Component node){
+        children.remove(node);
+        return node;
+    }
+
+    public List&lt;Component&gt; getChildren() {
+        return children;
+    }
+
+    @Override
+    void display() {
+        System.out.println(&quot;Name of branch: &quot; + name);
+    }
+}
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args){
+    Branch root = new Branch(&quot;root&quot;);
+    Branch branch = new Branch(&quot;branch1&quot;);
+    Component leaf1 = new Leaf(&quot;leaf1&quot;);
+    Component leaf2 = new Leaf(&quot;leaf2&quot;);
+
+    root.add(branch);
+    branch.add(leaf1);
+    branch.add(leaf2);
+
+    root.display();
+    show(root);
+}
+
+private static void show(Branch root) {
+    for(Component node : root.getChildren()){
+        if(node instanceof Leaf){
+            node.display();
+        }else {
+            show((Branch) node);
+            //或者树枝节点的其他方法
+            node.display();
+        }
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/23/桥接模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2492,263 +2720,6 @@ public CyclicBarrier(int parties, Runnable barrierAction) {}
         }
     } finally {
         lock.unlock();
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch源码解析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/15/CountDownLatch源码解析/" itemprop="url">CountDownLatch源码解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:06:48+08:00">
-                2019-04-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/15/CountDownLatch源码解析/" class="leancloud_visitors" data-flag-title="CountDownLatch源码解析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>参考文献</p>
-<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CountDownLatch源码解析</a></p>
-<p><strong>CountDownLatch的作用？</strong></p>
-<pre><code>等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒，
-必要时再对各个任务执行的结果进行汇总；
-
-初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到
-各个线程中去，e.execute(new WorkerRunnable(latch, i))，调用latch.countDown()代表完成一个任务；
-</code></pre><p>文献已经给出了详细的讲解，这里作简单的总结：</p>
-<p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
-<pre><code>protected int tryAcquireShared(int acquires) {
-        return (getState() == 0) ? 1 : -1;
-    }
-
-protected boolean tryReleaseShared(int releases) {
-    // Decrement count; signal when transition to zero
-    for (;;) {
-        int c = getState();
-        if (c == 0)
-            return false;
-        int nextc = c-1;
-        if (compareAndSetState(c, nextc))
-            return nextc == 0;
-    }
-}
-</code></pre><p>线程阻塞的await()方法：</p>
-<pre><code>public void await() throws InterruptedException {
-    sync.acquireSharedInterruptibly(1);
-}
-
-public final void acquireSharedInterruptibly(int arg)
-        throws InterruptedException {
-    if (Thread.interrupted())
-        throw new InterruptedException();
-    //countdown()方法会使state的值减1，当state还未为0时会进入到该方法
-    if (tryAcquireShared(arg) &lt; 0)
-        doAcquireSharedInterruptibly(arg);
-}
-</code></pre><p>进入到阻塞队列中：</p>
-<pre><code>private void doAcquireSharedInterruptibly(int arg)
-    throws InterruptedException {
-    final Node node = addWaiter(Node.SHARED);
-    boolean failed = true;
-    try {
-        for (;;) {
-            final Node p = node.predecessor();
-            if (p == head) {
-                int r = tryAcquireShared(arg);
-                if (r &gt;= 0) {//调用countdown()方法使state=1的线程会唤醒阻塞的线程，并将节点设置为head
-                    setHeadAndPropagate(node, r);
-                    p.next = null; // help GC
-                    failed = false;
-                    return;
-                }
-            }
-            if (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
-                parkAndCheckInterrupt())//LockSupport阻塞线程
-                throw new InterruptedException();
-        }
-    } finally {
-        if (failed)
-            cancelAcquire(node);
-    }
-}
-</code></pre><p>阻塞队列被唤醒的过程：</p>
-<pre><code>private void setHeadAndPropagate(Node node, int propagate) {
-    Node h = head; 
-    setHead(node);
-    if (propagate &gt; 0 || h == null || h.waitStatus &lt; 0 ||
-        (h = head) == null || h.waitStatus &lt; 0) {
-        Node s = node.next;
-        if (s == null || s.isShared())
-            doReleaseShared();//继续唤醒下一个节点
-    }
-}
-</code></pre><p>继续唤醒队列中的其他节点：</p>
-<pre><code> private void doReleaseShared() {
-    for (;;) {//不断唤醒线程直到head不再发生变化
-        Node h = head;
-        if (h != null &amp;&amp; h != tail) {
-            int ws = h.waitStatus;
-            if (ws == Node.SIGNAL) {
-                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
-                    continue;            // loop to recheck cases
-                unparkSuccessor(h);
-            }
-            else if (ws == 0 &amp;&amp;
-                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
-                continue;                
-        }
-        if (h == head)                   
-            break;
     }
 }
 </code></pre>

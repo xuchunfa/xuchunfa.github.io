@@ -390,7 +390,97 @@
       
         
           
-            <p><strong>单例模式是如何保证单例的？</strong></p>
+            <p><img src="/images/singleton.JPG" alt=""></p>
+<p><strong>单例模式的不同写法</strong></p>
+<ul>
+<li><p>饿汉模式（在调用对象之前就已经初始化了）</p>
+<p>  1.基于类加载的机制（是线程安全的！！！）</p>
+<p>  public class Singleton {</p>
+<p>  private static final Singleton INSTANCE = new Singleton();</p>
+<p>  private Singleton(){}</p>
+<p>  public static Singleton getInstance(){</p>
+<pre><code>return INSTANCE;
+</code></pre><p>  }<br>  }</p>
+</li>
+</ul>
+<p>这里加final的意思这么理解：</p>
+<p>final关键字可以禁止指令重排，防止在 INSTANCE 还没完全赋值的情况下被使用.</p>
+<p>为什么线程安全参考静态内部单例模式。</p>
+<ul>
+<li><p>懒汉模式（线程不安全）</p>
+<pre><code>   public class Singleton {  
+  private static Singleton instance;  
+  private Singleton (){
+  }   
+  public static Singleton getInstance() {  
+  if (instance == null) {  
+          instance = new Singleton();  
+  }  
+  return instance;  
+  }  
+}  
+</code></pre></li>
+</ul>
+<p>这里为什么不能加final:</p>
+<p>1.因为final static 域必须要（直接赋值）或者（通过静态代码块）来赋值，这样就直接初始化了，没有做到延迟初始化。</p>
+<p>2.如果你是final非static成员，必须在构造器、代码块、或者直接定义赋值；</p>
+<ul>
+<li><p>懒汉模式（线程安全）</p>
+<p>  1.同步开销大,效率不高。</p>
+</li>
+</ul>
+<ul>
+<li><p>双重检查模式（DCL）</p>
+<pre><code>public class Singleton { 
+
+    private static volatile Singleton instance;
+
+    private Singleton(){}
+
+    public static Singleton getInstance(){
+        if(instance == null){
+            synchronied(Singleton.class){
+                if(instance == null){
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+</code></pre></li>
+</ul>
+<ul>
+<li><p>静态内部单例模式</p>
+<pre><code>public class Singleton { 
+private Singleton(){
+    }
+  public static Singleton getInstance(){  
+    return SingletonHolder.sInstance;  
+}  
+private static class SingletonHolder {  
+    private static final Singleton sInstance = new Singleton();  
+}  
+}
+</code></pre></li>
+</ul>
+<hr>
+<p>1.第一次加载Singleton类不会实例化对象,只有在调用getInstance()方法时才会引起SingletonHolder类加载的理解？？？</p>
+<p>1.1 外部类 Singleton 加载的时候静态内部类 SingletonHolder 不会加载，内部类的加载不需要依附外部类，在使用时才会加载。所以当调用内部类 SingletonHolder 的静态域 sInstance 才会引起内部类的加载以及初始化。</p>
+<p>1.2 不过当只调用外部类的静态变量，静态方法时，是不会让静态内部类的被加载。</p>
+<p><strong>2.为什么是线程安全的？？？</strong></p>
+<p>2.1 首先解释一下clinit()方法中包含类中的所有类（static）变量的赋值动作和静态语句块。</p>
+<p>2.2 虚拟机会保证一个类的类构造器clinit()在多线程环境中被正确的加锁、同步，如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的类构造器clinit()，其他线程都需要阻塞等待，直到活动线程执行clinit()方法完毕。</p>
+<p>特别需要注意的是，在这种情形下，其他线程虽然会被阻塞，但如果执行clinit()方法的那条线程退出后，其他线程在唤醒之后不会再次进入执行clinit()方法，因为 在同一个类加载器下，一个类型只会被初始化一次。如果在一个类的clinit()方法中有耗时很长的操作，就可能造成多个线程阻塞，在实际应用中这种阻塞往往是隐藏的.</p>
+<pre><code>一句话概括：java虚拟机保证在多线程的环境下类能够被正确加载。
+</code></pre><ul>
+<li><p>枚举单例模式</p>
+<p>  public enum Singleton {</p>
+<pre><code>INSTANCE;
+private Singleton() {}
+</code></pre><p>  }</p>
+</li>
+</ul>
+<p><strong>单例模式是如何保证单例的？</strong></p>
 <pre><code>即怎么保证内存中只有一个对象：
 
 1.外界不能随意创建对象，所有构造函数必须私有化；
@@ -399,19 +489,19 @@
 
 3.通过公共的方法提供给别人。因为外界不能创建对象，所以通过给方法加static关键字，通过类名访问类方法来获取对象；
 </code></pre><ul>
-<li><p>单例模式指？</p>
-<p>  只生成一个对象，避免重复创建对象。</p>
-<p>  <img src="https://i.imgur.com/MkkHyU0.png" alt=""></p>
-</li>
 <li><p>instance为什么要加static关键字？</p>
-<p>  因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，在类加载的时候创建对象，这样就保证对象的唯一性。。。而static方法中只能访问静态变量,所以必须声明成static.</p>
-</li>
+<pre><code>因为单例模式中构造器被私有化，产生实例的唯一途径就是通过 static 方法，
+在类加载的时候创建对象，这样就保证对象的唯一性。。。
+而static方法中只能访问静态变量,所以必须声明成static.
+</code></pre></li>
 <li><p>单例模式中构造函数为什么私有化？</p>
-<p>  1.构造函数私有化后，那么只能通过这个类的内部函数才能构造这个类的对象。</p>
-<p>  2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。</p>
-</li>
+<pre><code>1.构造函数私有化后，那么只能通过这个类的内部函数才能构造这个类的对象。
+
+2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。
+</code></pre></li>
 <li><p>单例模式中volatile变量的作用？</p>
-<p>  首先分析 instance = new Singleton() 的本质：</p>
+<pre><code>保证原子性和有序性；
+</code></pre><p>  首先分析 instance = new Singleton() 的本质：</p>
 <p>  1.为对象分配内存空间</p>
 <p>  2.对象初始化</p>
 <p>  3.将对象的引用指向对应的内存地址。</p>
@@ -422,22 +512,15 @@
 <p>此时线程B访问的是没有经过初始化的对象，会报错，所以使用volatile的根源在于：<strong>禁止A2和A3的重排序</strong>。</p>
 <ul>
 <li><p>单例模式中为什么要使用双重检查索(DCL)？</p>
-<p>  因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。我们只需要在实例还没有创建之前添加加锁操作。</p>
-</li>
-<li><p>线程安全的延迟初始化？</p>
-<p>  1.基于volatile</p>
-<p>  2.基于类初始化</p>
-<p> 对于2举个例子：</p>
-<p>  private static class Holder{</p>
-<pre><code>private static Singleton instance =  new Singleton();
-</code></pre><p>  }</p>
-<p>  public static Singleton getInstance(int i){</p>
-<pre><code>return Holder.instance;
-</code></pre><p>  }</p>
-</li>
+<pre><code>因为在多线程的环境下，所有线程在调用getSingleton()方法时都必须在synchronized这里排队，
+而加锁是一个非常耗时的操作，这导致单例模式的效率非常低。
+我们只需要在实例还没有创建之前添加加锁操作。
+</code></pre></li>
+</ul>
+<ul>
 <li><p>静态内部类方法创建单例模式的好处？</p>
 <p>  按需创建实例（饿汉式模式：在类加载时就完成了初始化），提高了内存的利用效率。</p>
-<p>  <code>这种方式的特点是：Singleton类被装载了，instance不一定被初始化，只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。</code></p>
+<p>  这种方式的特点是：Singleton类被装载了，instance不一定被初始化，只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。`</p>
 </li>
 </ul>
 

@@ -1893,74 +1893,7 @@ final void runWorker(Worker w) {
         }
     }
 }
-</code></pre><h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
-<li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
-<li><p>set方法</p>
-<p> //ThreadLocal.java<br> public void set(T value) {</p>
-<pre><code>// 得到当前线程对象
-Thread t = Thread.currentThread();
-
-// 这里获取ThreadLocalMap
-ThreadLocalMap map = getMap(t);
-
-// 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
-// 例如数据库中的 connection 对象
-if (map != null)
-    map.set(this, value);
-else
-    createMap(t, value);
-</code></pre><p> }</p>
-<p> void createMap(Thread t, T firstValue) {</p>
-<pre><code>//key为 ThreadLocal 对象
-t.threadLocals = new ThreadLocalMap(this, firstValue);
-</code></pre><p> }</p>
-</li>
-</ol>
-<p>看看ThreadLocalMap</p>
-<pre><code>//ThreadLocal.java
-static class ThreadLocalMap {
-    static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {
-        /** The value associated with this ThreadLocal. */
-        Object value;
-
-        Entry(ThreadLocal&lt;?&gt; k, Object v) {
-            super(k);
-            value = v;
-        }
-    }
-    //....很长
-}
-</code></pre><p>ThreadLocalMap是ThreadLocal的一个内部类。用Entry类来进行存储,我们的值都是存储到这个Map上的，key是当前ThreadLocal对象！</p>
-<p>该ThreadLocalMap从Thread中获取：</p>
-<pre><code>//Thread.java
-ThreadLocalMap getMap(Thread t) {
-    return t.threadLocals;
-}
-</code></pre><p>get方法：</p>
-<pre><code>//ThreadLocal.java
-public T get() {
-    Thread t = Thread.currentThread();
-    ThreadLocalMap map = getMap(t);
-    if (map != null) {
-        //this代表ThreadLocal对象
-        ThreadLocalMap.Entry e = map.getEntry(this);
-        if (e != null) {
-            @SuppressWarnings(&quot;unchecked&quot;)
-            T result = (T)e.value;
-            return result;
-        }
-    }
-    return setInitialValue();
-}
-</code></pre><p>总结：</p>
-<pre><code>1.ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。
-
-2.调用ThreadLocal的get()方法时，实际上就是往ThreadLocalMap获取值，key是ThreadLocal对象
-
-3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
-</code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
-<p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
-
+</code></pre>
           
         
       

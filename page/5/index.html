@@ -286,6 +286,378 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/面试总结-Java语言基础/" itemprop="url">面试总结--Java语言基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:41:52+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/java语言基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java语言基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/18/面试总结-Java语言基础/" class="leancloud_visitors" data-flag-title="面试总结--Java语言基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.java基本数据类型？</p>
+<pre><code>byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)
+</code></pre><ol>
+<li>private修饰的方法可以通过反射访问，那么private的意义何在？</li>
+<li><p>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</p>
+<pre><code>约束限制，减少出错。
+</code></pre></li>
+<li><p>接口和抽象的区别？</p>
+<pre><code>1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。
+
+2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是自底向上设计的，接口是自顶向下设计的。
+
+3.门和报警器的例子。将门抽象为一个类，实现报警功能的接口。抽象类是一种“is-a”的关系，接口代表的是“like-a”的关系。
+</code></pre></li>
+<li><p>重写和重载的区别？</p>
+<p> 重载：</p>
+<pre><code>1.函数名相同，参数列表不同；
+
+2.前期绑定，即编译期绑定，编译器确定调用哪个方法；
+</code></pre><p> 重写：</p>
+<pre><code>1.子类重写父类中的方法，函数名和参数列表都相同;
+
+2.动态绑定，多态
+</code></pre></li>
+<li><p>Object类有哪些方法？以及具体用到哪？</p>
+<pre><code> 1.getClass()、hashCode()、equals(Object)、clone()、toString()、notify()、notifyAll()、wait(long)、wait(）、finalize();
+
+2.wait()和notify():生产者消费者模式中常用到；
+</code></pre></li>
+</ol>
+<ol start="6">
+<li><p>java的浅拷贝和深拷贝？</p>
+<p> 浅拷贝：</p>
+<pre><code>1.属性为引用类型，拷贝的是内存地址，如果一个对象改变了引用对象指向的对象的内容，那么拷贝对象中也会发生变化；
+
+2.的确创建了一个对象；
+</code></pre><p> 深拷贝：</p>
+<pre><code>1.重写引用对象的克隆方法，即可实现深拷贝；
+
+class Father implements Cloneable{
+    private String fatherName;
+    private Child child;
+
+    public Father(String fatherName,Child child) {
+        this.fatherName = fatherName;
+        this.child = child;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        //重写clone方法
+        Father father = (Father) super.clone();
+        father.child = (Child) father.child.clone();
+        return father;
+    }
+}
+
+class Child implements Cloneable{
+    private String childName;
+
+    public Child(String childName) {
+        this.childName = childName;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+
+@Test
+public void test() throws CloneNotSupportedException {
+    Child child = new Child(&quot;xiaoxu&quot;);
+    Father father = new Father(&quot;daxu&quot;,child);
+    Father clonedFather = (Father) father.clone();
+    System.out.println(father.child == clonedFather.child);//false
+}
+</code></pre><p> 总结：</p>
+<pre><code>如果一个对象内部只有基本数据类型，那用 clone() 方法获取到的就是这个对象的深拷贝，
+
+而如果其内部还有引用数据类型，那用 clone() 方法就是一次浅拷贝的操作。
+</code></pre></li>
+</ol>
+<ol start="7">
+<li><p>equals和==的区别以及hashcode和equals之间的关系？</p>
+<pre><code>1.==表示地址是否相等，equals表示内容是否相等；
+</code></pre><p> hashcode和equals之间的关系：</p>
+<pre><code>1.两个对象equals相等，则hashcode相等；
+
+2.两个对象hashcode相等，equals不一定相等；
+
+3.当equals()被重写的时候，hashcode（）也要被重写，保证相等的对象的hashcode相等；
+
+4.java的集合中通常使用equals（）判断对象是否相等，使用hashcode能够加快效率；
+</code></pre></li>
+</ol>
+<p>8.StringBuffer和StringBuilder的区别？</p>
+<pre><code>String常量字符串进行拼接通常是最慢的，而且开销大。
+
+1.StringBuilder适合单线程、速度快、线程不安全；StringBuffer线程安全；
+
+2.一般字符串相加不会有多线程操作，推荐使用StringBuilder;
+
+3.如果要对全局变量字符串进行拼接建议使用StringBuffer；
+</code></pre><p>8.String常见面试题？</p>
+<pre><code>//JDK1.7 以后字符串常量池也在堆里面了
+public class Main {
+    public static void main(String[] args) {
+        String s1 = &quot;hello&quot;;
+        String s2 = &quot;hello&quot;;
+        String s3 = &quot;he&quot; + &quot;llo&quot;;
+        String s4 = &quot;hel&quot; + new String(&quot;lo&quot;);
+        String s5 = new String(&quot;hello&quot;);
+        String s6 = s5.intern();
+        String s7 = &quot;h&quot;;
+        String s8 = &quot;ello&quot;;
+        String s9 = s7 + s8;
+        System.out.println(s1==s2);//true
+        System.out.println(s1==s3);//true 编译优化
+        System.out.println(s1==s4);//false s1常量池地址 s4普通堆地址
+        System.out.println(s1==s9);//false s1常量池地址 s9普通堆地址
+        System.out.println(s4==s5);//false s4普通堆地址 s5普通堆地址
+        System.out.println(s1==s6);//true s1常量池地址 s6常量池地址
+}
+</code></pre><p>String.intern()方法：</p>
+<pre><code>使一个位于堆中的字符串在运行期间动态地加入到字符串常量池中，如果字符串常量池中已有该对象
+对应的字面量，则直接返回该字面量在字符串常量池中的引用。
+</code></pre><p>8.String的intern()方法？</p>
+<pre><code>  1.String 的 String pool是一个固定大小的HashTable，默认大小1009；
+
+2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回它的引用；
+
+3.String s = new String(&quot;1&quot;)创建了两个对象，一个存放在常量池，另一个存放在Heap区；
+
+4.intern重用String对象，节省了内存消耗；
+</code></pre><p><a href="https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html" target="_blank" rel="noopener">美团技术讲解intern</a></p>
+<pre><code>//JDK1.7情况下（字符串常量池已经移到正常的Heap区）
+public void test1(){
+    String s1 = new String(&quot;1&quot;);
+    s1.intern();
+    String s2 = &quot;1&quot;;
+    System.out.println(s1 == s2);//false
+    String s3 = new String(&quot;2&quot;) + new String(&quot;1&quot;);
+    s3.intern();//直接存储堆中的引用，即 s3.intern()==s3 为true
+    String s4 = &quot;11&quot;;
+    System.out.println(s3 == s4);//true
+}
+
+
+//JDK1.6情况下(字符串常量池放在perm区)
+public void test1(){
+    String s1 = new String(&quot;1&quot;);
+    s1.intern();
+    String s2 = &quot;1&quot;;
+    System.out.println(s1 == s2);//false
+
+    String s3 = new String(&quot;1&quot;) + new String(&quot;1&quot;);
+    s3.intern();
+    String s4 = &quot;11&quot;;
+    System.out.println(s3 == s4);//false
+}
+</code></pre><p>我在JDK1.8环境下运行：</p>
+<pre><code>String s1 = new String(&quot;1&quot;);
+s1.intern();
+String s2 = &quot;1&quot;;
+System.out.println(s1 == s2);//false
+
+
+String s4 = &quot;22&quot;;
+String s3 = new String(&quot;2&quot;) + new String(&quot;2&quot;);
+System.out.println(s3.intern() == s3);//false
+s3.intern();
+System.out.println(s3 == s4);//false
+
+//如果掉个顺序的话
+String s3 = new String(&quot;2&quot;) + new String(&quot;2&quot;);
+
+//这里intern返回的是和s3一样的引用
+System.out.println(s3.intern() == s3);//true
+s3.intern();
+String s4 = &quot;22&quot;;
+System.out.println(s3 == s4);//true
+</code></pre><p>9.Hash冲突解决的办法？</p>
+<pre><code>1.开放定址法（再散列法）
+
+    hash = (HASH(key) + di) % m;
+
+    1.1 di = 1 则称线性探测再散列；
+
+    1.2 di取平方，用冲突的单元d[i]+1的平方，2的平方等等，则称二次探测再散列；
+
+2.链地址法
+</code></pre><p>10.final关键字详解？</p>
+<pre><code>1.类常量(static)必须在声明时初始化，final成员常量可以在构造函数初始化；
+
+2.JDK1.7之前匿名内部类访问局部变量加final的原因？
+
+    2.1 内部类对象与局部变量对象生命周期不一致
+
+        1.局部变量随方法的出栈消失，匿名类对象可能仍然活着；
+
+        2.加上final后编译器会将内部类对象要访问的所有final局部变量
+          拷贝一份作为自己的成员变量；
+
+    2.2 加上final后使拷贝到内部类的变量与外部类中的该变量保持一致；
+
+    2.3 JDK1.8 局部变量被匿名内部类访问会相当于自动加final
+
+3.final变量在多线程中并发安全，无需额外同步开销
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -551,13 +923,14 @@
 
     整个过程：
 
-        1.初始标记（STW）
+        1.初始标记：STW
 
-        2.并发标记
+        2.并发标记：与用户进程同时进行，Card标记为Dirty状态避免扫描整个老年代
 
-        3.重新标记（STW）
+        3.重新标记：STW，标记整个老年代的存活对象，扫描新生代和老年代
 
-        4.并发清除
+        4.并发清除：与用户进程同时进行，耗时最长，添加参数-XX:+CMSScavengeBeforeRemark
+        在执行remark之前先做一次Young GC，减少年轻代对老年代的无效引用；
 
     优点：
 
@@ -567,40 +940,69 @@
 
         6.1 多线程多CPU资源敏感。CPU不足时，垃圾收集线程占CPU将近50%，这大大降低了用户程序的执行速度。
 
-        6.2 无法处理浮动垃圾。浮动垃圾指在并发清除时，用户线程新产生的垃圾。由于这些垃圾的产生所以在设置-XX:CMSInitiatingOccupancyFraction（启动CMS时内存的阈值）时得注意给CMS
-        收集线程预留内存，否则会出现“Concurrent Model Failure”,临时启用Serial Old（单线程），性能下降。
+        6.2 无法处理浮动垃圾。浮动垃圾指在并发清除时，用户线程新产生的垃圾。由于这些垃圾的产生所以在设置
+        -XX:CMSInitiatingOccupancyFraction（启动CMS时内存的阈值）
+        时得注意给CMS收集线程预留内存，否则会出现“Concurrent Model Failure”,
+        临时启用Serial Old（单线程），性能下降。
 
-        6.3 会产生内存碎片。通过设置-XX：+UseCMSCompactAtFullCollection参数，在要进行Full GC时碎片整理。默认值为0表示每次要进入Full GC 时进行碎片整理。
+        为防止concurrent mode failurec让CMS尽早GC，在一定full GC次数以后让CMS做一次内存压缩，减少内存碎片
+
+        6.3 会产生内存碎片。通过设置-XX：+UseCMSCompactAtFullCollection参数，
+        在要进行Full GC时碎片整理。默认值为0表示每次要进入Full GC 时进行碎片整理。
 
     7.G1收集器
 </code></pre><p><a href="https://www.cnblogs.com/duanxz/p/6102580.html" target="_blank" rel="noopener">G1 收集器的详解</a></p>
 <pre><code>重点部分总结：
 
+特点：
+
+    1.可控的停顿时间， -XX:MaxGCPauseMillis=200 指定期望的停顿时间；
+
 7.1 Region区域图解如下：
 </code></pre><p><img src="/images/region.png" alt=""></p>
-<pre><code>    1.划分Region区域（默认2048），逻辑连续物理不连续，每个Region大小范围1M到32M(2的n次方)是通过参数堆的大小和Region个数计算出来的。其中humongous代表一组连续的Region区域，
-    用于存放大小超过默认Region大小50%的对象。
+<pre><code>    1.划分Region区域（默认2048），逻辑连续物理不连续，
+    每个Region大小范围1M到32M(2的n次方)是通过参数堆的大小和Region个数计算出来的。
+    其中humongous代表一组连续的Region区域，用于存放大小超过默认Region大小50%的对象。
 
-7.2 年轻代的回收模式
-
-    1.主要是对Eden区进行GC，会发生Stop The World事件、同时会计算Eden和Survivor的大小
+G1收集器的4种操作：
 
 
-7.3 mix GC模式
+    7.1 年轻代的回收模式
 
-    mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.
+        1.主要是对Eden区进行GC，会发生Stop The World事件、同时会计算Eden和Survivor的大小
 
-    步骤：
+    7.2 全局并发标记(global concurrent marking)
 
-        1.初始标记(STW)
+        1.初始标记：STW，伴随young GC发生，标记从GC Root开始可达的对象
 
-        2.并发标记
+        2.并发标记：标记heap中的对象，标记线程和用户线程并发执行，收集各个Region的存活对象信息；
 
-        3.最终标记（STW）
 
-        4.筛选回收
+        3.最终标记：标记那些在并发阶段发生变化的对象；
 
-7.3 Full GC模式：单线程、全局扫描堆然后标记清除代价昂贵。
+        4.筛选回收：回收空闲的Region分区
+
+
+    7.3 mix GC模式
+
+        1.不仅进行新生代垃圾的回收，而且回收之前标记出来的老年代的垃圾最多的Region；
+
+        2.mixed gc中也有一个阈值参数 -XX:InitiatingHeapOccupancyPercent，
+        当老年代大小占整个堆大小百分比达到该阈值时，会触发一次mixed gc.
+
+    7.3 Full GC模式
+
+        1.单线程、全局扫描堆然后标记清除代价昂贵。
+
+        2.避免Full GC注意的地方：
+
+            2.1 增加堆的大小或调整老年代和新生代的比例；
+
+            2.2 增加并发周期的线程数量；
+
+            2.3 让并发周期尽早开始，这个是通过设置堆使用占比来调整的（默认45%老年代占据整个堆的大小比例）
+
+            2.4 在混合垃圾回收周期中回收更多的老年代区块；
 
 优点：
 
@@ -2747,222 +3149,6 @@ fetch到消息后就可以更新offset，无论是否消费成功。
 2.手动提交：设置enable.auto.commit=false，这种方式称为【at least once】。“最少一次”
 fetch到消息后，等消费完成再调用方法【consumer.commitSync()】，手动更新offset；如果消费失败，则offset也不会更新，此条消息会被重复消费一次。
 </code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/11/Storm基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/11/Storm基础/" itemprop="url">Storm基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T09:26:53+08:00">
-                2018-10-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Storm/" itemprop="url" rel="index">
-                    <span itemprop="name">Storm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/11/Storm基础/" class="leancloud_visitors" data-flag-title="Storm基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.元组（tuple）: 元组中的多个值将以逗号的形式分隔。一个元组是一个有序的数值列表，每个数组都被赋予一个命名。</p>
-<p>2.GlobalGrouping ：所有的 tuple 都分发到 task ID最小的task实例上。</p>
-<p>3.默认情况下，parallelism_hint将同时设置执行器和任务，可以自己修改任务数。</p>
-<pre><code>builder.setSpout(&quot;wordSpout&quot;,new WordSpout(),4).setNumTasks(5)
-</code></pre><p>4.Storm的消息保障机制</p>
-<ul>
-<li><p>为了保障消息能被有效的处理，必须使用一个可以支持元组回放的可靠数据源(Kafka、RabbitMQspout等)</p>
-</li>
-<li><p>支持可靠性的三个重要因子</p>
-<pre><code>1.具有可靠的spout数据源
-2.提供锚定元组的数据源
-3.具备知晓元组执行结果并且能通报错误的拓扑
-</code></pre></li>
-<li><p>Spout发射锚定元组</p>
-<pre><code>public abstract class BaseRichSpout extends BaseComponent implements IRichSpout 
-{
-
-    @Override
-    public void ack(Object msgId) {
-    }
-
-    @Override
-    public void fail(Object msgId) {
-    }
-}
-</code></pre></li>
-</ul>
-<ul>
-<li><p>Bolt隐式锚定、应答和容错</p>
-<pre><code>BaseBasicBolt:自动提供了线程的锚定和应答功能。(BaseBasicBolt)
-
-注意：如果出现这种情况，处理聚合和合并的bolt往往要处理一大堆的tuple之后才能被ack，而这类tuple通常都是多输入的tuple，此时就应该使用下面的Bolt.
-</code></pre></li>
-<li><p>Bolt显示锚定、应答和容错</p>
-<pre><code>锚定：_collector.emit(tuple, new Values(word));
-
-应答：_collector.ack(tuple);
-
-容错：_collector.fail(tuple);
-</code></pre></li>
-<li><p>Tuple树中的锚定</p>
-<pre><code>//在BaseBasicBolt中发出的元组自动锚定到输入的元组（隐式的锚定）
-public void execute(Tuple tuple) {
-    String sentence = tuple.getString(0);
-    for(String word: sentence.split(&quot; &quot;)) {
-        //在BaseRichBolt中的显式锚定
-        //构建以spout元组作为根结点的消息树
-        _collector.emit(tuple, new Values(word));
-    }
-    _collector.ack(tuple);
-}
-</code></pre></li>
-<li><p>Storm的asker任务</p>
-<p>  作用是：保持对元组树的跟踪，检测一个spout元组是否经历了完整的处理过程，asker任务发现一棵元组树执行完成时，<br>  会发射一个消息到最初发射该元组的spout,此时spout会调用ask方法。（调用的是产生这个元组的Spout任务）。</p>
-<p>  配置：Storm默认TOPOLOGY_ACKER_EXECUTORS和拓扑中配置的Worker的数量相同。可以配置TOPOLOGY_ACKER_EXECUTORS。</p>
-</li>
-<li><p>回放语义</p>
-<pre><code>1.最多一次处理：不会发生任何重放事务。例如使用BaseBasicBolt时，把元组从spout发射出来时，不对元组增加锚定。
-
-2.至少一次处理：对单一元组进行多次重放，直至成功。
-
-3.仅一次处理：
-</code></pre></li>
-</ul>
-
           
         
       

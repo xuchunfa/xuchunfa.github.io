@@ -286,6 +286,222 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/11/Storm基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/11/Storm基础/" itemprop="url">Storm基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-11T09:26:53+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Storm/" itemprop="url" rel="index">
+                    <span itemprop="name">Storm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/11/Storm基础/" class="leancloud_visitors" data-flag-title="Storm基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.元组（tuple）: 元组中的多个值将以逗号的形式分隔。一个元组是一个有序的数值列表，每个数组都被赋予一个命名。</p>
+<p>2.GlobalGrouping ：所有的 tuple 都分发到 task ID最小的task实例上。</p>
+<p>3.默认情况下，parallelism_hint将同时设置执行器和任务，可以自己修改任务数。</p>
+<pre><code>builder.setSpout(&quot;wordSpout&quot;,new WordSpout(),4).setNumTasks(5)
+</code></pre><p>4.Storm的消息保障机制</p>
+<ul>
+<li><p>为了保障消息能被有效的处理，必须使用一个可以支持元组回放的可靠数据源(Kafka、RabbitMQspout等)</p>
+</li>
+<li><p>支持可靠性的三个重要因子</p>
+<pre><code>1.具有可靠的spout数据源
+2.提供锚定元组的数据源
+3.具备知晓元组执行结果并且能通报错误的拓扑
+</code></pre></li>
+<li><p>Spout发射锚定元组</p>
+<pre><code>public abstract class BaseRichSpout extends BaseComponent implements IRichSpout 
+{
+
+    @Override
+    public void ack(Object msgId) {
+    }
+
+    @Override
+    public void fail(Object msgId) {
+    }
+}
+</code></pre></li>
+</ul>
+<ul>
+<li><p>Bolt隐式锚定、应答和容错</p>
+<pre><code>BaseBasicBolt:自动提供了线程的锚定和应答功能。(BaseBasicBolt)
+
+注意：如果出现这种情况，处理聚合和合并的bolt往往要处理一大堆的tuple之后才能被ack，而这类tuple通常都是多输入的tuple，此时就应该使用下面的Bolt.
+</code></pre></li>
+<li><p>Bolt显示锚定、应答和容错</p>
+<pre><code>锚定：_collector.emit(tuple, new Values(word));
+
+应答：_collector.ack(tuple);
+
+容错：_collector.fail(tuple);
+</code></pre></li>
+<li><p>Tuple树中的锚定</p>
+<pre><code>//在BaseBasicBolt中发出的元组自动锚定到输入的元组（隐式的锚定）
+public void execute(Tuple tuple) {
+    String sentence = tuple.getString(0);
+    for(String word: sentence.split(&quot; &quot;)) {
+        //在BaseRichBolt中的显式锚定
+        //构建以spout元组作为根结点的消息树
+        _collector.emit(tuple, new Values(word));
+    }
+    _collector.ack(tuple);
+}
+</code></pre></li>
+<li><p>Storm的asker任务</p>
+<p>  作用是：保持对元组树的跟踪，检测一个spout元组是否经历了完整的处理过程，asker任务发现一棵元组树执行完成时，<br>  会发射一个消息到最初发射该元组的spout,此时spout会调用ask方法。（调用的是产生这个元组的Spout任务）。</p>
+<p>  配置：Storm默认TOPOLOGY_ACKER_EXECUTORS和拓扑中配置的Worker的数量相同。可以配置TOPOLOGY_ACKER_EXECUTORS。</p>
+</li>
+<li><p>回放语义</p>
+<pre><code>1.最多一次处理：不会发生任何重放事务。例如使用BaseBasicBolt时，把元组从spout发射出来时，不对元组增加锚定。
+
+2.至少一次处理：对单一元组进行多次重放，直至成功。
+
+3.仅一次处理：
+</code></pre></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/07/Spring源码分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2360,222 +2576,6 @@ private static int Min(int i, int j, int k) {
 public static void main(String[] args){
     System.out.println(UglyNumber.resolve(100));
 }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/逆序对的个数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/逆序对的个数/" itemprop="url">逆序对的个数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T10:28:22+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/03/逆序对的个数/" class="leancloud_visitors" data-flag-title="逆序对的个数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="逆序对的个数？"><a href="#逆序对的个数？" class="headerlink" title="逆序对的个数？"></a>逆序对的个数？</h4><pre><code>public class InversePairNum {
-
-private int count = 0;
-private int[] temp;//保存排好序的中间结果，再将结果拷贝到原数组
-
-public int resolve(int[] num,int length){
-    temp = new int[length];
-    divideSort(num,0,length-1);
-    return count;
-}
-
-private void divideSort(int[] num, int left, int right) {
-    if(left &lt; right){
-        int mid = (left + right)/2;
-
-        //分成一个一个元素
-        divideSort(num,left,mid);
-        divideSort(num,mid+1,right);
-
-        mergeSort(num,left,mid,right);
-    }
-}
-
-private void mergeSort(int[] num, int left, int mid, int right) {
-
-    int leftEnd = mid;
-    int rightEnd = right;
-
-    int tempIndex = right;
-
-    //指针从后往前移
-    while (leftEnd &gt;= left &amp;&amp; rightEnd &gt;= mid + 1) {
-        if (num[leftEnd] &gt; num[rightEnd]) {
-            temp[tempIndex--] = num[leftEnd--];
-
-            //不是 right - mid 右边的指针是往前挪的
-            count += rightEnd - mid;
-        } else {
-            temp[tempIndex--] = num[rightEnd--];
-        }
-    }
-
-    //剩余元素
-    while (leftEnd &gt;= left) {
-        temp[tempIndex--] = num[leftEnd--];
-    }
-
-    while (rightEnd &gt;= mid + 1) {
-        temp[tempIndex--] = num[rightEnd--];
-    }
-
-    //利用临时数组temp来使得num数组左右两边都是有序的(递增的)
-    for (int i = left; i &lt;= right; i++) {
-        num[i] = temp[i];
-    }
-}
-
-public static void main(String[] args){
-    InversePairNum test = new InversePairNum();
-    int[] num = {4,6,3,1,5,7,2};
-    System.out.println(test.resolve(num,num.length));
-}
-
 }
 </code></pre>
           

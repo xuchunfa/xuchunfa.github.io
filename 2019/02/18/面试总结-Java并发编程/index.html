@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
+<meta name="description" content="线程创建的方法？ 1.继承Thread重写run方法；      java单继承，会有缺陷；  2.实现Runnable接口，new Thread(接口实现)；      Runnable无返回结果     Callable有返回结果  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法      MyCall implements Callable&amp;lt;Integer&amp;gt;{.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java并发编程">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
+<meta property="og:description" content="线程创建的方法？ 1.继承Thread重写run方法；      java单继承，会有缺陷；  2.实现Runnable接口，new Thread(接口实现)；      Runnable无返回结果     Callable有返回结果  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法      MyCall implements Callable&amp;lt;Integer&amp;gt;{.">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Markword.jpg">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/threadState.PNG">
-<meta property="og:updated_time" content="2019-06-27T11:29:04.542Z">
+<meta property="og:updated_time" content="2019-07-04T12:20:25.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
-<meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；  2.实现Runnable接口，new Thread(接口实现)；  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&amp;lt;V&amp;gt; callable)，最后创建 new Thread(FutureTask&amp;lt;V&amp;gt; future)；  4.线程">
+<meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；      java单继承，会有缺陷；  2.实现Runnable接口，new Thread(接口实现)；      Runnable无返回结果     Callable有返回结果  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法      MyCall implements Callable&amp;lt;Integer&amp;gt;{.">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/Markword.jpg">
 
 
@@ -417,11 +417,30 @@
 <li><p>线程创建的方法？</p>
 <pre><code>1.继承Thread重写run方法；
 
+    java单继承，会有缺陷；
+
 2.实现Runnable接口，new Thread(接口实现)；
 
-3.实现Callable&lt;V&gt;接口重写call方法，传给FutureTask对象，FutureTask(Callable&lt;V&gt; callable)，最后创建 new Thread(FutureTask&lt;V&gt; future)；
+    Runnable无返回结果
+    Callable有返回结果
 
-4.线程池；
+3.实现Callable&lt;V&gt;接口重写call方法
+
+    MyCall implements Callable&lt;Integer&gt;{...重写call方法..}
+
+    FutureTask&lt;Integer&gt; future = new FutureTask&lt;Integer&gt;(
+    new MyCall())
+
+    thread = new Thread(future，&quot;name&quot;)
+    Integer res = future.get()//会阻塞，直到返回结果值
+
+4.线程池
+
+    1.降低资源消耗
+
+    2.提高响应速度
+
+    3.提高线程的可管理性
 </code></pre></li>
 </ol>
 <p>1.一个线程打印奇数另一个线程打印偶数</p>
