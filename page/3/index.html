@@ -1185,9 +1185,10 @@ if (!tryAcquire(arg) &amp;&amp;//线程获取锁失败后，将会加入到同�
         for (;;) {//不断自旋获取同步状态
             //直到节点的前一个节点释放锁，并且前一个节点是头节点
             final Node p = node.predecessor();
+            //只有前驱节点是头节点才能尝试获取锁
             if (p == head &amp;&amp; tryAcquire(arg)) {
                 setHead(node);
-                p.next = null; // help GC
+                p.next = null; // help GC 断开前驱节点的next指针
                 failed = false;
                 return interrupted;
             }

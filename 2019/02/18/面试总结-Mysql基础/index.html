@@ -88,15 +88,19 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/B树.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/B+树.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/幻读.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/noIndex.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/hasIndex.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/primaryIndex.png">
-<meta property="og:updated_time" content="2019-06-20T12:55:32.781Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/聚簇索引.PNG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/非聚簇索引.PNG">
+<meta property="og:updated_time" content="2019-07-07T07:18:54.594Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Mysql基础">
 <meta name="twitter:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
-<meta name="twitter:image" content="http://www.xuchunfa.cn/images/幻读.PNG">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/B树.png">
 
 
 
@@ -429,10 +433,12 @@
 </code></pre><p>B树和B+树的区别？</p>
 <pre><code>1.B树所有节点都带有卫星数据，B+树只有叶子节点带有；
 
-2.B+树的中间节点没有卫星数据，同样大小的磁盘页可以容纳更多的元素；树型更矮胖，减少了查询时候的IO次数；
+2.B+树的中间节点没有卫星数据，同样大小的磁盘页可以容纳更多的元素；
+  树型更矮胖，减少了查询时候的IO次数；
 
 3.B+树查询性能稳定、范围查询效率更高；
 </code></pre><p>m阶（代表一个树节点最多有多少个查找路径）的B树特点：</p>
+<p><img src="/images/B树.png" alt=""></p>
 <pre><code>1.每个节点至多有m棵子树；
 
 2.除根节点外每个分支节点至少有 m/2取上整 棵子树；
@@ -443,6 +449,7 @@
 
 5.有k个子树的中间节点包含k-1个元素；
 </code></pre><p>m阶B+树；</p>
+<p><img src="/images/B+树.png" alt=""></p>
 <pre><code>1.有k个子树的中间节点包含k个元素；
 
 2.叶子节点包含了全部元素信息以及指向这些元素记录的指针；
@@ -505,20 +512,83 @@
     3.（id）索引
 
 5.全文索引：格式为Match(列名)Against(关键字)，是搜索引擎使用的一种关键技术；
-</code></pre><p>什么时候使用索引呢？</p>
-<pre><code>1.考虑在where和order by命令上涉及的列上建立索引；
 
-2.和其他表作连接的字段需要加索引；
-</code></pre><p>索引失效的情况：</p>
-<pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引;
+6.覆盖索引
+
+    6.1 如果要查询的列被所使用的索引覆盖，那么通过一次索引查询就能获得记录
+    不用回表查询。    
+
+    6.2 索引的字段不只包含查询列，还包含查询条件、排序；
+</code></pre><p>物理存储角度的索引分类：</p>
+<pre><code>1.聚簇索引
+</code></pre><p><img src="/images/聚簇索引.PNG" alt=""></p>
+<pre><code>    1.1 Innodb的索引结构，数据和主索引存放在一起，主键索引的叶子节点data域存放的是数据本身；
+
+    1.2 辅助索引的叶子data域存放的是主键值，因此主键值越小越好；
+
+    1.3 数据按主键的顺序存放，索引的顺序就是数据本身的数据，适合范围数据查询；
+
+    1.4 数据结构B+树
+
+
+2.非聚簇索引
+</code></pre><p><img src="/images/非聚簇索引.PNG" alt=""></p>
+<pre><code>2.1 MYISAM的索引结构，索引和数据是分开存放的，MYISAM的索引文件data域（叶子节点）仅仅保存数据记录的物理地址(行号)，
+    通过该地址回表查询数据，
+
+2.2 主键索引和辅助索引（查询的条件不是主键）几乎一样，主键索引不允许重复；
+
+2.3 数据按插入顺序存放，适合单个数据查询；
+
+2.4 数据结构B+树
+</code></pre><p><strong>什么时候使用索引呢？</strong></p>
+<pre><code>1.考虑在where和order by命令上涉及的列上建立索引。
+
+    1.1 order by的理解，索引是有序的，会省去排序的过程；where上的字段可以
+    避免全表扫描；
+
+    1.2 order by字段需要是非空的，否则会无效；
+
+2.查询中与其他表关联的字段，外键关系建立索引
+
+    2.1 建立外键的方式：
+
+        constraint 外键名 foreign key (dept_id) references 
+        employee(id) on delete cascade on update cascade
+
+3.作为排序的列建立索引
+
+4.高并发条件下倾向组合索引
+
+5.聚合函数的列可以建索引
+</code></pre><p><strong>什么时候不使用索引呢？</strong></p>
+<pre><code>1.经常增删改的列不需要建立索引；
+
+2.有大量重复的列(离散度低的字段)，例如性别；
+
+3.表的记录数不够多；
+</code></pre><p><strong>索引失效的情况：</strong></p>
+<pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引；
+   使用正则表达式，只有在第一个字符不是通配符的情况下索引才生效；
 
 2.在列上进行运算将会使索引失效，包括计算表达式、数据库函数；
 
 3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
 
+    使用联合索引自动排序的好处：(a,b)
+
+    eg：select ... from table where a=XXX order by b；
+
 4.联合索引未使用最左匹配原则，例如组合索引（A，B），where B=b不会使用索引；
 
-5.不要使用 NOT IN、&lt;&gt;、！= 操作索引会失效，但&lt;，&lt;=，=，&gt;=，BETWEEN，IN是可以用到索引的；
+5.只要列中包含有NULL值都将不会包含在索引中，组合索引只要有一列含有NULL
+  这一列对于组合索引就是无效的；
+
+6.索引字段使用 !=、&lt;&gt;、is null、is not null、or索引失效全表扫描；
+
+7.索引字段是字符串，但查询的时候不加单引号，索引失效；、
+
+8.mysql中不能继续使用索引中范围条件between、&lt;、&gt;、in、not in等右边的列；
 </code></pre><ol start="7">
 <li><p>数据库引擎有哪些？说说他们的区别？</p>
 <p> MyISAM</p>

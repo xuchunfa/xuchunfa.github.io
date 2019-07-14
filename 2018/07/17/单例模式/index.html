@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/singleton.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/table.PNG">
-<meta property="og:updated_time" content="2019-07-04T07:49:50.129Z">
+<meta property="og:updated_time" content="2019-07-08T11:58:37.608Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式">
 <meta name="twitter:description" content="单例模式的不同写法  饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getIn">
@@ -485,14 +485,14 @@ private static class SingletonHolder {
 <p>特别需要注意的是，在这种情形下，其他线程虽然会被阻塞，但如果执行clinit()方法的那条线程退出后，其他线程在唤醒之后不会再次进入执行clinit()方法，因为 在同一个类加载器下，一个类型只会被初始化一次。如果在一个类的clinit()方法中有耗时很长的操作，就可能造成多个线程阻塞，在实际应用中这种阻塞往往是隐藏的.</p>
 <pre><code>一句话概括：java虚拟机保证在多线程的环境下类能够被正确加载。
 </code></pre><ul>
-<li><p>枚举单例模式</p>
-<p>  public enum Singleton {</p>
-<pre><code>INSTANCE;
-private Singleton() {}
-</code></pre><p>  }</p>
-</li>
+<li>枚举单例模式</li>
 </ul>
-<p><strong>单例模式是如何保证单例的？</strong></p>
+<p><a href="https://www.hollischuang.com/archives/2498" target="_blank" rel="noopener">枚举类型的好处</a></p>
+<pre><code>public enum Singleton {
+    INSTANCE;
+    private Singleton() {}
+}
+</code></pre><p><strong>单例模式是如何保证单例的？</strong></p>
 <pre><code>即怎么保证内存中只有一个对象：
 
 1.外界不能随意创建对象，所有构造函数必须私有化；

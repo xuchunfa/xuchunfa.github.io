@@ -81,12 +81,12 @@
 
 
 
-<meta name="description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
+<meta name="description" content="Java类加载以及类初始化顺序？  连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结-Java虚拟机">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
+<meta property="og:description" content="Java类加载以及类初始化顺序？  连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/垃圾收集器.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/region.png">
@@ -94,10 +94,10 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/内存溢出.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/双亲委派.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/类加载器.png">
-<meta property="og:updated_time" content="2019-07-04T07:17:33.999Z">
+<meta property="og:updated_time" content="2019-07-08T13:59:56.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java虚拟机">
-<meta name="twitter:description" content="Java类加载以及类初始化顺序？ 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口初始化不会初始化父">
+<meta name="twitter:description" content="Java类加载以及类初始化顺序？  连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/垃圾收集器.png">
 
 
@@ -418,7 +418,9 @@
 
       
         <ol>
-<li><p>Java类加载以及类初始化顺序？</p>
+<li>Java类加载以及类初始化顺序？</li>
+</ol>
+<p><a href="https://www.hollischuang.com/archives/201" target="_blank" rel="noopener">连接初始化详解</a></p>
 <pre><code>1.类加载的生命周期：
 
 加载、连接（验证、准备、解析）、初始化、使用、卸载。
@@ -435,20 +437,25 @@
 
 3.细分一下加载的生命周期：
 
-    3.1 验证（文件格式验证、元数据验证、字节码验证、符号引用验证）
+    3.1 验证（文件格式验证、元数据验证、字节码验证、符号引用验证):保证
+        java类的二进制在结构上是正确的。
 
-    3.2 准备（设置类变量的初始值）
+    3.2 准备（设置类变量的初始值):不会执行用户程序的初始化代码；
 
-    3.3 解析（类或接口的解析、字段解析、类方法解析、接口方法解析）
+    3.3 解析（类或接口的解析、字段解析、类方法解析、接口方法解析):解析的
+        过程会导致其他类的加载。
 
 4.类初始化的顺序：
 
-    4.1  &lt;clinit&gt;()方法收集类中所有类变量和静态代码块初始化，父类优于子类而且在多线程环境下初始化时虚拟机保证只有一个线程去执行初始化方法，且只初始化一次。
+    4.1  &lt;clinit&gt;()方法收集类中所有类变量和静态代码块初始化，
+    父类优于子类而且在多线程环境下初始化时虚拟机保证只有一个线程去执行初始化方法，
+    且只初始化一次。
 
-    4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量---父类构造函数---子类构造函数
-</code></pre></li>
-<li><p>对方法区和永久区解的理以及它们之间关系的理解？</p>
-</li>
+    4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量
+    ---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量
+    ---父类构造函数---子类构造函数
+</code></pre><ol start="3">
+<li>对方法区和永久区解的理以及它们之间关系的理解？</li>
 <li><p>一个java文件有3个类，编译后有几个class文件？</p>
 <pre><code>答：3个。
 </code></pre></li>
@@ -699,16 +706,37 @@ G1收集器的4种操作：
 </code></pre><ol start="7">
 <li>加载器双亲委派模型及破坏？</li>
 </ol>
-<p>结构图：</p>
+<p>类的装载方式：</p>
+<pre><code>1.隐式装载。例如new对象时由java虚拟机隐式调用类加载器加载对应的类到JVM中。
+
+2.显示装载。class.forName()方法；
+</code></pre><p>结构图：</p>
 <p><img src="/images/双亲委派.png" alt=""></p>
 <p>类加载器：</p>
 <p><img src="/images/类加载器.png" alt=""></p>
-<pre><code>1.启动类加载器（Bootstrap ClassLoader）:加载jdk/jre/目录下的类库jar包，例如rt.jar，C++实现在java里面无法获取；
+<pre><code>1.启动类加载器（Bootstrap ClassLoader）:加载jdk/jre/目录下的类库jar包，例如rt.jar，C++实现所以在java程序中打印结果为null;
 
 2.拓展类加载器（Extension ClassLoader）:加载jdk/jre/ext/目录下的jar包。
 
-3.应用程序类加载器（系统类加载器）（Application ClassLoader)：加载用户配置的classpath路径下的类库。
-</code></pre><p>不考虑多线程时的核心代码：</p>
+3.应用程序类加载器（系统类加载器）（Application ClassLoader)：加载用户配置的classpath路径下的类库，默认的类加载器。
+</code></pre><p><strong>为什么要使用委托机制？</strong></p>
+<pre><code>1.委托机制
+
+    委托父类加载器寻找目标类，只有在找不到的情况下才从自己的类路径中查找并
+     装载目标类；
+
+2.原因
+
+    保证java虚拟机中类的唯一性。例如写了一个Object类，如果不使用委派机制，会有
+    多个类加载器去加载它的字节码，这样JVM出现多个不同的Object类（字节码+类加载器
+    判定类是否相同)，出现安全隐患；
+</code></pre><p><strong>破坏双亲委派模型？</strong></p>
+<p><a href="https://blog.csdn.net/u012129558/article/details/81540804" target="_blank" rel="noopener">DriverManager破坏双亲委派模型详解</a></p>
+<pre><code>父类加载器委托子类加载器去加载class文件。例如DriverManager(由BootStrap类加载器
+加载)，加载各个数据库厂商实现Driver接口的实现类，这些实现类由AppClassLoader加
+载器加载，所以需要启动类加载器委托系统类加载器加载Driver的实现。
+</code></pre><p><a href="https://blog.csdn.net/dangwanma6489/article/details/80244981" target="_blank" rel="noopener">Tomcat类加载器破坏双亲委派模型详解</a></p>
+<p>不考虑多线程时的核心代码：</p>
 <pre><code>protected synchronized Class&lt;?&gt; loadClass(String name,boolean resolve){
     //检查类是否被加载
     Class&lt;?&gt; c = findLoadedClass(name);
@@ -727,15 +755,12 @@ G1收集器的4种操作：
     }
 
     if(resolve == true){
+        //链接指定的类
         resolveClass(c);
     }
     return c;
     }
 }
-</code></pre><p>破坏双亲委派模型例子：</p>
-<pre><code>JNDI服务，JDNI是使用启动类加载器加载的，调用classpath下的JNDI接口提供者（SPI,Service Provider Interface）的代码，
-
-引入了线程上下文类加载器（默认是系统类加载器），由它去加载SPI代码，打破了双亲委派模型，出现了父类加载器请求子类加载器去完成类加载动作。
 </code></pre><ol start="8">
 <li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p>
 <p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p>
