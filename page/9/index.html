@@ -286,6 +286,369 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/17/反转链表-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/反转链表-1/" itemprop="url">反转链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-17T14:50:36+08:00">
+                2018-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/17/反转链表-1/" class="leancloud_visitors" data-flag-title="反转链表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="就地反转和递归反转？"><a href="#就地反转和递归反转？" class="headerlink" title="就地反转和递归反转？"></a>就地反转和递归反转？</h4><pre><code>public class VerseLink {
+
+//直接遍历一遍
+public static ListNode verseLink(ListNode head){
+    ListNode previous,current,post;
+    previous = null;
+    current = head;
+
+    while (current != null){
+        post = current.next;
+        current.next = previous;
+        previous = current;
+        current = post;
+    }
+    head = prev;
+    return head;
+}
+
+//递归反转
+public static ListNode recursiveVerseLink(ListNode head){
+    if(head  == null || head.next == null){
+        return head;
+    }
+
+    ListNode newHead = recursiveVerseLink(head.next);//原链表的最后一个结点
+    head.next.next = head;//从倒数第二个结点开始回溯,指针发生转向
+    head.next = null;//断开原来指针
+
+    return newHead;
+}
+
+public static void main(String[] args){
+    Link link = new Link();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.add(4);
+    Link.head = VerseLink.recursiveVerseLink(Link.head);
+    link.print();
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/16/并行和并发的区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/16/并行和并发的区别/" itemprop="url">并行和并发的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T13:10:53+08:00">
+                2018-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/16/并行和并发的区别/" class="leancloud_visitors" data-flag-title="并行和并发的区别">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>举个例子：</strong></p>
+<p>桌子上放着一本书，桌子旁坐着四个人，书就相当于cpu资源，并行可以比喻成这四个人打开书同时阅读；而并发可以看成是则这四个人轮流看这本书。</p>
+<blockquote>
+<p>并行（parallelism）</p>
+</blockquote>
+<p>1.物理上同时发生的。</p>
+<p>2.某一时刻能处理多个任务。</p>
+<blockquote>
+<p>并发（concurrency）</p>
+</blockquote>
+<p>1.逻辑上同时发生的。</p>
+<p>2.某一时间间隔内能同时处理多个任务，但是某一时刻就只处理一个任务。</p>
+<p>直观点的示意图：两核CPU创建四个线程的情况</p>
+<p><img src="https://i.imgur.com/MV4eOd9.png" alt=""></p>
+<p>操作1,2,3,4并发执行。</p>
+<p>操作1,5以及2,6都是并行的。</p>
+<p>可以理解现在大多数CPU都是多核的，在执行大量请求时，并行并发一般都是一起发生的。</p>
+<p>参考文档：<a href="https://www.jianshu.com/p/b11e251d3dc7" target="_blank" rel="noopener">https://www.jianshu.com/p/b11e251d3dc7</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/15/java虚拟机垃圾收集器及回收算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1806,514 +2169,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/09/CAS的理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/09/CAS的理解/" itemprop="url">CAS的理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T16:01:17+08:00">
-                2018-08-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/09/CAS的理解/" class="leancloud_visitors" data-flag-title="CAS的理解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>CAS为什么能保证线程安全呢？</p>
-</blockquote>
-<p>？？？</p>
-<blockquote>
-<p>原子操作类</p>
-</blockquote>
-<ol>
-<li>原子更新基本类型</li>
-<li>原子更新数组类型</li>
-<li>原子更新引用</li>
-<li>原子更新属性</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/08/ConcurrentHashMap的理解/" itemprop="url">ConcurrentHashMap的理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T19:47:32+08:00">
-                2018-08-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/08/ConcurrentHashMap的理解/" class="leancloud_visitors" data-flag-title="ConcurrentHashMap的理解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>JDK 1.7的参数：</p>
-<pre><code>1.DEFAULT_CONCURRENCY_LEVEL
-
-    简单看成是segment的个数，即并发度。默认值：16。
-
-2.MAX_SEGMENTS：
-
-    segment的最大个数。值为2^16=65536
-
-3.DEFAULT_INITIAL_CAPACITY:
-
-    默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i].
-
-4.segmentMask:默认值15。
-
-5.segmentShift:默认值28。
-</code></pre><p>JDK1.8 的参数：</p>
-<pre><code>1.TREEIFY_THRESHOLD：默认值8，链表转红黑树的阈值。
-
-2.table：取消分段锁，直接改用一个table数组；
-
-    table = transient volatile Node&lt;K,V&gt;[]
-</code></pre><ul>
-<li><p>初始化操作</p>
-<pre><code>1.Segment[i] 为每个段中表的默认初始化容量，默认值为2，负载因子是 0.75，得出初始阈值为 1.5，
-也就是以后插入第一个元素不会触发扩容，插入第二个会进行第一次扩容。
-</code></pre></li>
-</ul>
-<ul>
-<li><p>定位Segment的散列算法</p>
-<pre><code>1.(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask
-
-  即让hash值的高4位与掩码做与运算。
-</code></pre></li>
-<li><p>定位HashEntry的散列算法</p>
-<pre><code>int index = (tab.length - 1) &amp; hash;//类似于HashMap中的数组下标
-</code></pre></li>
-</ul>
-<p>1.JDK 1.7 ConHashMap的put()操作</p>
-<pre><code>else {
-    //node是scanAndLockForPut()获取锁时的返回值
-    if (node != null)
-        node.setNext(first);
-    else
-        node = new HashEntry&lt;K,V&gt;(hash, key, value, first);
-
-    int c = count + 1;
-
-    if (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)
-        rehash(node); 
-    else
-        //头插法插入元素
-        setEntryAt(tab, index, node);
-    ++modCount;
-    count = c;
-    oldValue = null;
-    break;
-    }
-}
-
-//循环获取锁
-while (!tryLock()) {
-    HashEntry&lt;K,V&gt; f; // to recheck first below
-    if (retries &lt; 0) {
-        if (e == null) {
-            //e = fisrt
-            if (node == null) // speculatively create node
-                node = new HashEntry&lt;K,V&gt;(hash, key, value, null);
-            retries = 0;
-        }
-        else if (key.equals(e.key))
-            retries = 0;
-        else
-            e = e.next;
-    }
-     //尝试获取锁超过一定次数后线程阻塞
-    else if (++retries &gt; MAX_SCAN_RETRIES) {
-        lock();
-        break;
-    }
-    else if ((retries &amp; 1) == 0 &amp;&amp;
-             //这个时候是有大问题了，那就是有新的元素进到了链表，成为了新的表头
-             //所以这边的策略是，相当于重新走一遍这个 scanAndLockForPut 方法
-             (f = entryForHash(this, hash)) != first) {
-        e = first = f; // re-traverse if entry changed
-        retries = -1;
-    }
-}
-    return node;
-}
-</code></pre><p>1.JDK 1.8 ConHashMap的put()操作</p>
-<pre><code> //在表头插入节点
- else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) {
-    if (casTabAt(tab, i, null,
-                 new Node&lt;K,V&gt;(hash, key, value, null)))
-        break;                   
-    }
-
-synchronized (f) {
-    if (tabAt(tab, i) == f) {
-        if (fh &gt;= 0) {
-            binCount = 1;
-            for (Node&lt;K,V&gt; e = f;; ++binCount) {
-                K ek;
-                ......
-                Node&lt;K,V&gt; pred = e;
-                //尾插法插入节点
-                if ((e = e.next) == null) {
-                    pred.next = new Node&lt;K,V&gt;(hash, key,
-                                              value, null);
-                    break;
-                }
-            }
-        }
-        //红黑树插入节点
-        else if (f instanceof TreeBin) {
-            Node&lt;K,V&gt; p;
-            binCount = 2;
-            if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,
-                                           value)) != null) {
-                oldVal = p.val;
-                if (!onlyIfAbsent)
-                    p.val = value;
-            }
-        }
-    }
-}
-</code></pre><p>2.JDK 1.7 ConHashMap的get()操作</p>
-<pre><code>//没有加锁
-public V get(Object key) {
-
-    if ((s = (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(segments, u)) != null &amp;&amp;
-        (tab = s.table) != null) {
-          //native方法得到表头节点
-        for (HashEntry&lt;K,V&gt; e = (HashEntry&lt;K,V&gt;) UNSAFE.getObjectVolatile
-                 (tab, ((long)(((tab.length - 1) &amp; h)) &lt;&lt; TSHIFT) + TBASE);
-             e != null; e = e.next) {
-            K k;
-            if ((k = e.key) == key || (e.hash == h &amp;&amp; key.equals(k)))
-                return e.value;
-        }
-    }
-    return null;
-}
-</code></pre><p>2.JDK 1.8 ConHashMap的get()操作</p>
-<pre><code>//没有加锁
-public V get(Object key) {
-    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; e, p; int n, eh; K ek;
-    int h = spread(key.hashCode());
-    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
-        //底层还是Unsafe的getObjectVolatile方法
-        (e = tabAt(tab, (n - 1) &amp; h)) != null) {
-        if ((eh = e.hash) == h) {
-            if ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek)))
-                return e.val;
-        }
-        else if (eh &lt; 0)
-            return (p = e.find(h, key)) != null ? p.val : null;
-        while ((e = e.next) != null) {
-            if (e.hash == h &amp;&amp;
-                ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek))))
-                return e.val;
-        }
-    }
-    return null;
-}
-</code></pre><p>3.JDK1.7 CHM的size()操作</p>
-<pre><code>//CHM不上锁的前提下逐个计算Segment的更新次数，若相邻两次
-//获取到的Segment更新次数相等则说明无更新操作，则返回总size
-for (int j = 0; j &lt; segments.length; ++j) {
-    Segment&lt;K,V&gt; seg = segmentAt(segments, j);
-    if (seg != null) {
-      sum += seg.modCount;//每个segment的修改次数
-      int c = seg.count;
-      if (c &lt; 0 || (size += c) &lt; 0)
-        overflow = true;
-    }
-  }
-  if (sum == last)
-    break;
-  last = sum;
-}
-</code></pre><p>1.定位到Segment</p>
-<p>2.初始化segment的某一段，ensureSegment(int k)。</p>
-<p>3.获取锁，scanAndLockForPut(key, hash, value);</p>
-<p>4.如果需要的话，进行扩容。segment数组是不能扩容的，扩容的对象是HashEntry数组，该方法不需要考虑并发的，因为此时segment分段锁被独占的。</p>
-<blockquote>
-<p>Segment&lt;K,V&gt;的理解</p>
-</blockquote>
-<p>1.HashEntry&lt;K,V&gt;[] table：每个segment有一个HashEntry数组。</p>
-<p>2.HashEntry&lt;K,V&gt;：一个四元组，next被声明成final,所以每次插入元素都只能头插。node&lt;K,V&gt;的next域呢？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2368,7 +2223,7 @@ for (int j = 0; j &lt; segments.length; ++j) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Flying in the ocean of knowledge" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="阻塞/非阻塞 和 同步/异步？ 1.同步/异步：同步是会阻塞请求进程的，异步不会阻塞请求进程的，所以BIO、NIO             和IO多路复用都是同步的；   2.阻塞/非阻塞：在等待一件事情的处理结果时，如果你还去干点其他的事，则为   非阻塞，否则为阻塞； 阻塞IO和非阻塞IO？ 1.阻塞IO  分析： 1.两个阶段都是阻塞的。第一个阶段指等待网络数据到达内核空间缓存区域，第二个阶">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NIO详解">
+<meta property="og:url" content="http://www.xuchunfa.cn/2019/07/18/NIO详解/index.html">
+<meta property="og:site_name" content="Flying in the ocean of knowledge">
+<meta property="og:description" content="阻塞/非阻塞 和 同步/异步？ 1.同步/异步：同步是会阻塞请求进程的，异步不会阻塞请求进程的，所以BIO、NIO             和IO多路复用都是同步的；   2.阻塞/非阻塞：在等待一件事情的处理结果时，如果你还去干点其他的事，则为   非阻塞，否则为阻塞； 阻塞IO和非阻塞IO？ 1.阻塞IO  分析： 1.两个阶段都是阻塞的。第一个阶段指等待网络数据到达内核空间缓存区域，第二个阶">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/io.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/nio.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/io多路复用.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/异步IO.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/reactor.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/reactor1.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/reactor2.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/selector.JPG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/buffer1.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/buffer.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/buffer3.JPG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/channel.png">
+<meta property="og:updated_time" content="2019-07-21T13:30:50.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NIO详解">
+<meta name="twitter:description" content="阻塞/非阻塞 和 同步/异步？ 1.同步/异步：同步是会阻塞请求进程的，异步不会阻塞请求进程的，所以BIO、NIO             和IO多路复用都是同步的；   2.阻塞/非阻塞：在等待一件事情的处理结果时，如果你还去干点其他的事，则为   非阻塞，否则为阻塞； 阻塞IO和非阻塞IO？ 1.阻塞IO  分析： 1.两个阶段都是阻塞的。第一个阶段指等待网络数据到达内核空间缓存区域，第二个阶">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/io.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.xuchunfa.cn/2019/07/18/NIO详解/"/>
+
+
+
+
+
+  <title>NIO详解 | Flying in the ocean of knowledge</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<!-- fork me on GitHub -->
+	<a href="https://github.com/xuchunfa">
+	<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+	</a>
+	
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flying in the ocean of knowledge</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resources">
+          <a href="/resources/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            资源
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/07/18/NIO详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NIO详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-18T10:14:50+08:00">
+                2019-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/18/NIO详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/07/18/NIO详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/07/18/NIO详解/" class="leancloud_visitors" data-flag-title="NIO详解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>阻塞/非阻塞 和 同步/异步？</strong></p>
+<pre><code>1.同步/异步：同步是会阻塞请求进程的，异步不会阻塞请求进程的，所以BIO、NIO
+            和IO多路复用都是同步的；
+
+
+2.阻塞/非阻塞：在等待一件事情的处理结果时，如果你还去干点其他的事，则为
+  非阻塞，否则为阻塞；
+</code></pre><p><strong>阻塞IO和非阻塞IO？</strong></p>
+<p>1.阻塞IO</p>
+<p><img src="/images/io.png" alt=""></p>
+<p>分析：</p>
+<pre><code>1.两个阶段都是阻塞的。第一个阶段指等待网络数据到达内核空间缓存区域，第二个阶段
+  是将内核空间缓冲区的数据复制到用户进程缓冲区；
+
+2.调用recvfrom时就开始阻塞；
+</code></pre><p>2.非阻塞IO</p>
+<p><img src="/images/nio.png" alt=""></p>
+<p>分析：</p>
+<pre><code>1.第一个阶段是非阻塞的，第二个阶段是阻塞的；
+
+2.调用recvfrom时，如果数据没有准备好，是不会阻塞进程的，应用进程会轮询内核，检查数据是否准备好，
+准备好以后，数据复制到应用进程缓冲区，这段时间进程是被阻塞的；
+</code></pre><p>3.IO多路复用</p>
+<p><img src="/images/io多路复用.png" alt=""></p>
+<p>分析：</p>
+<pre><code>1.进程阻塞于select，内核监视所有select负责的套接字，任何一个套接字数据准备好
+  以后，select方法返回；
+
+2.一个进程能同时等待多个文件描述符，它们中的任意一个进入读就绪状态时，select()函数就可以返回；
+
+3.第一个阶段和第二个阶段都阻塞；
+</code></pre><p>4.异步IO</p>
+<p><img src="/images/异步IO.png" alt=""></p>
+<pre><code>1.aio_read后立马返回，不会阻塞用户进程，kernel等待数据准备完成，然后将数据
+拷贝到用户内存，完成以后给用户进程发一个signal，告诉它read操作完成；
+</code></pre><p><strong>BIO、NIO、AIO的区别？</strong></p>
+<pre><code>1.BIO：进程从调用recvfrom开始就阻塞；
+
+2.NIO：进程大部分时间都不会block，但仍然要求进程去主动check，当数据准备完成
+以后，也需要进程主动去调用recvfrom，将数据拷贝到用户空间；
+
+3.AIO：用户进程完全不会阻塞，将整个IO操作交给kernel完成，它完成以后发信号
+       通知，在此期间用户进程不需要检查IO操作的状态，也不需要主动拷贝数据；
+</code></pre><p><strong>同步IO、异步IO的区别？</strong></p>
+<pre><code>1.同步IO：导致请求进程阻塞，直到I/O完成，其中阻塞IO、非阻塞IO、IO多路复用都是
+  同步IO；
+
+2.异步IO：不导致请求进程阻塞；
+</code></pre><p><strong>IO和NIO的区别？</strong></p>
+<pre><code>1.前者面向流的，后者面向缓冲区的；
+
+2.前者是阻塞的，后者非阻塞的；
+
+    从硬盘读数据，程序一直等着，数据读完以后，继续操作，这叫阻塞IO；
+
+    从硬盘读数据，然后程序继续向下执行，等数据读完以后，通知当前程序，
+    然后此程序立即处理数据，这叫非阻塞IO；
+
+3.后者selector单线程处理多个通道；
+</code></pre><p><strong>Selector的Reactor模型？</strong></p>
+<p><img src="/images/reactor.png" alt=""></p>
+<pre><code>1.Dispatcher：
+
+1.1 持有Synchronous Event Demultiplexer对象(理解为Selector对象)和
+ CHM Handler和ConcreteHandler的映射集合，Handler可以包装成事件，所以CHM
+也可以表示EventType和EventHandler的映射集合；
+
+1.2 内部dispatch方法调用Selector的select方法，若无事件则阻塞，否则获取
+    事件列表，轮询获取ConcreteHandler来处理每个Handler；
+
+
+2.Selector：内部维护一个阻塞队列，队列为空时，调用select()方法阻塞，不为空
+返回事件列表；
+
+3.Acceptor：内部持有Selector对象，用来接收客户端的连接事件，并添加到selector对象中，
+之后再通过Dispatcher中具体的ACCEPT EventHandler将事件的状态置为READ；
+</code></pre><p>单线程的Reactor模式</p>
+<p><img src="/images/reactor1.png" alt=""></p>
+<pre><code>注意：
+
+1.单线程是针对所有的I/O操作，例如accept()、read()、write()以及connect（）等
+  都是在一个线程上完成的；
+
+2.可以将非IO操作的业务逻辑从Reactor单线程中卸载，来加速Reactor线程对IO请求的响应；
+
+3.不适合高并发、高负载的应用场景；
+</code></pre><p>多Reactor线程模式</p>
+<p><img src="/images/reactor2.png" alt=""></p>
+<pre><code>注意：
+
+1.mainReactor：注册一个Acceptor事件处理器到mainReactor中，监听客户端的ACCEPT事件，
+并将事件派发给acceptor；
+
+2.acceptor：处理器通过调用accept()方法获取客户端的SocketChannel，并将它
+  传递给subReactor线程池；
+
+3.subReactor：负责和客户端通信，可以开多个subReactor线程来处理海量请求；
+
+4.所有的I/O操作还是在Reactor线程中完成的；
+</code></pre><p><strong>select、poll、epoll的区别？</strong></p>
+<p>总结：</p>
+<pre><code>1.select
+
+缺点：
+
+    1.1 单个进程所打开的fd是有一定数量限制的，32位默认1024，64位默认
+        2048；
+
+    1.2 对socket进行扫描是线性扫描，效率低；
+
+    1.3 用户空间和内核空间传递fd数据结构开销大；
+
+2.poll
+
+优点：
+    2.1 基于链表存储，没有fd数量限制；
+
+缺点：
+    2.1 用户空间和内核空间传递fd数据结构开销大；
+
+    2.2 水平触发，报告了的fd如果未处理，下次poll时会再次报告该poll；
+
+3.epoll
+
+特点：
+
+    3.1 支持水平触发和边缘触发，最大特点在于边缘触发，它只告诉你哪些刚
+        刚变为就绪，而且只会通知一次。
+
+    3.2 使用事件的就绪通知方式，通过epoll_ctl注册fd，一旦fd就绪，内核
+        会采用类似callback的回调机制来激活该fd，epoll_wait就可以收到
+        通知；
+        去掉了遍历文件描述符，而是通过监听回调的机制；
+优点：
+
+    3.1 没有最大并发连接数的限制；
+
+    3.2 不是轮询的方式扫描socket，只有活跃的fd才会调用callback函数，
+        epoll只管活跃的连接，跟连接总数无关；
+
+    3.3 使用mmap减少复制开销；
+</code></pre><p>区别：</p>
+<pre><code>1.支持一个进程所能打开的最大连接数。
+
+    select有限，poll和epoll没有限制。
+
+2.fd剧增后带来的IO效率问题。
+
+    select和poll的&quot;线性下降性能问题&quot;，epoll是根据每个fd上callback函数
+    来实现的，只有活跃的socket才会主动调用callback。
+
+3.消息传递方式。
+
+    select和poll中内核需要将消息传递到用户空间，都需要内核拷贝，
+    epoll通过内核和用户空间共享一块内存实现的；
+</code></pre><p>select</p>
+<pre><code>//返回值为fd的数量，超时返回0，出错返回-1；
+//如果timeout=null，select会一直阻塞，直到有描述符就绪；
+1.int select (int n, fd_set *readfds, fd_set *writefds, 
+ fd_set *exceptfds, struct timeval *timeout)
+</code></pre><p>poll</p>
+<pre><code>1.int poll (struct pollfd *fds, unsigned int nfds, int timeout);
+
+  struct pollfd {
+    int fd; //文件描述符
+    short events; //监视的事件
+    short revents; //返回的事件
+}
+</code></pre><p>epoll</p>
+<pre><code>1.
+    //创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大
+    //size是内核的建议值
+    int epoll_create(int size)；
+
+    //epfd是epoll_create的返回值、op表示操作EPOLL_CTL_ADD、
+      EPOLL_CTL_DEL、EPOLL_CTL_MOD
+    //event告诉内核需要监听什么事件
+    int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)；
+
+
+    //events表示从内核得到事件的集合
+    //maxevents &lt;= size
+    int epoll_wait(int epfd, struct epoll_event * events, 
+    int maxevents, int timeout);
+
+    struct epoll_event {
+      //EPOLLIN对fd读
+      //EPOLLOUT对fd写
+      //.....
+      __uint32_t events; 
+      epoll_data_t data;
+    };
+</code></pre><p><strong>Selector的基本使用流程？</strong></p>
+<p><img src="/images/selector.JPG" alt=""></p>
+<p><strong>NIO的组件详解</strong></p>
+<ul>
+<li>Buffer</li>
+</ul>
+<p>bufffer示意图</p>
+<p><img src="/images/buffer1.png" alt=""></p>
+<p><img src="/images/buffer.png" alt=""></p>
+<p>buffer的flip方法：</p>
+<pre><code>//buffer的 write模式 切换到 read模式
+public final Buffer flip() {
+    limit = position; // 将 limit 设置为实际写入的数据数量
+    position = 0; // 重置 position 为 0
+    mark = -1; // mark 之后再说
+    return this;
+}
+</code></pre><p>数据写入读入buffer</p>
+<p><img src="/images/buffer3.JPG" alt=""></p>
+<pre><code>方法一：
+
+int bytesdRead = channel.read(buf);//写入buffer
+                 channel.write(buf);//获取buffer数据
+
+方法二：    
+
+buf.put();//写入buffer
+buf.get();//获取buffer数据
+</code></pre><ul>
+<li>Channel</li>
+</ul>
+<p>channel示意图</p>
+<p><img src="/images/channel.png" alt=""></p>
+<ul>
+<li>Selector</li>
+</ul>
+<p>SelectionKey的四种事件</p>
+<pre><code>1.OP_READ：值为1，从channel读数据到buffer，channel.read(buf)
+
+2.OP_WRITE：值为4，从buffer写数据到channel，channel.write(buf)
+
+3.OP_CONNECT：值为8，channel连接事件
+
+4.OP_ACCEPT：值为16，server-socket channel 接收另一个连接的接收事件
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/14/集合源码1/" rel="next" title="集合源码1">
+                <i class="fa fa-chevron-left"></i> 集合源码1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/pig.png"
+                alt="Xu chunfa" />
+            
+              <p class="site-author-name" itemprop="name">Xu chunfa</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xuchunfa" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/5573334965/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu chunfa</span>
+
+  
+</div>
+
+
+
+  
+	<div class="powered-by">
+	<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+	本站访客数:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	</div>
+
+  <!-- <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'xuchunfa',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '8b62d73e4e43ea9fed41d143506b730373e3e86d',
+            
+                client_id: '157728609b4b9a007483'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("gO8GVulyPYN1OHqpwT3mFDg3-gzGzoHsz", "Xm1I44McPqcMnO9z8NgS9Tvv");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  
+</body>
+</html>

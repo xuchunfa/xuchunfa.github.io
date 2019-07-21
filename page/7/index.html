@@ -286,6 +286,512 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/结点的最近祖先/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/结点的最近祖先/" itemprop="url">结点的最近祖先</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T19:46:51+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/03/结点的最近祖先/" class="leancloud_visitors" data-flag-title="结点的最近祖先">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="两个结点的最近祖先？（一个节点可以是它自己的祖先）"><a href="#两个结点的最近祖先？（一个节点可以是它自己的祖先）" class="headerlink" title="两个结点的最近祖先？（一个节点可以是它自己的祖先）"></a>两个结点的最近祖先？（一个节点可以是它自己的祖先）</h4><pre><code>public class CommonAncestor {
+
+//树为二叉搜索树的情况，默认node1 node2已经存在树中
+public BinaryTreeNode BSTfindCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
+
+    if(pRoot.data &gt;= node1 &amp;&amp; pRoot.data &lt;= node2 || pRoot.data &lt;= node1 &amp;&amp; pRoot.data &gt;= node2)
+        return pRoot;
+    return BSTfindCommonAncestor1(pRoot.left,node1,node2) != null?
+    BSTfindCommonAncestor1(pRoot.left,node1,node2):BSTfindCommonAncestor1(pRoot.right,node1,node2);
+}
+
+//树为二叉搜索树的情况迭代解法
+public BinaryTreeNode IterativeBSTfindCommonAncestor(BinaryTreeNode pRoot,int node1,int node2){
+    while (pRoot != null){
+        if(pRoot.data &gt; node1 &amp;&amp; pRoot.data &gt; node2){
+            pRoot = pRoot.left;
+        }else if(pRoot.data &lt; node1 &amp;&amp; pRoot.data &lt; node2) {
+            pRoot = pRoot.right;
+        }else {
+            break;
+        }
+    }
+    return pRoot;
+}
+
+
+//树为普通二叉树递归解法（有bug即节点值在树中不存在）：默认节点都存在
+public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
+    if(pRoot == null)
+        return null;
+
+    if(pathIsExisted(pRoot.left,node1)){
+        if(pathIsExisted(pRoot.right,node2)) {
+            return pRoot;
+        }else//两个结点都在左子树中继续向下递归
+            return findCommonAncestor1(pRoot.left,node1,node2);
+    }else {
+        if(pathIsExisted(pRoot.left,node2))
+            return pRoot;
+        else//两个结点都在右子树中继续向下递归
+            return findCommonAncestor1(pRoot.right,node1,node2);
+    }
+}
+
+//修复bug的递归实现
+public BinaryTreeNode findCommonAncestor3(BinaryTreeNode pRoot,int node1,int node2){
+    if(pRoot == null)
+        return null;
+    BinaryTreeNode temp = null;
+    if(pRoot.data == node1) {
+        v1 = true;
+        temp = pRoot;//不直接return
+    }
+    if(pRoot.data == node2){
+        v2 = true;
+        temp = pRoot;
+    }
+
+    BinaryTreeNode leftTargetNode = findCommonAncestor3(pRoot.left,node1,node2);
+    BinaryTreeNode rightTargetNode = findCommonAncestor3(pRoot.right,node1,node2);
+
+    if(temp != null){
+        return temp;
+    }
+
+    if(leftTargetNode!=null &amp;&amp; rightTargetNode!=null){
+        return pRoot;
+    }
+    return leftTargetNode != null?leftTargetNode:rightTargetNode;
+}
+
+//判断路径中是否存在指定结点的值
+public boolean pathIsExisted(BinaryTreeNode pRoot,int node){
+
+    if(pRoot == null)
+        return false;
+
+    if(pRoot.data == node)
+        return true;
+
+    boolean flag = pathIsExisted(pRoot.left,node);
+
+    //如果找到了就不用继续递归了
+    if(!flag){
+        flag = pathIsExisted(pRoot.right,node);
+    }
+
+    return flag;
+}
+
+//树为普通二叉树非递归解法
+public BinaryTreeNode findCommonAncestor2(BinaryTreeNode pRoot,int node1,int node2){
+
+    //list1和list2保存根节点到目标结点的路径
+    List&lt;BinaryTreeNode&gt; list1 = new ArrayList&lt;BinaryTreeNode&gt;();
+    boolean path1 = findPath(pRoot,node1,list1);
+
+    List&lt;BinaryTreeNode&gt; list2 = new ArrayList&lt;BinaryTreeNode&gt;();
+    boolean path2 = findPath(pRoot,node2,list2);
+
+    BinaryTreeNode ancestor = null;
+    if(!path1 || !path2){//某个节点不存在
+        return null;
+    }
+
+    int i = 0;
+    //找到两条路径岔开的那个位置结点，那么前一个结点就是最后一个公共路径上的结点，也就是最近的祖先
+    for(;i &lt; list1.size() &amp;&amp; i &lt; list2.size();i++){
+        if(list1.get(i) != list2.get(i)){
+            break;
+        }
+    }
+    return list1.get(i-1);
+}
+
+//保存包含指定节点路径结点的方法
+public boolean findPath(BinaryTreeNode pRoot, int node, List&lt;BinaryTreeNode&gt; list){
+    if(pRoot ==  null)
+        return false;
+
+    list.add(pRoot);
+
+    if(pRoot.data == node)
+        return true;
+
+    boolean isExisted = findPath(pRoot.left,node,list);
+
+    if(!isExisted){
+        isExisted = findPath(pRoot.right,node,list);
+    }
+
+    if(!isExisted)
+        list.remove(list.size()-1);
+
+    return isExisted;
+}
+
+
+public static void main(String[] args){
+    BinaryTree tree = new BinaryTree();
+    tree.createBinaryTree(tree.getRoot(),8);
+    tree.createBinaryTree(tree.getRoot(),3);
+    tree.createBinaryTree(tree.getRoot(),2);
+    tree.createBinaryTree(tree.getRoot(),5);
+    tree.createBinaryTree(tree.getRoot(),1);
+    tree.createBinaryTree(tree.getRoot(),12);
+    tree.createBinaryTree(tree.getRoot(),9);
+
+    CommonAncestor test = new CommonAncestor();
+
+    System.out.println(test.findCommonAncestor1(tree.getRoot(),3,2).data);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/丑数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/丑数/" itemprop="url">丑数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T10:30:46+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/03/丑数/" class="leancloud_visitors" data-flag-title="丑数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public class UglyNumber {
+
+public static int resolve(int index){
+
+    if(index &lt;= 0){
+        throw new RuntimeException(&quot;参数非法&quot;);
+    }
+
+    int[] uglyNumber = new int[index];
+
+    uglyNumber[0] = 1;
+    int indexOf2,indexOf3,indexOf5;
+    indexOf2 = indexOf3 = indexOf5 = 0;
+
+    int uglyNumberIndex = 1;
+
+    while (uglyNumberIndex &lt; index){
+        int min = Min(uglyNumber[indexOf2]*2,uglyNumber[indexOf3]*3,uglyNumber[indexOf5]*5);
+        uglyNumber[uglyNumberIndex] = min;
+
+        //uglyNumber[uglyNumberIndex]代表的是目前数组中最大的丑数
+        while (uglyNumber[indexOf2]*2 &lt;= uglyNumber[uglyNumberIndex]){
+            indexOf2++;
+        }
+
+        //下次的uglyNumber[indexOf3]肯定就大于Max uglyNumber
+        while (uglyNumber[indexOf3]*3 &lt;= uglyNumber[uglyNumberIndex]){
+            indexOf3++;
+        }
+
+        while (uglyNumber[indexOf5]*5 &lt;= uglyNumber[uglyNumberIndex]){
+            indexOf5++;
+        }
+
+        uglyNumberIndex++;
+    }
+    return uglyNumber[index-1];
+}
+
+
+private static int Min(int i, int j, int k) {
+    int min;
+    return (min = i &lt; j ? i : j) &lt; k ? min : k;
+}
+
+public static void main(String[] args){
+    System.out.println(UglyNumber.resolve(100));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/逆序对的个数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1794,427 +2300,6 @@ public static void main(String [] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/24/随机版本的快排/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/随机版本的快排/" itemprop="url">随机版本的快排</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T12:24:16+08:00">
-                2018-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/排序/" itemprop="url" rel="index">
-                    <span itemprop="name">排序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/24/随机版本的快排/" class="leancloud_visitors" data-flag-title="随机版本的快排">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>public class QuickSort {
-
-public static void swap(int[] a,int i,int j){
-    int temp;
-    temp = a[i];
-    a[i] = a[j];
-    a[j] = temp;
-}
-public static int partition(int[] a,int start,int end){
-
-    if(a == null || start &lt; 0 || end &gt; a.length-1){
-        throw new RuntimeException(&quot;参数不合法&quot;);
-    }
-
-    //轴值在[start,end]区间内随机生成,然后把轴值交换到数组中第一位
-    rand_pivot(a,start,end);
-
-    int i = start;
-    int j = end;
-    int pivot = a[start];
-
-    while (i &lt; j){
-        while (i &lt; j &amp;&amp; a[j] &gt;= pivot){
-            j--;
-        }
-
-        //a[i] = a[j];//这种写法时条件不能为a[j] &gt; pivot必须要 &gt;=
-        swap(a,i,j);
-
-        while (i &lt; j &amp;&amp; a[i] &lt;= pivot){
-            i++;
-        }
-
-        //a[j] = a[i];
-        swap(a,j,i);
-    }
-
-    //a[i] 或者 a[j]
-    //a[i] = pivot;
-
-    return i;
-}
-
-//随机化的选择主元
-private static void rand_pivot(int[] a, int start, int end) {
-    Random random = new Random();
-    int rand = start + random.nextInt(end - start + 1);//随机函数生成的整数区间在[0,length)
-
-    //交换第一个数和随机选出来的数
-    int temp = a[start];
-    a[start] = a[rand];
-    a[rand] = temp;
-}
-
-public static void quickSort(int[] a,int start,int end){
-
-    if(start &gt;= end)
-        return;
-
-    int index = partition(a,start,end);
-    quickSort(a,start,index-1);
-    quickSort(a,index+1,end);
-
-    /*int index;
-    if(start &lt; end){
-        index = partition(a,start,end);
-        quickSort(a,start,index-1);
-        quickSort(a,index+1,end);
-    }*/
-}
-
-public static void main(String[] args){
-    int[] a = {2,4,5,1,1,2,7,6,3};
-    QuickSort.quickSort(a,0,a.length-1);
-    System.out.println(Arrays.toString(a));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/23/java动态绑定/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/java动态绑定/" itemprop="url">java动态绑定</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T15:04:48+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java基础/" itemprop="url" rel="index">
-                    <span itemprop="name">java基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/23/java动态绑定/" class="leancloud_visitors" data-flag-title="java动态绑定">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>动态绑定(后期绑定)和前期绑定？</p>
-</blockquote>
-<p>1.普通的方法我们看new后面的是什么类型；(后期绑定)</p>
-<p>2.域和静态方法我们看=前面声明的是什么类型。 (前期绑定)</p>
-<p>3.final，static，private和构造方法是前期绑定的。</p>
-<p>4.运行时（动态）绑定针对的范畴只是对象的（普通）方法。</p>
-<pre><code>public class Father {
-protected String name = &quot;父亲属性&quot;;
-}
-public class Son extends Father {
-    protected String name = &quot;儿子属性&quot;;
-
-    public static void main(String[] args) {
-        Father sample = new Son();
-        System.out.println(&quot;调用的属性：&quot; + sample.name);
-}
-}
-</code></pre><p>上述代码的运行结果: <strong>父亲属性</strong></p>
-<pre><code>public class Father {
-protected String name = &quot;父亲属性&quot;;
-
-public String getName() {
-    return name;
-}
-}　　
-
-public class Son extends Father {
-protected String name = &quot;儿子属性&quot;;
-
-public String getName() {
-    return name;
-}
-
-public static void main(String[] args) {
-    Father sample = new Son();
-    System.out.println(&quot;调用的属性:&quot; + sample.getName());
-}
-}
-</code></pre><p>上述代码的运行结果: <strong>儿子属性</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2269,7 +2354,7 @@ public static void main(String[] args) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -286,6 +286,482 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/25/策略模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/25/策略模式/" itemprop="url">策略模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-25T19:24:25+08:00">
+                2019-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/25/策略模式/" class="leancloud_visitors" data-flag-title="策略模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>UML图：</p>
+<p><img src="/images/strategy.PNG" alt=""></p>
+<p>枚举方法实现的策略模式：</p>
+<pre><code>public enum StrategyEnum {
+    ADD{
+        @Override
+        public int calculate(int a, int b) {
+            return a + b;
+        }
+    },
+    SUBTRACT{
+        @Override
+        public int calculate(int a, int b) {
+            return a - b;
+        }
+    };
+    //抽象方法放后面
+    public abstract int calculate(int a, int b);
+}
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args){
+    StrategyEnum.ADD.calculate(1,1);
+    StrategyEnum.SUBTRACT.calculate(1,1);
+}
+</code></pre><p>实际应用：</p>
+<pre><code>利用策略模式解决if else 分支过多的情况，项目中使用到了反射和策略模式的方法；
+</code></pre><p>隶属度计算接口：</p>
+<pre><code>public interface MembershipMath {
+    double calculate(double attr);
+}
+</code></pre><p>不同隶属度计算函数类：</p>
+<pre><code>public class MaxNormal implements MembershipMath {
+    private double middle;
+
+    public MaxNormal() {
+    }
+
+    @Override
+    public double calculate(double attr) {
+        DecimalFormat df = new DecimalFormat(&quot;#0.00&quot;);
+        if(Double.compare(attr,middle) &lt; 0){
+            return 0;
+        }else{
+            return Double.parseDouble(df.format(1 - Math.exp(-Math.pow(attr-middle,2))));
+        }
+    }
+
+    public double getMiddle() {
+        return middle;
+    }
+
+    public void setMiddle(double middle) {
+        this.middle = middle;
+    }
+}
+</code></pre><p>客户端：</p>
+<pre><code>public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    String classPath = &quot;neu.cloud.functionpackage.membershipes.impl.MinTrapezoid&quot;;
+    String minName = &quot;min&quot;;
+    double min = 1;
+    String maxName = &quot;max&quot;;
+    double max = 1;
+
+    //获取隶属函数的参数
+    HashMap&lt;String,Double&gt; fieldMap = new HashMap&lt;&gt;();
+    fieldMap.put(minName,min);
+    fieldMap.put(maxName,max);
+
+    //全限域名获取隶属函数实例
+    Class&lt;?&gt; clazz = Class.forName(classPath);
+    MembershipMath membershipMath = (MembershipMath) clazz.newInstance();
+
+    //反射调用真正实例的setMin、setMax、setMiddle方法，来设置参数
+    invokeSetParams(membershipMath,fieldMap);
+
+    System.out.println(membershipMath.calculate(3));
+}
+
+private static void invokeSetParams(MembershipMath membershipMath, HashMap&lt;String, Double&gt; fieldMap) {
+    Iterator&lt;Map.Entry&lt;String,Double&gt;&gt; params = fieldMap.entrySet().iterator();
+    while (params.hasNext()){
+        StringBuilder sb = new StringBuilder();
+        Map.Entry&lt;String,Double&gt; entry = params.next();
+        String method = entry.getKey();
+        String methodName = sb.append(&quot;set&quot;).append(Character.toUpperCase(method.charAt(0))).
+                append(method.substring(1,method.length())).toString();
+        double methodValue = entry.getValue();
+        Method[] methods = membershipMath.getClass().getMethods();
+        for(Method method1 : methods){
+            if(method1.getName().equals(methodName)){
+                try {
+                    method1.invoke(membershipMath,methodValue);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/24/享元模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/24/享元模式/" itemprop="url">享元模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-24T14:31:10+08:00">
+                2019-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">Java设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/05/24/享元模式/" class="leancloud_visitors" data-flag-title="享元模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>UML图：</p>
+<p><img src="/images/flyWeight.PNG" alt=""></p>
+<p><strong>享元模式</strong></p>
+<pre><code>通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；
+
+设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中；
+</code></pre><p>同名书共享订单实例：</p>
+<pre><code>//抽象享元
+public interface FlyWeight {
+    void sell();
+}
+
+//具体享元类
+public class BookOrder implements FlyWeight {
+    private String name;
+
+    public BookOrder(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void sell() {
+        System.out.println(&quot;sell a book named by: &quot; + name);
+    }
+}
+
+//
+public class FlyWeightFactory {
+    //饿汉模式线程安全
+    private static final FlyWeightFactory factory = new FlyWeightFactory();
+    //享元池
+    private HashMap&lt;String,FlyWeight&gt; pool = new HashMap&lt;&gt;();
+    private FlyWeightFactory(){
+    }
+
+    public static FlyWeightFactory getInstance(){
+        return factory;
+    }
+
+    public FlyWeight addOrder(String bookName){
+
+        FlyWeight order = null;
+        if(pool.containsKey(bookName)){
+            order = pool.get(bookName);
+        }else {
+            order = new BookOrder(bookName);
+            pool.put(bookName,order);
+        }
+        return order;
+    }
+
+    public int getAllOrder(){
+        return pool.size();
+    }
+}
+</code></pre><p>Client:</p>
+<pre><code>public static void main(String[] args){
+    List&lt;FlyWeight&gt; orders = new ArrayList&lt;&gt;();
+    FlyWeightFactory factory = FlyWeightFactory.getInstance();
+    //一本书生成一个订单对象(同名书共享一个订单对象)
+    orders.add(factory.addOrder(&quot;红楼梦&quot;));
+    orders.add(factory.addOrder(&quot;水浒传&quot;));
+    orders.add(factory.addOrder(&quot;红楼梦&quot;));
+
+    //调用享元类接口
+    for(FlyWeight order : orders){
+        order.sell();
+    }
+    System.out.println(&quot;num of book sold: &quot;+orders.size());
+    System.out.println(&quot;num of book order: &quot;+factory.getAllOrder());
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/24/组合模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2115,648 +2591,6 @@ private final Condition notFull = putLock.newCondition();
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/16/ReentrantReadWriteLock源码详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/16/ReentrantReadWriteLock源码详解/" itemprop="url">ReentrantReadWriteLock源码详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-16T09:57:13+08:00">
-                2019-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/16/ReentrantReadWriteLock源码详解/" class="leancloud_visitors" data-flag-title="ReentrantReadWriteLock源码详解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>参考文献</p>
-<p><a href="https://www.javadoop.com/post/reentrant-read-write-lock" target="_blank" rel="noopener">读写锁源码详解</a></p>
-<p>文献已经给出详细的解析，作简单总结：</p>
-<p>使用场景：</p>
-<pre><code>1.适用于读多于写的场景；
-</code></pre><p>关键问题：</p>
-<pre><code>1.将state状态一分为二，高16位用于共享模式，低16位用于独占模式；
-
-2.持有写锁的线程去获取读锁的过程称为锁降级；不支持读锁升级为写锁（会产生死锁），可能读锁在竞争写锁
-
-时可能会使自己进入阻塞队列，导致无法被唤醒。
-
-3.在获取写锁前会判断是否有读锁存在的原因：确保写锁的操作对读锁可见，这样读锁才能感知到写锁的操作了；
-</code></pre><p>读锁源码分析：</p>
-<pre><code>public void lock() {
-    sync.acquireShared(1);
-}
-
-public final void acquireShared(int arg) {
-    if (tryAcquireShared(arg) &lt; 0)
-        doAcquireShared(arg);
-}
-
-protected final int tryAcquireShared(int unused) {
-
-    Thread current = Thread.currentThread();
-    int c = getState();
-
-    //exclusiveCount(c) != 0 &amp;&amp; getExclusiveOwnerThread()=current表示锁降级的情况
-    if (exclusiveCount(c) != 0 &amp;&amp;//有线程持有写锁而且还不是当前线程
-        getExclusiveOwnerThread() != current)//注意持有写锁的当前线程还可以继续持有读锁
-        return -1;
-    int r = sharedCount(c);
-    if (!readerShouldBlock() &amp;&amp;//公平锁排队和写锁先于读锁时，readerShouldBlock()返回true
-        r &lt; MAX_COUNT &amp;&amp;
-        //设置高16位的state，失败的话说明发生读锁竞争或者当前写锁和其他读锁的竞争
-        compareAndSetState(c, c + SHARED_UNIT)) {
-        if (r == 0) {
-            firstReader = current;
-            firstReaderHoldCount = 1;
-        } else if (firstReader == current) {
-            firstReaderHoldCount++;
-        } else {
-            HoldCounter rh = cachedHoldCounter;
-            if (rh == null || rh.tid != getThreadId(current))
-                cachedHoldCounter = rh = readHolds.get();
-            else if (rh.count == 0)
-                readHolds.set(rh);
-            rh.count++;
-        }
-        return 1;//成功获取读锁
-    }
-
-    return fullTryAcquireShared(current);//尝试再次获取锁
-}
-</code></pre><p>尝试再次获取锁：</p>
-<pre><code>final int fullTryAcquireShared(Thread current) {
-
-    HoldCounter rh = null;
-    for (;;) {
-        int c = getState();
-        if (exclusiveCount(c) != 0) {//还是其他线程获取写锁，阻塞读锁
-            if (getExclusiveOwnerThread() != current)
-                return -1;
-        } else if (readerShouldBlock()) {
-            //1.写锁没有被占
-            //2.阻塞队列有其他线程在等待
-            if (firstReader == current) {
-                // assert firstReaderHoldCount &gt; 0;
-            } else {
-                if (rh == null) {
-                    rh = cachedHoldCounter;
-                    if (rh == null || rh.tid != getThreadId(current)) {
-                        rh = readHolds.get();
-                        if (rh.count == 0)
-                            readHolds.remove();
-                    }
-                }
-                if (rh.count == 0)
-                    return -1;
-            }
-        }
-        if (sharedCount(c) == MAX_COUNT)
-            throw new Error(&quot;Maximum lock count exceeded&quot;);
-
-        //处理线程重入的情况
-        if (compareAndSetState(c, c + SHARED_UNIT)) {
-            if (sharedCount(c) == 0) {
-                firstReader = current;
-                firstReaderHoldCount = 1;
-            } else if (firstReader == current) {
-                firstReaderHoldCount++;
-            } else {
-                if (rh == null)
-                    rh = cachedHoldCounter;
-                if (rh == null || rh.tid != getThreadId(current))
-                    rh = readHolds.get();
-                else if (rh.count == 0)
-                    readHolds.set(rh);
-                rh.count++;
-                cachedHoldCounter = rh; // cache for release
-            }
-            return 1;
-        }
-    }
-</code></pre><p>读锁的释放源码：</p>
-<pre><code> public void unlock() {
-    sync.releaseShared(1);
-}
-
-public final boolean releaseShared(int arg) {
-    if (tryReleaseShared(arg)) {
-        doReleaseShared();
-        return true;
-    }
-    return false;
-}
-
-protected final boolean tryReleaseShared(int unused) {
-    Thread current = Thread.currentThread();
-    if (firstReader == current) {
-        //反正优先处理的是第一个获取读锁的线程
-        if (firstReaderHoldCount == 1)
-            firstReader = null;
-        else
-            firstReaderHoldCount--;
-    } else {
-        HoldCounter rh = cachedHoldCounter;//缓存最近获取读锁的线程，为了提高效率
-        if (rh == null || rh.tid != getThreadId(current))
-            rh = readHolds.get();
-        int count = rh.count;
-        if (count &lt;= 1) {
-            readHolds.remove();//防止内存泄露
-            if (count &lt;= 0)//一次lock()多次unlock()的情况
-                throw unmatchedUnlockException();
-        }
-        --rh.count;
-    }
-    for (;;) {
-        int c = getState();
-        int nextc = c - SHARED_UNIT;//高位减1
-        if (compareAndSetState(c, nextc))
-            return nextc == 0;//读写锁都空了，唤醒后面的所有节点（共享模式的特点）
-    }
-}
-</code></pre><p>最后看一下写锁的源码：</p>
-<p>获取写锁：</p>
-<pre><code>public void lock() {
-        sync.acquire(1);
-    }
-
-public final void acquire(int arg) {
-    if (!tryAcquire(arg) &amp;&amp;
-        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-        selfInterrupt();
-}
-
-protected final boolean tryAcquire(int acquires) {
-
-    Thread current = Thread.currentThread();
-    int c = getState();
-    int w = exclusiveCount(c);
-    if (c != 0) {
-        //c!=0 &amp;&amp; w=0表示有线程持有读锁，这个线程可能是他自己或者其他线程
-        //c!=0 &amp;&amp; w!=0 &amp;&amp; current != getExclusiveOwnerThread()表示其他线程持有写锁
-        //c!=0 &amp;&amp; w!=0 &amp;&amp; current = getExclusiveOwnerThread()表示先获取写锁，后获取读锁的线程
-        if (w == 0 || current != getExclusiveOwnerThread())
-            return false;
-
-        if (w + exclusiveCount(acquires) &gt; MAX_COUNT)
-            throw new Error(&quot;Maximum lock count exceeded&quot;);
-        //写锁重入
-        setState(c + acquires);
-        return true;
-    }
-
-    //非公平锁writerShouldBlock()=false，直接CAS设置state
-    //公平锁有前驱节点排队的话，writerShouldBlock()=true进入阻塞队列，否则正常设置
-    if (writerShouldBlock() ||
-        !compareAndSetState(c, c + acquires))
-        return false;
-    setExclusiveOwnerThread(current);
-    return true;
-}
-</code></pre><p>看一下写锁是否应该阻塞的情况：</p>
-<pre><code>static final class NonfairSync extends Sync {
-// 如果是非公平模式，那么 lock 的时候就可以直接用 CAS 去抢锁，抢不到再排队
-final boolean writerShouldBlock() {
-    return false; // writers can always barge
-}
-...
-}
-static final class FairSync extends Sync {
-final boolean writerShouldBlock() {
-    // 如果是公平模式，那么如果阻塞队列有线程等待的话，就乖乖去排队
-    return hasQueuedPredecessors();
-}
-...
-}
-</code></pre><p>释放写锁：</p>
-<pre><code>public void unlock() {
-        sync.release(1);
-    }
-
-public final boolean release(int arg) {
-    if (tryRelease(arg)) {
-        Node h = head;
-        if (h != null &amp;&amp; h.waitStatus != 0)
-            unparkSuccessor(h);
-        return true;
-    }
-    return false;
-}
-
-protected final boolean tryRelease(int releases) {
-    if (!isHeldExclusively())
-        throw new IllegalMonitorStateException();
-
-    //线程安全，写锁是排他锁
-    int nextc = getState() - releases；
-    boolean free = exclusiveCount(nextc) == 0;
-    if (free)
-        setExclusiveOwnerThread(null);
-    setState(nextc);
-    return free;
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/15/CyclicBarrier源码解析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/15/CyclicBarrier源码解析/" itemprop="url">CyclicBarrier源码解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T20:50:10+08:00">
-                2019-04-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/04/15/CyclicBarrier源码解析/" class="leancloud_visitors" data-flag-title="CyclicBarrier源码解析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>参考文献</p>
-<p><a href="https://www.javadoop.com/post/AbstractQueuedSynchronizer-3" target="_blank" rel="noopener">CyclicBarrier源码解析</a></p>
-<p>看一下构造函数：</p>
-<pre><code>//parties代表线程数，当最后一个线程执行await()方法时，会进入下一代。
-public CyclicBarrier(int parties) {
-    this(parties, null);
-}
-
-public CyclicBarrier(int parties, Runnable barrierAction) {}
-
-1.parties:表示屏障拦截的线程数量，每个线程调用await()方法告诉CyclicBarrier
-          已经到达屏障位置，线程被阻塞；
-
-2.barrierAction：所有线程到达屏障之后执行的操作；
-</code></pre><p>核心await()方法：</p>
-<pre><code>public int await() throws InterruptedException, BrokenBarrierException {
-    try {
-        return dowait(false, 0L);
-    } catch (TimeoutException toe) {
-        throw new Error(toe); // cannot happen
-    }
-}
-</code></pre><p>进入到dowait()方法：</p>
-<pre><code>private int dowait(boolean timed, long nanos)
-    throws InterruptedException, BrokenBarrierException,
-           TimeoutException {
-    final ReentrantLock lock = this.lock;
-    lock.lock();
-    try {
-        final Generation g = generation;
-
-        if (g.broken)
-            throw new BrokenBarrierException();
-
-        if (Thread.interrupted()) {
-            breakBarrier();
-            throw new InterruptedException();
-        }
-
-        int index = --count;
-        if (index == 0) {  
-            boolean ranAction = false;
-            try {
-                final Runnable command = barrierCommand;
-                if (command != null)
-                    command.run();
-                ranAction = true;
-                //唤醒所有线程，开启下一代
-                //trip.signalAll()
-                nextGeneration();
-                return 0;
-            } finally {
-                if (!ranAction)//在执行command.run()时发生了异常
-                    breakBarrier();//唤醒所有线程，broker=true
-            }
-        }
-
-        //不是最后一个到达栅栏的线程走到这
-        for (;;) {
-            try {
-                if (!timed)
-                    //Condition trip = reentrantLock.newCondition
-                    //线程阻塞
-                    trip.await();
-                else if (nanos &gt; 0L)
-                    nanos = trip.awaitNanos(nanos);
-            } catch (InterruptedException ie) {
-                if (g == generation &amp;&amp; ! g.broken) {
-                    breakBarrier();
-                    throw ie;
-                } else {
-                    Thread.currentThread().interrupt();
-                }
-            }
-
-            if (g.broken)
-                throw new BrokenBarrierException();
-
-            if (g != generation)
-                return index;
-
-            if (timed &amp;&amp; nanos &lt;= 0L) {
-                breakBarrier();
-                throw new TimeoutException();
-            }
-        }
-    } finally {
-        lock.unlock();
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2811,7 +2645,7 @@ public CyclicBarrier(int parties, Runnable barrierAction) {}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

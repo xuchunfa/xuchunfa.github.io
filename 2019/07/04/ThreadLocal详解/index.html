@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="ThreadLocal解析 线程内的局部变量。线程间的ThreadLocal变量是隔离的。 set方法  //ThreadLocal.java public void set(T value) { // 得到当前线程对象 Thread t = Thread.currentThread();  // 这里获取ThreadLocalMap ThreadLocalMap map = getMap(t);">
+<meta name="description" content="ThreadLocal解析1.ThreadLocal？  1.线程的内的局部变量，在每个线程中存储的是变量的副本。  2.例如多线程使用同一个Connection对象      public static final ThreadLocal&amp;lt;Conncetion&amp;gt; threadlocal =                          new ThreadLocal&amp;lt;&amp;gt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ThreadLocal详解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/07/04/ThreadLocal详解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="ThreadLocal解析 线程内的局部变量。线程间的ThreadLocal变量是隔离的。 set方法  //ThreadLocal.java public void set(T value) { // 得到当前线程对象 Thread t = Thread.currentThread();  // 这里获取ThreadLocalMap ThreadLocalMap map = getMap(t);">
+<meta property="og:description" content="ThreadLocal解析1.ThreadLocal？  1.线程的内的局部变量，在每个线程中存储的是变量的副本。  2.例如多线程使用同一个Connection对象      public static final ThreadLocal&amp;lt;Conncetion&amp;gt; threadlocal =                          new ThreadLocal&amp;lt;&amp;gt">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/4n7P9X3.png">
-<meta property="og:updated_time" content="2019-07-04T12:28:07.039Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/threadLocal.png">
+<meta property="og:updated_time" content="2019-07-18T02:05:51.157Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal详解">
-<meta name="twitter:description" content="ThreadLocal解析 线程内的局部变量。线程间的ThreadLocal变量是隔离的。 set方法  //ThreadLocal.java public void set(T value) { // 得到当前线程对象 Thread t = Thread.currentThread();  // 这里获取ThreadLocalMap ThreadLocalMap map = getMap(t);">
-<meta name="twitter:image" content="https://i.imgur.com/4n7P9X3.png">
+<meta name="twitter:description" content="ThreadLocal解析1.ThreadLocal？  1.线程的内的局部变量，在每个线程中存储的是变量的副本。  2.例如多线程使用同一个Connection对象      public static final ThreadLocal&amp;lt;Conncetion&amp;gt; threadlocal =                          new ThreadLocal&amp;lt;&amp;gt">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/threadLocal.png">
 
 
 
@@ -412,34 +412,63 @@
       
 
       
-        <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
-<li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
-<li><p>set方法</p>
-<p> //ThreadLocal.java<br> public void set(T value) {</p>
-<pre><code>// 得到当前线程对象
-Thread t = Thread.currentThread();
+        <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><p>1.ThreadLocal？</p>
+<p><img src="/images/threadLocal.png" alt=""></p>
+<pre><code>1.线程的内的局部变量，在每个线程中存储的是变量的副本。
 
-// 这里获取ThreadLocalMap
-ThreadLocalMap map = getMap(t);
+2.例如多线程使用同一个Connection对象
 
-// 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
-// 例如数据库中的 connection 对象
-if (map != null)
-    map.set(this, value);
-else
-    createMap(t, value);
+    public static final ThreadLocal&lt;Conncetion&gt; threadlocal = 
+                        new ThreadLocal&lt;&gt;();
+</code></pre><p>2.ThreadLocal 的set方法</p>
+<pre><code>//ThreadLocal.java
+public void set(T value) {
+
+    // 得到当前线程对象
+    Thread t = Thread.currentThread();
+
+    // 这里获取ThreadLocalMap
+    ThreadLocalMap map = getMap(t);
+
+    // 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
+    // 例如数据库中的 connection 对象
+    if (map != null)
+        map.set(this, value);
+    else
+        createMap(t, value);
+}
+
+void createMap(Thread t, T firstValue) {
+    //key为 ThreadLocal 对象
+    t.threadLocals = new ThreadLocalMap(this, firstValue);
+}
+</code></pre><p>3.ThreadLocal 的get方法</p>
+<pre><code>public T get() {
+    Thread t = Thread.currentThread();
+    //每个线程都有个threadLocals成员变量，类型是ThreadLocalMap
+    ThreadLocalMap map = getMap(t);
+    if (map != null) {
+        ThreadLocalMap.Entry e = map.getEntry(this);
+        if (e != null) {
+            @SuppressWarnings(&quot;unchecked&quot;)
+            T result = (T)e.value;
+            return result;
+        }
+    }
+    //初始化线程的ThreadLocalMap
+    return setInitialValue();
+}
+</code></pre><p>4.ThreadLocal 的remove方法</p>
+<pre><code>public void remove() {
+ ThreadLocalMap m = getMap(Thread.currentThread());
+ if (m != null)
+     m.remove(this);//防止内存泄露
 </code></pre><p> }</p>
-<p> void createMap(Thread t, T firstValue) {</p>
-<pre><code>//key为 ThreadLocal 对象
-t.threadLocals = new ThreadLocalMap(this, firstValue);
-</code></pre><p> }</p>
-</li>
-</ol>
 <p>看看ThreadLocalMap</p>
 <pre><code>//ThreadLocal.java
+//存放数据的地方
 static class ThreadLocalMap {
     static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {
-        /** The value associated with this ThreadLocal. */
         Object value;
 
         Entry(ThreadLocal&lt;?&gt; k, Object v) {
@@ -449,37 +478,33 @@ static class ThreadLocalMap {
     }
     //....很长
 }
-</code></pre><p>ThreadLocalMap是ThreadLocal的一个内部类。用Entry类来进行存储,我们的值都是存储到这个Map上的，key是当前ThreadLocal对象！</p>
-<p>该ThreadLocalMap从Thread中获取：</p>
-<pre><code>//Thread.java
-ThreadLocalMap getMap(Thread t) {
-    return t.threadLocals;
-}
-</code></pre><p>get方法：</p>
-<pre><code>//ThreadLocal.java
-public T get() {
-    Thread t = Thread.currentThread();
-    ThreadLocalMap map = getMap(t);
-    if (map != null) {
-        //this代表ThreadLocal对象
-        ThreadLocalMap.Entry e = map.getEntry(this);
-        if (e != null) {
-            @SuppressWarnings(&quot;unchecked&quot;)
-            T result = (T)e.value;
-            return result;
-        }
+</code></pre><p>4.ThreadLocalMap的set方法</p>
+<pre><code>for (Entry e = tab[i];
+     e != null;
+     e = tab[i = nextIndex(i, len)]) {
+    ThreadLocal&lt;?&gt; k = e.get();
+
+    if (k == key) {
+        e.value = value;
+        return;
     }
-    return setInitialValue();
+    //key已经被回收，清除无效的Entry
+    if (k == null) {
+        replaceStaleEntry(key, value, i);
+        return;
+    }
 }
-</code></pre><p>总结：</p>
-<pre><code>1.ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。
-
-2.调用ThreadLocal的get()方法时，实际上就是往ThreadLocalMap获取值，key是ThreadLocal对象
-
-3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
-</code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
-<p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
-
+</code></pre><p>5.ThreadLocalMap的get方法</p>
+<pre><code>private Entry getEntry(ThreadLocal&lt;?&gt; key) {
+    int i = key.threadLocalHashCode &amp; (table.length - 1);
+    Entry e = table[i];
+    if (e != null &amp;&amp; e.get() == key)
+        return e;
+    else
+        //Hash冲突了使用开放地址法解决
+        return getEntryAfterMiss(key, i, e);
+    }
+</code></pre>
       
     </div>
     
@@ -512,6 +537,10 @@ public T get() {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/14/集合源码1/" rel="prev" title="集合源码1">
+                集合源码1 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -599,7 +628,7 @@ public T get() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

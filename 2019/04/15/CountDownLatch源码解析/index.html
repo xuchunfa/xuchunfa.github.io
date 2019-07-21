@@ -88,7 +88,7 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="参考文献 CountDownLatch源码解析 CountDownLatch的作用？ 等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒， 必要时再对各个任务执行的结果进行汇总；  初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到 各个线程中去，e.execute(new WorkerRunnable(latch, i))">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-01T10:41:51.869Z">
+<meta property="og:updated_time" content="2019-07-15T07:49:09.356Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CountDownLatch源码解析">
 <meta name="twitter:description" content="参考文献 CountDownLatch源码解析 CountDownLatch的作用？ 等待其他线程都执行完任务，然后调用cdl对象await方法阻塞的线程被唤醒， 必要时再对各个任务执行的结果进行汇总；  初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到 各个线程中去，e.execute(new WorkerRunnable(latch, i))">
@@ -418,6 +418,15 @@
 
 初始化CountDownLatch(N)时，N代表任务数，将CountDownLatch实例引用传到
 各个线程中去，e.execute(new WorkerRunnable(latch, i))，调用latch.countDown()代表完成一个任务；
+</code></pre><p><strong>Countdownlatch和CyclicBarrier的区别？</strong></p>
+<pre><code>1.Countdownlatch:我在等待队友的开发进度，当所有队友都达到了我预期的
+  的开发进度，我才开始开发，而队友不管我，继续他们的开发(线程仍在工作)。
+
+2.CyclicBarrier：几个工程队修建地铁基础设施，只有当都完成以后，检验人员
+  检验合格以后(执行的barrierAction，此时其他工程队一直歇着即阻塞)，然后
+  接着铺设下一段铁路。
+
+3.CyclicBarrier能重用栅栏，开启下一代，Countdownlatch计数器不能重用。
 </code></pre><p>文献已经给出了详细的讲解，这里作简单的总结：</p>
 <p>在CountDownLatch中重写了tryAcquiredShared()和tryReleaseShared()方法：</p>
 <pre><code>protected int tryAcquireShared(int acquires) {
@@ -619,7 +628,7 @@ public final void acquireSharedInterruptibly(int arg)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

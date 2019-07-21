@@ -286,6 +286,965 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/面试总结-Mysql基础/" itemprop="url">面试总结--Mysql基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:54:38+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Mysql基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/18/面试总结-Mysql基础/" class="leancloud_visitors" data-flag-title="面试总结--Mysql基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.select count(<em>) 和 select count(列名)以及count(</em>)和count(1)？</p>
+<p><a href="http://www.xuchunfa.cn/2018/09/04/Mysql%E7%AC%94%E8%AE%B0/">Mysql基础笔记</a></p>
+<pre><code>前者会包含null的行，后者不会包括；
+</code></pre><ol>
+<li><p>union 和 union all 的区别？</p>
+<p>  1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)</p>
+<p>  2.union all：简单取并集，不做任何处理；</p>
+</li>
+<li><p>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</p>
+</li>
+</ol>
+<p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
+<pre><code>1.作为文件系统以及数据库系统的索引结构；
+
+2.B树的关键字和data域放在了一起；
+
+3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针；
+</code></pre><p>B树和B+树的区别？</p>
+<pre><code>1.B树所有节点都带有卫星数据，B+树只有叶子节点带有；
+
+2.B+树的中间节点没有卫星数据，同样大小的磁盘页可以容纳更多的元素；
+  树型更矮胖，减少了查询时候的IO次数；
+
+3.B+树查询性能稳定、范围查询效率更高；
+</code></pre><p>m阶（代表一个树节点最多有多少个查找路径）的B树特点：</p>
+<p><img src="/images/B树.png" alt=""></p>
+<pre><code>1.每个节点至多有m棵子树；
+
+2.除根节点外每个分支节点至少有 m/2取上整 棵子树；
+
+3.根节点至少有两棵子树；
+
+4.关键字的数量num：大于等于ceil(m/2)-1 ，小于等于 M-1；
+
+5.有k个子树的中间节点包含k-1个元素；
+</code></pre><p>m阶B+树；</p>
+<p><img src="/images/B+树.png" alt=""></p>
+<pre><code>1.有k个子树的中间节点包含k个元素；
+
+2.叶子节点包含了全部元素信息以及指向这些元素记录的指针；
+
+3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大或最小元素；
+</code></pre><ol start="2">
+<li><p>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
+<p>  因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；</p>
+</li>
+</ol>
+<ol start="3">
+<li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
+</ol>
+<p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
+<pre><code>1.事务特性：原子性、一致性、隔离性和持久性；
+
+2.事务隔离级别：
+
+    2.1 读未提交：出现脏读，读取另一个未提交事务的数据；
+
+    2.2 读已提交：造成不可重复读，即在同一个事务中读到两次不同的结果；
+
+    2.3 可重复读：出现幻读，一个事务中读取的数据一致；
+</code></pre><p>幻读的例子：</p>
+<p><img src="/images/幻读.PNG" alt=""></p>
+<pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
+
+        1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
+
+        2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
+
+3.MySQL的默认隔离级别：可重复读；
+</code></pre><ol start="3">
+<li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
+</ol>
+<p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
+<pre><code>1.普通索引
+
+    eg:ALTER TABLE stu add INDEX index_id(id);
+</code></pre><p>使用索引前：(怎么知道一条Sql语句更快？)</p>
+<p><img src="/images/noIndex.png" alt=""></p>
+<p>使用索引后：</p>
+<p><img src="/images/hasIndex.png" alt=""></p>
+<pre><code>2.唯一索引：索引列的值必须唯一，但允许为空。
+
+    eg:ALTER TABLE stu add UNIQUE index_id(id);
+
+3.主键索引（聚集索引）：特殊的唯一索引，索引列的值不允许为空。
+</code></pre><p><img src="/images/primaryIndex.png" alt=""></p>
+<pre><code>4.组合索引：默认最左前缀的结果。组合索引的好处是已经对第二个键值进行了排序，无需额外的排序。
+
+    eg:alter table stu add index id_name_note(id,name(10),note);
+
+     相当于分别建立了：
+
+    1.（id,name,note）索引
+
+    2.（id,name）索引
+
+    3.（id）索引
+
+5.全文索引：格式为Match(列名)Against(关键字)，是搜索引擎使用的一种关键技术；
+
+6.覆盖索引
+
+    6.1 如果要查询的列被所使用的索引覆盖，那么通过一次索引查询就能获得记录
+    不用回表查询。    
+
+    6.2 索引的字段不只包含查询列，还包含查询条件、排序；
+</code></pre><p>物理存储角度的索引分类：</p>
+<pre><code>1.聚簇索引
+</code></pre><p><img src="/images/聚簇索引.PNG" alt=""></p>
+<pre><code>    1.1 Innodb的索引结构，数据和主索引存放在一起，主键索引的叶子节点data域存放的是数据本身；
+
+    1.2 辅助索引的叶子data域存放的是主键值，因此主键值越小越好；
+
+    1.3 数据按主键的顺序存放，索引的顺序就是数据本身的数据，适合范围数据查询；
+
+    1.4 数据结构B+树
+
+
+2.非聚簇索引
+</code></pre><p><img src="/images/非聚簇索引.PNG" alt=""></p>
+<pre><code>2.1 MYISAM的索引结构，索引和数据是分开存放的，MYISAM的索引文件data域（叶子节点）仅仅保存数据记录的物理地址(行号)，
+    通过该地址回表查询数据，
+
+2.2 主键索引和辅助索引（查询的条件不是主键）几乎一样，主键索引不允许重复；
+
+2.3 数据按插入顺序存放，适合单个数据查询；
+
+2.4 数据结构B+树
+</code></pre><p><strong>什么时候使用索引呢？</strong></p>
+<pre><code>1.考虑在where和order by命令上涉及的列上建立索引。
+
+    1.1 order by的理解，索引是有序的，会省去排序的过程；where上的字段可以
+    避免全表扫描；
+
+    1.2 order by字段需要是非空的，否则会无效；
+
+2.查询中与其他表关联的字段，外键关系建立索引
+
+    2.1 建立外键的方式：
+
+        constraint 外键名 foreign key (dept_id) references 
+        employee(id) on delete cascade on update cascade
+
+3.作为排序的列建立索引
+
+4.高并发条件下倾向组合索引
+
+5.聚合函数的列可以建索引
+</code></pre><p><strong>什么时候不使用索引呢？</strong></p>
+<pre><code>1.经常增删改的列不需要建立索引；
+
+2.有大量重复的列(离散度低的字段)，例如性别；
+
+3.表的记录数不够多；
+</code></pre><p><strong>索引失效的情况：</strong></p>
+<pre><code>1.“%aaa%” 不会使用索引,而like “aaa%”可以使用索引；
+   使用正则表达式，只有在第一个字符不是通配符的情况下索引才生效；
+
+2.在列上进行运算将会使索引失效，包括计算表达式、数据库函数；
+
+3.MySQL查询只使用一个索引，因此如果where子句中已经使用了索引的话，那么order by中的列是不会使用索引的。
+
+    使用联合索引自动排序的好处：(a,b)
+
+    eg：select ... from table where a=XXX order by b；
+
+4.联合索引未使用最左匹配原则，例如组合索引（A，B），where B=b不会使用索引；
+
+5.只要列中包含有NULL值都将不会包含在索引中，组合索引只要有一列含有NULL
+  这一列对于组合索引就是无效的；
+
+6.索引字段使用 !=或&lt;&gt;、is null或is not null、or、not in等将会使索引失效导致全表扫描；
+
+7.索引字段是字符串，但查询的时候不加单引号，索引失效；
+
+8.mysql中不能继续使用索引中范围条件between、&lt;、&gt;、in等右边的列；
+</code></pre><ol start="7">
+<li><p>数据库引擎有哪些？说说他们的区别？</p>
+<p> MyISAM</p>
+<pre><code>1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
+
+2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
+
+3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
+
+辅助索引是独立的。
+</code></pre></li>
+</ol>
+<pre><code>InnoDB:
+
+    1.行级锁、支持事务、支持外键、支持MVCC、MySQL5.6.4版本以后开始支持FULLTEXT类型的索引；
+
+    2.InnoDB是聚集索引，数据文件和索引绑定在一起，必须要有主键，没的话会自动生成主键，主键
+
+    索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java并发编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/18/面试总结-Java并发编程/" itemprop="url">面试总结--Java并发编程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T19:48:38+08:00">
+                2019-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/18/面试总结-Java并发编程/" class="leancloud_visitors" data-flag-title="面试总结--Java并发编程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p>线程创建的方法？</p>
+<pre><code>1.继承Thread重写run方法；
+
+    java单继承，会有缺陷；
+
+2.实现Runnable接口，new Thread(接口实现)；
+
+    Runnable无返回结果
+    Callable有返回结果
+
+3.实现Callable&lt;V&gt;接口重写call方法
+
+    MyCall implements Callable&lt;Integer&gt;{...重写call方法..}
+
+    FutureTask&lt;Integer&gt; future = new FutureTask&lt;Integer&gt;(
+    new MyCall())
+
+    thread = new Thread(future，&quot;name&quot;)
+    Integer res = future.get()//会阻塞，直到返回结果值
+
+4.线程池
+
+    1.降低资源消耗
+
+    2.提高响应速度
+
+    3.提高线程的可管理性
+</code></pre></li>
+</ol>
+<p>1.一个线程打印奇数另一个线程打印偶数</p>
+<pre><code>static class PrintOddAndEven implements Runnable{
+    private static final int NUMBERS = 20;
+    private static volatile int index = 1;
+    private int flag;
+    static Object lock = new Object();//static
+
+    public PrintOddAndEven(int flag) {
+        this.flag = flag;
+    }
+
+    @Override
+    public void run(){
+        while(index &lt; NUMBERS){
+            synchronized (lock){
+                while ((index &amp; 1) != flag){
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(Thread.currentThread().getName()+&quot;: &quot;+index);
+                index++;
+                lock.notifyAll();//将等待队列中的所有线程移到同步队列中去
+            }
+        }
+    }
+}
+
+public static void main(String[] args){
+    Thread oddThread = new Thread(new PrintOddAndEven(1));
+    Thread evenThread = new Thread(new PrintOddAndEven(0));
+    oddThread.start();
+    evenThread.start();
+}
+</code></pre><ol start="2">
+<li><p>说说ReentrantLock是基于哪个类的？说说队列同步器？</p>
+<p> 2.1 AbstractQueuedSynchronizer(AQS):</p>
+<pre><code>抽象队列同步器。用于管理同步状态、阻塞和唤醒线程，以及维护被阻塞线程的队列。
+</code></pre><p> 2.2 自定义同步器需要重写AQS的以下方法：</p>
+<pre><code>1.protected boolean tryAcquire(int arg)：独占式的获取同步状态，并使用CAS设置同步状态；
+
+    1.1 state = 0:表示获取到锁；
+
+    1.2 state = 1:表示锁被占用；
+
+    1.3 state &gt; 1:表示当前线程重入到已经获取到的锁；
+
+2.protected boolean tryRelease(int arg)：独占式的释放同步状态；
+
+3.protected int tryAcquireShared(int arg)：共享式获取同步状态，返回值大于等于0，表示获取成功，在读写锁中会被重写；
+
+4.tryReleaseShared、isHeldExclusively（是否被当前线程独占）；
+</code></pre><p> 2.3 同步队列的源码解析：</p>
+</li>
+</ol>
+<p><a href="http://www.xuchunfa.cn/2019/04/14/%E5%90%8C%E6%AD%A5%E9%98%9F%E5%88%97%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">同步队列解析</a></p>
+<ol start="3">
+<li><p>ReentrantLock 是可重入锁，什么是可重入锁？</p>
+<p> 该锁能够支持一个线程对资源的重复加锁。</p>
+</li>
+</ol>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">ReentrantLock的源码解析</a></p>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/ReentrantLock%E4%B8%AD%E7%9A%84Condition%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Condition源码解析</a></p>
+<ol start="3">
+<li>AQS的相关工具类CountDownLatch、CyclicBarrier和Semaphore的理解？</li>
+</ol>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/CountDownLatch%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">CountDownLatch源码解析</a>    </p>
+<p><a href="http://www.xuchunfa.cn/2019/04/15/CyclicBarrier%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">CyclicBarrier源码解析</a></p>
+<ol start="4">
+<li><p>synchronized和lock的区别？</p>
+<pre><code>1.synchronized是java关键字，Lock是一个接口；
+
+2.synchronized方法发生异常时会自动释放线程占用的锁，不会出现死锁，
+  Lock需要手动调用unLock()方法释放锁，可能会出现死锁；
+
+3.Lock可以在等待获取锁的过程中响应中断（即可中断线程），通过       lockInterruptibly()实现能被中断的获取锁；
+synchronized方法内出现等待或阻塞时，其他线程只能无限期等待，性能差；
+
+4.Readwritelock提高了读操作的效率，在资源竞争激烈的情况下Lock的效率要比synchronized高；
+
+5.Lock可以实现公平锁、synchronized不保证公平性；
+</code></pre></li>
+<li><p>synchronized类锁和对象锁的区别？</p>
+<p> 1.类锁：特殊对象Class的锁</p>
+<pre><code>synchronized添加到static静态方法或者synchronized(class)代码块是给
+Class上锁；
+
+1.public synchronized static void sell(){...};
+
+2.public void sell(){
+    int i = 100;
+    synchronized(SynchronizedDemo.class){...}
+}
+</code></pre></li>
+</ol>
+<pre><code>2.方法锁：
+
+    synchronized添加到普通成员方法上是给对象上锁；
+
+    1.public synchronized void sell(){...};
+
+    2.public void sell(){    
+        int i = 100;
+        synchronized(this){...}
+     }
+
+3.区别：
+
+    1.对象锁用来控制实例方法之间的同步，类锁用来控制静态方法之间的同步；
+
+    2.对象锁和类锁是两个不一样的锁，控制不同区域，互不干扰；
+
+4.注意：
+
+    当一个线程访问对象的同步代码块时，另一个线程仍可以访问该对象的非同步
+    方法；
+</code></pre><ol start="4">
+<li><p>synchronized底层实现原理？</p>
+<p> 1.对象头</p>
+<pre><code>1.1 对象的内存存储布局：
+
+    对象头、实例数据、对齐填充。
+
+1.2 对象头组成
+
+    Mark Word、Class Metadata Address、ArrayLength(数组对象才有)；
+
+    1.2.1 Mark Word
+
+        用于存储对象自身的运行时数据，例如：Hashcode、GC分代年龄、锁状态标志
+        线程持有的锁、偏向线程ID等；
+</code></pre></li>
+</ol>
+<p><img src="/images/Markword.jpg" alt=""></p>
+<pre><code>        1.2.2 Class Metadata Address
+
+            类的元数据地址，JVM通过该指针确定该对象是哪个类的实例。
+
+
+2.原理：（重量级锁）
+
+    1.首先synchronized用的锁是存放在对象头里面的，JVM基于进入和退出Monitor（监视器锁互斥）对象实现同步块和同步方法的；
+
+    2.编译之后在同步代码块之前插入Monitorenter指令，同步代码块完成之后或异常之后插入Monitorexit指令；
+</code></pre><ol start="3">
+<li><p>写一个生产者消费者模式？</p>
+<p> public class TestProducerConsumer {</p>
+<p> private static final int cap = 3;<br> static Queue<integer>  queue = new LinkedList<integer>();<br> static Object lock = new Object();</integer></integer></p>
+<p> static class Producer implements Runnable{</p>
+<pre><code>private static int product;
+@Override
+public void run() {
+    synchronized (lock){
+        while (queue.size() == cap){
+            try {
+                System.out.println(&quot;queue is full: &quot;+Thread.currentThread().getName()+&quot; is waitting&quot;);
+                lock.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(Thread.currentThread().getName()+&quot; is product: &quot;+product);
+        queue.offer(product++);
+        lock.notify();
+    }
+}
+</code></pre><p> }</p>
+<p> static class Consumer implements Runnable{</p>
+<pre><code>@Override
+public void run() {
+    synchronized (lock){
+        while (queue.size() == 0){
+            try {
+                lock.wait();
+                System.out.println(&quot;queue is empty: &quot;+Thread.currentThread().getName()+&quot; is waitting&quot;);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        int product = queue.poll();
+        System.out.println(Thread.currentThread().getName()+&quot; is consume: &quot;+product);
+        lock.notify();
+    }
+}
+</code></pre><p> }</p>
+</li>
+<li><p>写一个死锁？</p>
+<p> public class DeadLock {<br> static class SynAddRunnable implements Runnable{</p>
+<pre><code>private int a,b;
+
+public SynAddRunnable(int a,int b){
+    this.a = a;
+    this.b = b;
+}
+
+@Override
+public void run() {
+    //数字范围在-128到127之间直接返回缓存好的对象
+    //所以会存在资源的竞争
+    synchronized (Integer.valueOf(a)){
+        synchronized (Integer.valueOf(b)){
+            System.out.println(a + b);
+        }
+    }
+}
+</code></pre><p> }<br> public static void main(String[] args) {</p>
+<pre><code>for (int i = 0; i &lt; 1000; i++) {
+    new Thread(new SynAddRunnable(1,2)).start();
+    new Thread(new SynAddRunnable(2,1)).start();
+}
+</code></pre><p> }<br> }</p>
+</li>
+<li><p>死锁的产生的原因以及怎么预防？</p>
+<pre><code>原因：
+
+ 1.系统资源不足；
+
+ 2.进程运行的推进顺序不合理；
+
+ 3.资源分配不当；
+</code></pre><p> 四个必要条件：</p>
+<pre><code>1.互斥条件：一个资源每次只能被一个进程使用；
+
+2.请求和保持条件：一个进程因请求资源而阻塞时，对已经获得的资源保持不放；
+
+3.不剥夺条件：进程已经获得的资源，在未使用之前不能强行剥夺；
+
+4.循环等待条件：若干进程之间形成了一种头尾相接循环等待资源的关系；
+</code></pre><p> 预防死锁：</p>
+<pre><code>1.破环请求和保持条件：一次性申请所需要的全部资源；
+
+2.破坏不剥夺条件：直接抢占其他进程的资源，适用于状态易于保存和恢复的资源；
+
+3.破环循环等待条件：资源排序，得到低优先级的资源后才能申请高优先级的资源，高优先级的资源不允许访问低优先级的资源；
+</code></pre><p> 解决死锁的策略：</p>
+<pre><code>1.死锁预防：破坏四个必要条件；
+
+2.死锁避免：
+
+    2.1 如果一个进程的请求会导致死锁，则不启动此进程；
+
+    2.2 指进程每次申请资源时判断安不安全，例如银行家算法。
+
+3.死锁检测：事后措施；
+
+4.死锁解除：强行剥夺进程的资源；
+</code></pre></li>
+</ol>
+<ol start="5">
+<li><p>int a = 1; 是原子性操作吗？</p>
+<pre><code>是
+</code></pre></li>
+<li><p>新的任务提交到线程池，线程池是怎样处理？</p>
+</li>
+</ol>
+<p><a href="http://www.xuchunfa.cn/2018/08/04/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池详解</a></p>
+<p>7.线程池中阻塞队列的理解？</p>
+<p><a href="http://www.xuchunfa.cn/2019/04/19/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3/">阻塞队列详解</a></p>
+<p>9.CAS算法出现的问题？</p>
+<pre><code>1.CAS机制
+
+    compareAndSwapInt(内存值、预期值、新值)，当更新时比较内存值和预期值是否相等
+    相等的话则更新，否则一直自旋重试；
+
+2.问题
+
+    1.ABA问题。
+
+     在变量前面加上版本号，每次变量更新的时候版本号加1，变化过程从A-B-A变成了1A-2B-3A了。
+
+    2.循环时间开销大。CAS操作长时间不成功的话会一直自旋，CPU开销大。
+
+    3.只能保证一个共享变量的原子操作。
+
+      引入AtomicReference保证对象之间的原子性，可以把多个共享变量放在一个对象里面进行CAS操作；
+</code></pre><p>10.什么叫自旋锁？</p>
+<pre><code>自旋锁：
+
+    为了降低阻塞和唤醒线程对性能造成的影响，可以让请求锁失败的线程自旋，即不放弃CPU的执行时间，
+    当前面的锁释放了同步资源以后，自旋线程就能不必阻塞直接获取同步资源，从而避免了线程切换的开销。
+
+特点：
+
+    自旋时间过长影响整体性能，过短达不到延迟阻塞的目的；
+</code></pre><ol start="10">
+<li>锁有哪几种？</li>
+</ol>
+<p><a href="https://tech.meituan.com/2018/11/15/java-lock.html" target="_blank" rel="noopener">美团技术讲”锁”事</a></p>
+<pre><code>1.线程是否锁住同步资源分为：
+
+    是：悲观锁。例如synchronized和Lock的实现类。
+
+    否：乐观锁。
+
+        总认为不会产生并发问题，每次去读数据时总认为不会有线程更改数据，所以不加锁
+        的读，但是在更改数据时会判断在这之前有没有其他线程也更改过数据，一般使用
+        版本号控制或CAS操作实现；
+
+        乐观锁不能解决脏数据问题；
+
+2.锁住同步资源失败不阻塞时分为：
+
+    自旋锁和适应性自旋锁。
+
+    适应性自旋锁：自旋的次数由前一次在同一个锁上的自旋时间以及锁的拥有者的状态决定，
+    如果自旋刚刚成功过，则认为此次自旋等待成功的可能性很大，
+    于是增长自旋等待的时间，对于自旋成功次数很少的某个锁，直接阻塞线程；
+
+3.根据锁的状态分为：
+
+    无锁、偏向锁、轻量级锁、重量级锁；
+
+    3.1 对象头的介绍：
+
+        1.Mark Word:存储对象的hashcode、分代年龄、和锁标志位信息；
+
+        2.class point:对象指向它的类元数据的指针；
+
+        目的：出现不同锁状态的原因，都是为了减少获得锁和释放锁带来的性能消耗，
+
+    3.2 无锁（01）：CAS应用；
+
+    3.3 偏向锁（01）：指一段同步代码一直被一个线程访问，那么该线程会自动获取锁，降低获取锁的代价;
+
+        3.3.1 实现方法：即检测 Mark Word里是否存储着指向当前线程的偏向锁；
+
+        3.3.2 好处：为了在无多线程竞争的情况下尽量减少不必要的轻量级锁执行路径，因为轻量级锁的获取及释放依赖多次CAS原子指令，
+        而偏向锁只需要在置换ThreadID的时候依赖一次CAS原子指令即可
+
+        3.3.3 偏向锁的释放：偏向锁只有遇到其他线程尝试竞争偏向锁时，持有偏向锁的线程才会释放锁，线程不会主动释放偏向锁。偏向锁的撤销，
+        需要等待全局安全点（在这个时间点上没有字节码正在执行），它会首先暂停拥有偏向锁的线程，判断锁对象是否处于被锁定状态。
+        撤销偏向锁后恢复到无锁（标志位为“01”）或轻量级锁（标志位为“00”）的状态；
+
+    3.4 轻量级锁（00）：当锁是偏向锁时被其他线程访问，锁升级为轻量级锁，其他线程将会通过自旋尝试获取锁，不阻塞，提高性能；
+
+        3.4.1 具体细节见下：
+
+            在代码进入同步块的时候，如果同步对象锁状态为无锁状态（锁标志位为“01”状态，是否为偏向锁为“0”），虚拟机首先将在当前线程的栈帧中建立一个名为锁记录（Lock Record）的空间，
+            用于存储锁对象目前的Mark Word的拷贝，然后拷贝对象头中的Mark Word复制到锁记录中。
+
+            拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针，并将Lock Record里的owner指针指向对象的Mark Word。
+
+            如果这个更新动作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位设置为“00”，表示此对象处于轻量级锁定状态。
+
+            如果轻量级锁的更新操作失败了，虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行，否则说明多个线程竞争锁。
+
+            若当前只有一个等待线程，则该线程通过自旋进行等待。但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁升级为重量级锁。
+
+
+    3.5 重量级锁（10）：等待锁的线程都会进入到阻塞状态；
+
+        由对象内部的 Monitor 实现，本质是依赖于底层操作系统的 Mutex Locks实现
+        实现线程切换需要实现用户态和内核态的切换，代价高；
+
+总结：
+
+    偏向锁通过对比Mark Word解决加锁问题，避免执行CAS操作。
+
+    而轻量级锁是通过用CAS操作和自旋来解决加锁问题，避免线程阻塞和唤醒而影响性能。
+
+    重量级锁是将除了拥有锁的线程以外的线程都阻塞。
+
+4.根据线程获取锁的顺序分为：
+
+    公平锁：不会出现线程饿死的状态；
+
+    非公平锁：特点是线程通过插队尝试获取锁，有几率直接获取锁而不用进入阻塞队列（除非尝试失败），减少了CPU唤醒线程的开销，
+    提高了吞吐率；
+
+4.根据锁是否可以重入分为：
+
+    可重入锁和不可重入锁。
+
+5.根据锁是否可以被多个线程获取分为：
+
+    独享锁（排他锁）：
+
+    共享锁：ReentrantReadWriteLock读写锁
+</code></pre><ol start="13">
+<li>线程的状态？</li>
+</ol>
+<p><img src="/images/threadState.PNG" alt=""></p>
+<pre><code>六种状态：
+
+    新建（NEW）: 线程还没开始执行；
+    运行（RUNNABLE）: 包含就绪(在等待处理器)和运行；
+    阻塞(BLOCKED): 在等待 monitor lock 去进入Synchronied方法或代码块；
+    等待（WAITING）: wait()；
+    超时等待（TIMED_WAITTING）: wait(long mills)；
+    终止（TERMINATED）: 线程终止；
+</code></pre><p>14.中断机制，interrupt和interrupted的区别，哪些状态可以中断并抛出InterruptedException?</p>
+<pre><code>interrupt: 终止线程，并将标志位设为true；
+
+interrupted：判断线程是否中断，并清除标志位，所以仍为false；
+
+isInterrupted：判断线程是否中断，不会清除标志位，所以为true；
+
+线程调用 wait()、sleep()、join()方法时可以中断并抛出InterruptedException异常，
+
+而且它们被中断以后都会清除中断标记，中断后仍为false；
+</code></pre><p>15.sleep和wait的区别?</p>
+<pre><code>1.sleep是Thread的方法，wait是Object的方法；
+
+2.调用sleep方法的线程不会释放锁，wait方法会释放对象锁；
+
+3.wait只能在同步方法/同步代码块中使用，sleep可以在任何地方；
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2754,460 +3713,6 @@ final void setArray(Object[] a) {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/25/Redis基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/25/Redis基础/" itemprop="url">Redis基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T19:43:16+08:00">
-                2018-10-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/25/Redis基础/" class="leancloud_visitors" data-flag-title="Redis基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>总结：</p>
-<pre><code>1.set、zset、list、hash为四种容器型数据结构，在执行命令时，如果容器不存在则创建它，若容器里的元素没有了则删除容器；
-
-2.若字符串设置了过期时间，若更改了字符串，则过期时间失效；
-</code></pre><ul>
-<li><p>Redis 命令</p>
-<p>  1.expire key seconds ：为key指定过期时间，单位是秒。等价于 setex key<br>  seconds value;</p>
-<p>  2.ttl key ：返回设置了过期时间的key的剩余过期秒数。</p>
-</li>
-</ul>
-<p><strong>String类型：</strong></p>
-<pre><code>3.incr/decr key : 对key的值做加加/减减操作，值要为Integer类型。key不存在的话，则设置key为1。
-
-4.incrby/decrby key integer : 加减指定值。
-</code></pre><p><strong>List类型：就是一个每个子元素都是string类型的双向链表。(java LinkedList)</strong></p>
-<pre><code>5.lpush/rpush/lpop/rpop key string : 在key对应list的头部/尾部添加/删除字符串元素。
-
-6.llen key : 返回key对应list的长度。
-
-7.lrange key start end ：返回指定区间内的元素，下标从0开始，负值表示从后面计算，-1表示倒数第一个元素。
-
-8.ltrim key start end : 让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除。
-
-9.lindex key index : 相当于java的 get(index)方法，需要对链表进行遍历，不建议使用；
-</code></pre><p><strong>Set类型：（java HashSet）</strong></p>
-<pre><code>8.sadd key member ：添加一个string元素到key对应的set集合中。
-
-9.smembers key ：返回key对应set的所有元素，结果是无序的。
-
-10.srem key member : 从key对应set中移除给定元素。
-
-11.srandmember key : 随机取set中的一个元素，但是不删除元素(spop会删除)。
-
-12.scard key ：返回set的元素个数。
-
-13.sismember key member ：判断member是否在set中。
-
-14.sinter key1 key2...keyN : 返回所有给定key的交集。
-
-15.sinterstore dstkey key1...keyN ：同sinter，但是会同时将交集存到dstkey下。可以推荐别人的共同好友给你。
-
-16.sunion key1 key2...keyN ：返回所有给定key的并集。
-
-17.sdiff key1 key2...keyN ：返回所有给定key的差集。
-
-18.sdiffstore dstkey key1...keyN ：同sdiff，并同时保存差集到dstkey下。
-</code></pre><p><strong>Zset类型：(SortedSet和HashMap的结合体)</strong></p>
-<pre><code>19.zadd key score value ：添加元素到集合，元素在集合中存在则更新对应score。
-
-20.zincrby key incr value ：增加对应member的score值，然后移动元素并保持skip list有序。返回更新后的score值。
-
-21.zrank key value ：返回指定元素在集合中的排名（下标，非score）,集合中元素是按score从小到大排序的。第一排名返回的是0。
-
-
-22.zrevrank key value ：同上,但是集合中元素是按score从大到小排序。
-
-23.zrange/zrevrange key start end ：从集合中取指定区间的元素。返回的是有序结果，按score有序/逆序。
-
-    eg:zrange books 0 -1;//按score从小到大排序，默认增序；
-
-24.zrangebyscore key min max ：返回集合中score在给定区间的元素。结果按score从小到大排序。
-
-    eg:zrangebyscore books -inf 9 withscores;//得分在负无穷到9之间的元素,并且显示相应分数
-
-25.zcount key min max ：返回集合中score在给定区间的数量。
-
-26.zcard key ：返回集合中元素个数。count()函数
-
-27.zscore key value ：返回给定元素对应的score。
-
-28.zremrangebyrank/zremrangebyscore key min max ：删除集合中排名/Score在给定区间的元素。
-
-    eg:zrem books &quot;think in java&quot;;//删除 value
-</code></pre><p><strong>Hash类型：(java HashMap)</strong></p>
-<pre><code>29.hset key field value ： 设置hash field为指定值，如果key不存在，则先创建。
-eg:hset books java &quot;think in Java&quot;//命令行的字符串包含空格引号括起来
-
-30.hget key field ：获取指定的hash field。
-
-31.hincrby key field integer ：增加hash域的值。
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/10/24/Kafka基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/24/Kafka基础/" itemprop="url">Kafka基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-24T16:21:58+08:00">
-                2018-10-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据基础/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/24/Kafka基础/" class="leancloud_visitors" data-flag-title="Kafka基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>常用命令总结：</p>
-<pre><code>创建主题：
-
-./kafka-topics.sh --create --topic words --replication-factor 3 
-    --partitions 3 --zookeeper cloud0001:2181
-
-查看主题：
-
-./kafka-topics.sh --list --zookeeper cloud0001:2181
-
-消费者客户端消费信息：
-
-./kafka-console-consumer.sh --bootstrap-server cloud0001:9092 --from-beginning --topic words
-</code></pre><ul>
-<li><p>消息只能被消费组里面的一个消费者消费，如果被多个消费者消费，这些消费者必须在不同的消费组里面。</p>
-</li>
-<li><p>Kafka需要维持的元数据只有一个offset值，Consumer每消费一个消息，offset就会加1，消息的状态完全是由Consumer控制的，Consumer可以跟踪和重设这个offset值，这样的话Consumer就可以读取任意位置的消息。</p>
-</li>
-</ul>
-<ul>
-<li><p>replication-factor是以partition为单位的，只有一个partition的副本会被选举成leader作为读写用.</p>
-</li>
-<li><p>Producer在发送消息后，会得到一个响应，出现了一个重要的参数：默认值好像是0，在Producer中配置。</p>
-<pre><code>acks = 0 : 表示producer不会等待broker的响应.
-
-acks = 1 : 表示producer会在leader partition收到消息时得到broker的一个确认.
-
-acks = -1 : producer会在所有备份的partition收到消息时得到broker的确认.
-</code></pre></li>
-<li><p>Consumers的示意图：</p>
-</li>
-</ul>
-<p><img src="https://i.imgur.com/Zz6TdbW.png" alt=""></p>
-<ul>
-<li><p>消息可靠性的保障</p>
-<p>  Producer端：等待broker成功接收到消息的反馈。</p>
-<p>  Consumer端：Broker记录了partition中的一个offset值,可以通过这个offset值重新找到上一个出错消息，再重新进行处理。</p>
-</li>
-</ul>
-<p>具体生产者和消费者的配置如下：</p>
-<p><a href="http://www.dengshenyu.com/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/2017/11/12/kafka-producer.html" target="_blank" rel="noopener">生产者写入消息到Kafka的相关配置</a></p>
-<ul>
-<li><p>Producer Config的重要参数</p>
-<pre><code>1.metadata.broker.list：启动时producer查询brokers的列表，可以是集群中所有brokers的一个子集。格式：host1:port1,host2:port2。
-
-2.request.required.acks：见上面的详解。
-
-3.request.timeout.ms：等待 Broker ack的超时时间，若等待时间超过此值，会返回客户端错误信息。
-
-4.producer.type：async表示异步，sync表示同步。如果设置成异步模式，可以允许生产者以batch的形式push数据，这样会极大的提高broker性能，推荐设置为异步；
-</code></pre></li>
-<li><p>Consumer Config的重要参数</p>
-<pre><code>1.group.id：消费组id.
-
-2.zookeeper.connect:Consumer的zookeeper连接串，要和broker的配置一致.
-
-3.consumer.id : 默认为null,设置会自动生成。
-
-4.auto.commit.enable:默认值为true.Consumer会周期性的把当前消费的offset值保存到zookeeper。当consumer失败重启之后将会使用此值作为新开始消费的值。
-
-5.auto.commit.interval.ms:上述操作更新的频率。Consumer提交offset值到zookeeper的周期。
-</code></pre></li>
-</ul>
-<p>这里补充一下offset更新的方式：</p>
-<pre><code>1.自动提交：设置enable.auto.commit=true，更新的频率根据参数【auto.commit.interval.ms】来定。这种方式也被称为【at most once】，“最多一次”
-fetch到消息后就可以更新offset，无论是否消费成功。
-
-
-2.手动提交：设置enable.auto.commit=false，这种方式称为【at least once】。“最少一次”
-fetch到消息后，等消费完成再调用方法【consumer.commitSync()】，手动更新offset；如果消费失败，则offset也不会更新，此条消息会被重复消费一次。
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3262,7 +3767,7 @@ fetch到消息后，等消费完成再调用方法【consumer.commitSync()】，
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

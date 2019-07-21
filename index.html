@@ -286,6 +286,739 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/07/18/NIO详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/18/NIO详解/" itemprop="url">NIO详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-18T10:14:50+08:00">
+                2019-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/07/18/NIO详解/" class="leancloud_visitors" data-flag-title="NIO详解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>阻塞/非阻塞 和 同步/异步？</strong></p>
+<pre><code>1.同步/异步：同步是会阻塞请求进程的，异步不会阻塞请求进程的，所以BIO、NIO
+            和IO多路复用都是同步的；
+
+
+2.阻塞/非阻塞：在等待一件事情的处理结果时，如果你还去干点其他的事，则为
+  非阻塞，否则为阻塞；
+</code></pre><p><strong>阻塞IO和非阻塞IO？</strong></p>
+<p>1.阻塞IO</p>
+<p><img src="/images/io.png" alt=""></p>
+<p>分析：</p>
+<pre><code>1.两个阶段都是阻塞的。第一个阶段指等待网络数据到达内核空间缓存区域，第二个阶段
+  是将内核空间缓冲区的数据复制到用户进程缓冲区；
+
+2.调用recvfrom时就开始阻塞；
+</code></pre><p>2.非阻塞IO</p>
+<p><img src="/images/nio.png" alt=""></p>
+<p>分析：</p>
+<pre><code>1.第一个阶段是非阻塞的，第二个阶段是阻塞的；
+
+2.调用recvfrom时，如果数据没有准备好，是不会阻塞进程的，应用进程会轮询内核，检查数据是否准备好，
+准备好以后，数据复制到应用进程缓冲区，这段时间进程是被阻塞的；
+</code></pre><p>3.IO多路复用</p>
+<p><img src="/images/io多路复用.png" alt=""></p>
+<p>分析：</p>
+<pre><code>1.进程阻塞于select，内核监视所有select负责的套接字，任何一个套接字数据准备好
+  以后，select方法返回；
+
+2.一个进程能同时等待多个文件描述符，它们中的任意一个进入读就绪状态时，select()函数就可以返回；
+
+3.第一个阶段和第二个阶段都阻塞；
+</code></pre><p>4.异步IO</p>
+<p><img src="/images/异步IO.png" alt=""></p>
+<pre><code>1.aio_read后立马返回，不会阻塞用户进程，kernel等待数据准备完成，然后将数据
+拷贝到用户内存，完成以后给用户进程发一个signal，告诉它read操作完成；
+</code></pre><p><strong>BIO、NIO、AIO的区别？</strong></p>
+<pre><code>1.BIO：进程从调用recvfrom开始就阻塞；
+
+2.NIO：进程大部分时间都不会block，但仍然要求进程去主动check，当数据准备完成
+以后，也需要进程主动去调用recvfrom，将数据拷贝到用户空间；
+
+3.AIO：用户进程完全不会阻塞，将整个IO操作交给kernel完成，它完成以后发信号
+       通知，在此期间用户进程不需要检查IO操作的状态，也不需要主动拷贝数据；
+</code></pre><p><strong>同步IO、异步IO的区别？</strong></p>
+<pre><code>1.同步IO：导致请求进程阻塞，直到I/O完成，其中阻塞IO、非阻塞IO、IO多路复用都是
+  同步IO；
+
+2.异步IO：不导致请求进程阻塞；
+</code></pre><p><strong>IO和NIO的区别？</strong></p>
+<pre><code>1.前者面向流的，后者面向缓冲区的；
+
+2.前者是阻塞的，后者非阻塞的；
+
+    从硬盘读数据，程序一直等着，数据读完以后，继续操作，这叫阻塞IO；
+
+    从硬盘读数据，然后程序继续向下执行，等数据读完以后，通知当前程序，
+    然后此程序立即处理数据，这叫非阻塞IO；
+
+3.后者selector单线程处理多个通道；
+</code></pre><p><strong>Selector的Reactor模型？</strong></p>
+<p><img src="/images/reactor.png" alt=""></p>
+<pre><code>1.Dispatcher：
+
+1.1 持有Synchronous Event Demultiplexer对象(理解为Selector对象)和
+ CHM Handler和ConcreteHandler的映射集合，Handler可以包装成事件，所以CHM
+也可以表示EventType和EventHandler的映射集合；
+
+1.2 内部dispatch方法调用Selector的select方法，若无事件则阻塞，否则获取
+    事件列表，轮询获取ConcreteHandler来处理每个Handler；
+
+
+2.Selector：内部维护一个阻塞队列，队列为空时，调用select()方法阻塞，不为空
+返回事件列表；
+
+3.Acceptor：内部持有Selector对象，用来接收客户端的连接事件，并添加到selector对象中，
+之后再通过Dispatcher中具体的ACCEPT EventHandler将事件的状态置为READ；
+</code></pre><p>单线程的Reactor模式</p>
+<p><img src="/images/reactor1.png" alt=""></p>
+<pre><code>注意：
+
+1.单线程是针对所有的I/O操作，例如accept()、read()、write()以及connect（）等
+  都是在一个线程上完成的；
+
+2.可以将非IO操作的业务逻辑从Reactor单线程中卸载，来加速Reactor线程对IO请求的响应；
+
+3.不适合高并发、高负载的应用场景；
+</code></pre><p>多Reactor线程模式</p>
+<p><img src="/images/reactor2.png" alt=""></p>
+<pre><code>注意：
+
+1.mainReactor：注册一个Acceptor事件处理器到mainReactor中，监听客户端的ACCEPT事件，
+并将事件派发给acceptor；
+
+2.acceptor：处理器通过调用accept()方法获取客户端的SocketChannel，并将它
+  传递给subReactor线程池；
+
+3.subReactor：负责和客户端通信，可以开多个subReactor线程来处理海量请求；
+
+4.所有的I/O操作还是在Reactor线程中完成的；
+</code></pre><p><strong>select、poll、epoll的区别？</strong></p>
+<p>总结：</p>
+<pre><code>1.select
+
+缺点：
+
+    1.1 单个进程所打开的fd是有一定数量限制的，32位默认1024，64位默认
+        2048；
+
+    1.2 对socket进行扫描是线性扫描，效率低；
+
+    1.3 用户空间和内核空间传递fd数据结构开销大；
+
+2.poll
+
+优点：
+    2.1 基于链表存储，没有fd数量限制；
+
+缺点：
+    2.1 用户空间和内核空间传递fd数据结构开销大；
+
+    2.2 水平触发，报告了的fd如果未处理，下次poll时会再次报告该poll；
+
+3.epoll
+
+特点：
+
+    3.1 支持水平触发和边缘触发，最大特点在于边缘触发，它只告诉你哪些刚
+        刚变为就绪，而且只会通知一次。
+
+    3.2 使用事件的就绪通知方式，通过epoll_ctl注册fd，一旦fd就绪，内核
+        会采用类似callback的回调机制来激活该fd，epoll_wait就可以收到
+        通知；
+        去掉了遍历文件描述符，而是通过监听回调的机制；
+优点：
+
+    3.1 没有最大并发连接数的限制；
+
+    3.2 不是轮询的方式扫描socket，只有活跃的fd才会调用callback函数，
+        epoll只管活跃的连接，跟连接总数无关；
+
+    3.3 使用mmap减少复制开销；
+</code></pre><p>区别：</p>
+<pre><code>1.支持一个进程所能打开的最大连接数。
+
+    select有限，poll和epoll没有限制。
+
+2.fd剧增后带来的IO效率问题。
+
+    select和poll的&quot;线性下降性能问题&quot;，epoll是根据每个fd上callback函数
+    来实现的，只有活跃的socket才会主动调用callback。
+
+3.消息传递方式。
+
+    select和poll中内核需要将消息传递到用户空间，都需要内核拷贝，
+    epoll通过内核和用户空间共享一块内存实现的；
+</code></pre><p>select</p>
+<pre><code>//返回值为fd的数量，超时返回0，出错返回-1；
+//如果timeout=null，select会一直阻塞，直到有描述符就绪；
+1.int select (int n, fd_set *readfds, fd_set *writefds, 
+ fd_set *exceptfds, struct timeval *timeout)
+</code></pre><p>poll</p>
+<pre><code>1.int poll (struct pollfd *fds, unsigned int nfds, int timeout);
+
+  struct pollfd {
+    int fd; //文件描述符
+    short events; //监视的事件
+    short revents; //返回的事件
+}
+</code></pre><p>epoll</p>
+<pre><code>1.
+    //创建一个epoll的句柄，size用来告诉内核这个监听的数目一共有多大
+    //size是内核的建议值
+    int epoll_create(int size)；
+
+    //epfd是epoll_create的返回值、op表示操作EPOLL_CTL_ADD、
+      EPOLL_CTL_DEL、EPOLL_CTL_MOD
+    //event告诉内核需要监听什么事件
+    int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)；
+
+
+    //events表示从内核得到事件的集合
+    //maxevents &lt;= size
+    int epoll_wait(int epfd, struct epoll_event * events, 
+    int maxevents, int timeout);
+
+    struct epoll_event {
+      //EPOLLIN对fd读
+      //EPOLLOUT对fd写
+      //.....
+      __uint32_t events; 
+      epoll_data_t data;
+    };
+</code></pre><p><strong>Selector的基本使用流程？</strong></p>
+<p><img src="/images/selector.JPG" alt=""></p>
+<p><strong>NIO的组件详解</strong></p>
+<ul>
+<li>Buffer</li>
+</ul>
+<p>bufffer示意图</p>
+<p><img src="/images/buffer1.png" alt=""></p>
+<p><img src="/images/buffer.png" alt=""></p>
+<p>buffer的flip方法：</p>
+<pre><code>//buffer的 write模式 切换到 read模式
+public final Buffer flip() {
+    limit = position; // 将 limit 设置为实际写入的数据数量
+    position = 0; // 重置 position 为 0
+    mark = -1; // mark 之后再说
+    return this;
+}
+</code></pre><p>数据写入读入buffer</p>
+<p><img src="/images/buffer3.JPG" alt=""></p>
+<pre><code>方法一：
+
+int bytesdRead = channel.read(buf);//写入buffer
+                 channel.write(buf);//获取buffer数据
+
+方法二：    
+
+buf.put();//写入buffer
+buf.get();//获取buffer数据
+</code></pre><ul>
+<li>Channel</li>
+</ul>
+<p>channel示意图</p>
+<p><img src="/images/channel.png" alt=""></p>
+<ul>
+<li>Selector</li>
+</ul>
+<p>SelectionKey的四种事件</p>
+<pre><code>1.OP_READ：值为1，从channel读数据到buffer，channel.read(buf)
+
+2.OP_WRITE：值为4，从buffer写数据到channel，channel.write(buf)
+
+3.OP_CONNECT：值为8，channel连接事件
+
+4.OP_ACCEPT：值为16，server-socket channel 接收另一个连接的接收事件
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/07/14/集合源码1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/14/集合源码1/" itemprop="url">集合源码1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-14T16:14:54+08:00">
+                2019-07-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/java集合/" itemprop="url" rel="index">
+                    <span itemprop="name">java集合</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/07/14/集合源码1/" class="leancloud_visitors" data-flag-title="集合源码1">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>第一部分栈和队列</strong></p>
+<ul>
+<li><p>栈</p>
+<pre><code>栈继承Vector，入栈和出栈都是线程安全的；
+</code></pre></li>
+</ul>
+<p><strong>push入栈</strong></p>
+<pre><code>默认初始容量10.
+
+public E push(E item) {
+    addElement(item)；
+    return item;
+}
+
+//vector方法
+public synchronized void addElement(E obj) {
+    modCount++;
+    //elementCount表示插入数组的index，入栈元素放数组最后一位
+    ensureCapacityHelper(elementCount + 1);
+    elementData[elementCount++] = obj;
+}
+
+//无需同步
+private void ensureCapacityHelper(int minCapacity) {
+    //插入第11个元素时开始扩容
+    if (minCapacity - elementData.length &gt; 0)
+        grow(minCapacity);
+}
+
+//第二个参数可以指定扩容大小
+public Vector(int initialCapacity, int capacityIncrement)；
+
+//扩容
+private void grow(int minCapacity) {
+
+    int oldCapacity = elementData.length;
+    //不指定扩容大小，扩容后的容量是原来的两倍
+    int newCapacity = oldCapacity + 
+    ((capacityIncrement &gt; 0) ? capacityIncrement : oldCapacity);
+
+    //新容量溢出
+    if (newCapacity - minCapacity &lt; 0)
+        newCapacity = minCapacity;
+    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)
+        //最大容量为Integer.MAX_VALUE
+        newCapacity = hugeCapacity(minCapacity);
+
+    //拷贝原数组元素
+    elementData = Arrays.copyOf(elementData, newCapacity);
+}
+</code></pre><p><strong>push出栈</strong>    </p>
+<pre><code>public synchronized void removeElementAt(int index) {
+    //要copy的元素个数
+    int j = elementCount - index - 1;
+    if (j &gt; 0) {
+        System.arraycopy(elementData, index + 1, elementData, index, j);
+    }
+
+    elementCount--;
+    elementData[elementCount] = null;//删除最后一个元素
+}
+</code></pre><ul>
+<li><p>队列（基于LinkedList）</p>
+<pre><code>基于链表实现，入队和出队时间复杂度都为O(1).
+</code></pre></li>
+</ul>
+<p><strong>offer入队</strong></p>
+<pre><code>//LinkedList为例
+//双向链表
+void linkLast(E e) {
+    final Node&lt;E&gt; l = last;
+    //第一个参数l代表prev指向的节点
+    final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);
+    last = newNode;
+    if (l == null)
+        first = newNode;
+    else
+        l.next = newNode;
+    size++;
+    modCount++;
+}
+</code></pre><p><strong>poll出队</strong>    </p>
+<pre><code>private E unlinkFirst(Node&lt;E&gt; f) {
+
+    final E element = f.item;
+    final Node&lt;E&gt; next = f.next;
+    f.item = null;
+    f.next = null; 
+    first = next;
+    if (next == null)//就一个头节点
+        last = null;
+    else
+        next.prev = null;//头节点的prev=null
+    size--;
+    modCount++;
+    return element;
+}
+</code></pre><p><strong>第二部分ArrayList和Vector</strong></p>
+<p>ArrayList和Vector的区别：</p>
+<pre><code>1.前者线性不安全，后者线性安全；
+
+2.前者初始数组长度为0，插入第一个元素后扩容为10，后者初始长度为10，插入第
+  11个元素时发生扩容；
+
+3.前者扩容为原来的1.5倍，后者为2倍；
+</code></pre><ul>
+<li>ArrayList</li>
+</ul>
+<p>源码参照 JDK1.8</p>
+<pre><code>public ArrayList() {
+    //默认为数组长度为0
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}
+</code></pre><p>add()方法</p>
+<pre><code>public boolean add(E e) {
+    //插入第一个元素就发生扩容
+    ensureCapacityInternal(size + 1);
+    elementData[size++] = e;
+    return true;
+}
+
+private void ensureCapacityInternal(int minCapacity) {
+    //获取默认初始容量10
+    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+        minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+    }
+    ensureExplicitCapacity(minCapacity);
+}
+
+private void ensureExplicitCapacity(int minCapacity) {
+    modCount++;
+
+    //10 - 0 &gt; 0 发生第一次扩容
+    if (minCapacity - elementData.length &gt; 0)
+        grow(minCapacity);
+}
+
+private void grow(int minCapacity) {
+
+    int oldCapacity = elementData.length;
+    //扩容为原来的1.5倍
+    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+
+    //第一次扩容 newCapacity=0 新容量为10
+    if (newCapacity - minCapacity &lt; 0)
+        newCapacity = minCapacity;
+
+    //取Integer.MAX
+    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)
+        newCapacity = hugeCapacity(minCapacity);
+
+    elementData = Arrays.copyOf(elementData, newCapacity);
+}
+</code></pre><p>remove删除方法</p>
+<pre><code>public E remove(int index) {
+    //index &gt;= size(index指针) 越界
+    rangeCheck(index);
+
+    modCount++;
+    E oldValue = elementData(index);
+
+    int numMoved = size - index - 1;
+    if (numMoved &gt; 0)
+        //第二个参数：srcIndex被复制的起始元素的index
+        //第四个参数: destIndex目标数组的起始index
+        System.arraycopy(elementData, index+1, elementData, index,
+                         numMoved);
+    elementData[--size] = null;//最后一个元素位置为null
+
+    return oldValue;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/07/04/ThreadLocal详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -401,34 +1134,63 @@
       
         
           
-            <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><ol>
-<li>线程内的局部变量。线程间的ThreadLocal变量是隔离的。</li>
-<li><p>set方法</p>
-<p> //ThreadLocal.java<br> public void set(T value) {</p>
-<pre><code>// 得到当前线程对象
-Thread t = Thread.currentThread();
+            <h4 id="ThreadLocal解析"><a href="#ThreadLocal解析" class="headerlink" title="ThreadLocal解析"></a>ThreadLocal解析</h4><p>1.ThreadLocal？</p>
+<p><img src="/images/threadLocal.png" alt=""></p>
+<pre><code>1.线程的内的局部变量，在每个线程中存储的是变量的副本。
 
-// 这里获取ThreadLocalMap
-ThreadLocalMap map = getMap(t);
+2.例如多线程使用同一个Connection对象
 
-// 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
-// 例如数据库中的 connection 对象
-if (map != null)
-    map.set(this, value);
-else
-    createMap(t, value);
+    public static final ThreadLocal&lt;Conncetion&gt; threadlocal = 
+                        new ThreadLocal&lt;&gt;();
+</code></pre><p>2.ThreadLocal 的set方法</p>
+<pre><code>//ThreadLocal.java
+public void set(T value) {
+
+    // 得到当前线程对象
+    Thread t = Thread.currentThread();
+
+    // 这里获取ThreadLocalMap
+    ThreadLocalMap map = getMap(t);
+
+    // 如果map存在，则将当前线程对象t作为key，要存储的对象作为value存到map里面去
+    // 例如数据库中的 connection 对象
+    if (map != null)
+        map.set(this, value);
+    else
+        createMap(t, value);
+}
+
+void createMap(Thread t, T firstValue) {
+    //key为 ThreadLocal 对象
+    t.threadLocals = new ThreadLocalMap(this, firstValue);
+}
+</code></pre><p>3.ThreadLocal 的get方法</p>
+<pre><code>public T get() {
+    Thread t = Thread.currentThread();
+    //每个线程都有个threadLocals成员变量，类型是ThreadLocalMap
+    ThreadLocalMap map = getMap(t);
+    if (map != null) {
+        ThreadLocalMap.Entry e = map.getEntry(this);
+        if (e != null) {
+            @SuppressWarnings(&quot;unchecked&quot;)
+            T result = (T)e.value;
+            return result;
+        }
+    }
+    //初始化线程的ThreadLocalMap
+    return setInitialValue();
+}
+</code></pre><p>4.ThreadLocal 的remove方法</p>
+<pre><code>public void remove() {
+ ThreadLocalMap m = getMap(Thread.currentThread());
+ if (m != null)
+     m.remove(this);//防止内存泄露
 </code></pre><p> }</p>
-<p> void createMap(Thread t, T firstValue) {</p>
-<pre><code>//key为 ThreadLocal 对象
-t.threadLocals = new ThreadLocalMap(this, firstValue);
-</code></pre><p> }</p>
-</li>
-</ol>
 <p>看看ThreadLocalMap</p>
 <pre><code>//ThreadLocal.java
+//存放数据的地方
 static class ThreadLocalMap {
     static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {
-        /** The value associated with this ThreadLocal. */
         Object value;
 
         Entry(ThreadLocal&lt;?&gt; k, Object v) {
@@ -438,37 +1200,33 @@ static class ThreadLocalMap {
     }
     //....很长
 }
-</code></pre><p>ThreadLocalMap是ThreadLocal的一个内部类。用Entry类来进行存储,我们的值都是存储到这个Map上的，key是当前ThreadLocal对象！</p>
-<p>该ThreadLocalMap从Thread中获取：</p>
-<pre><code>//Thread.java
-ThreadLocalMap getMap(Thread t) {
-    return t.threadLocals;
-}
-</code></pre><p>get方法：</p>
-<pre><code>//ThreadLocal.java
-public T get() {
-    Thread t = Thread.currentThread();
-    ThreadLocalMap map = getMap(t);
-    if (map != null) {
-        //this代表ThreadLocal对象
-        ThreadLocalMap.Entry e = map.getEntry(this);
-        if (e != null) {
-            @SuppressWarnings(&quot;unchecked&quot;)
-            T result = (T)e.value;
-            return result;
-        }
+</code></pre><p>4.ThreadLocalMap的set方法</p>
+<pre><code>for (Entry e = tab[i];
+     e != null;
+     e = tab[i = nextIndex(i, len)]) {
+    ThreadLocal&lt;?&gt; k = e.get();
+
+    if (k == key) {
+        e.value = value;
+        return;
     }
-    return setInitialValue();
+    //key已经被回收，清除无效的Entry
+    if (k == null) {
+        replaceStaleEntry(key, value, i);
+        return;
+    }
 }
-</code></pre><p>总结：</p>
-<pre><code>1.ThreadLocal本身并不存储值，它只是作为一个key来让线程从ThreadLocalMap获取value。
-
-2.调用ThreadLocal的get()方法时，实际上就是往ThreadLocalMap获取值，key是ThreadLocal对象
-
-3.同一个 ThreadLocal 所包含的对象在不同的 Thread 中有不同的副本。
-</code></pre><p>最后看一下ThreadLocal的对象关系引用图：</p>
-<p><img src="https://i.imgur.com/4n7P9X3.png" alt=""></p>
-
+</code></pre><p>5.ThreadLocalMap的get方法</p>
+<pre><code>private Entry getEntry(ThreadLocal&lt;?&gt; key) {
+    int i = key.threadLocalHashCode &amp; (table.length - 1);
+    Entry e = table[i];
+    if (e != null &amp;&amp; e.get() == key)
+        return e;
+    else
+        //Hash冲突了使用开放地址法解决
+        return getEntryAfterMiss(key, i, e);
+    }
+</code></pre>
           
         
       
@@ -2275,482 +3033,6 @@ public class Wheel implements Visitable {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/25/策略模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/25/策略模式/" itemprop="url">策略模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-25T19:24:25+08:00">
-                2019-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/05/25/策略模式/" class="leancloud_visitors" data-flag-title="策略模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>UML图：</p>
-<p><img src="/images/strategy.PNG" alt=""></p>
-<p>枚举方法实现的策略模式：</p>
-<pre><code>public enum StrategyEnum {
-    ADD{
-        @Override
-        public int calculate(int a, int b) {
-            return a + b;
-        }
-    },
-    SUBTRACT{
-        @Override
-        public int calculate(int a, int b) {
-            return a - b;
-        }
-    };
-    //抽象方法放后面
-    public abstract int calculate(int a, int b);
-}
-</code></pre><p>Client:</p>
-<pre><code>public static void main(String[] args){
-    StrategyEnum.ADD.calculate(1,1);
-    StrategyEnum.SUBTRACT.calculate(1,1);
-}
-</code></pre><p>实际应用：</p>
-<pre><code>利用策略模式解决if else 分支过多的情况，项目中使用到了反射和策略模式的方法；
-</code></pre><p>隶属度计算接口：</p>
-<pre><code>public interface MembershipMath {
-    double calculate(double attr);
-}
-</code></pre><p>不同隶属度计算函数类：</p>
-<pre><code>public class MaxNormal implements MembershipMath {
-    private double middle;
-
-    public MaxNormal() {
-    }
-
-    @Override
-    public double calculate(double attr) {
-        DecimalFormat df = new DecimalFormat(&quot;#0.00&quot;);
-        if(Double.compare(attr,middle) &lt; 0){
-            return 0;
-        }else{
-            return Double.parseDouble(df.format(1 - Math.exp(-Math.pow(attr-middle,2))));
-        }
-    }
-
-    public double getMiddle() {
-        return middle;
-    }
-
-    public void setMiddle(double middle) {
-        this.middle = middle;
-    }
-}
-</code></pre><p>客户端：</p>
-<pre><code>public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-    String classPath = &quot;neu.cloud.functionpackage.membershipes.impl.MinTrapezoid&quot;;
-    String minName = &quot;min&quot;;
-    double min = 1;
-    String maxName = &quot;max&quot;;
-    double max = 1;
-
-    //获取隶属函数的参数
-    HashMap&lt;String,Double&gt; fieldMap = new HashMap&lt;&gt;();
-    fieldMap.put(minName,min);
-    fieldMap.put(maxName,max);
-
-    //全限域名获取隶属函数实例
-    Class&lt;?&gt; clazz = Class.forName(classPath);
-    MembershipMath membershipMath = (MembershipMath) clazz.newInstance();
-
-    //反射调用真正实例的setMin、setMax、setMiddle方法，来设置参数
-    invokeSetParams(membershipMath,fieldMap);
-
-    System.out.println(membershipMath.calculate(3));
-}
-
-private static void invokeSetParams(MembershipMath membershipMath, HashMap&lt;String, Double&gt; fieldMap) {
-    Iterator&lt;Map.Entry&lt;String,Double&gt;&gt; params = fieldMap.entrySet().iterator();
-    while (params.hasNext()){
-        StringBuilder sb = new StringBuilder();
-        Map.Entry&lt;String,Double&gt; entry = params.next();
-        String method = entry.getKey();
-        String methodName = sb.append(&quot;set&quot;).append(Character.toUpperCase(method.charAt(0))).
-                append(method.substring(1,method.length())).toString();
-        double methodValue = entry.getValue();
-        Method[] methods = membershipMath.getClass().getMethods();
-        for(Method method1 : methods){
-            if(method1.getName().equals(methodName)){
-                try {
-                    method1.invoke(membershipMath,methodValue);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/24/享元模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/24/享元模式/" itemprop="url">享元模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-24T14:31:10+08:00">
-                2019-05-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/05/24/享元模式/" class="leancloud_visitors" data-flag-title="享元模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>UML图：</p>
-<p><img src="/images/flyWeight.PNG" alt=""></p>
-<p><strong>享元模式</strong></p>
-<pre><code>通过共享实现细粒度对象的复用，一般结合单例模式/工厂方法模式获取FlyweightFactory实例；
-
-设计享元类时要将内部状态和外部状态分开，通常内部状态作为享元类的成员变量，外部状态通过注入的方式添加到享元类中；
-</code></pre><p>同名书共享订单实例：</p>
-<pre><code>//抽象享元
-public interface FlyWeight {
-    void sell();
-}
-
-//具体享元类
-public class BookOrder implements FlyWeight {
-    private String name;
-
-    public BookOrder(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void sell() {
-        System.out.println(&quot;sell a book named by: &quot; + name);
-    }
-}
-
-//
-public class FlyWeightFactory {
-    //饿汉模式线程安全
-    private static final FlyWeightFactory factory = new FlyWeightFactory();
-    //享元池
-    private HashMap&lt;String,FlyWeight&gt; pool = new HashMap&lt;&gt;();
-    private FlyWeightFactory(){
-    }
-
-    public static FlyWeightFactory getInstance(){
-        return factory;
-    }
-
-    public FlyWeight addOrder(String bookName){
-
-        FlyWeight order = null;
-        if(pool.containsKey(bookName)){
-            order = pool.get(bookName);
-        }else {
-            order = new BookOrder(bookName);
-            pool.put(bookName,order);
-        }
-        return order;
-    }
-
-    public int getAllOrder(){
-        return pool.size();
-    }
-}
-</code></pre><p>Client:</p>
-<pre><code>public static void main(String[] args){
-    List&lt;FlyWeight&gt; orders = new ArrayList&lt;&gt;();
-    FlyWeightFactory factory = FlyWeightFactory.getInstance();
-    //一本书生成一个订单对象(同名书共享一个订单对象)
-    orders.add(factory.addOrder(&quot;红楼梦&quot;));
-    orders.add(factory.addOrder(&quot;水浒传&quot;));
-    orders.add(factory.addOrder(&quot;红楼梦&quot;));
-
-    //调用享元类接口
-    for(FlyWeight order : orders){
-        order.sell();
-    }
-    System.out.println(&quot;num of book sold: &quot;+orders.size());
-    System.out.println(&quot;num of book order: &quot;+factory.getAllOrder());
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2805,7 +3087,7 @@ public class FlyWeightFactory {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

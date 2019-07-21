@@ -81,12 +81,12 @@
 
 
 
-<meta name="description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
+<meta name="description" content="1.select count() 和 select count(列名)以及count()和count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括；  union 和 union all 的区别？   1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)   2.union all：简单取并集，不做任何处理；  B树（B-树）和B+树是解决什么样的问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Mysql基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
+<meta property="og:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括；  union 和 union all 的区别？   1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)   2.union all：简单取并集，不做任何处理；  B树（B-树）和B+树是解决什么样的问题">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/B树.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/B+树.png">
@@ -96,10 +96,10 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/primaryIndex.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/聚簇索引.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/非聚簇索引.PNG">
-<meta property="og:updated_time" content="2019-07-07T07:18:54.594Z">
+<meta property="og:updated_time" content="2019-07-17T03:31:12.301Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Mysql基础">
-<meta name="twitter:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ 前者会包含null的行，后者不会包括；  B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？  B/B+树的结构示意图 1.作为文件系统以及数据库系统的索引结构；  2.B树的关键字和data域放在了一起；  3.B+树data域全放在叶子节点上，叶子节点增加了一个链指针">
+<meta name="twitter:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括；  union 和 union all 的区别？   1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)   2.union all：简单取并集，不做任何处理；  B树（B-树）和B+树是解决什么样的问题">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/B树.png">
 
 
@@ -420,9 +420,15 @@
 
       
         <p>1.select count(<em>) 和 select count(列名)以及count(</em>)和count(1)？</p>
+<p><a href="http://www.xuchunfa.cn/2018/09/04/Mysql%E7%AC%94%E8%AE%B0/">Mysql基础笔记</a></p>
 <pre><code>前者会包含null的行，后者不会包括；
 </code></pre><ol>
-<li>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</li>
+<li><p>union 和 union all 的区别？</p>
+<p>  1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)</p>
+<p>  2.union all：简单取并集，不做任何处理；</p>
+</li>
+<li><p>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</p>
+</li>
 </ol>
 <p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
 <pre><code>1.作为文件系统以及数据库系统的索引结构；
@@ -457,8 +463,8 @@
 3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大或最小元素；
 </code></pre><ol start="2">
 <li><p>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
-<pre><code>因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；
-</code></pre></li>
+<p>  因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；</p>
+</li>
 </ol>
 <ol start="3">
 <li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
@@ -482,7 +488,7 @@
         2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
 
 3.MySQL的默认隔离级别：可重复读；
-</code></pre><ol start="4">
+</code></pre><ol start="3">
 <li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
 </ol>
 <p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
@@ -584,11 +590,11 @@
 5.只要列中包含有NULL值都将不会包含在索引中，组合索引只要有一列含有NULL
   这一列对于组合索引就是无效的；
 
-6.索引字段使用 !=、&lt;&gt;、is null、is not null、or索引失效全表扫描；
+6.索引字段使用 !=或&lt;&gt;、is null或is not null、or、not in等将会使索引失效导致全表扫描；
 
-7.索引字段是字符串，但查询的时候不加单引号，索引失效；、
+7.索引字段是字符串，但查询的时候不加单引号，索引失效；
 
-8.mysql中不能继续使用索引中范围条件between、&lt;、&gt;、in、not in等右边的列；
+8.mysql中不能继续使用索引中范围条件between、&lt;、&gt;、in等右边的列；
 </code></pre><ol start="7">
 <li><p>数据库引擎有哪些？说说他们的区别？</p>
 <p> MyISAM</p>
@@ -608,14 +614,7 @@
     2.InnoDB是聚集索引，数据文件和索引绑定在一起，必须要有主键，没的话会自动生成主键，主键
 
     索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
-</code></pre><ol start="8">
-<li>Innodb的B+树索引和MyISAM的B+树索引的结构区别？</li>
-<li>为什么索引能够提升性能？</li>
-<li>Mysql主备模式？</li>
-<li>数据库三范式？</li>
-<li>Mysql数据库连接池？</li>
-</ol>
-
+</code></pre>
       
     </div>
     
@@ -730,7 +729,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

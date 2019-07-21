@@ -286,6 +286,307 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/线程间协作和通信/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/17/线程间协作和通信/" itemprop="url">线程协作通信</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-17T20:47:37+08:00">
+                2018-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/17/线程间协作和通信/" class="leancloud_visitors" data-flag-title="线程协作通信">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>匿名内部类？</p>
+<p>  没有名字的内部类，只能使用一次，简化代码编写。</p>
+<p>  <strong>使用前提条件：必须继承父类或者实现一个接口。</strong></p>
+<pre><code>interface People {
+public abstract void eat();
+}
+
+public class Demo {
+   public static void main(String[] args) {
+People p = new People() {
+    public void eat() {
+        System.out.println(&quot;I can eat &quot;);
+    }
+};
+p.eat();
+}
+</code></pre></li>
+<li><p>阻塞队列</p>
+<pre><code>阻塞队列会对当前线程产生阻塞，比如一个线程从一个空的阻塞队列中取元素，此时线程会被阻塞直到阻塞队列中有了元素。
+当队列中有元素后，被阻塞的线程会自动被唤醒（不需要我们编写代码去唤醒）。这样提供了极大的方便性。
+</code></pre></li>
+<li><p>wait()、notify()和notifyAll()</p>
+<pre><code>1.如果调用某个对象的 wait()/notify() 方法，当前线程必须拥有这个对象的monitor（即锁），因此调用 wait()/notify()
+方法必须在同步块或者同步方法中进行（synchronized块或者synchronized方法)。
+
+2.调用某个对象的wait()方法，相当于让当前线程交出此对象的monitor，然后进入等待状态，等待后续再次获得此对象的锁。（而sleep不会释放该对象的锁）
+
+3.notifyAll() 唤醒所有正在等待该对象的monitor的线程。
+
+4.一个线程被唤醒不代表立即获取了对象的monitor，只有等调用完notify()或者notifyAll()并退出synchronized块，释放对象锁后，其余线程才可获得锁执行。
+</code></pre></li>
+<li><p>Condition</p>
+</li>
+</ul>
+<p>它用来替代传统的Object的wait()、notify()实现线程间的协作,更加安全和高效。</p>
+<pre><code>1.Condition依赖于Lock接口，生成一个Condition的基本代码是lock.newCondition()。
+
+2.调用Condition的await()和signal()方法，都必须在lock保护之内，就是说必须在lock.lock()和lock.unlock之间才可以使用。
+
+3.
+    Conditon中的await()对应Object的wait()；
+    Condition中的signal()对应Object的notify()；
+    Condition中的signalAll()对应Object的notifyAll()。
+</code></pre><p>java.util.concurrent下的三个常用类：</p>
+<ul>
+<li>CyclicBarrier</li>
+</ul>
+<p>CyclicBarrier强调的是n个线程，大家相互等待，只要有一个没完成，所有人都得等着。</p>
+<p>重要字段：</p>
+<pre><code>private static class Generation {
+    boolean broken = false;
+}
+
+private final ReentrantLock lock = new ReentrantLock();
+
+private final Condition trip = lock.newCondition();//和锁一起使用
+
+private final int parties;//需要相互等待的线程数
+
+private final Runnable barrierCommand;
+
+private Generation generation = new Generation();
+
+private int count;//需要等待的线程的数量
+</code></pre><p>重要方法：</p>
+<pre><code>//CyclicBarrier.java
+public int await() throws InterruptedException, BrokenBarrierException {
+    try {
+        return dowait(false, 0L);
+    } catch (TimeoutException toe) {
+        throw new Error(toe); // cannot happen
+    }
+}
+</code></pre><p>进入：</p>
+<pre><code>private int dowait(boolean timed, long nanos)
+    throws InterruptedException, BrokenBarrierException,
+           TimeoutException {
+    final ReentrantLock lock = this.lock;
+    lock.lock();
+    try {
+        final Generation g = generation;
+
+        if (g.broken)
+            throw new BrokenBarrierException();
+
+        if (Thread.interrupted()) {
+            breakBarrier();
+            throw new InterruptedException();
+        }
+
+        int index = --count;
+        if (index == 0) {  // tripped
+            boolean ranAction = false;
+            try {
+                final Runnable command = barrierCommand;
+                if (command != null)
+                    command.run();//调用构造函数中的Runnable实现
+                ranAction = true;
+                nextGeneration();//唤醒所有阻塞的线程
+                return 0;
+            } finally {
+                if (!ranAction)
+                    breakBarrier();
+            }
+        }
+
+
+        for (;;) {
+            try {
+                if (!timed)
+                    trip.await();//线程还没到齐就一直阻塞
+                else if (nanos &gt; 0L)
+                    nanos = trip.awaitNanos(nanos);
+            } catch (InterruptedException ie) {
+                if (g == generation &amp;&amp; ! g.broken) {
+                    breakBarrier();
+                    throw ie;
+                } else {
+                    // We&apos;re about to finish waiting even if we had not
+                    // been interrupted, so this interrupt is deemed to
+                    // &quot;belong&quot; to subsequent execution.
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            if (g.broken)
+                throw new BrokenBarrierException();
+
+            if (g != generation)
+                return index;
+
+            if (timed &amp;&amp; nanos &lt;= 0L) {
+                breakBarrier();
+                throw new TimeoutException();
+            }
+        }
+    } finally {
+        lock.unlock();
+    }
+}
+</code></pre><p>看一眼唤醒的方法：</p>
+<pre><code>private void nextGeneration() {
+    // signal completion of last generation
+    trip.signalAll();
+    // set up next generation
+    count = parties;
+    generation = new Generation();
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/17/单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1644,7 +1945,7 @@ npm install hexo-deployer-git --save
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-count">127</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
