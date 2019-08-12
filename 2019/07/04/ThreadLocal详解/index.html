@@ -89,7 +89,8 @@
 <meta property="og:description" content="ThreadLocal解析1.ThreadLocal？  1.线程的内的局部变量，在每个线程中存储的是变量的副本。  2.例如多线程使用同一个Connection对象      public static final ThreadLocal&amp;lt;Conncetion&amp;gt; threadlocal =                          new ThreadLocal&amp;lt;&amp;gt">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/threadLocal.png">
-<meta property="og:updated_time" content="2019-07-18T02:05:51.157Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/threadLocal.jpg">
+<meta property="og:updated_time" content="2019-08-05T11:05:48.276Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal详解">
 <meta name="twitter:description" content="ThreadLocal解析1.ThreadLocal？  1.线程的内的局部变量，在每个线程中存储的是变量的副本。  2.例如多线程使用同一个Connection对象      public static final ThreadLocal&amp;lt;Conncetion&amp;gt; threadlocal =                          new ThreadLocal&amp;lt;&amp;gt">
@@ -420,6 +421,27 @@
 
     public static final ThreadLocal&lt;Conncetion&gt; threadlocal = 
                         new ThreadLocal&lt;&gt;();
+</code></pre><p><strong>创建ThreadLocal 变量</strong></p>
+<pre><code>1.ThreadLocal myThreadLocal = new ThreadLocal();
+
+2.创建泛型对象
+
+  ThreadLocal myThreadLocal = new ThreadLocal&lt;String&gt;();
+
+3.创建泛型对象及初始化值
+
+    private ThreadLocal myThreadLocal = new ThreadLocal&lt;String&gt;() {
+    @Override
+    protected String initialValue() {
+        return &quot;This is the initial value&quot;;
+    }
+    };
+
+4.访问ThreadLocal变量
+
+    myThreadLocal.set(&quot;Hello&quot;)；
+
+    String res = (String)myThreadLocal.get()；
 </code></pre><p>2.ThreadLocal 的set方法</p>
 <pre><code>//ThreadLocal.java
 public void set(T value) {
@@ -504,6 +526,55 @@ static class ThreadLocalMap {
         //Hash冲突了使用开放地址法解决
         return getEntryAfterMiss(key, i, e);
     }
+</code></pre><p><strong>ThreadLocal内存泄露问题</strong></p>
+<p><img src="/images/threadLocal.jpg" alt=""></p>
+<pre><code>当 ThreadLocal = null时，ThreadLocal对象会被GC，
+Entry类中的value域不会，因为它与线程是强引用的关系，所以线程结束
+value才会被回收。
+
+比如使用线程池时，线程结束后不会被销毁，会再次使用的就有可能出现
+内存泄露；
+</code></pre><p>源码的解决办法：</p>
+<pre><code>1.在set方法中的处理
+
+for (Entry e = tab[i];
+     e != null;
+     e = tab[i = nextIndex(i, len)]) {
+    ThreadLocal&lt;?&gt; k = e.get();
+
+    if (k == key) {
+        e.value = value;
+        return;
+    }
+
+    if (k == null) {
+        //将ThreadLocal=null 对应 Entry.value=null
+        //插入tab[staleSlot] = new Entry(key, value)，并return
+        replaceStaleEntry(key, value, i);
+        return;
+    }
+}
+
+2.在remove方法中的处理
+
+//ThreadLocal类中
+public void remove() {
+     ThreadLocalMap m = getMap(Thread.currentThread());
+     if (m != null)
+         m.remove(this);
+ }
+
+//ThreadLocalMap类中
+for (Entry e = tab[i];
+     e != null;
+     e = tab[i = nextIndex(i, len)]) {
+    if (e.get() == key) {
+        e.clear();
+        //将该threadLocal的Entry.value = null
+        expungeStaleEntry(i);
+        return;
+    }
+}
 </code></pre>
       
     </div>
@@ -628,7 +699,7 @@ static class ThreadLocalMap {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

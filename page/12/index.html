@@ -286,6 +286,534 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/二叉树的下一个结点/" itemprop="url">二叉树的下一个结点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T22:16:23+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/24/二叉树的下一个结点/" class="leancloud_visitors" data-flag-title="二叉树的下一个结点">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public class ParentBinaryTree {
+
+ParentBinaryTreeNode root;
+
+public void createTree(ParentBinaryTreeNode node,int data){
+
+    if(this.root == null){
+        root = new ParentBinaryTreeNode(data);
+    }else {
+        //二叉查找树
+        if(data &lt; node.data){
+            if(node.left == null){
+                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
+                node.left = temp;
+                temp.parent = node;
+            }else {
+                createTree(node.left,data);
+            }
+        }else {
+            if(node.right == null){
+                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
+                node.right = temp;
+                temp.parent = node;
+            }else {
+                createTree(node.right,data);
+            }
+        }
+    }
+}
+
+//中序遍历,递归实现
+public void inOrder(ParentBinaryTreeNode node){
+    if(node == null)
+        return;
+
+    inOrder(node.left);
+    System.out.print(node.data + &quot; &quot;);
+    inOrder(node.right);
+}
+
+//找出中序遍历中的下一个点
+public ParentBinaryTreeNode searchNext(ParentBinaryTreeNode node,int data){
+
+    if(node == null){
+        throw new RuntimeException(&quot;空树&quot;);
+    }
+
+    ParentBinaryTreeNode dataNode = searchData(node,data);
+
+    ParentBinaryTreeNode next = null;
+
+    if(dataNode == null){
+        throw new RuntimeException(&quot;不存在该值&quot;);
+    }else{
+        //有右子树
+        if(dataNode.right != null){
+            ParentBinaryTreeNode temp = dataNode.right;
+            while (temp.left != null){
+                temp = temp.left;
+            }
+            next = temp;
+        }else if(dataNode.parent != null){//等于null说明是根节点
+            ParentBinaryTreeNode current =  dataNode;
+            ParentBinaryTreeNode parent = current.parent;
+            while (parent != null &amp;&amp; parent.right == current){
+                current = parent;
+                parent = parent.parent;
+            }
+            next = parent;//parent有可能为null
+        }
+    }
+    return next;
+}
+
+private ParentBinaryTreeNode searchData(ParentBinaryTreeNode node, int data) {
+
+    if(node == null){
+       return null;
+    }
+
+    if(node.data == data){
+        return node;
+    }else if(searchData(node.left,data) != null){
+        return searchData(node.left,data);
+    }else
+        return searchData(node.right,data);
+}
+
+public static void main(String[] args){
+
+    ParentBinaryTree tree = new ParentBinaryTree();
+
+    //for(int i = 2;i&lt;10;i++){
+    //    tree.createTree(tree.root,i);
+    //}
+
+    tree.createTree(tree.root,9);
+    tree.createTree(tree.root,5);
+    tree.createTree(tree.root,3);
+    tree.createTree(tree.root,7);
+    tree.createTree(tree.root,6);
+    tree.createTree(tree.root,8);
+    tree.createTree(tree.root,12);
+    tree.createTree(tree.root,10);
+    tree.createTree(tree.root,14);
+
+    tree.inOrder(tree.root);
+    System.out.println();
+
+    ParentBinaryTreeNode node = tree.searchNext(tree.root,5);
+    if(node != null){
+        System.out.println(node.data);
+    }else {
+        System.out.println(&quot;最后一个结点&quot;);
+    }
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/volatile语义和final语义的理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/volatile语义和final语义的理解/" itemprop="url">volatile语义理解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T17:05:01+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/24/volatile语义和final语义的理解/" class="leancloud_visitors" data-flag-title="volatile语义理解">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>volatile变量的两层语义</p>
+</blockquote>
+<p>1.保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的</p>
+<p>2.禁止进行指令重排序。</p>
+<pre><code>当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；
+
+
+x = 2;        //语句1
+y = 0;        //语句2
+volatile flag = true;  //语句3
+x = 4;         //语句4
+y = -1;       //语句5
+
+volatile关键字能保证，执行到语句3时，语句1和语句2必定是执行完毕了的，且语句1和语句2的执行结果对语句3、语句4、语句5是可见的。
+</code></pre><p>再举new 一个对像的例子：</p>
+<pre><code>volatile A a;
+a = new A();
+
+1.在堆中申请内存空间。
+2.初始化
+3.赋值：a = new A();
+
+volatile修饰的a会禁止2、3步重排。
+</code></pre><p>volatile场景一：DCL</p>
+<pre><code>public class Singleton {  
+  private volatile static Singleton singleton;  
+  private Singleton (){
+  }   
+  public static Singleton getInstance() {  
+  if (instance== null) {  
+      synchronized (Singleton.class) {  
+      if (instance == null) {  
+          instance= new Singleton();  
+      }  
+     }  
+ }  
+ return singleton;  
+ }  
+ }  
+</code></pre><p>如果发生重排序的话会出现以下的情况：</p>
+<p><img src="https://i.imgur.com/kk1Pn2O.png" alt=""></p>
+<p>volatile的使用场景二：状态标记量</p>
+<pre><code>volatile boolean inited = false;
+
+//线程1:
+context = loadContext();  
+inited = true;            
+
+//线程2:
+while(!inited ){
+    sleep()
+}
+doSomethingwithconfig(context);
+</code></pre><p><strong>volatile读：</strong>线程先把本地内存中的变量置为无效,然后直接去主内存中去读（宏观上volatile变量的写对volatile变量的读可见）。</p>
+<p><strong>锁释放和获得：</strong>锁释放的内存语义和volatile的写操作相似，获得锁和volatile读操作相同。</p>
+<p><strong>注意：</strong>volatile变量只能保证可见性。不能保证原子性。</p>
+<pre><code>/*
+    解决办法：
+
+    1.synchronize
+
+    2.Lock
+
+    3.AtomicInteger
+*/
+
+public class UnsafeVolatile {
+
+public static volatile int pace = 0;
+
+public static void increase(){
+    pace++;
+}
+
+public static final int COUNT = 10;
+
+public static void main(String[] args){
+    Thread[] threads = new Thread[COUNT];
+
+    for(int i = 0;i &lt; COUNT;i++){
+        threads[i] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int j = 0;j &lt; 50;j++){
+                    increase();
+                }
+            }
+        });
+        threads[i].start();
+    }
+
+    /*while (Thread.activeCount() &gt; 1)
+        Thread.yield();*/
+
+    //按我们所设想的话应该返回500 实际要小于500
+    System.out.println(pace);
+}
+}
+</code></pre><p>原因：</p>
+<p>在执行4时变量的值可能已经不是最新的值了，可能已经被其他线程改变了。</p>
+<p>0：getstatic<br>3: iconst_1<br>4: iadd<br>5: putstatic</p>
+<blockquote>
+<p>final语义的理解</p>
+</blockquote>
+<p>1.final重排序可以确保：在读一个对象的final域之前，一定会先读包含这个final域的对象的引用。</p>
+<p>2.只要包含final域的的对象被正确构造（即对象引用没有溢出）那么任意线程就能看到这个final域在构造函数后被初始化后的值。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/前序中序后序构建二叉树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2286,467 +2814,6 @@ public static void replace(char[] a,int len){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/19/二维数组的查找/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/19/二维数组的查找/" itemprop="url">二维数组的查找</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-19T22:01:59+08:00">
-                2018-07-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/19/二维数组的查找/" class="leancloud_visitors" data-flag-title="二维数组的查找">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？"><a href="#二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定-key？" class="headerlink" title="二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？"></a>二维数组，每一行从左到右递增，每一列从上到下递增，是否包含指定 key？</h4><p><strong>核心思想：</strong></p>
-<p>1.右上角的数字与要查找的数字比较。</p>
-<p>2.右上角 &gt; key 去列 否则 去行；</p>
-<pre><code>public class Solution {
-public boolean Find(int target, int [][] array) {
-    if(array == null){
-        return false;
-    }
-    int row = array.length;
-    int col = array[0].length;
-    int i = 0;
-    int j = array[0].length - 1;
-    while(i &lt; row &amp;&amp; j &gt;= 0){
-        int rightUpCorner = array[i][j];
-        if(rightUpCorner &lt; target){
-            i++;
-        }else if(rightUpCorner &gt; target){
-            j--;
-        }else{
-            return true;
-        }
-    }
-    return false;
-    }
-}
-</code></pre><p>时间复杂度：O(m+n)</p>
-<p>空间复杂度：O(1)</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/18/数组中的重复数字/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/18/数组中的重复数字/" itemprop="url">数组中的重复数字</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-18T17:20:58+08:00">
-                2018-07-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/18/数组中的重复数字/" class="leancloud_visitors" data-flag-title="数组中的重复数字">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？"><a href="#长度为n的数组里面的所有数字都在0-n-1的范围内，找出数组中的重复数字？" class="headerlink" title="长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？"></a>长度为n的数组里面的所有数字都在0~n-1的范围内，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
-<p>1.数组下标 = 数组元素</p>
-<p>2.目标交换：num[i] = m </p>
-<p>   swap: m <---> num[m] 直到 num[i] == i</---></p>
-<pre><code>public class OptDuplication {
-
-//哈希表的方法解决，时间复杂度：O(n) 空间复杂度：O(n)
-boolean findDup1(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
-            return false;
-        }
-    }
-
-    //哈希表
-    int[] count = new int[len];
-    for(int i = 0;i&lt;len;i++){
-        if(count[nums[i]] == 1){
-            duplication[0] = nums[i];
-            return true;
-        }
-
-        count[nums[i]]++;
-    }
-
-    return false;
-
-}
-
-boolean findDup(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在0 ~ len-1&quot;);
-            return false;
-        }
-    }
-
-    int temp;
-    for(int i = 0;i&lt;len;i++){
-        while (i != nums[i]){
-            //nums[i]=m 说明 m 所在的下标是 i 和 m 所以重复了
-            if(nums[i] == nums[nums[i]]){
-                duplication[0]=nums[i];
-                return true;
-            }else {
-                //交换num[i] 和 num[num[i]]
-                temp = nums[i];
-                nums[i] = nums[nums[i]];
-                nums[temp] = temp;
-            }
-        }
-    }
-
-    System.out.println(&quot;没有重复数字&quot;);
-    return false;
-}
-</code></pre><h4 id="长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"><a href="#长度为n-1的数组里面的所有数字都在1-n的范围内，所以必定存在重复的数字，找出数组中的重复数字？" class="headerlink" title="长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？"></a>长度为n+1的数组里面的所有数字都在1~n的范围内，所以必定存在重复的数字，找出数组中的重复数字？</h4><p><strong>核心思想：</strong></p>
-<p>1.二分法的运用，加入了统计数字个数的方法</p>
-<p>2.循环结束条件：start == end</p>
-<pre><code>public class DuplicationVersion {
-
-//时间复杂度:O(nlogn) 空间复杂度:O(1)
-boolean findDup(int[] nums,int len,int[] duplication){
-
-    if(nums == null || len &lt;= 0){
-        System.out.println(&quot;数组必须存在且不能为空!&quot;);
-        return  false;
-    }
-
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i]&lt;=0 || nums[i]&gt;len-1) {
-            System.out.println(&quot;数组元素应在1 ~ &quot;+ (len-1)+ &quot;之间&quot;);
-            return false;
-        }
-    }
-
-    int start = 1;
-    int end = len-1;
-    int middle;
-    while(start &lt;=  end){
-
-        middle = (start + end)/2;
-        int number = calNum(nums,len,start,middle);
-
-        //结束条件
-        if(start == end){
-            if(number &gt; 1){
-                duplication[0] = start;
-                return true;
-            }else{
-                break;
-            }
-        }
-
-        if(middle - start + 1 &lt; number){
-            end = middle;
-        }else {
-            start = middle + 1;
-        }
-    }
-
-    System.out.println(&quot;没有重复数字&quot;);
-    return false;
-}
-
-private int calNum(int[] nums, int len, int start, int end) {
-    int count = 0;
-    for(int i = 0;i&lt;len;i++){
-        if(nums[i] &gt;= start &amp;&amp; nums[i] &lt;= end){
-            count++;
-        }
-    }
-    return count;
-}
- }
-</code></pre><p>参考文档：</p>
-<p><a href="https://blog.csdn.net/zjkc050818/article/details/72800175" target="_blank" rel="noopener">https://blog.csdn.net/zjkc050818/article/details/72800175</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2801,7 +2868,7 @@ private int calNum(int[] nums, int len, int start, int end) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

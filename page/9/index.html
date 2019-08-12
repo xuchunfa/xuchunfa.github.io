@@ -286,6 +286,365 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/17/删除链表结点-时间复杂度为常数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/删除链表结点-时间复杂度为常数/" itemprop="url">删除链表结点-时间复杂度为常数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-17T14:58:10+08:00">
+                2018-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/17/删除链表结点-时间复杂度为常数/" class="leancloud_visitors" data-flag-title="删除链表结点-时间复杂度为常数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>public class DeleteListNode {
+
+public static void deleteListNode(ListNode head,ListNode toDelete){
+
+    if(head == null || toDelete == null){
+        throw new RuntimeException(&quot;没有目标节点删除&quot;);
+    }
+
+    //只有一个头节点,删完后置空
+    if(head.next == null &amp;&amp; toDelete.next == null){
+        Link.head = null;//head = null 相当于值传递,无法改变head
+        toDelete = null;
+    }else if(head.next != null &amp;&amp; toDelete.next == null){//删除尾结点
+        ListNode pre = head;
+        while (pre.next != toDelete){
+            pre = pre.next;
+        }
+        pre.next = null;
+    }else {//head.next != null &amp;&amp; toDelete.next != null 删除中间结点
+        toDelete.data = toDelete.next.data;
+        toDelete.next = toDelete.next.next;
+    }
+}
+
+public static void main(String[] args){
+    Link link = new Link();
+    link.add(1);
+
+    ListNode toDelete = link.head;
+    DeleteListNode.deleteListNode(link.head,toDelete);
+    link.print();
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/17/链表中环的入口结点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/链表中环的入口结点/" itemprop="url">链表中环的入口结点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-17T14:53:31+08:00">
+                2018-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/链表/" itemprop="url" rel="index">
+                    <span itemprop="name">链表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/17/链表中环的入口结点/" class="leancloud_visitors" data-flag-title="链表中环的入口结点">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://www.geeksforgeeks.org/find-first-node-of-loop-in-a-linked-list/" title="详细证明" target="_blank" rel="noopener">详细证明</a></p>
+<pre><code>public class EnterCycleNode {
+
+public static ListNode findEntryNode(ListNode head){
+    if(head == null || head.next == null){
+        return null;
+    }
+    ListNode slow = head;
+    ListNode fast = head;
+    slow = slow.next;
+    fast = fast.next.next;
+    while (fast != null &amp;&amp; fast.next != null){
+        if(slow == fast)
+            break;
+        slow = slow.next;//这里两步的顺序不能反保证fast走过距离是slow的倍数
+        fast = fast.next.next;
+    }
+    if(slow != fast){//无环
+        return null;
+    }
+
+    //走到这说明有环
+    slow = head;
+    while (slow != fast){
+        slow = slow.next;
+        fast = fast.next;
+    }
+
+    return slow;
+}
+public static void main(String[] args){
+    Link link = new Link();
+    link.add(1);
+    link.add(2);
+    link.add(3);
+    link.add(4);
+    ListNode tail = link.head;
+    while (tail.next != null){
+        tail = tail.next;
+    }
+    tail.next = link.head.next;
+    System.out.println(EnterCycleNode.findEntryNode(link.head).data);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/17/反转链表-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1730,445 +2089,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/指数幂运算/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/11/指数幂运算/" itemprop="url">指数幂运算</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T14:58:18+08:00">
-                2018-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/位运算/" itemprop="url" rel="index">
-                    <span itemprop="name">位运算</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/11/指数幂运算/" class="leancloud_visitors" data-flag-title="指数幂运算">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><p>方法1：</p>
-<pre><code>public static double allCalPow(double base, int exp){
-    if(exp == 0)
-        return 1;
-
-    if(exp == 1)
-        return base;
-
-    double result = allCalPow(base,exp/2);
-
-    if((exp &amp; 1) == 0){
-        result *= result;
-    }else {
-        if(exp &gt; 0){
-            result = base*result*result;
-        }else {
-            result = 1/base*result*result;
-        }
-    }
-
-    return result;
-}
-</code></pre><p>时间复杂度：</p>
-<p>方法2：</p>
-<pre><code>public class Pow {
-
-public static double pow(double base,int exp){
-
-    if(Double.compare(base,0) == 0 &amp;&amp; exponent &lt; 0){
-        throw new RuntimeException(&quot;exponent is not allowed negative&quot;);
-    }
-    if(Double.compare(base,0) == 0 &amp;&amp; exponent &gt; 0){
-        return 0;
-    }
-    if(exponent == 0){
-        return 1;
-    }
-    int positiveExp = exponent;
-    boolean negative = false;
-    if(exponent &lt; 0){
-        negative = true;
-        positiveExp = -exponent;
-    }
-
-    double result = 1;
-    for(int i = 1;i &lt;= positiveExp;i++){
-        result = result*base;
-    }
-    if(negative){
-        result = 1/result;
-    }
-    return result;
-}
-
-public static void main(String[] args){
-    System.out.println(Pow.pow(0,-4));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/10/背包问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/10/背包问题/" itemprop="url">背包问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T16:06:29+08:00">
-                2018-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
-                    <span itemprop="name">动态规划</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/10/背包问题/" class="leancloud_visitors" data-flag-title="背包问题">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="https://i.imgur.com/bZL8dQF.png" alt=""></p>
-<p>例如：</p>
-<p>int[] v = {4,2,10,1,2}</p>
-<p>int[] w = {12,1,4,1,2}</p>
-<p>最大价值为：15kg</p>
-<p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p>
-<p>v[i]:第i个物体的价值。</p>
-<p>w[i]:第i个物体的重量。</p>
-<p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p>
-<p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p>
-<blockquote>
-<p>动态规划</p>
-</blockquote>
-<p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p>
-<pre><code>public class ThiefProblem {
-
-static int max(int a, int b) { return (a &gt; b)? a : b; }
-
-//基于递归的解法
-static int knapSack(int W, int wt[], int val[], int n)
-{
-    if (n == 0 || W == 0)
-        return 0;
-
-    // If weight of the nth item is more than Knapsack capacity W, then
-    // this item cannot be included in the optimal solution
-    if (wt[n-1] &gt; W)
-        return knapSack(W, wt, val, n-1);
-
-        // Return the maximum of two cases:
-        // (1) nth item included
-        // (2) not included
-    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),
-            knapSack(W, wt, val, n-1)
-    );
-}
-
-//基于动态规划的解法
-static int maxValue(int W, int wt[], int val[], int n)
-{
-
-   int[][] itemToValue = new int[n+1][W+1];
-
-   for(int i = 0;i&lt;W+1;i++){
-       itemToValue[0][i] = 0;
-   }
-
-   for(int j = 0;j&lt;n+1;j++){
-       itemToValue[j][0] = 0;
-   }
-
-
-   for(int i = 1;i&lt;=n;i++){
-        for(int j = 1;j&lt;=W;j++){
-            int weightPlus = j - wt[i-1];
-            if(weightPlus &lt; 0){
-                itemToValue[i][j] = itemToValue[i-1][j];
-            }else {
-                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);
-            }
-
-        }
-   }
-
-   return itemToValue[n][W];
-}
-
-public static void main(String[] args){
-    int[] value = {6,3,5,4,6};
-    int[] weight = {2,3,6,5,7};
-    int maxWeight = 10;
-    int n = value.length;
-
-    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));
-    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2223,7 +2143,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

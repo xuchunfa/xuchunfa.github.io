@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
+<meta name="description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  java四种引用类型？  1.强引用(StrongReference) //垃圾收集器不会回收这种强引用对象，除非主动 king = null King king = new King()  2.软引用(SoftReference">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Java语言基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java语言基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
+<meta property="og:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  java四种引用类型？  1.强引用(StrongReference) //垃圾收集器不会回收这种强引用对象，除非主动 king = null King king = new King()  2.软引用(SoftReference">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-04T13:36:51.725Z">
+<meta property="og:updated_time" content="2019-08-05T13:02:43.684Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java语言基础">
-<meta name="twitter:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  private修饰的方法可以通过反射访问，那么private的意义何在？ 局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？ 约束限制，减少出错。  接口和抽象的区别？ 1.抽象类里面可以拥有成员变量和自己的非抽象方">
+<meta name="twitter:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  java四种引用类型？  1.强引用(StrongReference) //垃圾收集器不会回收这种强引用对象，除非主动 king = null King king = new King()  2.软引用(SoftReference">
 
 
 
@@ -412,28 +412,88 @@
       
         <p>1.java基本数据类型？</p>
 <pre><code>byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)
-</code></pre><ol>
-<li>private修饰的方法可以通过反射访问，那么private的意义何在？</li>
+</code></pre><ol start="2">
+<li><p>java四种引用类型？</p>
+<p> 1.强引用(StrongReference)</p>
+<pre><code>//垃圾收集器不会回收这种强引用对象，除非主动 king = null
+King king = new King()
+</code></pre><p> 2.软引用(SoftReference)</p>
+<pre><code>对象只有软引用的话，内存空间充足时，垃圾收集器不会回收它，空间
+不足时，垃圾收集器收集它；
+
+JVM保证抛出Out of Memory之前，清理完所有的软引用对象；
+</code></pre><p> 3.弱引用(WeakReference)</p>
+<pre><code>相比较于软引用具有更短暂的生命周期。Collector 线程扫描内存区域时
+只要发现只具有弱引用的对象，不管当前内存是否充足，都会回收它的内存。
+
+只要执行  System.gc()，WeakReference引用对象就被回收；
+
+场景：
+
+    1.ThreadLocal中的Entry结构
+
+    static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; {
+
+        Object value;
+        Entry(ThreadLocal&lt;?&gt; k, Object v) {
+            super(k);
+            value = v;
+        }
+    }
+</code></pre></li>
+</ol>
+<pre><code>4.虚引用(PhantomReference)
+
+    任何时候都可能被垃圾回收器回收，必须和ReferenceQueue使用；
+</code></pre><ol start="2">
 <li><p>局部变量使用前需要显式地赋值，否则编译通过不了，为什么这么设计？</p>
 <pre><code>约束限制，减少出错。
 </code></pre></li>
 <li><p>接口和抽象的区别？</p>
 <pre><code>1.抽象类里面可以拥有成员变量和自己的非抽象方法，接口中成员默认为public static final，所有方法都是抽象的。
 
-2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。即抽象类是自底向上设计的，接口是自顶向下设计的。
+2.抽象是通过发现子类公有的成员和方法，将其抽出来形成抽象类；而实现接口的子类可能不存在任何联系。
+即抽象类是自底向上设计的，接口是自顶向下设计的。
 
 3.门和报警器的例子。将门抽象为一个类，实现报警功能的接口。抽象类是一种“is-a”的关系，接口代表的是“like-a”的关系。
 </code></pre></li>
-<li><p>重写和重载的区别？</p>
-<p> 重载：</p>
-<pre><code>1.函数名相同，参数列表不同；
+<li><p>重写和重载的区别？多态的原理？</p>
+<p> Human man = new Man()，其中Human是静态类型，Man是实际类型</p>
+<p> 重载：编译时多态，编译器会在编译的时候根据参数的静态类型，决定调用哪个重</p>
+<pre><code> 载版本；
+
+1.函数名相同，参数列表不同；
 
 2.前期绑定，即编译期绑定，编译器确定调用哪个方法；
-</code></pre><p> 重写：</p>
+</code></pre><p> 重写：运行时多态</p>
 <pre><code>1.子类重写父类中的方法，函数名和参数列表都相同;
 
 2.动态绑定，多态
 </code></pre></li>
+</ol>
+<p>多态原理：</p>
+<pre><code>编译Human man = new Man()，man.sayHello()
+出现 invokevirtual #22 Human.sayHello
+
+invokevirtual指令的执行流程：
+
+    1.在常量池找到方法调用的符号引用；
+
+        常量池：存放编译时期生成的各种字面量和符号引用；
+
+            符号引用：类和接口的全限定名、字段的名称和描述符、方法的名称
+                     和描述符；
+
+        运行时常量池：类加载后，常量池内容会进入到运行时常量池中；
+
+    2.查看Human的方法表，得到sayHello方法在方法表中的偏移量，于是得到
+      该方法的直接引用；
+
+    3.根据this指针找到具体的对象new Man()
+
+    4.得到了具体对象的方法表，找到方法偏移量，看有无发生override该方法，如果
+      重写，直接调用具体对象的方法，否则，去找父类的方法表找到该方法。
+</code></pre><ol start="5">
 <li><p>Object类有哪些方法？以及具体用到哪？</p>
 <pre><code> 1.getClass()、hashCode()、equals(Object)、clone()、toString()、notify()、notifyAll()、wait(long)、wait(）、finalize();
 
@@ -619,6 +679,79 @@ System.out.println(s3 == s4);//true
     2.3 JDK1.8 局部变量被匿名内部类访问会相当于自动加final
 
 3.final变量在多线程中并发安全，无需额外同步开销
+</code></pre><p>11.java反射机制的实现及应用？</p>
+<pre><code>应用：
+
+    JDK动态代理类的生成，是通过反射机制实现的。
+
+1.反射
+
+    反射指在运行的时候才知道操作的类是什么，并且可以在运行时获取类的
+完整构造(构造器、域、方法等)
+
+2.反射常用API
+
+    2.1 获取Class对象
+
+        a) Class clazz = Class.forName(&quot;com.xuchunfa.King&quot;);
+
+        b) Class clazz = Integer.class;
+
+        c) Class clazz = obj.getClass();
+
+    2.2 通过反射创建类对象
+
+        a) Class clazz = Class.forName(&quot;com.xuchunfa.King&quot;);
+
+           King king = (king)clazz.newInstance();
+
+        b）使用Constructor的好处，构造器有参数的情况
+
+           Class clazz = Class.forName(&quot;com.xuchunfa.King&quot;);
+
+           //Constructor con = clazz.getConstructor(String.class);
+           Constructor con = clazz.getConstructor();
+
+           King king = (king)con.newInstance();
+
+    2.3 通过反射获取类属性、方法、构造器
+
+        a）获取属性
+
+            1.getFields()：获取public属性
+
+              Field[] fields = clazz.getFields();
+
+            2.getDeclaredFields()：获取publi和private属性
+
+              Field[] fields = clazz.getDeclaredFields();
+
+        b)获取方法
+
+            1.获取private方法
+
+             Method m = clazz.getDeclaredMethod(&quot;method1&quot;,String.class);
+             m.setAccessible(true)//解除私有限定
+             m.invoke(obj,&quot;King&quot;)
+
+            2.获取所有public方法，包括父类的public方法和实现的接口方法
+
+                Method[] methods = clazz.getMethods();
+
+3.反射可以逃避泛型检查
+
+    public static void main(String[] args) throws Exception {
+        //向String集合中添加Integer数值
+        ArrayList&lt;String&gt; strList = new ArrayList&lt;&gt;();
+        strList.add(&quot;hello&quot;);
+
+        //获取ArrayList的Class对象
+        Class listClass = strList.getClass();
+        //获取add()方法
+        Method method = listClass.getMethod(&quot;add&quot;, Object.class);
+        //调用add()方法
+        method.invoke(strList, 1);
+    }
 </code></pre>
       
     </div>
@@ -734,7 +867,7 @@ System.out.println(s3 == s4);//true
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

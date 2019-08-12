@@ -88,14 +88,15 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；   TCP是全双工的可靠信道，UDP不可靠信道；   通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达；  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多的交互通信。&amp;">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/拥塞控制.jpg">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/三次握手.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/四次挥手.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/HTTPS.JPG">
-<meta property="og:updated_time" content="2019-07-04T08:40:47.968Z">
+<meta property="og:updated_time" content="2019-08-03T02:08:14.748Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--计算机网络">
 <meta name="twitter:description" content="TCP和UDP的区别？ 1.TCP面向连接的，UDP无连接的。  2.TCP传输可靠，UDP尽最大努力交付；   TCP是全双工的可靠信道，UDP不可靠信道；   通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达；  3.TCP面向字节流，UDP面向报文。UDP不对报文作处理，一次交付一个完整的报文；  4.TCP连接是点对点的，UDP支持一对一、一对多、多对一和多对多的交互通信。&amp;">
-<meta name="twitter:image" content="http://www.xuchunfa.cn/images/三次握手.JPG">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/拥塞控制.jpg">
 
 
 
@@ -446,29 +447,30 @@
 
 4.流量控制：
 
-    1.当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。
+    1.当接收方来不及处理发送方的数据，能通过滑动窗口，提示发送方降低发送的速率，防止包丢失。接收方的报文首部ACK=1，2字节的窗口值；
 
     2.利用可变窗口rwnd值的变化来进行流量控制；
 
 5.拥塞控制；
 
     5.1 慢开始和拥塞避免
-
-        1.慢开始（指数）：由小到大增加拥塞窗口的值，每经过一个传输轮次，拥塞窗口加倍；
-
-        2.拥塞避免（线性）：cwnd缓慢增大，每经过一个往返时间RRT就把发送方的拥塞窗口cwnd值加1；
-
-        3.加法增大乘法减小（AIMD）:&quot;乘法减小&quot;即不论在慢开始阶段还是在拥塞避免阶段，只要出现超时就把满开始门限ssthresh减半；
-        &quot;加法增大&quot;即执行拥塞避免算法使cwnd缓慢增大；
-
-    5.2 快重传和快恢复
-
-        1.快重传：接收方每收到一个失序的报文段后就立即发出重复确认，当发送方一连收到3个重复确认就立即重传对方尚未接收到的报文段。
-
-        2.快恢复：收到3个重复确认后，ssthresh减半，把cwnd的值设为ssthresh减半后的值；
 </code></pre></li>
 </ol>
-<ol start="3">
+<p><img src="/images/拥塞控制.jpg" alt=""></p>
+<pre><code>    1.慢开始（指数）：由小到大增加拥塞窗口的值，每经过一个传输轮次，拥塞窗口加倍；
+
+    2.拥塞避免（线性）：当增长到ssthresh时，cwnd开始缓慢增大，每经过一个往返时间RRT就把发送方的拥塞窗口cwnd值加1；
+
+    3.加法增大乘法减小（AIMD）:&quot;乘法减小&quot;即不论在慢开始阶段还是在拥塞避免阶段，
+    只要出现超时就把慢开始门限ssthresh减半；&quot;加法增大&quot;即执行拥塞避免算法使cwnd缓慢增大；
+
+5.2 快重传和快恢复
+
+    1.快重传：接收方每收到一个失序的报文段后就立即发出重复确认，
+      当发送方一连收到3个重复确认就立即重传对方尚未接收到的报文段。
+
+    2.快恢复：收到3个重复确认后，ssthresh减半，把cwnd的值设为ssthresh减半后的值；
+</code></pre><ol start="3">
 <li><p>输入URL浏览器发生了什么？</p>
 <pre><code>1.DNS域名解析找到IP地址；
 
@@ -647,29 +649,67 @@
 
     状态码：
 
+        指定客户端动作的状态码：
+
+            1.100：询问是否可以再向Server 发送 Request Header内容；
+
+            2.101：转换协议；
+
         成功状态码：
 
             1.1 200 OK:处理成功；
+
+            1.2 202 Accepted:客户端请求正在被执行，还没有处理完；
 
             1.2 204 No Content:请求处理成功，但没有资源返回；
 
         重定向状态码：
 
-            2.1 301 Moved Permanently:请求的网页已被永久移动到新位置。
+            2.1 301 Moved Permanently:请求的网页已被永久移动到新位置。资源的路径
+              修改为Response Header中location域中的url
 
-            2.2 302 Found:服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。
 
-            2.3 303 See Other:请求者应当对不同的位置使用单独的 GET 请求来检索响应时;
+            2.2 302 Found:临时重定向。location域中的url不应该被认为是资源路径，
+            在后面的请求中继续使用原地址；
+
+            会出现网络劫持，即搜索的结果是网址A，但页面所用的内容是网址B上的内容，
+            叫作网址URL劫持；
+
+            2.3 303 See Other:对于Post请求，它表示请求已经被处理，客户端可以接着
+             使用GET方法去请求Location中的URL；
 
             2.4 304 Not Modify:告诉客户端，你请求的这个资源至你上次取得后，并没有更改，你直接用你本地的缓存吧;
+
+            过程：
+                1.客户端请求页面A；
+                2.服务器返回页面A，并加上Last-Modified/ETag
+                3.客户端展示页面，并将页面连同Last-Modified/ETag缓存
+                4.再次请求页面A，将上次请求服务器返回的Last-Modified/ETag内容作为请求头，
+                If-Modified-Since/If-None-Match发给服务器；
+
+                5.服务器检查它，判断出该页面自上次请求之后还未被修改，
+                  直接返回响应304，和一个空的响应体；
+
+            阻止cache:
+
+                1.清除浏览器缓存；
+
+                2.请求中添加Pragma: no-cache请求头，在每个响应体中添加
+                  Cache-Control:no-cache响应头；
+
+            优点：
+                省去了传输整个响应体的时间，加快访问速度，服务器可以在Response         
 
             2.5 305 Use Proxy：必须通过代理访问资源，代理的地址在Response的Location中
 
         客户端错误状态码：
 
-            4.1 400 Bad Request:请求报文中存在语法错误；
+            4.1 400 Bad Request:请求报文中存在语法错误；例如前端提交数据
+            的字段名称或字段类型，和后台实体类不一致，导致无法封装；
+            前端没有将对象转化成字符串类型；
 
-            4.2 401 Unauthorized：未授权，需要有通过Http认证的认证信息；
+            4.2 401 Unauthorized：未授权，需要有通过Http认证的认证信息，request
+            没有包含Authorization header
 
             4.3 403 Forbidden:访问被拒绝；
 
@@ -681,15 +721,18 @@
 
             5.1 500 Internal Server Error：服务器内部发生错误；
 
-            5.2 501 Not Implemented:客户端发起的请求超出服务器的能力范围;
+            5.2 501 Not Implemented：告诉客户端不支持请求中要求的内容，
+            例如客户端执行PUT请求，而服务端不支持；
 
-            5.2 503 Service Unavailable：服务器处于超负荷或者正在停机维护；
+            5.2 503 Service Unavailable：服务器正在停机维护或已经超载；
 
-            5.3 505 HTTP Version Not Supported:不支持的HTTP版本；
+            5.3 505 HTTP Version Not Supported:服务器不支持请求中标明的
+            HTTP版本；
 
     2.2 响应头
 
-        Access-Control-Allow-Origin：响应头指定了该响应的资源是否被允许与给定的origin共享；eg:*表示允许所有域都具有访问资源的权限；
+        Access-Control-Allow-Origin：响应头指定了该响应的资源是否被允许与给定的origin共享；
+        eg:*表示允许所有域都具有访问资源的权限；
 
         Location:指定的是需要将页面重新定向至的地址;
 
@@ -748,9 +791,12 @@
 
     1.HTTP1.1默认长连接Connection:keep-alive,HTTP1.0 每次请求都要创建连接；
 
-    2.HTTP1.1增加了更多的请求头和响应头来改进和扩充HTTP的功能；
+    2.HTTP1.1加入了一个新的状态码100。客户端先只发送一个带Header域的请求，如果
+    服务器接收此请求就回送响应码100，客户端就可以继续发送带实体的完整请求
+    了。可以用来试探Server需不需要接收request body
 
-    3.HTTP1.1中增加了Host请求头字段，实现了在一台WEB服务器上可以在同一个IP地址
+
+    3.HTTP1.1在Request Header中增加了Host字段，实现了在一台WEB服务器上可以在同一个IP地址
     和端口号使用不同的主机名来创建多个虚拟WEB站点；
 
 
@@ -795,14 +841,18 @@
 <li><p>Session和Cookie的区别？</p>
 <pre><code>Session:服务器端保存的数据结构；可以放在内存、数据库、文件中等；Session的实现对客户端Cookie有依赖关系。
 
-Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实现Session的一种方式，如果Cookie被禁用会通过URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；
+Cookie:客户端保存用户信息的机制，有限制，不能超过4K，实现Session的一种方式，
+如果Cookie被禁用会通过URL重写的技术来进行会话跟踪，uri后面会附有sid=...的信息；
 
 总结:
 
-1.cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存，是针对某一次会话而言；
+1.cookie不安全，存在客户端硬盘上；session cookie存储在浏览器内存(这是不设置cookie过期时间的情况)，
+  是针对某一次会话而言；
 
 2.Cookie根据响应报文头中的Set-Cookie信息，通知客户端保存Cookie.
 </code></pre></li>
+<li><p>怎么实现Session的共享？</p>
+</li>
 </ol>
 <p>10.HTTP中幂等性的理解？</p>
 <pre><code>1.指无论调用这个url多少次，都不会有不同的结果；
@@ -939,7 +989,7 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过3K，实�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/threadState.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/process.PNG">
-<meta property="og:updated_time" content="2019-07-10T06:55:52.236Z">
+<meta property="og:updated_time" content="2019-08-05T13:50:56.064Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--操作系统">
 <meta name="twitter:description" content="进程和线程的区别？ 1.进程是资源（CPU、内存、磁盘等等）分配的基本单位，线程是调度（程序执行的）的基本单位。进程是是实实在在看得见的，Ctrl+Shift+Esc显示进程。  2.同一进程的各个线程共享该进程的内存资源。但是当一个线程使用某些共享内存时，其他线程必须等待。  3.进程有自己的独立地址空间，同一进程里的线程享有相同的地址空间；进程切换代价昂贵，线程切换代价小。  4.多进程程序">
@@ -423,9 +423,21 @@
 
 4.多进程程序更强壮，多线程程序只要有一个线程挂了，进程就死掉了，但不会影响其他进程。
 </code></pre></li>
-</ol>
-<ol start="2">
-<li>进程的通信方式？</li>
+<li><p>多进程和多线程？</p>
+<p> 多进程与多线程：</p>
+<pre><code>1.前者数据共享复杂(IPC)，数据是分开的，同步简单，反之
+
+2.前者占用内存多，切换复杂，CPU利用率低
+
+3.前者创建销毁复杂，速度慢
+
+4.前者编程简单，调试简单
+
+5.进程之间相互独立，一个进程挂了不会影响整个主程序，而一个线程
+  挂了将导致整个进程挂了
+</code></pre></li>
+<li><p>进程的通信方式？</p>
+</li>
 </ol>
 <p>本机进程通信：</p>
 <pre><code>1.管道：半双工、数据单向流动、（无名管道）具有亲缘关系（父子进程）的进程间。其中命名管道允许不具有亲缘关系的进程通信。
@@ -455,10 +467,10 @@
 </code></pre><ol>
 <li>操作系统的内存管理机制？</li>
 <li>CPU飙升怎么定位问题？</li>
-<li><p>LRU算法？</p>
+<li><p>LRU算法？LRU怎么设计？</p>
 <p> 缺点：</p>
 <pre><code>当存在热点数据时，LRU的效率好。偶发性的、周期性的批量操作会导致LRU命中率急剧下降，缓存污染情况比较严重；
-</code></pre><p> LinkHashMap实现：</p>
+</code></pre><p> LinkedHashMap实现：</p>
 <pre><code>public class LRUCache&lt;K,V&gt; {
     private static final float LOADER = 0.75f;
     private final int CACHESIZE;
@@ -559,12 +571,6 @@
 <p><img src="/images/threadState.PNG" alt=""></p>
 <p>进程状态转换：</p>
 <p><img src="/images/process.PNG" alt=""></p>
-<ol start="7">
-<li>NIO和IO的区别？</li>
-<li>Selector工作过程，为什么说他是非阻塞的（select方法是阻塞的，但是注册的描述符不是阻塞的？</li>
-<li>epoll和poll的区别，及其应用场景（因为Selector用到了Reactor模型，所以又提到了select，poll，epoll）？</li>
-</ol>
-<p>10.磁盘是怎么读写的？</p>
 
       
     </div>
@@ -680,7 +686,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

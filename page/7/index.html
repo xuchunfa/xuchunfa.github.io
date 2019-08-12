@@ -286,6 +286,484 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/06/树算法中好的思想/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/06/树算法中好的思想/" itemprop="url">树算法中好的思想</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T11:16:41+08:00">
+                2018-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/树/" itemprop="url" rel="index">
+                    <span itemprop="name">树</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/06/树算法中好的思想/" class="leancloud_visitors" data-flag-title="树算法中好的思想">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>遍历直到叶子结点</p>
+</blockquote>
+<pre><code>//处理到达叶子结点时候的情况
+boolean isLeaf = pRoot.left == null &amp;&amp; pRoot.right == null;
+
+//前序遍历
+if(pRoot.left != null)
+     sumOfTrace(pRoot.left,sumValue);
+if(pRoot.right != null)
+     sumOfTrace(pRoot.right, sumValue);
+
+//处理到达叶子结点但未满足条件的情况
+......
+</code></pre><blockquote>
+<p>提前结束树的遍历</p>
+</blockquote>
+<pre><code>//如果在左子树中找到结果 结果直接为True
+boolean isExisted = findPath(pRoot.left,node,list);
+
+//若不为True,继续遍历右子树
+if(!isExisted){
+     isExisted = findPath(pRoot.right,node,list);
+}
+</code></pre><blockquote>
+<p>在需要辅助指针的时候可以从另一个函数里面传进去，而不需要定义成员变量</p>
+</blockquote>
+<pre><code>public BinaryTreeNode bstLinkedList(BinaryTreeNode pRoot){
+
+    BinaryTreeNode lastVisited = null;
+
+    //传入初始化为null的指针
+    reverse(pRoot,lastVisited);
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/04/Mysql笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/Mysql笔记/" itemprop="url">Mysql笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T11:26:20+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/04/Mysql笔记/" class="leancloud_visitors" data-flag-title="Mysql笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>1.数据类型理解</strong></p>
+<p>int(M)： M表示的不是数据的最大长度，只是数据宽度，并不影响存储多少位长度的数据；</p>
+<p>varchar(M)： M表示的是varchar类型数据在数据库中存储的最大长度，超过则不存；</p>
+<p>char(N):存放的是字符的个数</p>
+<p><strong>2.关键字的执行顺序</strong></p>
+<p>（8）SELECT（9）DISTINCT (select_list)</p>
+<p>（1）FROM (left_table)</p>
+<p>（3）(join_type) JOIN (right_table)</p>
+<p>（2）ON (join_condition)</p>
+<p>（4）WHERE (where_condition)</p>
+<p>（5）GROUP BY (group_by_list)</p>
+<p>（6）WITH {CUTE|ROLLUP}</p>
+<p>（7）HAVING (having_condition)</p>
+<p>（10）ORDER BY (order_by_list)</p>
+<p>（11）LIMIT (limit_number)</p>
+<p><strong>3.LEFT JOIN 和 RIGHT JOIN 的区别</strong></p>
+<ul>
+<li><p>CROSS JOIN: 返回两个表的笛卡儿积。</p>
+<p>  返回结果集的行号：<br>  set @mycnt = 0;<br>  select (@mycnt := @mycnt + 1) as ROWNUM,c.customers_id,o.order_id from customers AS c,orders AS o<br>  WHERE c.customers_id = o.customers_id </p>
+</li>
+</ul>
+<ul>
+<li><p>LEFT JOIN：以左表为基础的，左表的记录将会全部表示出来,而右表只会显示符合搜索条件的记录(例子中为: A.aID = B.bID).右表记录不足的地方均为NULL.（必须指定 ON 子句）</p>
+</li>
+<li><p>RIGHT JOIN：与上面的情况相反。</p>
+</li>
+<li><p>INNER JOIN: INNER可以省略，直接写成 JOIN 。并不以谁为基础,它只显示符合条件的记录.产生A和B的交集。INNER JOIN中的 WHERE 的过滤条件可以写在 ON 子句中。</p>
+<pre><code>select c.customers_id,o.order_id,c.city from customers AS c JOIN orders AS o ON c.customers_id = o.customers_id AND c.customers_id = &apos;14&apos;
+
+或者使用 USING 关键字来简化 ON 子句：
+select c.customers_id,o.order_id,c.city from customers AS c JOIN orders AS o USING(customers_id) WHERE c.customers_id = &apos;14&apos;
+</code></pre></li>
+</ul>
+<p>当没有ON语句的时候会将 INNER JOIN 理解成 CROSS JOIN</p>
+<p><strong>4.WHERE过滤器常见错误</strong></p>
+<ul>
+<li><p>在ON条件过滤器后还是会添加保留表中被ON过滤掉的记录,而WHERE条件是永久的过滤。</p>
+</li>
+<li><p>在WHERE条件中使用列别名,不能使用Select中的列别名，因为Select比 Where 晚执行，但是可以使用 From中列别名。</p>
+<pre><code>错误：SELECT customers_id AS c,order_id AS o FROM orders 
+WHERE c = &apos;aa&apos;
+</code></pre></li>
+<li><p>在WHERE条件中使用统计的过滤</p>
+<pre><code>错误：SELECT COUNT(customers_id) ,order_id  FROM orders 
+WHERE COUNT(customers_id) &gt; 1
+</code></pre></li>
+</ul>
+<p><strong>5.COUNT容易犯的错误</strong></p>
+<ul>
+<li>COUNT(*)会把通过 OUTER JOIN 添加的行统计入内。而 COUNT(column_name) 函数返回指定列的值的数目（NULL 不会计入在内）</li>
+</ul>
+<p><strong>6.ORDER BY </strong></p>
+<ul>
+<li>NULL值在 ORDER BY 中被视为最小。</li>
+</ul>
+<p><strong>8.Having</strong></p>
+<p>1.Having 通常于 Group by 一起使用。</p>
+<p>2.弥补了WHERE关键字不能与聚合函数联合使用的不足。</p>
+<p><strong>7.LIMIT</strong></p>
+<ul>
+<li>LIMIT n,m : 表示从第 n 条记录开始选择 m 条记录。对于数据量非常大的情景该执行语句的效率比较低。n = 0 代表第一行，limit 0,5 等价于 limit 5 都是返回前5行。</li>
+</ul>
+<p><strong>8.IN</strong></p>
+<ul>
+<li>IN引导的子句只能返回一个字段而 EXIST 可以返回多个。</li>
+<li>EXIST 子句不在乎返回什么，而是在乎是不是有结果集返回。用于检查子查询是否至少会返回一行数据，该子查询实际上并不返回任何数据，而是返回值True或False.</li>
+</ul>
+<p><strong>9.DISTINCT</strong></p>
+<ul>
+<li><p>distinct必须放在开头</p>
+<pre><code>select id, distinct name from A;   --会提示错误，因为distinct必须放在开头
+</code></pre></li>
+</ul>
+<hr>
+<blockquote>
+<p>Mysql函数总结</p>
+</blockquote>
+<p>1.MOD(N,M)：表示 N 除以 M 的余数。</p>
+<p>2.DATEDIFF(datepart,startdate,enddate)：返回两个日期之间的时间。</p>
+<p>3.DATEADD(datepart,number,date)：在日期中添加或减去指定的时间间隔。</p>
+<pre><code>eg:计算当前月的一天
+
+SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)
+</code></pre><p>4.IFNULL（expr1，expr2）：在 expr1 的值不为 NULL的情况下都返回 expr1，否则返回 expr2。</p>
+<hr>
+<blockquote>
+<p>Mysql索引的数据结构</p>
+</blockquote>
+<p>1.B+树索引只能找到某条记录所在的页，需要根据二分查找法来进一步找到记录所在页的具体位置。</p>
+<blockquote>
+<p>InnoDB（Mysql5.5以后，支持事务，是表锁） B+ 树索引(叶结点的data域保存了完整的数据记录)</p>
+</blockquote>
+<ul>
+<li>聚集索引（每页大小16K）</li>
+</ul>
+<p>1.根据主键创建的一棵 B+ 树。</p>
+<p>2.叶结点的data域是数据记录。</p>
+<ul>
+<li>辅助索引（二级索引）</li>
+</ul>
+<p>1.根据索引键（例如：用户信息表，主键是用户ID，这里可以在名字上面建立索引，即根据名字创建了一棵B+树）创建的一棵 B+ 树。</p>
+<p>2.叶结点的data域存放的是主键值。</p>
+<pre><code>优点：这样行在面临页分裂时,不需要单独维护二级索引.
+</code></pre><blockquote>
+<p>MyISAM（不支持事务，是表锁） B+ 树索引（索引文件和数据文件实现了分离）</p>
+</blockquote>
+<p>1.叶结点的data域存放的是数据记录的地址。</p>
+<p>2.主索引要求 key 是唯一的，辅助索引的key可以重复。</p>
+<ul>
+<li>联合索引(最左前缀)</li>
+</ul>
+<h4 id="关于回表的理解？"><a href="#关于回表的理解？" class="headerlink" title="关于回表的理解？"></a>关于回表的理解？</h4><pre><code>索引其实也是个表，不过是存放了索引列的列值和主键的Id值rowid的表
+
+如果select子句中，只有索引列，只需访问索引对象即可，不应回表。如果select子句中包含非索引列，就要读取索引存放的对应rowid，然后按照rowid去表中访问对应行的非索引列，就是回表了。
+</code></pre><p>1.对表上多个列进行索引。可以对第二个键值进行排序。</p>
+<p>2.查询条件中出现联合索引第一列,或者全部,则能利用联合索引.即索引不能隔着字段使用。</p>
+<pre><code>create index test_union_k1_k2_k3_k4_k5_index
+on test_union (k1, k2, k3, k4, k5)；
+
+EXPLAIN SELECT * FROM test_union where k1= 1 AND k3 = 1;//这里只使用到了k1索引
+</code></pre><p>3.建复合索引时应该将最常用（频率）作限制条件的列放在最左边，依次递减。</p>
+<ul>
+<li>覆盖索引（使用的标识：Using index）</li>
+</ul>
+<p>1.索引包含所有需要查询的字段的值。</p>
+<p>2.它只扫描索引的数据。</p>
+<p>3.覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询。在所有这些场景中，索引中满足查询的成本一般比查询要小的多</p>
+<p>4.覆盖索引优化查询的例子</p>
+<pre><code>alter table t1 add index liu(inventory_id,return_date)；
+select tid,return_date from t1 order by inventory_id limit 50000,10;
+</code></pre><ul>
+<li>全文索引（存储引擎MyISAM支持，新版本MYSQL5.6的InnoDB支持全文索引）</li>
+</ul>
+<p>1.支持的字段类型：char、varchar和text。</p>
+<pre><code>例如：
+ALTER TABLE articles ADD FULLTEXT (&apos;title&apos;,&apos;body&apos;);
+SELECT * FROM articles
+WHERE MATCH (title,body) AGAINST (&apos;database&apos;);
+把 title 和 body 字段里有 database 的数据记录全部查询出来
+</code></pre><p>2.不支持中文的全文检索,且对英文检索时忽略大小写</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/03/结点的最近祖先/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1904,402 +2382,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/24/虚拟机字节码执行引擎/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/虚拟机字节码执行引擎/" itemprop="url">虚拟机字节码执行引擎</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T20:48:13+08:00">
-                2018-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java虚拟机/" itemprop="url" rel="index">
-                    <span itemprop="name">java虚拟机</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/24/虚拟机字节码执行引擎/" class="leancloud_visitors" data-flag-title="虚拟机字节码执行引擎">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>栈帧</p>
-</blockquote>
-<ul>
-<li><p>局部变量表</p>
-<p>  1.一个局部变量定义了但没有赋初值是不可以使用的.</p>
-</li>
-<li><p>操作数栈</p>
-</li>
-<li><p>动态连接</p>
-</li>
-<li><p>方法返回地址</p>
-<p>  1.方法退出等效于当前栈帧出栈.如返回果有值的话,则将返回值压入调用者栈帧的操作数栈中.</p>
-</li>
-<li><p>附加信息</p>
-</li>
-</ul>
-<p>其中动态连接,方法返回地址,附加信息统称为<strong>栈帧信息</strong>.</p>
-<blockquote>
-<p>方法调用</p>
-</blockquote>
-<p>一切方法调用在Class文件里面存储的都是符号引用,不是方法在实际运行时内存布局中的入口地址.</p>
-<ul>
-<li><p>解析</p>
-<pre><code>方法在程序真正运行之前就有一个可确定的调用版本, 并且这个方法的调用版本在运行期间不可改变.
-符合以上条件的方法:
-1.静态方法
-2.私有方法
-3.实例构造器
-4.父类方法
-
-它们在类加载的时候就会把符号引用解析成直接引用.
-</code></pre></li>
-</ul>
-<ul>
-<li>分派</li>
-</ul>
-<p>1.静态分派(方法重载)</p>
-<p>1.1 java语言中的返回值不参与重载选择。</p>
-<p>重载：“编译期绑定”，也叫编译期多态。方法重载主要是类内部多态性的一个体现。 </p>
-<p>例如:</p>
-<pre><code>public class O{
-static class A{}
-static class B extends A{}
-static class C extends A{}
-public void a(A a){
-    System.out.println(&quot;A method&quot;);
-}
-public void a(B b){
-    System.out.println(&quot;B method&quot;);
-}
-public void a(C c){
-    System.out.println(&quot;C method&quot;);
-}
-public static void main(String[] args){
-    O o = new O();
-    A b = new B();
-    A c = new C();
-    o.a(b);
-    o.a(c);
-}
-}
-</code></pre><p>上述代码的结果:</p>
-<p>A method</p>
-<p>A method</p>
-<p><strong>虚拟机在重载时是通过参数的静态类型而不是实际类型作为判断依据.</strong></p>
-<p>2.动态分派（方法重写）</p>
-<p>重写：“运行期绑定”，也叫运行期多态。方法重写是父类与子类之间多态性的体现。</p>
-<pre><code>在运行期间根据实际类型确定方法执行版本的分派。
-</code></pre><p>例如：</p>
-<pre><code>class Dog{
-public void bark(){
-    System.out.println(&quot;woof &quot;);
-}
-}
-class Hound extends Dog{
-public void sniff(){
-    System.out.println(&quot;sniff &quot;);
-}
-
-public void bark(){
-    System.out.println(&quot;bowl&quot;);
-}
-}
-
-public class OverridingTest{
-public static void main(String [] args){
-    Dog dog = new Hound();
-    dog.bark();
-}
-}    
-</code></pre><p>输出：bowl</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/24/数组中和为m的所有组合/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/24/数组中和为m的所有组合/" itemprop="url">数组中和为m的所有组合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T18:09:40+08:00">
-                2018-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
-                    <span itemprop="name">动态规划</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/24/数组中和为m的所有组合/" class="leancloud_visitors" data-flag-title="数组中和为m的所有组合">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2354,7 +2436,7 @@ public static void main(String [] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

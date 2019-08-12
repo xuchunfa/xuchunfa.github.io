@@ -95,12 +95,14 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/reactor.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/reactor1.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/reactor2.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/epoll实现.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/LT.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/selector.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/buffer1.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/buffer.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/buffer3.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/channel.png">
-<meta property="og:updated_time" content="2019-07-21T13:30:50.324Z">
+<meta property="og:updated_time" content="2019-07-23T13:52:43.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NIO详解">
 <meta name="twitter:description" content="阻塞/非阻塞 和 同步/异步？ 1.同步/异步：同步是会阻塞请求进程的，异步不会阻塞请求进程的，所以BIO、NIO             和IO多路复用都是同步的；   2.阻塞/非阻塞：在等待一件事情的处理结果时，如果你还去干点其他的事，则为   非阻塞，否则为阻塞； 阻塞IO和非阻塞IO？ 1.阻塞IO  分析： 1.两个阶段都是阻塞的。第一个阶段指等待网络数据到达内核空间缓存区域，第二个阶">
@@ -446,7 +448,17 @@
 2.调用recvfrom时，如果数据没有准备好，是不会阻塞进程的，应用进程会轮询内核，检查数据是否准备好，
 准备好以后，数据复制到应用进程缓冲区，这段时间进程是被阻塞的；
 </code></pre><p>3.IO多路复用</p>
-<p><img src="/images/io多路复用.png" alt=""></p>
+<pre><code>含义：
+
+    指内核一旦发现进程指定的一个或多个IO条件准备就绪时，就通知该进程；
+    复用同一个线程，来并发交替的访问多个描述符的IO操作；
+
+好处：
+
+    单个进程可以同时处理多个网络连接的IO；
+
+    单线程占用资源少、不消耗太多CPU；
+</code></pre><p><img src="/images/io多路复用.png" alt=""></p>
 <p>分析：</p>
 <pre><code>1.进程阻塞于select，内核监视所有select负责的套接字，任何一个套接字数据准备好
   以后，select方法返回；
@@ -454,6 +466,9 @@
 2.一个进程能同时等待多个文件描述符，它们中的任意一个进入读就绪状态时，select()函数就可以返回；
 
 3.第一个阶段和第二个阶段都阻塞；
+
+4.在多路复用模型中，对每一个socket都设置成non-blocking，第一个阶段是被select
+  阻塞的，而不是被socket IO阻塞的；
 </code></pre><p>4.异步IO</p>
 <p><img src="/images/异步IO.png" alt=""></p>
 <pre><code>1.aio_read后立马返回，不会阻塞用户进程，kernel等待数据准备完成，然后将数据
@@ -523,7 +538,30 @@
 
 4.所有的I/O操作还是在Reactor线程中完成的；
 </code></pre><p><strong>select、poll、epoll的区别？</strong></p>
-<p>总结：</p>
+<p>重要区别：</p>
+<pre><code>1.select和poll动作基本一致，只是poll的fd用链表存储，select的fd用fd标注位存放；
+
+2.select和poll不会明确指出哪些文件fd就绪，都需要通过遍历整个文件fd才能找到，
+  epoll直接处理就行了；
+
+3.select和poll需要将文件fd的数据结构拷贝进内核，最后在拷贝到用户空间。
+  epoll中是将epoll_wait中返回的数据拷贝到用户空间；
+
+4.select和poll采用轮询的方式来检查文件fd是否处于就绪状态，epoll采用回调机制，
+  回调机制：
+     执行epoll_ctl的add操作时，会注册回调函数，内核在检测到某文件描述符可读/
+  可写时会调用回调函数，该回调函数将文件fd放在就绪链表中；
+
+  当fd数量剧增后，
+  select和poll的效率会线性下降，epoll不会受太大影响，除非活跃的socket很多；
+
+epoll高效的原因：
+
+    1.减少了用户态和内核态之间文件fd的拷贝；
+      (epoll_ctl中会将epoll_event结构体从用户空间拷贝到内存空间)
+
+    2.减少了对就绪文件fd的拷贝；
+</code></pre><p>总结：</p>
 <pre><code>1.select
 
 缺点：
@@ -576,8 +614,10 @@
 
 3.消息传递方式。
 
-    select和poll中内核需要将消息传递到用户空间，都需要内核拷贝，
-    epoll通过内核和用户空间共享一块内存实现的；
+    select和poll中内核需要将消息传递到用户空间，都需要内核拷贝；
+
+    epoll通过内核和用户空间共享一块内存实现的，返回的文件描述符是通过
+    mmap(内核和用户空间的共享内存)实现传递的，较少了不必要的拷贝；
 </code></pre><p>select</p>
 <pre><code>//返回值为fd的数量，超时返回0，出错返回-1；
 //如果timeout=null，select会一直阻塞，直到有描述符就绪；
@@ -615,6 +655,65 @@
       __uint32_t events; 
       epoll_data_t data;
     };
+</code></pre><p>epoll底层实现</p>
+<p><img src="/images/epoll实现.png" alt=""></p>
+<pre><code>1.epoll_create方法
+
+struct eventpoll{
+    ....
+    /*红黑树的根节点，这颗树中存储着所有添加到epoll中的需要监控的事件*/
+    struct rb_root  rbr;
+    /*双链表中则存放着将要通过epoll_wait返回给用户的满足条件的事件*/
+    struct list_head rdlist;
+    ....
+};
+
+2.epoll_ctl方法
+
+    2.1 添加epoll事件的最小单位，插入红黑树节点；
+
+    2.2 给内核中断处理程序注册一个回调函数，内核如果感知到了中断
+        就把它放到readylist链表；
+
+    struct epitem{
+        struct rb_node  rbn;//红黑树节点
+        struct list_head    rdllink;//双向链表节点
+        struct epoll_filefd  ffd;  //事件句柄信息，红黑树的key
+        struct eventpoll *ep;    //当前epitem的所有者
+        struct epoll_event event; //epoll_ctl传入的数据
+    }
+
+3.epoll_wait方法
+
+  3.1 将readylist中的epitem出列，触发的事件从内核空间拷贝到用户空间，之后
+      判断epitem是否需要重新添加到readylist中去；
+
+  3.2 epitem重新添加到readylist中的情况
+
+     3.2.1 epitem上有用户关注的事件触发；
+
+     3.2.2 epitem被设置成水平触发LT；
+
+  3.3 epitem被添加到readylist中的情况
+
+     3.3.1 对fd调用EPOLL_ADD，这个fd上有用户关注的激活事件，则这个fd会
+           被添加到readylist中；
+
+     3.3.2 对fd调用EPOLL_MOD，新增了fd的关注事件且对应fd有相应的事件激活
+           fd会被添加到readylist中；
+
+     3.3.3 fd上有事件触发会调用ep_poll_callback回调函数，如果触发的事件
+           是用户关注的事件，fd会被添加到readylist中；
+
+4.LT和ET模式；
+</code></pre><p><img src="/images/LT.JPG" alt=""></p>
+<pre><code>4.1 LT和ET工作机制
+
+    如果是ET，epitem是不会再进入到ready_list中，除非fd再次发生了状态改变
+ep_poll_callback被调用，
+    如果是非ET，不管你还有没有有效的事件或者数据，都会被重新插入到ready_list
+下次再调用epoll_wait时会立即返回，并通知给用户空间，如果这个被监听的fd
+确定没事件也没数据了，epoll_wait会返回一个0；
 </code></pre><p><strong>Selector的基本使用流程？</strong></p>
 <p><img src="/images/selector.JPG" alt=""></p>
 <p><strong>NIO的组件详解</strong></p>
@@ -693,6 +792,10 @@ buf.get();//获取buffer数据
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/07/26/redis底层数据结构/" rel="prev" title="redis底层数据结构">
+                redis底层数据结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -770,7 +873,7 @@ buf.get();//获取buffer数据
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

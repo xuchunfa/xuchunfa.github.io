@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Flying in the ocean of knowledge" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="分布式锁的实现方式？ 1.Memcached分布式锁  2.Redis分布式锁  3.Zookeeper分布式锁  4.Chubby 基于Redis分布式锁的实现方式？ 小灰详解 使用setnx + expire指令 问题1：      1.setnx指令和expire指令之间的操作是非原子性的，在执行完setnx指令之后，expire指令之前，如果宕机将会产生死锁；  解决办法：      使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis常见面试问题">
+<meta property="og:url" content="http://www.xuchunfa.cn/2019/06/18/Redis常见面试问题/index.html">
+<meta property="og:site_name" content="Flying in the ocean of knowledge">
+<meta property="og:description" content="分布式锁的实现方式？ 1.Memcached分布式锁  2.Redis分布式锁  3.Zookeeper分布式锁  4.Chubby 基于Redis分布式锁的实现方式？ 小灰详解 使用setnx + expire指令 问题1：      1.setnx指令和expire指令之间的操作是非原子性的，在执行完setnx指令之后，expire指令之前，如果宕机将会产生死锁；  解决办法：      使用">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/bitmap.JPG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/bloom.JPG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/bloom1.JPG">
+<meta property="og:updated_time" content="2019-07-26T06:32:47.295Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis常见面试问题">
+<meta name="twitter:description" content="分布式锁的实现方式？ 1.Memcached分布式锁  2.Redis分布式锁  3.Zookeeper分布式锁  4.Chubby 基于Redis分布式锁的实现方式？ 小灰详解 使用setnx + expire指令 问题1：      1.setnx指令和expire指令之间的操作是非原子性的，在执行完setnx指令之后，expire指令之前，如果宕机将会产生死锁；  解决办法：      使用">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/bitmap.JPG">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.xuchunfa.cn/2019/06/18/Redis常见面试问题/"/>
+
+
+
+
+
+  <title>Redis常见面试问题 | Flying in the ocean of knowledge</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<!-- fork me on GitHub -->
+	<a href="https://github.com/xuchunfa">
+	<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+	</a>
+	
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flying in the ocean of knowledge</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-resources">
+          <a href="/resources/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            资源
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/06/18/Redis常见面试问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis常见面试问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-18T14:36:47+08:00">
+                2019-06-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/18/Redis常见面试问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/06/18/Redis常见面试问题/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/06/18/Redis常见面试问题/" class="leancloud_visitors" data-flag-title="Redis常见面试问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>分布式锁的实现方式？</strong></p>
+<pre><code>1.Memcached分布式锁
+
+2.Redis分布式锁
+
+3.Zookeeper分布式锁
+
+4.Chubby
+</code></pre><p><strong>基于Redis分布式锁的实现方式？</strong></p>
+<p><a href="https://juejin.im/post/5b16148a518825136137c8db" target="_blank" rel="noopener">小灰详解</a></p>
+<p>使用setnx + expire指令</p>
+<pre><code>问题1：
+
+    1.setnx指令和expire指令之间的操作是非原子性的，在执行完setnx指令之后，expire指令之前，如果宕机将会产生死锁；
+
+解决办法：
+
+    使用set命令将setnx和expire命令合并成一个命令；
+
+    例如:jedis.set(key,value,&quot;NX&quot;,&quot;EX&quot;,seconds);成功则返回OK;
+
+问题2：
+
+    1.可能会发生del(key)的误删，假如线程1在还未执行完代码时，锁就已经过期释放锁了，线程2获取到锁开始执行，
+      执行中线程1执行完开始del(key),此时如果不加处理的话会释放掉线程2的锁；
+
+解决办法：
+
+    实现LUA脚本比较: 释放锁的线程Id和此时占有锁的线程Id是否相等;
+
+问题3：即在问题2中出现了同一时间两个线程访问代码块的情况；
+
+解决办法：
+
+    让获取到锁的线程开启一个守护线程，当锁要过期但代码还没执行完的时候，守护线程将会延长锁过期的时间，执行完任务后关闭守护线程；
+</code></pre><p><strong>分布式锁的标准格式？</strong></p>
+<pre><code>boolean isLocked = jedisPoolManager.tryLock(key,seconds)//获取锁
+if(!isLocked){
+    return;
+}
+
+try{
+    //业务逻辑
+}catch{
+    //异常处理
+}finally{
+    jedisPoolManager.del(key)
+}
+</code></pre><p><strong>Bitmap算法？</strong></p>
+<p><img src="/images/bitmap.JPG" alt=""></p>
+<p><a href="https://juejin.im/post/5c4fd2af51882525da267385" target="_blank" rel="noopener">小灰讲解BitMap</a></p>
+<pre><code>Bitmap就是用一个bit位来映射某个元素的value值，key是该元素值；
+
+应用：(内存有限)
+
+1.40亿个不重复的整数，未排序，给出一个数，快速判断是否存在该群数字中？
+
+2.对10亿个不重复的整数进行排序？
+
+3.10亿个数字中查找/去除重复的数字？
+</code></pre><p>思路：</p>
+<pre><code>//N为数据个数
+bit.length = N/32 + 1;
+
+//设置数字bit[]中为1
+int row = num &gt;&gt; 5
+bit[row] |= 1 &lt;&lt; (num &amp; 0x1F)
+
+//查找数字是否存在，不存在bit置为1，存在则bit保持不变实现去重
+int row = num &gt;&gt; 5
+bit[row] &amp; 1 &lt;&lt; (num &amp; 0x1F)
+
+//排序
+for(int i = 0;i &lt; N;i++)
+    if(isExist(i))
+        system.out.print(i)
+</code></pre><p><strong>布隆过滤器？</strong></p>
+<pre><code>用来告诉你某样东西一定不存在或者可能存在；仅仅存储指纹空间(l/n)
+
+1.k个hash函数计算出来的hash值，取模位数组，对应下标的值有一个为0，元素不存在；
+
+2.如果全为1，可能存在，这些值可能是其他key带来的；
+</code></pre><p>优点：</p>
+<pre><code>占用空间小，查询效率越高；
+</code></pre><p>缺点：</p>
+<pre><code>存在误判，删除困难；
+</code></pre><p>1.基本用法：</p>
+<pre><code>不怎么精确的set结构。
+
+bf.add : 添加元素；
+
+bf.exist : 查询元素是否存在；
+</code></pre><p>2.应用场景</p>
+<pre><code>爬虫系统中URL的去重、
+去除数据库中不存在row的请求来降低数据库磁盘IO请求数量、
+垃圾邮件的过滤功能、
+缓存穿透；
+</code></pre><p>3.基本原理</p>
+<p><img src="/images/bloom.JPG" alt=""></p>
+<p>参数的计算方式;</p>
+<p><img src="/images/bloom1.JPG" alt=""></p>
+<p>其中的参数：</p>
+<pre><code>l : 位数组的长度；
+
+n : 添加的元素个数；
+
+k : Hash函数的个数；
+
+f : 错误率；
+</code></pre><p><strong>缓存问题？</strong></p>
+<p>1.缓存穿透</p>
+<pre><code>1.1 什么是缓存穿透？
+
+    指查询一个一定不存在的数据，后果是直接访问数据库，恶意攻击将使数据库瘫痪；
+
+1.2 解决办法？
+
+    1.缓存空对象
+
+        返回key的null对象到缓存，并设置过期时间。
+
+        存在问题：
+
+        1.1 key的数量太多影响缓存内存空间，
+
+        1.2 设置过期时间会导致Cache层和Storage层数据短期不一致；
+
+            例如：Cache层保存了某个key为null之后，Storage层新增了这个key,但是从缓存得到的还是null;
+
+    2.Bloom过滤器
+
+         将所有可能存在的key放在一个足够大的bitmap中，不存在的key将会被拦截；
+</code></pre><p>2.缓存雪崩</p>
+<pre><code>2.1 什么是缓存雪崩？
+
+    指所有key的缓存时间相同，在同一时间失效，或者缓存服务器宕机，导致所有请求同时访问数据库，从而使系统崩溃；
+
+2.2 解决办法？
+
+    1.交错失效时间。进行缓存失效时间设置时，在某个基础时间值上加上两秒内的随机数；
+
+    2.增加互斥锁。集群环境下使用分布式锁(setnx + expire)，对于每个key，让一个线程构建缓存，其他线程等待，
+    之后重新从缓存中获取数据；
+
+    3.提高缓存的HA。
+</code></pre><p>3.缓存击穿</p>
+<pre><code>3.1 什么是缓存击穿？
+
+    缓存雪崩的一个特例，缓存雪崩是对于全部数据，而缓存击穿是针对热点数据。
+
+3.2 解决办法？
+
+    1.对于热点数据进行二级缓存，并对于不同级别的缓存设置不同的失效时间。
+
+    2.本地缓存（集群不可用时） + 限流（限制请求量）
+</code></pre><p>4.热点数据集中失效</p>
+<pre><code>4.1 解决办法？
+
+    1.设置不同失效时间；
+
+    2.互斥锁；
+</code></pre><p>1.Redis的淘汰策略？操作系统的内存淘汰策略LRU？自己设计LRU怎么设计？</p>
+<p>2.redis的字典？</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/27/命令模式/" rel="next" title="命令模式">
+                <i class="fa fa-chevron-left"></i> 命令模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/20/Socket详解/" rel="prev" title="Socket详解">
+                Socket详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/pig.png"
+                alt="Xu chunfa" />
+            
+              <p class="site-author-name" itemprop="name">Xu chunfa</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xuchunfa" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/5573334965/profile?topnav=1&wvr=6&is_all=1" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu chunfa</span>
+
+  
+</div>
+
+
+
+  
+	<div class="powered-by">
+	<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+	本站访客数:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	</div>
+
+  <!-- <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+-->
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'xuchunfa',
+            repo: 'gitment-comments',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '8b62d73e4e43ea9fed41d143506b730373e3e86d',
+            
+                client_id: '157728609b4b9a007483'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("gO8GVulyPYN1OHqpwT3mFDg3-gzGzoHsz", "Xm1I44McPqcMnO9z8NgS9Tvv");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+  
+</body>
+</html>

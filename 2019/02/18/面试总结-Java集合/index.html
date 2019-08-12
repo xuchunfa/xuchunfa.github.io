@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Collection.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Map.PNG">
-<meta property="og:updated_time" content="2019-07-01T03:58:06.345Z">
+<meta property="og:updated_time" content="2019-08-04T01:54:44.064Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
 <meta name="twitter:description" content="1.集合的整体框图 Collection部分：  Map部分：  2.讲讲CopyOnWriteArrayList容器？ COW详解      可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？  例如： for(String s : list){//内部创建迭代器     if(s.equals(&amp;quot;a&amp;quot;)){         lis">
@@ -527,9 +527,16 @@ while (iterator.hasNext()){
 
     3.使Set集合变得有序；
 </code></pre><ol start="4">
-<li>HashMap线程不安全的原因？</li>
+<li><p>HashMap线程不安全的原因？</p>
+<p> 1.在JDK1.7 中，并发扩容会造成环形链表和数据丢失；</p>
+<p> 2.在JDK1.8 中，在并发put操作的时候会发生数据覆盖的问题；</p>
+<pre><code>//线程1获得size = 6时，时间片到了
+//线程2获得size = 6，并完成了put，size变成了7，
+//线程1的size依旧是6，完成put，size最终为7，数据丢失了
+if (++size &gt; threshold)
+    resize();
+</code></pre></li>
 </ol>
-<p>参考文献：</p>
 <p><a href="http://www.importnew.com/22011.html" target="_blank" rel="noopener">HashMap线程不安全的体现</a>注：最后一步 next=null </p>
 <p>不安全原因在于多线程发生扩容时：</p>
 <pre><code>void resize(int newCapacity) {
@@ -813,7 +820,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

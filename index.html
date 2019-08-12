@@ -286,6 +286,569 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/08/05/LRU的设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/05/LRU的设计/" itemprop="url">LRU的设计</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-05T14:44:04+08:00">
+                2019-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/08/05/LRU的设计/" class="leancloud_visitors" data-flag-title="LRU的设计">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>基于双向链表 + HashMap实现的LRU？</strong></p>
+<p>链表节点：</p>
+<pre><code>public class LruNode&lt;K,V&gt; {
+    K key;
+    V value;
+    LruNode&lt;K,V&gt; before;
+    LruNode&lt;K,V&gt; after;
+
+    public LruNode(K key, V value, LruNode&lt;K, V&gt; before, LruNode&lt;K, V&gt; after) {
+        this.key = key;
+        this.value = value;
+        this.before = before;
+        this.after = after;
+    }
+}
+</code></pre><p>LRU的put和get实现：</p>
+<pre><code>public class MyLRU&lt;K,V&gt; {
+private HashMap&lt;K,LruNode&gt; map = new HashMap&lt;&gt;();
+private LruNode head;
+private LruNode tail;
+private int capacity;
+
+public MyLRU(int capacity) {
+    this.capacity = capacity;
+}
+
+public void put(K key, V value){
+    LruNode node = map.get(key);
+    if(node == null){
+        //链表不存在key节点,插入尾部
+        insertNewNode(key,value);
+
+        //实现缓存功能
+        implementCache();
+    }else{
+        //已存在 因为访问了又将它放到链表尾部
+        afterAccessNode(node);
+    }
+}
+
+public V get(K key){
+    LruNode node = map.get(key);
+    if(node != null){
+        afterAccessNode(node);
+        return (V) node.value;
+    }
+    return null;
+}
+
+public void afterAccessNode(LruNode node) {
+    LruNode last = tail;
+    if(node != last){
+        LruNode p,before,after;
+        p = node;
+        before = p.before;
+        after = p.after;
+        p.after = null;
+        if(before == null){
+            head = after;
+        }else {
+            before.after = after;
+        }
+
+        if(after != null){
+            after.before = before;
+        }else {
+            last = before;
+        }
+
+        if(last != null){
+            last.after = node;
+            node.before = last;
+        }else {
+            head = node;
+        }
+        tail = p;
+    }
+}
+
+public void implementCache() {
+    if(map.size() &gt; capacity) {
+        //删除头节点
+        if (head != null) {
+            map.remove(head.value);//删除
+            LruNode node = head.after;
+            head.before = head.after = null;//help GC
+            head = node;
+            if (node != null) {
+                //别忘了!!!
+                node.before = null;
+            }else {
+                tail = null;
+            }
+        }
+    }
+}
+
+public void insertNewNode(K key, V value) {
+    LruNode newNode = new LruNode(key,value,null,null);
+    LruNode last = tail;
+    if(last != null){
+        last.after = newNode;
+        newNode.before = last;
+    }else {
+        head = newNode;
+    }
+    tail = newNode;
+    map.put(key,newNode);
+}
+
+public void print(){
+    LruNode cur = head;
+    while (cur != null){
+        System.out.print(cur.value + &quot;-&gt;&quot;);
+        cur = cur.after;
+    }
+}
+}
+</code></pre><p>最后测试：</p>
+<pre><code>public class TestLru {
+    @Test
+    public void test(){
+        MyLRU lru = new MyLRU(3);
+        lru.put(1,1);
+        lru.put(2,2);
+        lru.put(3,3);
+        lru.get(2);
+        lru.get(3);
+        lru.put(4,4);//2 -&gt; 3 -&gt; 4
+
+        lru.print();
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/07/26/redis底层数据结构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/26/redis底层数据结构/" itemprop="url">redis底层数据结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-26T09:56:58+08:00">
+                2019-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/07/26/redis底层数据结构/" class="leancloud_visitors" data-flag-title="redis底层数据结构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>SDS(Simple Dynamic string)（String类型）</li>
+</ul>
+<p><img src="/images/sds.jpg" alt=""></p>
+<pre><code>free：buf中剩余可用空间的长度；
+len：buf中已占用空间的长度；
+buf：数据空间
+</code></pre><p>优点：</p>
+<pre><code>1.O(1)时间获取字符串长度；
+
+2.通过验证free的长度，解决了缓冲区溢出的问题；
+
+3.减少了修改字符串长度造成的内存溢出；
+
+    3.1 预分配
+
+        如果对SDS修改后，len &lt; 1M，那么len=2*len+1，1字节用来存&apos;\0&apos;；
+
+        如果对SDS修改后，len &gt; 1M，那么len=1M+len+1；
+
+    3.2 惰性释放
+
+        缩短字符串长度，redis不马上减少SDS所占内存，只是增加free的长度；
+
+4.二进制安全。不依赖&apos;\0&apos;作为结束标志，而用len的长度标记字符串的长度；
+
+5.兼容C语言。可用C的字符串API；
+</code></pre><ul>
+<li>链表</li>
+</ul>
+<p><img src="/images/list.jpg" alt=""> </p>
+<p>特性：</p>
+<pre><code>1.双向链表实现，获取链表长度的时间复杂度O(1)，可以自己实现dup、free
+  和match函数；
+
+2.有专门的迭代器实现迭代操作；
+</code></pre><ul>
+<li>字典(Hash类型)</li>
+</ul>
+<p>字典节点：</p>
+<pre><code>typedef struct dictEntry {
+    void *key;  //键
+    union {
+        void *val;
+        uint64_t u64;
+        int64_t s64;
+        double d;
+    } v;    //值
+    struct dictEntry *next; //拉链法解决冲突，下一个节点
+} dictEntry;
+</code></pre><p>Hash表存放字典节点：</p>
+<pre><code>typedef struct dictht { // hash表
+    dictEntry **table;  // 节点数组
+    unsigned long size; // hash表大小
+    unsigned long sizemask; // hash表掩码，等于size-1，用于计算hash值
+    unsigned long used; // 已有节点数量
+} dictht;
+</code></pre><p>字典：</p>
+<p><img src="/images/Dict.jpg" alt=""> </p>
+<pre><code>typedef struct dict {  //字典
+    dictType *type; //各种字典操作方法
+    void *privdata; //私有数据，用于传给操作函数
+    dictht ht[2]; //两个hash表，一个用来存储当前使用的，一个用来rehash
+    long rehashidx; //rehash标志位，0表示rehash
+    int iterators;  //迭代器的运行数量
+} dict;
+</code></pre><p>总结：</p>
+<pre><code>1.hit[0]存放数据，hit[1]在rehash时使用；
+
+2.扩容和收缩。
+
+  2.1 扩容条件：
+
+         1.服务器没有执行bgsave或bgrewriteaof命令，loader &gt;= 1;
+        loader=ht[0].used/ht[0].size
+
+      2.服务器目前正在执行bgsave或bgrewriteaof命令，
+        并且哈希表的负载因子&gt;=5
+
+  2.2 收缩条件
+
+      服务器没有执行bgsave或bgrewriteaof命令，
+      并且负载因子&lt;=0.1
+
+  2.3 扩容大小
+
+      大于等于 ht[0].used*2 的最小2的n次方
+
+  2.4 收缩大小
+
+      大小等于 ht[0].used 的最小2的n次方
+
+3.渐进式hash
+
+  分多次、渐进式地将ht[0]的键值对慢慢rehash到ht[1]。
+
+  3.1 Dict同时持有ht[0]和ht[1]，rehashidx=0代表rehash开始；
+
+  3.2 rehash时，每次对字典进行添加、删除、查找或更改，除了执行指定
+      操作还会将 ht[0] 哈希表中在 rehashidx 索引上的所有键值对，
+      rehash 到ht[1]，完成后rehashidx加1；
+
+  3.3 delete、find、update在ht[0]和ht[1]上进行，add只在ht[1]上
+      进行，保证ht[1]只增不减；
+
+  3.4 ht[0]的所有键值对rehash到ht[1]后，free ht[0]，ht[0] 指向
+      ht[1]，新建空白ht[1]
+</code></pre><ul>
+<li>整数集合(intset)</li>
+</ul>
+<p>特性：</p>
+<pre><code>1.内存连续、数值存储有序、无重复；
+
+2.三种编码方式，encoding表示一个元素所需的内存大小，有2字节、
+  4字节、8字节的取值
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/07/18/NIO详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -424,7 +987,17 @@
 2.调用recvfrom时，如果数据没有准备好，是不会阻塞进程的，应用进程会轮询内核，检查数据是否准备好，
 准备好以后，数据复制到应用进程缓冲区，这段时间进程是被阻塞的；
 </code></pre><p>3.IO多路复用</p>
-<p><img src="/images/io多路复用.png" alt=""></p>
+<pre><code>含义：
+
+    指内核一旦发现进程指定的一个或多个IO条件准备就绪时，就通知该进程；
+    复用同一个线程，来并发交替的访问多个描述符的IO操作；
+
+好处：
+
+    单个进程可以同时处理多个网络连接的IO；
+
+    单线程占用资源少、不消耗太多CPU；
+</code></pre><p><img src="/images/io多路复用.png" alt=""></p>
 <p>分析：</p>
 <pre><code>1.进程阻塞于select，内核监视所有select负责的套接字，任何一个套接字数据准备好
   以后，select方法返回；
@@ -432,6 +1005,9 @@
 2.一个进程能同时等待多个文件描述符，它们中的任意一个进入读就绪状态时，select()函数就可以返回；
 
 3.第一个阶段和第二个阶段都阻塞；
+
+4.在多路复用模型中，对每一个socket都设置成non-blocking，第一个阶段是被select
+  阻塞的，而不是被socket IO阻塞的；
 </code></pre><p>4.异步IO</p>
 <p><img src="/images/异步IO.png" alt=""></p>
 <pre><code>1.aio_read后立马返回，不会阻塞用户进程，kernel等待数据准备完成，然后将数据
@@ -501,7 +1077,30 @@
 
 4.所有的I/O操作还是在Reactor线程中完成的；
 </code></pre><p><strong>select、poll、epoll的区别？</strong></p>
-<p>总结：</p>
+<p>重要区别：</p>
+<pre><code>1.select和poll动作基本一致，只是poll的fd用链表存储，select的fd用fd标注位存放；
+
+2.select和poll不会明确指出哪些文件fd就绪，都需要通过遍历整个文件fd才能找到，
+  epoll直接处理就行了；
+
+3.select和poll需要将文件fd的数据结构拷贝进内核，最后在拷贝到用户空间。
+  epoll中是将epoll_wait中返回的数据拷贝到用户空间；
+
+4.select和poll采用轮询的方式来检查文件fd是否处于就绪状态，epoll采用回调机制，
+  回调机制：
+     执行epoll_ctl的add操作时，会注册回调函数，内核在检测到某文件描述符可读/
+  可写时会调用回调函数，该回调函数将文件fd放在就绪链表中；
+
+  当fd数量剧增后，
+  select和poll的效率会线性下降，epoll不会受太大影响，除非活跃的socket很多；
+
+epoll高效的原因：
+
+    1.减少了用户态和内核态之间文件fd的拷贝；
+      (epoll_ctl中会将epoll_event结构体从用户空间拷贝到内存空间)
+
+    2.减少了对就绪文件fd的拷贝；
+</code></pre><p>总结：</p>
 <pre><code>1.select
 
 缺点：
@@ -554,8 +1153,10 @@
 
 3.消息传递方式。
 
-    select和poll中内核需要将消息传递到用户空间，都需要内核拷贝，
-    epoll通过内核和用户空间共享一块内存实现的；
+    select和poll中内核需要将消息传递到用户空间，都需要内核拷贝；
+
+    epoll通过内核和用户空间共享一块内存实现的，返回的文件描述符是通过
+    mmap(内核和用户空间的共享内存)实现传递的，较少了不必要的拷贝；
 </code></pre><p>select</p>
 <pre><code>//返回值为fd的数量，超时返回0，出错返回-1；
 //如果timeout=null，select会一直阻塞，直到有描述符就绪；
@@ -593,6 +1194,65 @@
       __uint32_t events; 
       epoll_data_t data;
     };
+</code></pre><p>epoll底层实现</p>
+<p><img src="/images/epoll实现.png" alt=""></p>
+<pre><code>1.epoll_create方法
+
+struct eventpoll{
+    ....
+    /*红黑树的根节点，这颗树中存储着所有添加到epoll中的需要监控的事件*/
+    struct rb_root  rbr;
+    /*双链表中则存放着将要通过epoll_wait返回给用户的满足条件的事件*/
+    struct list_head rdlist;
+    ....
+};
+
+2.epoll_ctl方法
+
+    2.1 添加epoll事件的最小单位，插入红黑树节点；
+
+    2.2 给内核中断处理程序注册一个回调函数，内核如果感知到了中断
+        就把它放到readylist链表；
+
+    struct epitem{
+        struct rb_node  rbn;//红黑树节点
+        struct list_head    rdllink;//双向链表节点
+        struct epoll_filefd  ffd;  //事件句柄信息，红黑树的key
+        struct eventpoll *ep;    //当前epitem的所有者
+        struct epoll_event event; //epoll_ctl传入的数据
+    }
+
+3.epoll_wait方法
+
+  3.1 将readylist中的epitem出列，触发的事件从内核空间拷贝到用户空间，之后
+      判断epitem是否需要重新添加到readylist中去；
+
+  3.2 epitem重新添加到readylist中的情况
+
+     3.2.1 epitem上有用户关注的事件触发；
+
+     3.2.2 epitem被设置成水平触发LT；
+
+  3.3 epitem被添加到readylist中的情况
+
+     3.3.1 对fd调用EPOLL_ADD，这个fd上有用户关注的激活事件，则这个fd会
+           被添加到readylist中；
+
+     3.3.2 对fd调用EPOLL_MOD，新增了fd的关注事件且对应fd有相应的事件激活
+           fd会被添加到readylist中；
+
+     3.3.3 fd上有事件触发会调用ep_poll_callback回调函数，如果触发的事件
+           是用户关注的事件，fd会被添加到readylist中；
+
+4.LT和ET模式；
+</code></pre><p><img src="/images/LT.JPG" alt=""></p>
+<pre><code>4.1 LT和ET工作机制
+
+    如果是ET，epitem是不会再进入到ready_list中，除非fd再次发生了状态改变
+ep_poll_callback被调用，
+    如果是非ET，不管你还有没有有效的事件或者数据，都会被重新插入到ready_list
+下次再调用epoll_wait时会立即返回，并通知给用户空间，如果这个被监听的fd
+确定没事件也没数据了，epoll_wait会返回一个0；
 </code></pre><p><strong>Selector的基本使用流程？</strong></p>
 <p><img src="/images/selector.JPG" alt=""></p>
 <p><strong>NIO的组件详解</strong></p>
@@ -1142,6 +1802,27 @@ private void grow(int minCapacity) {
 
     public static final ThreadLocal&lt;Conncetion&gt; threadlocal = 
                         new ThreadLocal&lt;&gt;();
+</code></pre><p><strong>创建ThreadLocal 变量</strong></p>
+<pre><code>1.ThreadLocal myThreadLocal = new ThreadLocal();
+
+2.创建泛型对象
+
+  ThreadLocal myThreadLocal = new ThreadLocal&lt;String&gt;();
+
+3.创建泛型对象及初始化值
+
+    private ThreadLocal myThreadLocal = new ThreadLocal&lt;String&gt;() {
+    @Override
+    protected String initialValue() {
+        return &quot;This is the initial value&quot;;
+    }
+    };
+
+4.访问ThreadLocal变量
+
+    myThreadLocal.set(&quot;Hello&quot;)；
+
+    String res = (String)myThreadLocal.get()；
 </code></pre><p>2.ThreadLocal 的set方法</p>
 <pre><code>//ThreadLocal.java
 public void set(T value) {
@@ -1226,6 +1907,55 @@ static class ThreadLocalMap {
         //Hash冲突了使用开放地址法解决
         return getEntryAfterMiss(key, i, e);
     }
+</code></pre><p><strong>ThreadLocal内存泄露问题</strong></p>
+<p><img src="/images/threadLocal.jpg" alt=""></p>
+<pre><code>当 ThreadLocal = null时，ThreadLocal对象会被GC，
+Entry类中的value域不会，因为它与线程是强引用的关系，所以线程结束
+value才会被回收。
+
+比如使用线程池时，线程结束后不会被销毁，会再次使用的就有可能出现
+内存泄露；
+</code></pre><p>源码的解决办法：</p>
+<pre><code>1.在set方法中的处理
+
+for (Entry e = tab[i];
+     e != null;
+     e = tab[i = nextIndex(i, len)]) {
+    ThreadLocal&lt;?&gt; k = e.get();
+
+    if (k == key) {
+        e.value = value;
+        return;
+    }
+
+    if (k == null) {
+        //将ThreadLocal=null 对应 Entry.value=null
+        //插入tab[staleSlot] = new Entry(key, value)，并return
+        replaceStaleEntry(key, value, i);
+        return;
+    }
+}
+
+2.在remove方法中的处理
+
+//ThreadLocal类中
+public void remove() {
+     ThreadLocalMap m = getMap(Thread.currentThread());
+     if (m != null)
+         m.remove(this);
+ }
+
+//ThreadLocalMap类中
+for (Entry e = tab[i];
+     e != null;
+     e = tab[i = nextIndex(i, len)]) {
+    if (e.get() == key) {
+        e.clear();
+        //将该threadLocal的Entry.value = null
+        expungeStaleEntry(i);
+        return;
+    }
+}
 </code></pre>
           
         
@@ -1701,7 +2431,19 @@ run()方法是一个普通的对象方法；
         
           
             <p><img src="/images/socket.JPG" alt=""></p>
-<p>Socket服务端：</p>
+<p>Server端：</p>
+<pre><code>1.创建套接字，socket()
+2.分配套接字地址，bind()
+3.等待连接请求，listen()
+4.允许连接请求，accept()
+5.读写数据，read()/write()
+6.关闭连接，close()
+</code></pre><p>Client端：</p>
+<pre><code>1.创建套接字，socket()
+2.发起连接，connect()
+3.读写数据，read()/write()
+4.关闭连接，close()
+</code></pre><p>Socket服务端：</p>
 <pre><code>public class Server {
     private ServerSocket serverSocket = null;
     private Socket socket = null;
@@ -1814,7 +2556,7 @@ run()方法是一个普通的对象方法；
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/06/18/基于Redis的分布式锁/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/06/18/Redis常见面试问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -1833,7 +2575,7 @@ run()方法是一个普通的对象方法；
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/18/基于Redis的分布式锁/" itemprop="url">基于Redis的分布式锁</a></h1>
+                <a class="post-title-link" href="/2019/06/18/Redis常见面试问题/" itemprop="url">Redis常见面试问题</a></h1>
         
 
         <div class="post-meta">
@@ -1885,7 +2627,7 @@ run()方法是一个普通的对象方法；
 
           
           
-             <span id="/2019/06/18/基于Redis的分布式锁/" class="leancloud_visitors" data-flag-title="基于Redis的分布式锁">
+             <span id="/2019/06/18/Redis常见面试问题/" class="leancloud_visitors" data-flag-title="Redis常见面试问题">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -2079,7 +2821,9 @@ f : 错误率；
     1.设置不同失效时间；
 
     2.互斥锁；
-</code></pre>
+</code></pre><p>1.Redis的淘汰策略？操作系统的内存淘汰策略LRU？自己设计LRU怎么设计？</p>
+<p>2.redis的字典？</p>
+
           
         
       
@@ -2578,461 +3322,6 @@ public class SyncMediator extends AbstractMediator {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/26/访问者模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/26/访问者模式/" itemprop="url">访问者模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-26T16:20:16+08:00">
-                2019-05-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/05/26/访问者模式/" class="leancloud_visitors" data-flag-title="访问者模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>UML图：</p>
-<p><img src="/images/visitor.PNG" alt=""></p>
-<p><strong>访问者模式</strong></p>
-<pre><code>封装一些作用于某种数据结构中的各元素的操作，可以在不改变这个数据结构的前提下定义作用于这些元素的新操作。
-</code></pre><p>Visitor角色：</p>
-<pre><code>public interface Visitor {
-    //Engine 和 Wheel 类指那些不易发生变化的数据结构
-    void visit(Engine engine);
-    void visit(Wheel wheel);
-}
-</code></pre><p>具体访问的行为角色：</p>
-<pre><code>//修理零件
-public class RepairVisitor implements Visitor {
-    @Override
-    public void visit(Engine engine) {
-        System.out.println(&quot;repairing engine......&quot;);
-    }
-
-    @Override
-    public void visit(Wheel wheel) {
-        System.out.println(&quot;repairing wheel......&quot;);
-    }
-}
-</code></pre><p>被访问的角色：</p>
-<pre><code>//通常是那些稳定的数据结构
-public interface Visitable {
-    void accept(Visitor visitor);
-}
-</code></pre><p>具体被访问的角色：</p>
-<pre><code>public class Engine implements Visitable {
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-}
-
-public class Wheel implements Visitable {
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-}
-</code></pre><p>整个对象结构角色：</p>
-<pre><code>public class Car {
-
-    private List&lt;Visitable&gt; components = new ArrayList&lt;&gt;();
-    private Visitor visitor;
-
-    public void addComponent(Visitable visitable){
-        components.add(visitable);
-    }
-
-    public void setVisitor(Visitor visitor) {
-        this.visitor = visitor;
-    }
-
-    //visitor方式一一访问visitable角色
-    public void startVisit(){
-        for(Visitable v : components){
-            v.accept(visitor);
-        }
-    }
-}
-</code></pre><p>客户端：</p>
-<pre><code>public static void main(String[] args){
-    Car car = new Car();
-    Visitable engine = new Engine();
-    Visitable wheel = new Wheel();
-    car.addComponent(engine);//添加被访问的结构
-    car.addComponent(wheel);
-    Visitor repair = new RepairVisitor();
-    car.setVisitor(repair);//设置访问行为
-    car.startVisit();
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/05/26/责任链模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/26/责任链模式/" itemprop="url">责任链模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-26T10:53:11+08:00">
-                2019-05-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">Java设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/05/26/责任链模式/" class="leancloud_visitors" data-flag-title="责任链模式">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>UML图：</p>
-<p><img src="/images/chain.PNG" alt=""></p>
-<p>特点：</p>
-<pre><code>把请求的传递从子类中剥夺出来了，子类可以专心处理业务逻辑，子类不再需要进行传递的判断；
-</code></pre><p>问题角色：</p>
-<pre><code>public enum Problem {
-    STRUCTURE(1), ARCHITECTURE(2);
-
-    private int level;
-    Problem(int  level) {
-        this.level = level;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-}
-</code></pre><p>Handler角色：</p>
-<pre><code>public abstract class Handler {
-    protected int level;//表示问题的级别
-    private Handler next;
-
-    public Handler(int level) {
-        this.level = level;
-    }
-
-    //责任链的入口
-    public final void transfer(Problem problem){
-        if(level == problem.getLevel()){
-            this.report();
-        }else if(this.next != null){
-            this.next.transfer(problem);
-        }else{
-            System.out.println(&quot;Final boss can&apos;t resolve the problem&quot;);
-        }
-    }
-
-    public void setNext(Handler next) {
-        this.next = next;
-    }
-
-    abstract void report();
-}
-</code></pre><p>项目经理角色：</p>
-<pre><code>public class Manager extends Handler {
-
-    //项目经理解决structure问题
-    public Manager() {
-        super(1);
-    }
-
-    @Override
-    void report() {
-        System.out.println(&quot;项目经理解决软件结构布局&quot;);
-    }
-}
-</code></pre><p>架构师角色：</p>
-<pre><code>public class Architect extends Handler {
-
-    //架构师解决architecture问题
-    public Architect() {
-        super(2);
-    }
-
-    @Override
-    void report() {
-        System.out.println(&quot;架构师解决软件架构设计&quot;);
-    }
-}
-</code></pre><p>客户端：</p>
-<pre><code>public static void main(String[] args){
-    Manager manager = new Manager();
-    Architect architect = new Architect();
-    manager.setNext(architect);
-    manager.transfer(Problem.STRUCTURE);
-    manager.transfer(Problem.ARCHITECTURE);
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3087,7 +3376,7 @@ public class Wheel implements Visitable {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">127</span>
+                  <span class="site-state-item-count">129</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
