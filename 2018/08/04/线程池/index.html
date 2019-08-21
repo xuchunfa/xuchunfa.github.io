@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/ThreadPool.jpg">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/线程池类图.PNG">
-<meta property="og:updated_time" content="2019-07-04T12:28:03.179Z">
+<meta property="og:updated_time" content="2019-08-14T01:35:35.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程池">
 <meta name="twitter:description" content="为什么要使用线程池？1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。 2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下) 3.提高线程的可管理性。 线程池执行流程？ 线程池中线程创建的时机？1.判断核心线程池是否已满，否则提交任务的时候创建新的线程，并由这个线程执行这个任务，是则进入下步；  2.判断工作队列是">
@@ -545,6 +545,10 @@ DelayedWorkerQueue是可以提供延迟的阻塞队列，保存的是延迟期�
     3.修改下次执行ScheduledFutureTask任务的time;
 
     4.添加任务到DelayedWorkQueue，会按time顺序排好队，底层原理PriorQueue.
+</code></pre><p><strong>newSingleThreadScheduledExecutor和newFixedThreadPool(1)？</strong></p>
+<pre><code>1.前者中任务被顺序执行，而且不能重新配置corePoolSize的大小；
+
+2.两者线程执行任务发生异常时，都会重新创建一个新的线程来执行任务；
 </code></pre><p><strong>任务提交到线程池：</strong></p>
 <pre><code>1.execute:提交不需要返回值的任务；
 
@@ -910,7 +914,7 @@ final void runWorker(Worker w) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

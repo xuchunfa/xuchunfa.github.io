@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="阻塞队列详解 总结： 1.ArrayBlockingQueue:底层数组，有界队列；  2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；  3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；  4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值； ArrayBlockingQue">
+<meta name="description" content="阻塞队列详解 总结： 1.ArrayBlockingQueue:底层数组，有界队列；  2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；  3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；  4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值； BlockingDeque核心方">
 <meta property="og:type" content="article">
 <meta property="og:title" content="阻塞队列源码详解">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/04/19/阻塞队列源码详解/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="阻塞队列详解 总结： 1.ArrayBlockingQueue:底层数组，有界队列；  2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；  3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；  4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值； ArrayBlockingQue">
+<meta property="og:description" content="阻塞队列详解 总结： 1.ArrayBlockingQueue:底层数组，有界队列；  2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；  3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；  4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值； BlockingDeque核心方">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-19T12:34:32.213Z">
+<meta property="og:updated_time" content="2019-08-14T02:04:28.281Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阻塞队列源码详解">
-<meta name="twitter:description" content="阻塞队列详解 总结： 1.ArrayBlockingQueue:底层数组，有界队列；  2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；  3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；  4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值； ArrayBlockingQue">
+<meta name="twitter:description" content="阻塞队列详解 总结： 1.ArrayBlockingQueue:底层数组，有界队列；  2.LinkedBlockingQueue：底层链表，可以当作无界和有界队列使用；  3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；  4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值； BlockingDeque核心方">
 
 
 
@@ -419,6 +419,14 @@
 3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；
 
 4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值；
+</code></pre><p>BlockingDeque核心方法：</p>
+<pre><code>1.阻塞入队和出队
+
+    put(E)和take()方法
+
+2.非阻塞的入队和出队
+
+    offer(E)和poll()
 </code></pre><h4 id="ArrayBlockingQueue详解"><a href="#ArrayBlockingQueue详解" class="headerlink" title="ArrayBlockingQueue详解"></a>ArrayBlockingQueue详解</h4><p>核心成员变量：</p>
 <pre><code>final Object[] items;
 
@@ -489,7 +497,7 @@ private transient Node&lt;E&gt; last;
 //take、poll方法时加锁
 private final ReentrantLock takeLock = new ReentrantLock();
 
-//offer、offer方法时加锁
+//offer、put方法时加锁
 private final ReentrantLock putLock = new ReentrantLock();
 
 private final Condition notEmpty = takeLock.newCondition();
@@ -775,7 +783,7 @@ private final Condition notFull = putLock.newCondition();
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

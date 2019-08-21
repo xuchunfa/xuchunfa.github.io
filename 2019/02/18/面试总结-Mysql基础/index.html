@@ -81,25 +81,27 @@
 
 
 
-<meta name="description" content="1.select count() 和 select count(列名)以及count()和count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括；  union 和 union all 的区别？   1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)   2.union all：简单取并集，不做任何处理；  B树（B-树）和B+树是解决什么样的问题">
+<meta name="description" content="1.select count() 和 select count(列名)、count()、count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括； 2.union 和 union all 的区别？ 1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)  2.union all：简单取并集，不做任何处理； 3.B树（B-树）和B+树是解决什么样的问题的，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Mysql基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Mysql基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括；  union 和 union all 的区别？   1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)   2.union all：简单取并集，不做任何处理；  B树（B-树）和B+树是解决什么样的问题">
+<meta property="og:description" content="1.select count() 和 select count(列名)、count()、count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括； 2.union 和 union all 的区别？ 1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)  2.union all：简单取并集，不做任何处理； 3.B树（B-树）和B+树是解决什么样的问题的，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/B树.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/B+树.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/幻读.PNG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/事务原理1.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/noIndex.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/hasIndex.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/primaryIndex.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/聚簇索引.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/非聚簇索引.PNG">
-<meta property="og:updated_time" content="2019-07-22T05:02:57.576Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/主从1.png">
+<meta property="og:updated_time" content="2019-08-21T08:28:33.449Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Mysql基础">
-<meta name="twitter:description" content="1.select count() 和 select count(列名)以及count()和count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括；  union 和 union all 的区别？   1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)   2.union all：简单取并集，不做任何处理；  B树（B-树）和B+树是解决什么样的问题">
+<meta name="twitter:description" content="1.select count() 和 select count(列名)、count()、count(1)？ Mysql基础笔记 前者会包含null的行，后者不会包括； 2.union 和 union all 的区别？ 1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)  2.union all：简单取并集，不做任何处理； 3.B树（B-树）和B+树是解决什么样的问题的，">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/B树.png">
 
 
@@ -419,17 +421,14 @@
       
 
       
-        <p>1.select count(<em>) 和 select count(列名)以及count(</em>)和count(1)？</p>
+        <p>1.select count(<em>) 和 select count(列名)、count(</em>)、count(1)？</p>
 <p><a href="http://www.xuchunfa.cn/2018/09/04/Mysql%E7%AC%94%E8%AE%B0/">Mysql基础笔记</a></p>
 <pre><code>前者会包含null的行，后者不会包括；
-</code></pre><ol>
-<li><p>union 和 union all 的区别？</p>
-<p>  1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)</p>
-<p>  2.union all：简单取并集，不做任何处理；</p>
-</li>
-<li><p>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</p>
-</li>
-</ol>
+</code></pre><p>2.union 和 union all 的区别？</p>
+<pre><code>1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)
+
+2.union all：简单取并集，不做任何处理；
+</code></pre><p>3.B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</p>
 <p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
 <pre><code>1.作为文件系统以及数据库系统的索引结构；
 
@@ -461,14 +460,9 @@
 2.叶子节点包含了全部元素信息以及指向这些元素记录的指针；
 
 3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大或最小元素；
-</code></pre><ol start="2">
-<li><p>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
-<p>  因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；</p>
-</li>
-</ol>
-<ol start="3">
-<li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
-</ol>
+</code></pre><p>4.Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
+<pre><code>因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；
+</code></pre><p>5.数据库事务特性以及四个隔离级别，Mysql属于哪一种？</p>
 <p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
 <pre><code>1.事务特性：原子性、一致性、隔离性和持久性；
 
@@ -481,16 +475,101 @@
     2.3 可重复读：出现幻读，一个事务中读取的数据一致；
 </code></pre><p>幻读的例子：</p>
 <p><img src="/images/幻读.PNG" alt=""></p>
-<pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
-
-        1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
-
-        2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
+<pre><code>    2.4 串行化：最高隔离级别。
 
 3.MySQL的默认隔离级别：可重复读；
-</code></pre><ol start="3">
-<li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
-</ol>
+</code></pre><p>5.Innodb事务实现原理？</p>
+<p><img src="/images/事务原理1.png" alt=""></p>
+<pre><code>隔离性是通过锁来实现的
+
+1.redo log
+
+    a)物理日志，实现事务的持久性
+
+    b)记录事务变更前后的状态，事务提交时，将redo log持久化，当数据
+      在内存中变更，系统崩溃，可以使用redo log将数据恢复到最新状态；
+
+2.undo log
+
+    a)逻辑日志，实现事务回滚和MVCC
+
+    b)记录事务变更前的状态，操作数据之前先将数据备份到undo日志
+
+3.快照读和当前读
+
+    快照读：简单的查询操作，不加锁
+
+        a)通过uodo log 实现，比较当前事务id与行数据的trx_id的关系，
+          id &lt; trx_id 该条数据对当前事务不可见，通过行db_roll_ptr
+          指针查找历史版本
+
+    当前读：特殊的读操作，以及插入、更新、删除需要加锁
+
+        eg:select * from table where ... lock in share mode
+
+4.Innodb加锁处理
+
+    eg:delete from table where id = 10 分析以下几种情况：
+
+    4.1 id列为主键索引，锁主键索引上id=10的记录
+
+    4.2 id列为唯一索引，name列为主键索引，先锁唯一索引上id=10的行，
+        再锁主键索引上name=&apos;&apos;的行
+
+    4.3 id列为辅助索引，会给id=10的所有行加X锁，而且会给被锁行的前后
+        范围加GAP锁（Innodb隔离级别RR）
+        再在主键索引上，给相应记录加X锁；
+
+    4.4 id列未加索引，主键索引name的所有行加X锁，所有间隙加GAP锁，
+        全表数据被锁；
+</code></pre><p>6.Explain输出字段？</p>
+<pre><code>1.select_type: SELECT的查询的类型
+
+    SIMPLE：不包含UNION的查询，常见值；
+
+    UNION：使用了UNION查询；
+
+2.type：可用来判断此次查询是全表扫描 or 索引扫描
+
+    index：全索引扫描，仅仅扫描所有的索引，不扫描数据；
+
+    ALL：表示全表扫描；
+
+    const：针对主键或唯一索引的等值查询扫描，最多只返回一条数据；
+           查询速度快；
+
+    system：表中只有一条数据，特殊的const类型；
+
+    eq_ref：通常出现在多表的join查询，前表的每一个结果都只能
+            匹配后表的一行结果，&quot;=&quot;比较操作
+
+    ref：多表join，针对非唯一 or 非主键 or 最左前缀；
+
+    range：使用索引范围查询，=、&lt;&gt;、&gt;、&lt;、is null、between、in
+
+性能比较：
+
+    ALL &lt; index &lt; range ~ index_merge &lt; 
+    ref &lt; eq_ref &lt; const &lt; system
+
+3.possible_keys：能够使用到的索引；
+
+4.key：当前查询真正使用到的索引；
+
+5.key_len：使用了索引的字节数，用来判断索引是否完全被使用；
+
+6.Extra：额外信息；
+
+    Using filesort：需要额外的排序操作，不能通过索引顺序达到排序效果；
+
+    Using index：覆盖索引扫描。找索引中就能查找所需数据，不用回表
+                 查询；
+
+    Using temporary：查询使用了临时表，一般出现于排序、分组和多
+                     表join的情况，效率不高；
+
+    Using where：使用where条件过滤；
+</code></pre><p>7.索引有哪几种？索引的好处？什么时候用？索引的原理？</p>
 <p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
 <pre><code>1.普通索引
 
@@ -594,28 +673,155 @@
 
 7.索引字段是字符串，但查询的时候不加单引号，索引失效；
 
-8.mysql中不能继续使用索引中范围条件between、&lt;、&gt;、in等右边的列；
-</code></pre><ol start="7">
-<li><p>数据库引擎有哪些？说说他们的区别？</p>
-<p> MyISAM</p>
-<pre><code>1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
+8.mysql在查询中遇到between、&lt;、&gt;、in后，之后的列的索引将失效；
+</code></pre><p>8.数据库引擎有哪些？说说他们的区别？</p>
+<pre><code>MyISAM
 
-2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
+    1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
 
-3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
+    2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
 
-辅助索引是独立的。
-</code></pre></li>
-</ol>
-<pre><code>InnoDB:
+    3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
+
+    辅助索引是独立的。
+
+
+InnoDB:
 
     1.行级锁、支持事务、支持外键、支持MVCC、MySQL5.6.4版本以后开始支持FULLTEXT类型的索引；
 
     2.InnoDB是聚集索引，数据文件和索引绑定在一起，必须要有主键，没的话会自动生成主键，主键
 
     索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
-</code></pre><p>8.分布式数据库？</p>
+</code></pre><p>9.SQL优化说一下？</p>
+<p><a href="https://www.cnblogs.com/butterfly100/p/9034281.html" target="_blank" rel="noopener">分库分表详解</a></p>
+<pre><code>1.慢查询优化
 
+EXPLAIN select ... 看有没有走索引（看key字段），索引失效的情况总结如下：
+
+    1.1 != 或&lt;&gt;、字段null值判断(where name is null)、or、%aa、
+        where子句使用参数(where num=@num)
+
+    1.2 对字段进行表达式操作（where num/2=100）、对字段进行函数操作、
+        NOT IN
+
+2.数据库设计和结构优化
+
+    字段数据类型的选择、存储引擎、三范式、编码选择等；
+
+3.数据库分库分表
+
+    3.1 垂直切分
+
+        a)垂直分库
+
+            将关联度低的不同表存储在不同的数据库；
+
+        b)垂直分表
+
+            将不经常用或字段长度较大的字段拆分出去到拓展表中，这样表中字段
+            较短且访问频率较高，内存能加载更多的数据；
+
+    3.2 水平切分
+
+        a)库内分表
+
+            还是竞争同一个CPU、内存、网络IO效果不是很大；
+
+        b)分库分表
+
+            将表分布到不同的机器上面去，几种数据分片规则：
+
+            1.根据数值范围。
+
+                优点：分片集群扩容时，不需要对其他分片的数据进行迁移，
+                     分片字段范围查询效率高；
+
+                缺点：热点数据成为性能瓶颈。
+
+            2.根据数值取模
+
+                优点：数据分布均匀，不容易出现热点和并发访问的性能瓶颈；
+
+                缺点：扩容需要迁移旧的数据、如果查询不带分片字段，无法
+                     定位数据库，对所有数据库发起请求；
+
+4.分库分表的问题
+
+    4.1 事务一致性问题
+
+        分布式事务、最终一致性；
+
+    4.2 跨节点的关联查询join问题
+
+    4.3 跨节点分页、排序、函数问题
+
+    4.4 全局主键避重问题
+
+    4.5 数据迁移、扩容问题
+
+5.读写分离
+
+    1.主从复制原理：
+</code></pre><p><img src="/images/主从1.png" alt=""></p>
+<pre><code>总体：
+
+   让master数据库处理写操作，slave数据库处理读操作，master将
+
+写操作的变更同步到各个slave节点；
+
+细节：
+
+    a)主库db的更新(insert、update、delete)被写到binlog
+
+    b)从库发起到主库的连接
+
+    c)主库创建一个binlog dump thread线程，把binlog内容发送
+      到从库
+
+    d)从库创建一个I/O线程，把主库读过来的binlog内容写到relay 
+</code></pre><p>  `                  log中</p>
+<pre><code>        e）从库创建一个SQL线程，读取relay log中更新事件执行；
+
+2.为什么要做主从复制？
+
+    a）数据备份，避免主数据库宕机造成的数据丢失；
+
+    b）单机CPU、内存、IO性能瓶颈问题；
+
+    c) 读写分离，使数据库能够支撑更大的并发量；
+</code></pre><p>10.B+树和哈希索引，两者主要应用在哪些方面？</p>
+<pre><code>哈希索引
+
+    优点：
+
+        1.等值查询，where name=&apos;xu&apos;，而且hash后的键值都不冲突，那么
+          依次hash，就能get()到值，效率高；
+
+    缺点：
+
+        1.不适合范围查询检索，有序的key都已经hash开了，例如&apos;xxx%&apos;本质
+          上也是范围查询
+
+        2.没办法利用索引排序。例如联合索引已经对第二个以及后面的键值
+          进行了排序。
+
+            eg:select * from buy_log where id=1 order by buy_date
+
+            其中：(id,buy_date)是联合索引，无需再对buy_date进行排序，
+                  否者还要进行一次 filesort操作；
+
+        3.不支持部分索引列匹配查找，例如(A，B)索引，只查询A列是无法使用
+          该索引的，即不支持最左匹配，原因哈希索引是使用索引列的全部内容
+          来计算hash值的；
+
+        4.hash冲突大时，索引效率
+
+场景：
+
+    hash索引适合等值查询，b+树索引数据按索引顺序组织在一起，
+    适合查找范围数据；
+</code></pre>
       
     </div>
     
@@ -741,7 +947,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

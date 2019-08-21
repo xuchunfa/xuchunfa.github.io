@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Collection.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Map.PNG">
-<meta property="og:updated_time" content="2019-08-04T01:54:44.064Z">
+<meta property="og:updated_time" content="2019-08-12T14:01:46.288Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java集合">
 <meta name="twitter:description" content="1.集合的整体框图 Collection部分：  Map部分：  2.讲讲CopyOnWriteArrayList容器？ COW详解      可以用foreach循环直接删除ArrayList的特定元素吗？可能会出现什么问题？怎样解决？  例如： for(String s : list){//内部创建迭代器     if(s.equals(&amp;quot;a&amp;quot;)){         lis">
@@ -572,18 +572,26 @@ void transfer(Entry[] newTable, boolean rehash) {
 <p><a href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap%E7%9A%84%E7%90%86%E8%A7%A3/">concurrentHashMap JDK1.7和JDK1.8的理解</a></p>
 <p>注意：</p>
 <pre><code>1.JDK1.8 和JDK1.7 concurrentHashMap不允许key或value为null
-  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
+  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，
+  它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
 
-2.JDK1.7 concurrentHashMap的每个Segment中含有一个
+2.put操作
+
+    JDK1.7采用的是CAS头插法，节点插入到表头；
+
+    JDK1.8采用synchronized锁住表头，节点插入到链表尾部；
+
+
+3.JDK1.7 concurrentHashMap的每个Segment中含有一个
   transient volatile HashEntry&lt;K,V&gt;[]table，保证了entryAt/setEntryAt的可见性；
 
-3.获取最新的Segment元素：
+4.获取最新的Segment元素：
     Segment&lt;K,V&gt; s = (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(segments, u)
   获取Segment元素中最新的HashEntry元素：
     HashEntry&lt;K,V&gt; e = (HashEntry&lt;K,V&gt;) UNSAFE.getObjectVolatile
     (tab, ((long)(((tab.length - 1) &amp; h)) &lt;&lt; TSHIFT) + TBASE)
 
-4.JDK1.8 三个用的较多的CAS操作
+5.JDK1.8 三个用的较多的CAS操作
 
     tabAt:获取index处的Node；
     casTabAt:将newNode与table[i]处的node比较，没其他线程修改则替换；
@@ -592,7 +600,8 @@ void transfer(Entry[] newTable, boolean rehash) {
 <pre><code>结论：
 
     1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。
-    算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
+    算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，
+             相等则修改expect变量的值为new value.
 
     2.ConcurrentHashMap不允许key或者value为null；
 
@@ -604,7 +613,7 @@ void transfer(Entry[] newTable, boolean rehash) {
     2.1 获取segment的位置后尝试获取锁，获取到锁后node=null;
         没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
 
-    2.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
+    2.2 scanAndLockForPut的思想是：锁通过自旋不断获取segment的，并在获取的过程中遍历链表，
 
         没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
 
@@ -685,8 +694,7 @@ void transfer(Entry[] newTable, boolean rehash) {
     2.1 put操作是尾插法
 
     2.2 新加了红黑树的数据结构；
-</code></pre><p>7.ConcurrentHashMap如何保证线程安全，并发度大小，jdk1.8有什么变化?</p>
-<p>8.HashMap的长度为什么是2的n次幂？</p>
+</code></pre><p>8.HashMap的长度为什么是2的n次幂？</p>
 <pre><code>只有当数组长度等于2的n次幂时，h&amp;(length-1)才等价于h%length；
 </code></pre><p>9.HashTable和HashMap的区别？</p>
 <pre><code>1.前者线程安全的,但是效率低。
@@ -697,14 +705,19 @@ void transfer(Entry[] newTable, boolean rehash) {
 
     HashTable起初是为并发环境设计。如果get一个null键返回的结果是null，那么有两种可能: 
     1.hashtable中存放了一个(null, null)键值对。 
-    2.hashtable中不存在null这个key。 这就要求使用者用containsKey()方法来做进一步确认。但是在这两个操作中间很可能发生并发修改导致结果出错。
+    2.hashtable中不存在null这个key。 这就要求使用者用containsKey()方法来做进一步确认。
+    但是在这两个操作中间很可能发生并发修改导致结果出错。
     所以一开始就禁止了null键或null值。
 
 4.前者的hash直接使用hashcode，后者hash进行过异或计算；
 
 5.前者初始容量11，后者16；
 
-6.前者扩容容量为2*oldTab+1，后者为2*oldTab；
+6.前者扩容容量为2*oldTab+1，因为HashTable计算index的方法如下：
+
+    int index = (e.hash &amp; 0x7FFFFFFF) % newCapacity;
+
+  后者为2*oldTab；
 </code></pre>
       
     </div>
@@ -831,7 +844,7 @@ void transfer(Entry[] newTable, boolean rehash) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

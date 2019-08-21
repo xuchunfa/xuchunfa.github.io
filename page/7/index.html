@@ -526,7 +526,18 @@ if(!isExisted){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mysql基础/" itemprop="url" rel="index">
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/Mysql基础/" itemprop="url" rel="index">
                     <span itemprop="name">Mysql基础</span>
                   </a>
                 </span>
@@ -644,79 +655,34 @@ WHERE COUNT(customers_id) &gt; 1
 <li>EXIST 子句不在乎返回什么，而是在乎是不是有结果集返回。用于检查子查询是否至少会返回一行数据，该子查询实际上并不返回任何数据，而是返回值True或False.</li>
 </ul>
 <p><strong>9.DISTINCT</strong></p>
-<ul>
-<li><p>distinct必须放在开头</p>
-<pre><code>select id, distinct name from A;   --会提示错误，因为distinct必须放在开头
-</code></pre></li>
-</ul>
-<hr>
-<blockquote>
-<p>Mysql函数总结</p>
-</blockquote>
-<p>1.MOD(N,M)：表示 N 除以 M 的余数。</p>
-<p>2.DATEDIFF(datepart,startdate,enddate)：返回两个日期之间的时间。</p>
-<p>3.DATEADD(datepart,number,date)：在日期中添加或减去指定的时间间隔。</p>
-<pre><code>eg:计算当前月的一天
+<pre><code>1.distinct必须放在开头，对NULL不进行过滤
 
-SELECT DATEADD(mm,DATEDIFF(mm,0,getdate()),0)
-</code></pre><p>4.IFNULL（expr1，expr2）：在 expr1 的值不为 NULL的情况下都返回 expr1，否则返回 expr2。</p>
-<hr>
-<blockquote>
-<p>Mysql索引的数据结构</p>
-</blockquote>
-<p>1.B+树索引只能找到某条记录所在的页，需要根据二分查找法来进一步找到记录所在页的具体位置。</p>
-<blockquote>
-<p>InnoDB（Mysql5.5以后，支持事务，是表锁） B+ 树索引(叶结点的data域保存了完整的数据记录)</p>
-</blockquote>
-<ul>
-<li>聚集索引（每页大小16K）</li>
-</ul>
-<p>1.根据主键创建的一棵 B+ 树。</p>
-<p>2.叶结点的data域是数据记录。</p>
-<ul>
-<li>辅助索引（二级索引）</li>
-</ul>
-<p>1.根据索引键（例如：用户信息表，主键是用户ID，这里可以在名字上面建立索引，即根据名字创建了一棵B+树）创建的一棵 B+ 树。</p>
-<p>2.叶结点的data域存放的是主键值。</p>
-<pre><code>优点：这样行在面临页分裂时,不需要单独维护二级索引.
-</code></pre><blockquote>
-<p>MyISAM（不支持事务，是表锁） B+ 树索引（索引文件和数据文件实现了分离）</p>
-</blockquote>
-<p>1.叶结点的data域存放的是数据记录的地址。</p>
-<p>2.主索引要求 key 是唯一的，辅助索引的key可以重复。</p>
-<ul>
-<li>联合索引(最左前缀)</li>
-</ul>
-<h4 id="关于回表的理解？"><a href="#关于回表的理解？" class="headerlink" title="关于回表的理解？"></a>关于回表的理解？</h4><pre><code>索引其实也是个表，不过是存放了索引列的列值和主键的Id值rowid的表
+    select id, distinct name from A;//会提示错误，因为distinct必须放在开头
 
-如果select子句中，只有索引列，只需访问索引对象即可，不应回表。如果select子句中包含非索引列，就要读取索引存放的对应rowid，然后按照rowid去表中访问对应行的非索引列，就是回表了。
-</code></pre><p>1.对表上多个列进行索引。可以对第二个键值进行排序。</p>
-<p>2.查询条件中出现联合索引第一列,或者全部,则能利用联合索引.即索引不能隔着字段使用。</p>
-<pre><code>create index test_union_k1_k2_k3_k4_k5_index
-on test_union (k1, k2, k3, k4, k5)；
+    select distinct name,id from stu;//表示distinct应用到多个字段
 
-EXPLAIN SELECT * FROM test_union where k1= 1 AND k3 = 1;//这里只使用到了k1索引
-</code></pre><p>3.建复合索引时应该将最常用（频率）作限制条件的列放在最左边，依次递减。</p>
-<ul>
-<li>覆盖索引（使用的标识：Using index）</li>
-</ul>
-<p>1.索引包含所有需要查询的字段的值。</p>
-<p>2.它只扫描索引的数据。</p>
-<p>3.覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询。在所有这些场景中，索引中满足查询的成本一般比查询要小的多</p>
-<p>4.覆盖索引优化查询的例子</p>
-<pre><code>alter table t1 add index liu(inventory_id,return_date)；
-select tid,return_date from t1 order by inventory_id limit 50000,10;
-</code></pre><ul>
-<li>全文索引（存储引擎MyISAM支持，新版本MYSQL5.6的InnoDB支持全文索引）</li>
-</ul>
-<p>1.支持的字段类型：char、varchar和text。</p>
-<pre><code>例如：
-ALTER TABLE articles ADD FULLTEXT (&apos;title&apos;,&apos;body&apos;);
-SELECT * FROM articles
-WHERE MATCH (title,body) AGAINST (&apos;database&apos;);
-把 title 和 body 字段里有 database 的数据记录全部查询出来
-</code></pre><p>2.不支持中文的全文检索,且对英文检索时忽略大小写</p>
+2.配合其他函数使用，比如COUNT()则可以放任意位置
 
+    select id,COUNT(DISTINCT(name)) from stu;
+</code></pre><p><strong>10.数据库范式？</strong></p>
+<pre><code>1.第一范式：每一个属性都不可再分。
+
+    eg：Address可继续细分为 XXX省XXX市XXX街道
+
+2.第二范式：表中的属性必须完全依赖于全部主键，而不是部分主键。
+          （联合主键--多个字段作为表的主键）
+           通常通过设计一个主键来实现
+</code></pre><p><img src="/images/2NF.png" alt=""></p>
+<pre><code>    eg：departDescript仅仅由departName主键决定，不由empId决定，
+
+3.第三范式：消除了非主属性对于码的传递函数依赖。
+           即如果某个字段能够被其它字段推导出来，就不应该存在
+
+    eg：选课（学号，课名，分数）和 学生（学号，姓名，系名，系主任）
+
+        其中，学号-&gt;系名、系名-&gt;系主任，非主属性系主任对于学号（码）
+        存在传递函数依赖；
+</code></pre>
           
         
       
@@ -2447,7 +2413,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

@@ -81,12 +81,12 @@
 
 
 
-<meta name="description" content="Java类加载以及类初始化顺序？  连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
+<meta name="description" content="1.Java类加载以及类初始化顺序？ 连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结-Java虚拟机">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Java虚拟机/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="Java类加载以及类初始化顺序？  连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
+<meta property="og:description" content="1.Java类加载以及类初始化顺序？ 连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/垃圾收集器.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/region.png">
@@ -94,10 +94,10 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/内存溢出.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/双亲委派.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/类加载器.png">
-<meta property="og:updated_time" content="2019-07-08T13:59:56.688Z">
+<meta property="og:updated_time" content="2019-08-20T07:01:31.362Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java虚拟机">
-<meta name="twitter:description" content="Java类加载以及类初始化顺序？  连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
+<meta name="twitter:description" content="1.Java类加载以及类初始化顺序？ 连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/垃圾收集器.png">
 
 
@@ -417,9 +417,7 @@
       
 
       
-        <ol>
-<li>Java类加载以及类初始化顺序？</li>
-</ol>
+        <p>1.Java类加载以及类初始化顺序？</p>
 <p><a href="https://www.hollischuang.com/archives/201" target="_blank" rel="noopener">连接初始化详解</a></p>
 <pre><code>1.类加载的生命周期：
 
@@ -454,36 +452,53 @@
     4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量
     ---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量
     ---父类构造函数---子类构造函数
-</code></pre><ol start="3">
-<li>对方法区和永久区解的理以及它们之间关系的理解？</li>
-<li><p>一个java文件有3个类，编译后有几个class文件？</p>
+</code></pre><p>2.对方法区和永久区的理解以及它们之间关系的理解？</p>
+<pre><code>永久代是HotSpot的概念，HotSpot使用永久代来实现方法区，方法区
+是JVM的一种规范，一种标准，而永久代是一种实现。
+</code></pre><p>3.一个java文件有3个类，编译后有几个class文件？</p>
 <pre><code>答：3个。
-</code></pre></li>
-</ol>
-<p>4.对象的生命周期，如何判断一个对象不可用，要回收？</p>
-<ol start="5">
-<li><p>JVM GC算法的前戏？</p>
-<p> 首先弄清楚判断对象是否存活的算法：</p>
-<pre><code>1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。
+</code></pre><p>4.Java的堆内存和栈内存？</p>
+<pre><code>1.栈内存
 
-缺点：无法解决循环引用的问题。
+    特点：存储局部变量和对象的引用变量，每个线程都有一个独立的栈空间；
 
-2.可达性分析算法。对象到GC Roots 不可达则回收，反之不回收。
+    优点：存取速度比堆要快，但栈中数据大小和生存期必须是确定的，缺乏
+         灵活性；
 
-2.1 可作为GC Roots的对象：
+2.堆内存
 
-    1.虚拟机栈（栈帧中）引用的对象。
+    特点：存储对象和数组
 
-    2.方法区类静态属性引用的对象。
+    优点：动态分配内存，但存储速度慢；
 
-    3.方法区常量引用的对象。
+3.堆内存和栈内存区别
 
-    4.native方法中引用的对象。
-</code></pre><p> 永久代收集的什么垃圾？</p>
-<pre><code>1.废弃常量。没有任何引用。
+    区别：各司其职、独有还是共享、异常错误、空间大小
+</code></pre><p>5.JVM GC算法的前戏？</p>
+<pre><code>首先弄清楚判断对象是否存活的算法：
 
-2.无用的类。所有实例都被回收、类加载器被回收、对象没有在任何地方引用。、
-</code></pre></li>
+    1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。
+
+    缺点：无法解决循环引用的问题。
+
+    2.可达性分析算法。对象到GC Roots 不可达则回收，反之不回收。
+
+    2.1 可作为GC Roots的对象：
+
+        1.虚拟机栈（栈帧中）引用的对象。
+
+        2.方法区类静态属性引用的对象。
+
+        3.方法区常量引用的对象。
+
+        4.native方法中引用的对象。
+
+永久代收集的什么垃圾？
+
+    1.废弃常量。没有任何引用。
+
+    2.无用的类。所有实例都被回收、类加载器被回收、对象没有在任何地方引用。、
+</code></pre><ol start="5">
 <li><p>JVM GC算法核心内容？</p>
 <pre><code>1.标记-回收算法。判断是否存活，标记并清除。
 
@@ -503,7 +518,8 @@
 
 缺点：
 
-    2.1 只有一半内存可用，代价大。解决办法是划分为1个Eden2个Survivor(比例8:1:1)只有10%空间没用。这样做的缺点是万一存活对象大于10%则必须依赖老年代进行分配担保。
+    2.1 只有一半内存可用，代价大。解决办法是划分为1个Eden2个Survivor(比例8:1:1)只有10%空间没用。
+        这样做的缺点是万一存活对象大于10%则必须依赖老年代进行分配担保。
 
     2.2 不适合对象存活率高的情况，这样频繁复制影响效率。适合新生代，不适合老年代。
 
@@ -515,7 +531,8 @@
 
 4.分代回收算法。新生代采用复制算法，老年代采用标记-整理或标记清除算法。
 </code></pre><p> 总结：</p>
-<pre><code>Java垃圾回收一般是采用分代回收的，将java堆分成老年代和新生代。新生代特点对象存活率低，采用复制算法，老年代反之采用标记-整理/标记-清除算法。
+<pre><code>Java垃圾回收一般是采用分代回收的，将java堆分成老年代和新生代。
+新生代特点对象存活率低，采用复制算法，老年代反之采用标记-整理/标记-清除算法。
 </code></pre></li>
 <li><p>JVM 垃圾收集器核心内容？</p>
 <p> 首先看个整体图，连线表示可以搭配使用。</p>
@@ -667,7 +684,8 @@ G1收集器的4种操作：
 
 3.动态年龄判定。Surviovr区中年龄相等的对象占了整个Survivor大小的一半以上，则年龄大于或等于该年龄的对象将进入老年代。
 
-4.空间分配担保。如果晋升到老年代的对象的平均大小 小于 老年代的剩余空间则发生担保，Eden内的所有存活对象进入到老年代，否则担保失败，发生Full GC.(比Minor GC 慢10倍)
+4.空间分配担保。如果晋升到老年代的对象的平均大小 小于 老年代的剩余空间则发生担保，
+Eden内的所有存活对象进入到老年代，否则担保失败，发生Full GC.(比Minor GC 慢10倍)
 </code></pre><ol start="5">
 <li>Java内存结构？ </li>
 </ol>
@@ -897,7 +915,7 @@ G1收集器的4种操作：
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

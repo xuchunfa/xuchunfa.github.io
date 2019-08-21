@@ -560,18 +560,26 @@ void transfer(Entry[] newTable, boolean rehash) {
 <p><a href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap%E7%9A%84%E7%90%86%E8%A7%A3/">concurrentHashMap JDK1.7和JDK1.8的理解</a></p>
 <p>注意：</p>
 <pre><code>1.JDK1.8 和JDK1.7 concurrentHashMap不允许key或value为null
-  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
+  当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，
+  它是put（k,v）的时候value为null，还是这个key从来没有做过映射;
 
-2.JDK1.7 concurrentHashMap的每个Segment中含有一个
+2.put操作
+
+    JDK1.7采用的是CAS头插法，节点插入到表头；
+
+    JDK1.8采用synchronized锁住表头，节点插入到链表尾部；
+
+
+3.JDK1.7 concurrentHashMap的每个Segment中含有一个
   transient volatile HashEntry&lt;K,V&gt;[]table，保证了entryAt/setEntryAt的可见性；
 
-3.获取最新的Segment元素：
+4.获取最新的Segment元素：
     Segment&lt;K,V&gt; s = (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(segments, u)
   获取Segment元素中最新的HashEntry元素：
     HashEntry&lt;K,V&gt; e = (HashEntry&lt;K,V&gt;) UNSAFE.getObjectVolatile
     (tab, ((long)(((tab.length - 1) &amp; h)) &lt;&lt; TSHIFT) + TBASE)
 
-4.JDK1.8 三个用的较多的CAS操作
+5.JDK1.8 三个用的较多的CAS操作
 
     tabAt:获取index处的Node；
     casTabAt:将newNode与table[i]处的node比较，没其他线程修改则替换；
@@ -580,7 +588,8 @@ void transfer(Entry[] newTable, boolean rehash) {
 <pre><code>结论：
 
     1.JDK1.8中的concurrentHashMap大量使用CAS算法，即无锁化的修改值的操作。
-    算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，相等则修改expect变量的值为new value.
+    算法思想：比较当前内存中的变量值与指定的expect变量的值是否相等，
+             相等则修改expect变量的值为new value.
 
     2.ConcurrentHashMap不允许key或者value为null；
 
@@ -592,7 +601,7 @@ void transfer(Entry[] newTable, boolean rehash) {
     2.1 获取segment的位置后尝试获取锁，获取到锁后node=null;
         没获取到锁的线程则通过scanAndLockForPut尝试获取锁；
 
-    2.2 scanAndLockForPut的思想是：通过自旋不断获取segment的锁，并在获取的过程中遍历链表，
+    2.2 scanAndLockForPut的思想是：锁通过自旋不断获取segment的，并在获取的过程中遍历链表，
 
         没有找到和key equals的HashEntry则创建一个HashEntry并在获取到锁后返回它，当尝试次数超过
 
@@ -673,8 +682,7 @@ void transfer(Entry[] newTable, boolean rehash) {
     2.1 put操作是尾插法
 
     2.2 新加了红黑树的数据结构；
-</code></pre><p>7.ConcurrentHashMap如何保证线程安全，并发度大小，jdk1.8有什么变化?</p>
-<p>8.HashMap的长度为什么是2的n次幂？</p>
+</code></pre><p>8.HashMap的长度为什么是2的n次幂？</p>
 <pre><code>只有当数组长度等于2的n次幂时，h&amp;(length-1)才等价于h%length；
 </code></pre><p>9.HashTable和HashMap的区别？</p>
 <pre><code>1.前者线程安全的,但是效率低。
@@ -685,14 +693,19 @@ void transfer(Entry[] newTable, boolean rehash) {
 
     HashTable起初是为并发环境设计。如果get一个null键返回的结果是null，那么有两种可能: 
     1.hashtable中存放了一个(null, null)键值对。 
-    2.hashtable中不存在null这个key。 这就要求使用者用containsKey()方法来做进一步确认。但是在这两个操作中间很可能发生并发修改导致结果出错。
+    2.hashtable中不存在null这个key。 这就要求使用者用containsKey()方法来做进一步确认。
+    但是在这两个操作中间很可能发生并发修改导致结果出错。
     所以一开始就禁止了null键或null值。
 
 4.前者的hash直接使用hashcode，后者hash进行过异或计算；
 
 5.前者初始容量11，后者16；
 
-6.前者扩容容量为2*oldTab+1，后者为2*oldTab；
+6.前者扩容容量为2*oldTab+1，因为HashTable计算index的方法如下：
+
+    int index = (e.hash &amp; 0x7FFFFFFF) % newCapacity;
+
+  后者为2*oldTab；
 </code></pre>
           
         
@@ -1151,17 +1164,14 @@ Swap:    1407     0    1407
       
         
           
-            <p>1.select count(<em>) 和 select count(列名)以及count(</em>)和count(1)？</p>
+            <p>1.select count(<em>) 和 select count(列名)、count(</em>)、count(1)？</p>
 <p><a href="http://www.xuchunfa.cn/2018/09/04/Mysql%E7%AC%94%E8%AE%B0/">Mysql基础笔记</a></p>
 <pre><code>前者会包含null的行，后者不会包括；
-</code></pre><ol>
-<li><p>union 和 union all 的区别？</p>
-<p>  1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)</p>
-<p>  2.union all：简单取并集，不做任何处理；</p>
-</li>
-<li><p>B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</p>
-</li>
-</ol>
+</code></pre><p>2.union 和 union all 的区别？</p>
+<pre><code>1.union：取两个结果集的并集，包括去重和默认排序功能；(例如按id排序)
+
+2.union all：简单取并集，不做任何处理；
+</code></pre><p>3.B树（B-树）和B+树是解决什么样的问题的，怎样演化过来，之间区别？</p>
 <p><a href="https://segmentfault.com/a/1190000004690721" title="B/B+树的结构示意图" target="_blank" rel="noopener">B/B+树的结构示意图</a></p>
 <pre><code>1.作为文件系统以及数据库系统的索引结构；
 
@@ -1193,14 +1203,9 @@ Swap:    1407     0    1407
 2.叶子节点包含了全部元素信息以及指向这些元素记录的指针；
 
 3.所有的中间节点元素都同时存在于子节点，在子节点元素中是最大或最小元素；
-</code></pre><ol start="2">
-<li><p>Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
-<p>  因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；</p>
-</li>
-</ol>
-<ol start="3">
-<li>数据库事务特性以及四个隔离级别，Mysql属于哪一种？</li>
-</ol>
+</code></pre><p>4.Mysql给离散度低的字段建立索引会出现什么问题，具体说下原因？</p>
+<pre><code>因为访问索引需要付出额外IO的代价，离散度低的字段数据会发生频繁访问IO的情况降低了性能；
+</code></pre><p>5.数据库事务特性以及四个隔离级别，Mysql属于哪一种？</p>
 <p><a href="https://www.hollischuang.com/archives/943" title="隔离级别详解" target="_blank" rel="noopener">隔离级别详解</a></p>
 <pre><code>1.事务特性：原子性、一致性、隔离性和持久性；
 
@@ -1213,16 +1218,101 @@ Swap:    1407     0    1407
     2.3 可重复读：出现幻读，一个事务中读取的数据一致；
 </code></pre><p>幻读的例子：</p>
 <p><img src="/images/幻读.PNG" alt=""></p>
-<pre><code>    2.4 串行化：最高隔离级别。出现以下现象：
-
-        1.事务1正在（强调正在）读取A表中的记录时，则事务2也能读取A表，但不能对A表做更新、新增、删除，直到事务1结束。(因为事务一对表增加了表级共享锁，其他事只能增务加共享锁读取数据，不能进行其他任何操作）
-
-        2.事务1正在更新A表中的记录时，则事务2不能读取A表的任意记录，更不可能对A表做更新、新增、删除，直到事务1结束。（事务一对表增加了表级排他锁，其他事务不能对表增加共享锁或排他锁，也就无法进行任何操作）
+<pre><code>    2.4 串行化：最高隔离级别。
 
 3.MySQL的默认隔离级别：可重复读；
-</code></pre><ol start="3">
-<li>索引有哪几种？索引的好处？什么时候用？索引的原理？</li>
-</ol>
+</code></pre><p>5.Innodb事务实现原理？</p>
+<p><img src="/images/事务原理1.png" alt=""></p>
+<pre><code>隔离性是通过锁来实现的
+
+1.redo log
+
+    a)物理日志，实现事务的持久性
+
+    b)记录事务变更前后的状态，事务提交时，将redo log持久化，当数据
+      在内存中变更，系统崩溃，可以使用redo log将数据恢复到最新状态；
+
+2.undo log
+
+    a)逻辑日志，实现事务回滚和MVCC
+
+    b)记录事务变更前的状态，操作数据之前先将数据备份到undo日志
+
+3.快照读和当前读
+
+    快照读：简单的查询操作，不加锁
+
+        a)通过uodo log 实现，比较当前事务id与行数据的trx_id的关系，
+          id &lt; trx_id 该条数据对当前事务不可见，通过行db_roll_ptr
+          指针查找历史版本
+
+    当前读：特殊的读操作，以及插入、更新、删除需要加锁
+
+        eg:select * from table where ... lock in share mode
+
+4.Innodb加锁处理
+
+    eg:delete from table where id = 10 分析以下几种情况：
+
+    4.1 id列为主键索引，锁主键索引上id=10的记录
+
+    4.2 id列为唯一索引，name列为主键索引，先锁唯一索引上id=10的行，
+        再锁主键索引上name=&apos;&apos;的行
+
+    4.3 id列为辅助索引，会给id=10的所有行加X锁，而且会给被锁行的前后
+        范围加GAP锁（Innodb隔离级别RR）
+        再在主键索引上，给相应记录加X锁；
+
+    4.4 id列未加索引，主键索引name的所有行加X锁，所有间隙加GAP锁，
+        全表数据被锁；
+</code></pre><p>6.Explain输出字段？</p>
+<pre><code>1.select_type: SELECT的查询的类型
+
+    SIMPLE：不包含UNION的查询，常见值；
+
+    UNION：使用了UNION查询；
+
+2.type：可用来判断此次查询是全表扫描 or 索引扫描
+
+    index：全索引扫描，仅仅扫描所有的索引，不扫描数据；
+
+    ALL：表示全表扫描；
+
+    const：针对主键或唯一索引的等值查询扫描，最多只返回一条数据；
+           查询速度快；
+
+    system：表中只有一条数据，特殊的const类型；
+
+    eq_ref：通常出现在多表的join查询，前表的每一个结果都只能
+            匹配后表的一行结果，&quot;=&quot;比较操作
+
+    ref：多表join，针对非唯一 or 非主键 or 最左前缀；
+
+    range：使用索引范围查询，=、&lt;&gt;、&gt;、&lt;、is null、between、in
+
+性能比较：
+
+    ALL &lt; index &lt; range ~ index_merge &lt; 
+    ref &lt; eq_ref &lt; const &lt; system
+
+3.possible_keys：能够使用到的索引；
+
+4.key：当前查询真正使用到的索引；
+
+5.key_len：使用了索引的字节数，用来判断索引是否完全被使用；
+
+6.Extra：额外信息；
+
+    Using filesort：需要额外的排序操作，不能通过索引顺序达到排序效果；
+
+    Using index：覆盖索引扫描。找索引中就能查找所需数据，不用回表
+                 查询；
+
+    Using temporary：查询使用了临时表，一般出现于排序、分组和多
+                     表join的情况，效率不高；
+
+    Using where：使用where条件过滤；
+</code></pre><p>7.索引有哪几种？索引的好处？什么时候用？索引的原理？</p>
 <p><a href="https://www.jianshu.com/p/2b541c028157" title="MySQL索引使用" target="_blank" rel="noopener">MySQL索引使用</a></p>
 <pre><code>1.普通索引
 
@@ -1326,28 +1416,155 @@ Swap:    1407     0    1407
 
 7.索引字段是字符串，但查询的时候不加单引号，索引失效；
 
-8.mysql中不能继续使用索引中范围条件between、&lt;、&gt;、in等右边的列；
-</code></pre><ol start="7">
-<li><p>数据库引擎有哪些？说说他们的区别？</p>
-<p> MyISAM</p>
-<pre><code>1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
+8.mysql在查询中遇到between、&lt;、&gt;、in后，之后的列的索引将失效；
+</code></pre><p>8.数据库引擎有哪些？说说他们的区别？</p>
+<pre><code>MyISAM
 
-2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
+    1.表级锁、不支持事务、全文索引(查询效率上MyISAM要高)、不支持外键；
 
-3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
+    2.MyISAM保存表的具体行数，InnoDB执行select count(*) from table时全表扫描；
 
-辅助索引是独立的。
-</code></pre></li>
-</ol>
-<pre><code>InnoDB:
+    3.MyISAM非聚集索引，索引保存的是数据文件的地址，数据文件和索引是分离的，主键索引和
+
+    辅助索引是独立的。
+
+
+InnoDB:
 
     1.行级锁、支持事务、支持外键、支持MVCC、MySQL5.6.4版本以后开始支持FULLTEXT类型的索引；
 
     2.InnoDB是聚集索引，数据文件和索引绑定在一起，必须要有主键，没的话会自动生成主键，主键
 
     索引效率高，但是辅助索引需要两次查询，先查到主键，再通过主键查到数据，主键不应该设太大；
-</code></pre><p>8.分布式数据库？</p>
+</code></pre><p>9.SQL优化说一下？</p>
+<p><a href="https://www.cnblogs.com/butterfly100/p/9034281.html" target="_blank" rel="noopener">分库分表详解</a></p>
+<pre><code>1.慢查询优化
 
+EXPLAIN select ... 看有没有走索引（看key字段），索引失效的情况总结如下：
+
+    1.1 != 或&lt;&gt;、字段null值判断(where name is null)、or、%aa、
+        where子句使用参数(where num=@num)
+
+    1.2 对字段进行表达式操作（where num/2=100）、对字段进行函数操作、
+        NOT IN
+
+2.数据库设计和结构优化
+
+    字段数据类型的选择、存储引擎、三范式、编码选择等；
+
+3.数据库分库分表
+
+    3.1 垂直切分
+
+        a)垂直分库
+
+            将关联度低的不同表存储在不同的数据库；
+
+        b)垂直分表
+
+            将不经常用或字段长度较大的字段拆分出去到拓展表中，这样表中字段
+            较短且访问频率较高，内存能加载更多的数据；
+
+    3.2 水平切分
+
+        a)库内分表
+
+            还是竞争同一个CPU、内存、网络IO效果不是很大；
+
+        b)分库分表
+
+            将表分布到不同的机器上面去，几种数据分片规则：
+
+            1.根据数值范围。
+
+                优点：分片集群扩容时，不需要对其他分片的数据进行迁移，
+                     分片字段范围查询效率高；
+
+                缺点：热点数据成为性能瓶颈。
+
+            2.根据数值取模
+
+                优点：数据分布均匀，不容易出现热点和并发访问的性能瓶颈；
+
+                缺点：扩容需要迁移旧的数据、如果查询不带分片字段，无法
+                     定位数据库，对所有数据库发起请求；
+
+4.分库分表的问题
+
+    4.1 事务一致性问题
+
+        分布式事务、最终一致性；
+
+    4.2 跨节点的关联查询join问题
+
+    4.3 跨节点分页、排序、函数问题
+
+    4.4 全局主键避重问题
+
+    4.5 数据迁移、扩容问题
+
+5.读写分离
+
+    1.主从复制原理：
+</code></pre><p><img src="/images/主从1.png" alt=""></p>
+<pre><code>总体：
+
+   让master数据库处理写操作，slave数据库处理读操作，master将
+
+写操作的变更同步到各个slave节点；
+
+细节：
+
+    a)主库db的更新(insert、update、delete)被写到binlog
+
+    b)从库发起到主库的连接
+
+    c)主库创建一个binlog dump thread线程，把binlog内容发送
+      到从库
+
+    d)从库创建一个I/O线程，把主库读过来的binlog内容写到relay 
+</code></pre><p>  `                  log中</p>
+<pre><code>        e）从库创建一个SQL线程，读取relay log中更新事件执行；
+
+2.为什么要做主从复制？
+
+    a）数据备份，避免主数据库宕机造成的数据丢失；
+
+    b）单机CPU、内存、IO性能瓶颈问题；
+
+    c) 读写分离，使数据库能够支撑更大的并发量；
+</code></pre><p>10.B+树和哈希索引，两者主要应用在哪些方面？</p>
+<pre><code>哈希索引
+
+    优点：
+
+        1.等值查询，where name=&apos;xu&apos;，而且hash后的键值都不冲突，那么
+          依次hash，就能get()到值，效率高；
+
+    缺点：
+
+        1.不适合范围查询检索，有序的key都已经hash开了，例如&apos;xxx%&apos;本质
+          上也是范围查询
+
+        2.没办法利用索引排序。例如联合索引已经对第二个以及后面的键值
+          进行了排序。
+
+            eg:select * from buy_log where id=1 order by buy_date
+
+            其中：(id,buy_date)是联合索引，无需再对buy_date进行排序，
+                  否者还要进行一次 filesort操作；
+
+        3.不支持部分索引列匹配查找，例如(A，B)索引，只查询A列是无法使用
+          该索引的，即不支持最左匹配，原因哈希索引是使用索引列的全部内容
+          来计算hash值的；
+
+        4.hash冲突大时，索引效率
+
+场景：
+
+    hash索引适合等值查询，b+树索引数据按索引顺序组织在一起，
+    适合查找范围数据；
+</code></pre>
           
         
       
@@ -1810,7 +2027,18 @@ public void run() {
 
     1.ABA问题。
 
+     例子：
+
+        线程1(提款机)：获取当前值100，要更新为50（成功）
+
+        线程2(提款机)：获取当前值100，要更新为50（阻塞）
+
+        线程3给小明转账50元，执行成功余额变成100，此时线程2唤醒，
+        获取的期望值也是100，执行成功余额变成50，显然实际余额应该
+        为100；
+
      在变量前面加上版本号，每次变量更新的时候版本号加1，变化过程从A-B-A变成了1A-2B-3A了。
+
 
     2.循环时间开销大。CAS操作长时间不成功的话会一直自旋，CPU开销大。
 
@@ -2196,13 +2424,15 @@ invokevirtual指令的执行流程：
       重写，直接调用具体对象的方法，否则，去找父类的方法表找到该方法。
 </code></pre><ol start="5">
 <li><p>Object类有哪些方法？以及具体用到哪？</p>
-<pre><code> 1.getClass()、hashCode()、equals(Object)、clone()、toString()、notify()、notifyAll()、wait(long)、wait(）、finalize();
+<pre><code> 1.hashCode()、equals(Object)、clone()、toString()、notify()、
+  notifyAll()、wait(long)、wait(）、finalize()、
+  getClass()（native方法）
 
 2.wait()和notify():生产者消费者模式中常用到；
 </code></pre></li>
 </ol>
 <ol start="6">
-<li><p>java的浅拷贝和深拷贝？</p>
+<li><p>java的浅拷贝和深拷贝、零拷贝？</p>
 <p> 浅拷贝：</p>
 <pre><code>1.属性为引用类型，拷贝的是内存地址，如果一个对象改变了引用对象指向的对象的内容，那么拷贝对象中也会发生变化；
 
@@ -2252,9 +2482,36 @@ public void test() throws CloneNotSupportedException {
 <pre><code>如果一个对象内部只有基本数据类型，那用 clone() 方法获取到的就是这个对象的深拷贝，
 
 而如果其内部还有引用数据类型，那用 clone() 方法就是一次浅拷贝的操作。
+</code></pre><p> 3.零拷贝</p>
+<pre><code>1.&quot;零&quot;指用户态和内核态拷贝的次数为0；
+
+2.传统的数据拷贝，需要四次用户态和内核态的切换、四次数据拷贝，两次
+  在用户态和内核态拷贝数据，需要CPU参与，另外两次在内核态和IO设备
+  之间的拷贝为DMA方式，不需要CPU参与；
+
+  零拷贝没有用户态和内核态之间的两次数据拷贝，减少了两次用户态和
+  内核态的切换；
+
+3.自己理解
+
+    第一次读阻塞，用户态到内核态，内核拷贝完数据，内核态切换到用户态，
+    阻塞返回，用户可以读取数据，之后传输数据开始写数据了，写阻塞，用户态切到内核态，
+    将数据拷贝到内核空间的Socket缓存区，写完之后，写阻塞返回
+    内核态又切换到用户态，数据写到网卡；
 </code></pre></li>
 </ol>
-<ol start="7">
+<p>传统数据拷贝：</p>
+<p><img src="/images/0copy3.JPG" alt=""></p>
+<p><img src="/images/0copy1.png" alt=""></p>
+<p><img src="/images/0copy2.png" alt=""></p>
+<p>零拷贝：</p>
+<p><img src="/images/0copy4.png" alt=""></p>
+<p><img src="/images/0copy5.png" alt=""></p>
+<pre><code>3.应用实例
+
+    NIO中的FileChannel的transferTo和transferFrom方法，可以把
+FileChannel中的数据直接拷贝到其他Channel；
+</code></pre><ol start="7">
 <li><p>equals和==的区别以及hashcode和equals之间的关系？</p>
 <pre><code>1.==表示地址是否相等，equals表示内容是否相等；
 </code></pre><p> hashcode和equals之间的关系：</p>
@@ -2296,25 +2553,33 @@ public class Main {
         System.out.println(s1==s6);//true s1常量池地址 s6常量池地址
 }
 </code></pre><p>String.intern()方法：</p>
-<pre><code>使一个位于堆中的字符串在运行期间动态地加入到字符串常量池中，如果字符串常量池中已有该对象
-对应的字面量，则直接返回该字面量在字符串常量池中的引用。
+<pre><code>使一个位于堆中的字符串在运行期间动态地加入到字符串常量池中，
+如果字符串常量池中已有该对象对应的字面量，
+则直接返回该字面量在字符串常量池中的引用。
 </code></pre><p>8.String的intern()方法？</p>
 <pre><code>  1.String 的 String pool是一个固定大小的HashTable，默认大小1009；
 
-2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回它的引用；
+2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 
+如果常量池中没有此字符串, 会将此字符串对象放入常量池中后, 再返回它的引用；
 
-3.String s = new String(&quot;1&quot;)创建了两个对象，一个存放在常量池，另一个存放在Heap区；
+3.String s = new String(&quot;1&quot;)创建了两个对象，会在字符串常量池创建一个&quot;1&quot;
+  对象，另一个存放在Heap区；
 
 4.intern重用String对象，节省了内存消耗；
 </code></pre><p><a href="https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html" target="_blank" rel="noopener">美团技术讲解intern</a></p>
 <pre><code>//JDK1.7情况下（字符串常量池已经移到正常的Heap区）
 public void test1(){
-    String s1 = new String(&quot;1&quot;);
+    String s1 = new String(&quot;1&quot;);//s1堆地址
     s1.intern();
-    String s2 = &quot;1&quot;;
+    String s2 = &quot;1&quot;;//堆中的字符串常量池地址
     System.out.println(s1 == s2);//false
-    String s3 = new String(&quot;2&quot;) + new String(&quot;1&quot;);
-    s3.intern();//直接存储堆中的引用，即 s3.intern()==s3 为true
+
+    String s3 = new String(&quot;1&quot;) + new String(&quot;1&quot;)；
+    //jdk1.7中常量池中不是创建&quot;11&quot;对象，而是存储的是s3对象&quot;11&quot;
+    //的引用，
+    s3.intern();//JDK1.8情况不是这样
+
+    //常量池中s3对象&quot;11&quot;的引用
     String s4 = &quot;11&quot;;
     System.out.println(s3 == s4);//true
 }
@@ -2380,6 +2645,46 @@ System.out.println(s3 == s4);//true
     2.3 JDK1.8 局部变量被匿名内部类访问会相当于自动加final
 
 3.final变量在多线程中并发安全，无需额外同步开销
+</code></pre><p>10.Lambda表达式</p>
+<p>内部类：</p>
+<pre><code>1.分类
+
+    1.静态内部类：创建不依赖外部类
+
+    2.非静态内部类：成员内部类、方法内部类、匿名内部类
+
+2.非静态内部类，内部类的创建依赖于外部类的实例对象，在没有外部类实例
+  之前，无法创建普通内部类；
+
+3.非静态内部类，不允许有static成员
+
+4.匿名内部类可以引用局部变量，变量必须声明final
+
+5.静态内部类可以访问外部类的静态变量，不能访问非静态变量
+</code></pre><p>Lambda表达式：</p>
+<pre><code>1.表达式
+
+    （arg1，arg2，...）-&gt; {body}
+
+     eg:list.sort((s3,s4) -&gt; s3.getAge() - s4.getAge());
+
+     Student::getAge 即 目标引用::方法
+
+     eg:list.sort(Comparator.comparing(Student::getAge));
+
+2.功能接口
+
+    @FunctionalInterface 功能接口只能有一个抽象方法
+
+    eg:
+
+        @FunctionalInterface
+        public interface TestLamba {
+            public void test();
+        }
+
+        TestLamba lamda = () -&gt; System.out.println(&quot;Hello Lamda&quot;);
+        lamda.test();
 </code></pre><p>11.java反射机制的实现及应用？</p>
 <pre><code>应用：
 
@@ -2616,9 +2921,7 @@ System.out.println(s3 == s4);//true
       
         
           
-            <ol>
-<li>Java类加载以及类初始化顺序？</li>
-</ol>
+            <p>1.Java类加载以及类初始化顺序？</p>
 <p><a href="https://www.hollischuang.com/archives/201" target="_blank" rel="noopener">连接初始化详解</a></p>
 <pre><code>1.类加载的生命周期：
 
@@ -2653,36 +2956,53 @@ System.out.println(s3 == s4);//true
     4.2 父类静态代码块---父类静态成员变量（这两个顺序先后按代码先后顺序出现）---子类静态代码块---子类静态成员变量
     ---父类实例变量代码块---父类实例变量---子类实例变量代码块---子类实例变量
     ---父类构造函数---子类构造函数
-</code></pre><ol start="3">
-<li>对方法区和永久区解的理以及它们之间关系的理解？</li>
-<li><p>一个java文件有3个类，编译后有几个class文件？</p>
+</code></pre><p>2.对方法区和永久区的理解以及它们之间关系的理解？</p>
+<pre><code>永久代是HotSpot的概念，HotSpot使用永久代来实现方法区，方法区
+是JVM的一种规范，一种标准，而永久代是一种实现。
+</code></pre><p>3.一个java文件有3个类，编译后有几个class文件？</p>
 <pre><code>答：3个。
-</code></pre></li>
-</ol>
-<p>4.对象的生命周期，如何判断一个对象不可用，要回收？</p>
-<ol start="5">
-<li><p>JVM GC算法的前戏？</p>
-<p> 首先弄清楚判断对象是否存活的算法：</p>
-<pre><code>1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。
+</code></pre><p>4.Java的堆内存和栈内存？</p>
+<pre><code>1.栈内存
 
-缺点：无法解决循环引用的问题。
+    特点：存储局部变量和对象的引用变量，每个线程都有一个独立的栈空间；
 
-2.可达性分析算法。对象到GC Roots 不可达则回收，反之不回收。
+    优点：存取速度比堆要快，但栈中数据大小和生存期必须是确定的，缺乏
+         灵活性；
 
-2.1 可作为GC Roots的对象：
+2.堆内存
 
-    1.虚拟机栈（栈帧中）引用的对象。
+    特点：存储对象和数组
 
-    2.方法区类静态属性引用的对象。
+    优点：动态分配内存，但存储速度慢；
 
-    3.方法区常量引用的对象。
+3.堆内存和栈内存区别
 
-    4.native方法中引用的对象。
-</code></pre><p> 永久代收集的什么垃圾？</p>
-<pre><code>1.废弃常量。没有任何引用。
+    区别：各司其职、独有还是共享、异常错误、空间大小
+</code></pre><p>5.JVM GC算法的前戏？</p>
+<pre><code>首先弄清楚判断对象是否存活的算法：
 
-2.无用的类。所有实例都被回收、类加载器被回收、对象没有在任何地方引用。、
-</code></pre></li>
+    1.引用计数算法。对象被引用一次，计数值加1，引用失效，计数值减1，当计数值为0时回收。
+
+    缺点：无法解决循环引用的问题。
+
+    2.可达性分析算法。对象到GC Roots 不可达则回收，反之不回收。
+
+    2.1 可作为GC Roots的对象：
+
+        1.虚拟机栈（栈帧中）引用的对象。
+
+        2.方法区类静态属性引用的对象。
+
+        3.方法区常量引用的对象。
+
+        4.native方法中引用的对象。
+
+永久代收集的什么垃圾？
+
+    1.废弃常量。没有任何引用。
+
+    2.无用的类。所有实例都被回收、类加载器被回收、对象没有在任何地方引用。、
+</code></pre><ol start="5">
 <li><p>JVM GC算法核心内容？</p>
 <pre><code>1.标记-回收算法。判断是否存活，标记并清除。
 
@@ -2702,7 +3022,8 @@ System.out.println(s3 == s4);//true
 
 缺点：
 
-    2.1 只有一半内存可用，代价大。解决办法是划分为1个Eden2个Survivor(比例8:1:1)只有10%空间没用。这样做的缺点是万一存活对象大于10%则必须依赖老年代进行分配担保。
+    2.1 只有一半内存可用，代价大。解决办法是划分为1个Eden2个Survivor(比例8:1:1)只有10%空间没用。
+        这样做的缺点是万一存活对象大于10%则必须依赖老年代进行分配担保。
 
     2.2 不适合对象存活率高的情况，这样频繁复制影响效率。适合新生代，不适合老年代。
 
@@ -2714,7 +3035,8 @@ System.out.println(s3 == s4);//true
 
 4.分代回收算法。新生代采用复制算法，老年代采用标记-整理或标记清除算法。
 </code></pre><p> 总结：</p>
-<pre><code>Java垃圾回收一般是采用分代回收的，将java堆分成老年代和新生代。新生代特点对象存活率低，采用复制算法，老年代反之采用标记-整理/标记-清除算法。
+<pre><code>Java垃圾回收一般是采用分代回收的，将java堆分成老年代和新生代。
+新生代特点对象存活率低，采用复制算法，老年代反之采用标记-整理/标记-清除算法。
 </code></pre></li>
 <li><p>JVM 垃圾收集器核心内容？</p>
 <p> 首先看个整体图，连线表示可以搭配使用。</p>
@@ -2866,7 +3188,8 @@ G1收集器的4种操作：
 
 3.动态年龄判定。Surviovr区中年龄相等的对象占了整个Survivor大小的一半以上，则年龄大于或等于该年龄的对象将进入老年代。
 
-4.空间分配担保。如果晋升到老年代的对象的平均大小 小于 老年代的剩余空间则发生担保，Eden内的所有存活对象进入到老年代，否则担保失败，发生Full GC.(比Minor GC 慢10倍)
+4.空间分配担保。如果晋升到老年代的对象的平均大小 小于 老年代的剩余空间则发生担保，
+Eden内的所有存活对象进入到老年代，否则担保失败，发生Full GC.(比Minor GC 慢10倍)
 </code></pre><ol start="5">
 <li>Java内存结构？ </li>
 </ol>
@@ -3703,9 +4026,10 @@ public class ProxyFactory implements MethodInterceptor {
 <ul>
 <li>JAVA中的IO就是装饰者模式的具体应用：</li>
 </ul>
-<p><img src="https://i.imgur.com/RxUg3EW.jpg" alt=""></p>
+<p><img src="/images/io装饰者.png" alt=""></p>
 <p>总结：</p>
-<pre><code>装饰者模式能够很好的解决了，因为需求的变化需要重复添加功能相似的代码，即代码冗余；这种结构也能很好的解决“类爆炸”的情况。
+<pre><code>装饰者模式能够很好的解决了，因为需求的变化需要重复添加功能相似的代码，
+即代码冗余；这种结构也能很好的解决“类爆炸”的情况。
 </code></pre>
           
         
@@ -4157,7 +4481,7 @@ private static class WriterManagerInstance{
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

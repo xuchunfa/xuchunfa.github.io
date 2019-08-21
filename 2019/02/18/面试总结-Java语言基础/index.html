@@ -88,10 +88,16 @@
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
 <meta property="og:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  java四种引用类型？  1.强引用(StrongReference) //垃圾收集器不会回收这种强引用对象，除非主动 king = null King king = new King()  2.软引用(SoftReference">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-05T13:02:43.684Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/0copy3.JPG">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/0copy1.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/0copy2.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/0copy4.png">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/0copy5.png">
+<meta property="og:updated_time" content="2019-08-13T12:31:38.485Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java语言基础">
 <meta name="twitter:description" content="1.java基本数据类型？ byte(1)、boolean(1)、short(2)、char(2)、int(4)、float(4)、long(8)、double(8)  java四种引用类型？  1.强引用(StrongReference) //垃圾收集器不会回收这种强引用对象，除非主动 king = null King king = new King()  2.软引用(SoftReference">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/0copy3.JPG">
 
 
 
@@ -495,13 +501,15 @@ invokevirtual指令的执行流程：
       重写，直接调用具体对象的方法，否则，去找父类的方法表找到该方法。
 </code></pre><ol start="5">
 <li><p>Object类有哪些方法？以及具体用到哪？</p>
-<pre><code> 1.getClass()、hashCode()、equals(Object)、clone()、toString()、notify()、notifyAll()、wait(long)、wait(）、finalize();
+<pre><code> 1.hashCode()、equals(Object)、clone()、toString()、notify()、
+  notifyAll()、wait(long)、wait(）、finalize()、
+  getClass()（native方法）
 
 2.wait()和notify():生产者消费者模式中常用到；
 </code></pre></li>
 </ol>
 <ol start="6">
-<li><p>java的浅拷贝和深拷贝？</p>
+<li><p>java的浅拷贝和深拷贝、零拷贝？</p>
 <p> 浅拷贝：</p>
 <pre><code>1.属性为引用类型，拷贝的是内存地址，如果一个对象改变了引用对象指向的对象的内容，那么拷贝对象中也会发生变化；
 
@@ -551,9 +559,36 @@ public void test() throws CloneNotSupportedException {
 <pre><code>如果一个对象内部只有基本数据类型，那用 clone() 方法获取到的就是这个对象的深拷贝，
 
 而如果其内部还有引用数据类型，那用 clone() 方法就是一次浅拷贝的操作。
+</code></pre><p> 3.零拷贝</p>
+<pre><code>1.&quot;零&quot;指用户态和内核态拷贝的次数为0；
+
+2.传统的数据拷贝，需要四次用户态和内核态的切换、四次数据拷贝，两次
+  在用户态和内核态拷贝数据，需要CPU参与，另外两次在内核态和IO设备
+  之间的拷贝为DMA方式，不需要CPU参与；
+
+  零拷贝没有用户态和内核态之间的两次数据拷贝，减少了两次用户态和
+  内核态的切换；
+
+3.自己理解
+
+    第一次读阻塞，用户态到内核态，内核拷贝完数据，内核态切换到用户态，
+    阻塞返回，用户可以读取数据，之后传输数据开始写数据了，写阻塞，用户态切到内核态，
+    将数据拷贝到内核空间的Socket缓存区，写完之后，写阻塞返回
+    内核态又切换到用户态，数据写到网卡；
 </code></pre></li>
 </ol>
-<ol start="7">
+<p>传统数据拷贝：</p>
+<p><img src="/images/0copy3.JPG" alt=""></p>
+<p><img src="/images/0copy1.png" alt=""></p>
+<p><img src="/images/0copy2.png" alt=""></p>
+<p>零拷贝：</p>
+<p><img src="/images/0copy4.png" alt=""></p>
+<p><img src="/images/0copy5.png" alt=""></p>
+<pre><code>3.应用实例
+
+    NIO中的FileChannel的transferTo和transferFrom方法，可以把
+FileChannel中的数据直接拷贝到其他Channel；
+</code></pre><ol start="7">
 <li><p>equals和==的区别以及hashcode和equals之间的关系？</p>
 <pre><code>1.==表示地址是否相等，equals表示内容是否相等；
 </code></pre><p> hashcode和equals之间的关系：</p>
@@ -595,25 +630,33 @@ public class Main {
         System.out.println(s1==s6);//true s1常量池地址 s6常量池地址
 }
 </code></pre><p>String.intern()方法：</p>
-<pre><code>使一个位于堆中的字符串在运行期间动态地加入到字符串常量池中，如果字符串常量池中已有该对象
-对应的字面量，则直接返回该字面量在字符串常量池中的引用。
+<pre><code>使一个位于堆中的字符串在运行期间动态地加入到字符串常量池中，
+如果字符串常量池中已有该对象对应的字面量，
+则直接返回该字面量在字符串常量池中的引用。
 </code></pre><p>8.String的intern()方法？</p>
 <pre><code>  1.String 的 String pool是一个固定大小的HashTable，默认大小1009；
 
-2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回它的引用；
+2.intern方法（JDK1.6）：如果常量池中(方法区Perm)存在当前字符串, 就会直接返回当前字符串. 
+如果常量池中没有此字符串, 会将此字符串对象放入常量池中后, 再返回它的引用；
 
-3.String s = new String(&quot;1&quot;)创建了两个对象，一个存放在常量池，另一个存放在Heap区；
+3.String s = new String(&quot;1&quot;)创建了两个对象，会在字符串常量池创建一个&quot;1&quot;
+  对象，另一个存放在Heap区；
 
 4.intern重用String对象，节省了内存消耗；
 </code></pre><p><a href="https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html" target="_blank" rel="noopener">美团技术讲解intern</a></p>
 <pre><code>//JDK1.7情况下（字符串常量池已经移到正常的Heap区）
 public void test1(){
-    String s1 = new String(&quot;1&quot;);
+    String s1 = new String(&quot;1&quot;);//s1堆地址
     s1.intern();
-    String s2 = &quot;1&quot;;
+    String s2 = &quot;1&quot;;//堆中的字符串常量池地址
     System.out.println(s1 == s2);//false
-    String s3 = new String(&quot;2&quot;) + new String(&quot;1&quot;);
-    s3.intern();//直接存储堆中的引用，即 s3.intern()==s3 为true
+
+    String s3 = new String(&quot;1&quot;) + new String(&quot;1&quot;)；
+    //jdk1.7中常量池中不是创建&quot;11&quot;对象，而是存储的是s3对象&quot;11&quot;
+    //的引用，
+    s3.intern();//JDK1.8情况不是这样
+
+    //常量池中s3对象&quot;11&quot;的引用
     String s4 = &quot;11&quot;;
     System.out.println(s3 == s4);//true
 }
@@ -679,6 +722,46 @@ System.out.println(s3 == s4);//true
     2.3 JDK1.8 局部变量被匿名内部类访问会相当于自动加final
 
 3.final变量在多线程中并发安全，无需额外同步开销
+</code></pre><p>10.Lambda表达式</p>
+<p>内部类：</p>
+<pre><code>1.分类
+
+    1.静态内部类：创建不依赖外部类
+
+    2.非静态内部类：成员内部类、方法内部类、匿名内部类
+
+2.非静态内部类，内部类的创建依赖于外部类的实例对象，在没有外部类实例
+  之前，无法创建普通内部类；
+
+3.非静态内部类，不允许有static成员
+
+4.匿名内部类可以引用局部变量，变量必须声明final
+
+5.静态内部类可以访问外部类的静态变量，不能访问非静态变量
+</code></pre><p>Lambda表达式：</p>
+<pre><code>1.表达式
+
+    （arg1，arg2，...）-&gt; {body}
+
+     eg:list.sort((s3,s4) -&gt; s3.getAge() - s4.getAge());
+
+     Student::getAge 即 目标引用::方法
+
+     eg:list.sort(Comparator.comparing(Student::getAge));
+
+2.功能接口
+
+    @FunctionalInterface 功能接口只能有一个抽象方法
+
+    eg:
+
+        @FunctionalInterface
+        public interface TestLamba {
+            public void test();
+        }
+
+        TestLamba lamda = () -&gt; System.out.println(&quot;Hello Lamda&quot;);
+        lamda.test();
 </code></pre><p>11.java反射机制的实现及应用？</p>
 <pre><code>应用：
 
@@ -878,7 +961,7 @@ System.out.println(s3 == s4);//true
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

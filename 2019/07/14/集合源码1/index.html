@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="第一部分栈和队列  栈 栈继承Vector，入栈和出栈都是线程安全的；   push入栈 默认初始容量10.  public E push(E item) {     addElement(item)；     return item; }  //vector方法 public synchronized void addElement(E obj) {     modCount++;     //">
+<meta name="description" content="第一部分栈和队列  栈 栈继承Vector，入栈和出栈都是线程安全的；  //无参构造函数初始容量10 public Vector() {     this(10); }  //默认空数组，插入第一个元素就扩容到初始容量10 public ArrayList() {     this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA; }  //指定初">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集合源码1">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/07/14/集合源码1/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="第一部分栈和队列  栈 栈继承Vector，入栈和出栈都是线程安全的；   push入栈 默认初始容量10.  public E push(E item) {     addElement(item)；     return item; }  //vector方法 public synchronized void addElement(E obj) {     modCount++;     //">
+<meta property="og:description" content="第一部分栈和队列  栈 栈继承Vector，入栈和出栈都是线程安全的；  //无参构造函数初始容量10 public Vector() {     this(10); }  //默认空数组，插入第一个元素就扩容到初始容量10 public ArrayList() {     this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA; }  //指定初">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-14T13:09:41.496Z">
+<meta property="og:updated_time" content="2019-08-13T03:26:52.467Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集合源码1">
-<meta name="twitter:description" content="第一部分栈和队列  栈 栈继承Vector，入栈和出栈都是线程安全的；   push入栈 默认初始容量10.  public E push(E item) {     addElement(item)；     return item; }  //vector方法 public synchronized void addElement(E obj) {     modCount++;     //">
+<meta name="twitter:description" content="第一部分栈和队列  栈 栈继承Vector，入栈和出栈都是线程安全的；  //无参构造函数初始容量10 public Vector() {     this(10); }  //默认空数组，插入第一个元素就扩容到初始容量10 public ArrayList() {     this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA; }  //指定初">
 
 
 
@@ -414,6 +414,21 @@
 <ul>
 <li><p>栈</p>
 <pre><code>栈继承Vector，入栈和出栈都是线程安全的；
+
+//无参构造函数初始容量10
+public Vector() {
+    this(10);
+}
+
+//默认空数组，插入第一个元素就扩容到初始容量10
+public ArrayList() {
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}
+
+//指定初始容量为0的话，插入第一个元素不会扩容到10
+public ArrayList(0) {
+    this.elementData = EMPTY_ELEMENTDATA;
+}
 </code></pre></li>
 </ul>
 <p><strong>push入栈</strong></p>
@@ -707,7 +722,7 @@ private void grow(int minCapacity) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

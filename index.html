@@ -1464,6 +1464,21 @@ buf.get();//获取buffer数据
 <ul>
 <li><p>栈</p>
 <pre><code>栈继承Vector，入栈和出栈都是线程安全的；
+
+//无参构造函数初始容量10
+public Vector() {
+    this(10);
+}
+
+//默认空数组，插入第一个元素就扩容到初始容量10
+public ArrayList() {
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}
+
+//指定初始容量为0的话，插入第一个元素不会扩容到10
+public ArrayList(0) {
+    this.elementData = EMPTY_ELEMENTDATA;
+}
 </code></pre></li>
 </ul>
 <p><strong>push入栈</strong></p>
@@ -2126,6 +2141,8 @@ for (Entry e = tab[i];
 <p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
 <p><a href="https://www.itcodemonkey.com/article/1725.html" target="_blank" rel="noopener">小灰漫画volatile</a></p>
 <p>有序性</p>
+<p>JMM制定的volatile重排序规则</p>
+<p><img src="/images/volatile.png" alt=""></p>
 <pre><code>通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程
 间共享变量的有序性；
 
@@ -3387,7 +3404,7 @@ public class SyncMediator extends AbstractMediator {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

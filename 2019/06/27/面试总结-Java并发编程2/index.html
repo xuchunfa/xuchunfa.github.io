@@ -81,19 +81,20 @@
 
 
 
-<meta name="description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；      1.2 每个volatil">
+<meta name="description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 JMM制定的volatile重排序规则  通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结-Java并发编程2">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/06/27/面试总结-Java并发编程2/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；      1.2 每个volatil">
+<meta property="og:description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 JMM制定的volatile重排序规则  通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/volatile.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/内存模型.png">
-<meta property="og:updated_time" content="2019-07-02T07:33:00.842Z">
+<meta property="og:updated_time" content="2019-08-14T05:42:05.314Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java并发编程2">
-<meta name="twitter:description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏障；      1.2 每个volatil">
-<meta name="twitter:image" content="http://www.xuchunfa.cn/images/内存模型.png">
+<meta name="twitter:description" content="volatile作用，如何保证可见性和有序性？      参考： volatile理解 小灰漫画volatile 有序性 JMM制定的volatile重排序规则  通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程 间共享变量的有序性；  具体屏障：      1.1 每个volatile写操作前插入StoreStore屏障，写操作之后插入StoreLoad屏">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/volatile.png">
 
 
 
@@ -419,6 +420,8 @@
 <p><a href="http://www.xuchunfa.cn/2018/07/24/volatile%E8%AF%AD%E4%B9%89%E5%92%8Cfinal%E8%AF%AD%E4%B9%89%E7%9A%84%E7%90%86%E8%A7%A3/">volatile理解</a></p>
 <p><a href="https://www.itcodemonkey.com/article/1725.html" target="_blank" rel="noopener">小灰漫画volatile</a></p>
 <p>有序性</p>
+<p>JMM制定的volatile重排序规则</p>
+<p><img src="/images/volatile.png" alt=""></p>
 <pre><code>通过在volatile变量的操作前后插入内存屏障的方式，来禁止指令重排，进而保证多线程
 间共享变量的有序性；
 
@@ -686,7 +689,7 @@ run()方法是一个普通的对象方法；
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

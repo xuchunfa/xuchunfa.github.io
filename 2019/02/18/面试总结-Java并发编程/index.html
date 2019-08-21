@@ -90,7 +90,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Markword.jpg">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/threadState.PNG">
-<meta property="og:updated_time" content="2019-07-04T12:20:25.004Z">
+<meta property="og:updated_time" content="2019-08-12T13:28:03.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Java并发编程">
 <meta name="twitter:description" content="线程创建的方法？ 1.继承Thread重写run方法；      java单继承，会有缺陷；  2.实现Runnable接口，new Thread(接口实现)；      Runnable无返回结果     Callable有返回结果  3.实现Callable&amp;lt;V&amp;gt;接口重写call方法      MyCall implements Callable&amp;lt;Integer&amp;gt;{.">
@@ -713,7 +713,18 @@ public void run() {
 
     1.ABA问题。
 
+     例子：
+
+        线程1(提款机)：获取当前值100，要更新为50（成功）
+
+        线程2(提款机)：获取当前值100，要更新为50（阻塞）
+
+        线程3给小明转账50元，执行成功余额变成100，此时线程2唤醒，
+        获取的期望值也是100，执行成功余额变成50，显然实际余额应该
+        为100；
+
      在变量前面加上版本号，每次变量更新的时候版本号加1，变化过程从A-B-A变成了1A-2B-3A了。
+
 
     2.循环时间开销大。CAS操作长时间不成功的话会一直自旋，CPU开销大。
 
@@ -977,7 +988,7 @@ isInterrupted：判断线程是否中断，不会清除标志位，所以为true
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

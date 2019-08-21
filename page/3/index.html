@@ -620,6 +620,14 @@
 3.SynchronousQueue：本身不带有空间存储任何元素，有公平和非公平；
 
 4.PriorityBlockingQueue：无界队列，基于数组，数据结构为二叉堆，数组第一个是最小值；
+</code></pre><p>BlockingDeque核心方法：</p>
+<pre><code>1.阻塞入队和出队
+
+    put(E)和take()方法
+
+2.非阻塞的入队和出队
+
+    offer(E)和poll()
 </code></pre><h4 id="ArrayBlockingQueue详解"><a href="#ArrayBlockingQueue详解" class="headerlink" title="ArrayBlockingQueue详解"></a>ArrayBlockingQueue详解</h4><p>核心成员变量：</p>
 <pre><code>final Object[] items;
 
@@ -690,7 +698,7 @@ private transient Node&lt;E&gt; last;
 //take、poll方法时加锁
 private final ReentrantLock takeLock = new ReentrantLock();
 
-//offer、offer方法时加锁
+//offer、put方法时加锁
 private final ReentrantLock putLock = new ReentrantLock();
 
 private final Condition notEmpty = takeLock.newCondition();
@@ -2981,7 +2989,7 @@ public boolean verify(int[] array,int left,int right){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

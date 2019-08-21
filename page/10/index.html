@@ -2445,6 +2445,10 @@ DelayedWorkerQueue是可以提供延迟的阻塞队列，保存的是延迟期�
     3.修改下次执行ScheduledFutureTask任务的time;
 
     4.添加任务到DelayedWorkQueue，会按time顺序排好队，底层原理PriorQueue.
+</code></pre><p><strong>newSingleThreadScheduledExecutor和newFixedThreadPool(1)？</strong></p>
+<pre><code>1.前者中任务被顺序执行，而且不能重新配置corePoolSize的大小；
+
+2.两者线程执行任务发生异常时，都会重新创建一个新的线程来执行任务；
 </code></pre><p><strong>任务提交到线程池：</strong></p>
 <pre><code>1.execute:提交不需要返回值的任务；
 
@@ -2969,7 +2973,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

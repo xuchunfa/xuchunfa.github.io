@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="单例模式的不同写法  饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getIn">
+<meta name="description" content="单例模式的不同写法  饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的，loadClass方法synchronized修饰）   public class Singleton { private static final Singleton INSTANCE = new Singleton();  private Singleton(){}  public sta">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单例模式">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/17/单例模式/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="单例模式的不同写法  饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getIn">
+<meta property="og:description" content="单例模式的不同写法  饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的，loadClass方法synchronized修饰）   public class Singleton { private static final Singleton INSTANCE = new Singleton();  private Singleton(){}  public sta">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/singleton.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/table.PNG">
-<meta property="og:updated_time" content="2019-07-08T11:58:37.608Z">
+<meta property="og:updated_time" content="2019-08-14T02:54:48.277Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例模式">
-<meta name="twitter:description" content="单例模式的不同写法  饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的！！！）   public class Singleton {   private static final Singleton INSTANCE = new Singleton();   private Singleton(){}   public static Singleton getIn">
+<meta name="twitter:description" content="单例模式的不同写法  饿汉模式（在调用对象之前就已经初始化了）   1.基于类加载的机制（是线程安全的，loadClass方法synchronized修饰）   public class Singleton { private static final Singleton INSTANCE = new Singleton();  private Singleton(){}  public sta">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/singleton.JPG">
 
 
@@ -406,13 +406,16 @@
 <p><strong>单例模式的不同写法</strong></p>
 <ul>
 <li><p>饿汉模式（在调用对象之前就已经初始化了）</p>
-<p>  1.基于类加载的机制（是线程安全的！！！）</p>
+<p>  1.基于类加载的机制（是线程安全的，loadClass方法synchronized修饰）</p>
 <p>  public class Singleton {</p>
-<p>  private static final Singleton INSTANCE = new Singleton();</p>
-<p>  private Singleton(){}</p>
-<p>  public static Singleton getInstance(){</p>
-<pre><code>return INSTANCE;
-</code></pre><p>  }<br>  }</p>
+<pre><code>private static final Singleton INSTANCE = new Singleton();
+
+private Singleton(){}
+
+public static Singleton getInstance(){
+    return INSTANCE;
+}
+</code></pre><p>  }</p>
 </li>
 </ul>
 <p>这里加final的意思这么理解：</p>
@@ -421,15 +424,15 @@
 <ul>
 <li><p>懒汉模式（线程不安全）</p>
 <pre><code>   public class Singleton {  
-  private static Singleton instance;  
-  private Singleton (){
-  }   
-  public static Singleton getInstance() {  
-  if (instance == null) {  
-          instance = new Singleton();  
-  }  
-  return instance;  
-  }  
+      private static Singleton instance;  
+      private Singleton (){}
+
+      public static Singleton getInstance() {  
+          if (instance == null) {  
+              instance = new Singleton();  
+          }  
+              return instance;  
+      }  
 }  
 </code></pre></li>
 </ul>
@@ -438,10 +441,8 @@
 <p>2.如果你是final非static成员，必须在构造器、代码块、或者直接定义赋值；</p>
 <ul>
 <li><p>懒汉模式（线程安全）</p>
-<p>  1.同步开销大,效率不高。</p>
-</li>
-</ul>
-<ul>
+<pre><code>同步开销大,效率不高。
+</code></pre></li>
 <li><p>双重检查模式（DCL）</p>
 <pre><code>public class Singleton { 
 
@@ -512,7 +513,7 @@ private static class SingletonHolder {
 2.将生成类对象的方法用static修饰的原因是：因为静态方法不需要依赖实例化的对象。
 </code></pre></li>
 <li><p>单例模式中volatile变量的作用？</p>
-<pre><code>保证原子性和有序性；
+<pre><code>保证可见性和有序性；
 </code></pre><p>  首先分析 instance = new Singleton() 的本质：</p>
 <p>  1.为对象分配内存空间</p>
 <p>  2.对象初始化</p>
@@ -661,7 +662,7 @@ private static class SingletonHolder {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
