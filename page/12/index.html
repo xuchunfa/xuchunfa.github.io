@@ -286,6 +286,232 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/栈和队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/27/栈和队列/" itemprop="url">栈和队列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T19:39:06+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/栈和队列/" itemprop="url" rel="index">
+                    <span itemprop="name">栈和队列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/27/栈和队列/" class="leancloud_visitors" data-flag-title="栈和队列">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="两个栈实现队列？"><a href="#两个栈实现队列？" class="headerlink" title="两个栈实现队列？"></a>两个栈实现队列？</h4><pre><code>public class StackToQueue&lt;T&gt; {
+
+private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();
+private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();
+
+public void appendTail(T element){
+    stack1.push(element);
+}
+
+public T deleteHead(){
+    if(stack2.size() &lt;= 0){
+        while(!stack1.empty()){
+            T element = stack1.pop();
+            stack2.push(element);
+        }
+    }
+
+    //说明stack1 也没元素了
+    if(stack2.isEmpty()){
+        throw new RuntimeException(&quot;队列为空&quot;);
+    }
+
+    T head = stack2.pop();
+    return head;
+}
+
+public static void main(String[] args){
+    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();
+    queue.appendTail(1);
+    queue.appendTail(2);
+    queue.appendTail(3);
+    Integer a = queue.deleteHead();
+    queue.appendTail(4);
+    Integer b = queue.deleteHead();
+    System.out.println(b);
+}
+}
+</code></pre><h4 id="两个队列实现栈？"><a href="#两个队列实现栈？" class="headerlink" title="两个队列实现栈？"></a>两个队列实现栈？</h4><pre><code>public class StackToQueue&lt;T&gt; {
+
+private Stack&lt;T&gt; stack1 = new Stack&lt;T&gt;();
+private Stack&lt;T&gt; stack2 = new Stack&lt;T&gt;();
+
+public void appendTail(T element){
+    stack1.push(element);
+}
+
+public T deleteHead(){
+    if(stack2.size() &lt;= 0){
+        while(!stack1.empty()){
+            T element = stack1.pop();
+            stack2.push(element);
+        }
+    }
+
+    //说明stack1 也没元素了
+    if(stack2.isEmpty()){
+        throw new RuntimeException(&quot;队列为空&quot;);
+    }
+
+    T head = stack2.pop();
+    return head;
+}
+
+public static void main(String[] args){
+    StackToQueue&lt;Integer&gt; queue = new StackToQueue&lt;Integer&gt;();
+    queue.appendTail(1);
+    queue.appendTail(2);
+    queue.appendTail(3);
+    Integer a = queue.deleteHead();
+    queue.appendTail(4);
+    Integer b = queue.deleteHead();
+    System.out.println(b);
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2620,200 +2846,6 @@ public static void main(String[] args){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/20/替换字符串字符/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/20/替换字符串字符/" itemprop="url">替换字符串字符</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T15:45:59+08:00">
-                2018-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/字符串/" itemprop="url" rel="index">
-                    <span itemprop="name">字符串</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/07/20/替换字符串字符/" class="leancloud_visitors" data-flag-title="替换字符串字符">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>将字符串中的’ ‘替换成”20%”？</li>
-</ul>
-<p><strong>核心思想：</strong></p>
-<p>1.从最后一字符开始从前遍历，最后一个字符是’\0’。</p>
-<p>2.将字符串变为数组时，要在字符串数组后面添加’\0’。</p>
-<pre><code>public class ReplaceChar {
-
-//时间复杂度：O(n) 空间复杂度：O(n)
-public static void replace(char[] a,int len){
-
-    //len = 1 时就一个字符&apos;\0&apos;
-    if(a == null || len&lt;2){
-        System.out.println(&quot;输入长度大于0的字符串&quot;);
-        return;
-    }
-
-    int oldLen = 0;
-    int count = 0;
-    int newLen;
-    for(int i = 0;a[i] !=&apos;\0&apos;;i++){
-        if(a[i] == &apos; &apos;)
-            count++;
-        oldLen++;
-    }
-    newLen = oldLen + 2*count;
-    //判断输入与字符数组的不匹配的字符串长度
-    if(newLen &gt; len)
-        return;
-
-    int j = newLen - 1;
-    for(int i = oldLen-1;i &gt;= 0;i--) {
-        if (a[i] == &apos; &apos;) {
-            a[j--] = &apos;0&apos;;
-            a[j--] = &apos;2&apos;;
-            a[j--] = &apos;%&apos;;
-        } else {
-            //注意 j 越界的情况
-            a[j--] = a[i];
-        }
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2868,7 +2900,7 @@ public static void replace(char[] a,int len){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="1.springIOC容器详解？ Spring启动源码分析 常用的几个 ApplicationContext 的子类：      1.ClassPathXmlApplicationContext      2.FileSystemXmlApplicationContext      3.AnnotationConfigApplicationContext  AOP和IOC原理？  1.IOC(In">
+<meta name="description" content="1.springIOC容器详解？ Spring启动源码分析 常用的几个 ApplicationContext 的子类：      1.ClassPathXmlApplicationContext      2.FileSystemXmlApplicationContext      3.AnnotationConfigApplicationContext 2.AOP和IOC原理？ 1.IOC(In">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试总结--Spring框架基础">
 <meta property="og:url" content="http://www.xuchunfa.cn/2019/02/18/面试总结-Spring框架基础/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1.springIOC容器详解？ Spring启动源码分析 常用的几个 ApplicationContext 的子类：      1.ClassPathXmlApplicationContext      2.FileSystemXmlApplicationContext      3.AnnotationConfigApplicationContext  AOP和IOC原理？  1.IOC(In">
+<meta property="og:description" content="1.springIOC容器详解？ Spring启动源码分析 常用的几个 ApplicationContext 的子类：      1.ClassPathXmlApplicationContext      2.FileSystemXmlApplicationContext      3.AnnotationConfigApplicationContext 2.AOP和IOC原理？ 1.IOC(In">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Bean的生命周期.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/springMVC.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/Servlet.JPG">
-<meta property="og:updated_time" content="2019-06-16T03:47:32.749Z">
+<meta property="og:updated_time" content="2019-08-26T10:32:51.594Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Spring框架基础">
-<meta name="twitter:description" content="1.springIOC容器详解？ Spring启动源码分析 常用的几个 ApplicationContext 的子类：      1.ClassPathXmlApplicationContext      2.FileSystemXmlApplicationContext      3.AnnotationConfigApplicationContext  AOP和IOC原理？  1.IOC(In">
+<meta name="twitter:description" content="1.springIOC容器详解？ Spring启动源码分析 常用的几个 ApplicationContext 的子类：      1.ClassPathXmlApplicationContext      2.FileSystemXmlApplicationContext      3.AnnotationConfigApplicationContext 2.AOP和IOC原理？ 1.IOC(In">
 <meta name="twitter:image" content="http://www.xuchunfa.cn/images/Bean的生命周期.JPG">
 
 
@@ -423,51 +423,123 @@
     2.FileSystemXmlApplicationContext
 
     3.AnnotationConfigApplicationContext
-</code></pre><ol>
-<li><p>AOP和IOC原理？</p>
-<p> 1.IOC(Inversion of Control控制反转)</p>
-<pre><code>由调用者创建实例转变为交由 Spring容器完成；
-</code></pre><p> 2.DI(Dependency Injection)</p>
-<pre><code>告诉 Spring 我需要什么对象，Spring就会注入需要的对象；
-</code></pre><p> 3.AOP(Aspect Oriented Programming)</p>
-<pre><code>3.1 术语
+</code></pre><p>2.AOP和IOC原理？</p>
+<pre><code>1.IOC(Inversion of Control控制反转)
 
-    Target(目标对象)：需要被代理的类；
+    由调用者创建实例转变为交由 Spring容器完成；
 
-    Jointpoint(连接点)：指那些可能被拦截到的方法；
+2.DI(Dependency Injection)
 
-    PointCut(切入点)：已经被增强了的连接点；
+    告诉 Spring 我需要什么对象，Spring就会注入需要的对象；
 
-    Advice(通知/增强)：切入点中的增强代码部分；
+3.AOP(Aspect Oriented Programming)
 
-    Weaving(织入)：把增强advice应用到目标对象target来，创建新的代理对象proxy的过程，
+    3.1 术语
 
-    织入过程是代理类将目标类和切面类结合；
+        Target(目标对象)：需要被代理的类；
 
-    Proxy:代理类；
+        Jointpoint(连接点)：指那些可能被拦截到的方法；
 
-    Aspect(切面)：是切入点pointcut和通知advice的结合;
+        PointCut(切入点)：已经被增强了的连接点；
 
-3.2 介绍
+        Advice(通知/增强)：切入点中的增强代码部分；
 
-    1.在Spring 中只需要定义切点和增强处理(Advice)，IOC容器会自动生成AOP代理，默认情况下是Jdk动态代理，即被代理对象需实现接口，
-    若被代理对象只是继承父类，则生成代理的方式为CGLIB代理；
+        Weaving(织入)：把增强advice应用到目标对象target来，创建新的代理对象proxy的过程，
 
-    若强制使用CGLIB代理如下：
+        织入过程是代理类将目标类和切面类结合；
 
-    &lt;aop:aspect-autoproxy proxy-target-class=true&gt;
+        Proxy:代理类；
 
-   2.AOP关注的是横切方面的代码，这些代码重复出现在各个业务模块当中，将他们抽取出来形成的就叫&quot;切面&quot;，
-   用户只需关注核心业务代码以及作相关配置，Spring会自动生成AOP代理，将切面内容和核心方法(切入点)织在一起；        
-</code></pre></li>
-</ol>
-<ol start="2">
-<li>Spring Bean的生命周期？</li>
-</ol>
+        Aspect(切面)：是切入点pointcut和通知advice的结合;
+
+    3.2 介绍
+
+        1.在Spring 中只需要定义切点和增强处理(Advice)，IOC容器会自动生成AOP代理，默认情况下是Jdk动态代理，即被代理对象需实现接口，
+        若被代理对象只是继承父类，则生成代理的方式为CGLIB代理；
+
+        若强制使用CGLIB代理如下：
+
+        &lt;aop:aspect-autoproxy proxy-target-class=true&gt;
+
+       2.AOP关注的是横切方面的代码，这些代码重复出现在各个业务模块当中，将他们抽取出来形成的就叫&quot;切面&quot;，
+       用户只需关注核心业务代码以及作相关配置，Spring会自动生成AOP代理，将切面内容和核心方法(切入点)织在一起；        
+</code></pre><p>3.Spring Bean的生命周期？</p>
 <p><img src="/images/Bean的生命周期.JPG" alt=""></p>
-<ol start="2">
-<li>Spring怎样解决循环依赖的问题？</li>
-</ol>
+<p>3.Bean的作用域？</p>
+<pre><code>a) Singleton（默认）
+
+    Spring 容器在启动时实例化singleton的bean，优点是：
+
+        1.及早发现潜在的配置问题
+
+        2.Bean以缓存的方式运行，当需要使用时，不用再去实例化，加快
+          运行效率
+
+b) Prototype
+
+    原型作用域。每次调用这个Bean，创建一个实例
+
+c) Request
+
+    每次发生HTTP请求，创建Bean实例，只在当前request内有效
+
+e) Session
+
+    只在当前 HTTP Session中有效
+
+f） Global Session
+
+    只在基于portlet的web应用中才有意义
+</code></pre><p>3.BeanFactory和FactoryBean区别？</p>
+<pre><code>BeanFactory：生产和管理Bean的工厂，例如实现类ApplicationContext等
+
+    接口方法：
+
+        Object getBean(String name)
+        &lt;T&gt; T getBean(String name, Class&lt;T&gt; requiredType)
+
+FactoryBean：通过实现该接口定制实例化Bean的逻辑，对Bean进行增强
+
+    接口方法：
+
+        T getObject() //增强后的Bean
+        Class&lt;?&gt; getObjectType()    
+
+    根据该Bean的ID从BeanFactory中获取的实际上是FactoryBean的getObject()返回的对象，
+    而不是FactoryBean本身，如果要获取FactoryBean对象，请在id前面加一个&amp;符号来获取    
+</code></pre><p>3.Bean的注入方式有哪些？</p>
+<pre><code>a) setter方法注入
+
+    通过&lt;property&gt;标签实现
+
+b) 构造器注入
+
+    通过&lt;construct-arg&gt;标签实现
+
+c）工厂方法注入
+
+    1.静态工厂方法注入bean
+
+        &lt;bean id=&quot;car1&quot; class=&quot;...StaticFactory&quot;
+        factory-method=&quot;getCar(静态方法)&quot;&gt;
+            &lt;constructor-arg value=&quot;baoma&quot;&gt;
+            &lt;/constructor-arg&gt;
+        &lt;/bean&gt;
+
+    2.实例化工厂方法注入bean
+
+        &lt;bean id=&quot;carFactory&quot; class=&quot;....InstanceFactory&quot;&gt;&lt;/bean&gt;
+
+        &lt;bean id=&quot;car2&quot; factory-bean=&quot;carFactory&quot; 
+              factory-method=&quot;getCar&quot;(实例方法)&gt;
+            &lt;constructor-arg value=&quot;baoma&quot;&gt;
+            &lt;/constructor-arg&gt;
+        &lt;/bean&gt;
+
+d) 注解方式注入
+
+    使用@Autowired、@Resource(name=&quot;userDao&quot;) 等进行注入
+</code></pre><p>4.Spring怎样解决循环依赖的问题？</p>
 <p><a href="https://segmentfault.com/a/1190000015221968" target="_blank" rel="noopener">源码详解</a></p>
 <p>spring单例对象的初始化：</p>
 <pre><code>1.createBeanInstance：实例化；
@@ -516,118 +588,112 @@
     }
     return singletonObject;
 }
-</code></pre><ol start="2">
-<li><p>Spring中的bean覆盖问题？</p>
-<p> Spring允许BeanDefinition覆盖，即不同配置文件中可以出现相同id或name相同的Bean；</p>
-</li>
-<li><p>DispatchServlet怎样分发任务的？</p>
-</li>
-</ol>
-<p>3.1 springMVC请求处理流程：</p>
-<p><img src="/images/springMVC.JPG" alt=""></p>
-<p>3.2 请求映射到Controller的方法：</p>
-<pre><code>3.2.1 实例级别的映射：
+</code></pre><p>5.Spring中的bean覆盖问题？</p>
+<pre><code>Spring允许BeanDefinition覆盖，即不同配置文件中可以出现相同id或name相同的Bean；
+</code></pre><p>6.DispatchServlet怎样分发任务的？</p>
+<pre><code>6.1 springMVC请求处理流程：
+</code></pre><p><img src="/images/springMVC.JPG" alt=""></p>
+<pre><code>6.2 请求映射到Controller的方法：
 
-    一个请求对应一个类实例来处理，需实现Controller接口，容易造成内存溢出，不推荐使用；
+    6.2.1 实例级别的映射：
 
-3.2.2 方法级别的映射：
+        一个请求对应一个类实例来处理，需实现Controller接口，容易造成内存溢出，不推荐使用；
 
-    方法级别的映射，每一个Controller对应多个请求；
-</code></pre><ol start="4">
-<li>注解的原理？</li>
-<li>Spring的入口？</li>
-<li><p>SpringMVC 的 Controller 中返回值有哪些？</p>
-<p> 1.ModelAndView</p>
-<pre><code>跳转到某个页面时携带一些数据时使用。
+    6.2.2 方法级别的映射：
 
-1.1 setViewName:跳转到指定页面；
+        方法级别的映射，每一个Controller对应多个请求；
+</code></pre><p>7.注解的原理？<br>8.Spring的入口？<br>9.SpringMVC 的 Controller 中返回值有哪些？</p>
+<pre><code>1.ModelAndView
 
-1.2 addObject：设置模型，加入到 ModelMap中，类型为LinkedHashMap&lt;String, Object&gt;；
-</code></pre><p> 2.String</p>
-<pre><code>2.1 指定返回的视图页面名称；
+    跳转到某个页面时携带一些数据时使用。
 
-2.2 可以加入转发forward:/login或者重定向redirect:/login;
-</code></pre><p> 3.void</p>
-<pre><code>必须在参数中添加 HttpServletRequest 和 HttpServletResponse;
+    1.1 setViewName:跳转到指定页面；
 
-例如：
+    1.2 addObject：设置模型，加入到 ModelMap中，类型为LinkedHashMap&lt;String, Object&gt;；
 
-public void test(HttpServletRequest request, HttpServletResponse response) {
-// 转发到指定页面
-request.getRequestDispatcher(&quot;xxx&quot;).forward(request, response);
-// 或者重定向到指定页面
-response.sendRedirect(&quot;/xxx&quot;);
-</code></pre><p> }</p>
-</li>
-</ol>
-<ol start="7">
-<li><p>Servlet 和 JSP 的区别？</p>
-<pre><code>1.Servlet控制业务流程，JSP动态生成网页；
+2.String
 
-2.JSP第一次被访问时会被容器编译为Servlet类；
+    2.1 指定返回的视图页面名称；
 
-3.Servlet接受Tomcat发送过来的request和response;
-</code></pre><p> Servlet的四大域对象：</p>
-<pre><code>1.Page域：作用域为整个JSP页面；
+    2.2 可以加入转发forward:/login或者重定向redirect:/login;
 
-2.Request域：一次请求一个request;
+3.void
 
-3.Session域：一次会话一个session;
+    必须在参数中添加 HttpServletRequest 和 HttpServletResponse;
 
-4.Application域：作用于整个服务器端，服务器开启对象创建，关闭服务器对象销毁；例如ServletContext通过request.getServletContext（)获得；
-</code></pre><p> JSP的九大内置对象：</p>
-<pre><code>1.request、response、pageContext、session、application、out、config、page、exception;
-</code></pre></li>
-<li><p>Servlet类图详解</p>
-</li>
-</ol>
+    例如：
+
+    public void test(HttpServletRequest request, HttpServletResponse response) {
+    // 转发到指定页面
+    request.getRequestDispatcher(&quot;xxx&quot;).forward(request, response);
+    // 或者重定向到指定页面
+    response.sendRedirect(&quot;/xxx&quot;);
+}
+</code></pre><p>10.Servlet 和 JSP 的区别？</p>
+<pre><code>    1.Servlet控制业务流程，JSP动态生成网页；
+
+    2.JSP第一次被访问时会被容器编译为Servlet类；
+
+    3.Servlet接受Tomcat发送过来的request和response;
+
+Servlet的四大域对象：
+
+    1.Page域：作用域为整个JSP页面；
+
+    2.Request域：一次请求一个request;
+
+    3.Session域：一次会话一个session;
+
+    4.Application域：作用于整个服务器端，服务器开启对象创建，关闭服务器对象销毁；例如ServletContext通过request.getServletContext（)获得；
+
+JSP的九大内置对象：
+
+    1.request、response、pageContext、session、application、out、config、page、exception;
+</code></pre><p>11.Servlet类图详解</p>
 <p><img src="/images/Servlet.JPG" alt=""></p>
-<ol start="8">
-<li><p>Servlet中的filter？</p>
-<p> 生命周期：</p>
-<pre><code>1.init()
+<p>12.Servlet中的filter？</p>
+<pre><code>生命周期：
 
-2.doFilter(ServletRequest req,ServletResponse resp,Filterchain chain)
+    1.init()
 
-3.destroy()
-</code></pre></li>
-</ol>
-<ol start="9">
-<li><p>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</p>
-<p> 生命周期：</p>
-<pre><code>1.加载Servlet类并创建实例，若存在则不会创建了；
+    2.doFilter(ServletRequest req,ServletResponse resp,Filterchain chain)
 
-2.init():每个Servlet只会被初始化一次；
+    3.destroy()
+</code></pre><p>13.Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</p>
+<pre><code>生命周期：
 
-3.service():执行Post/GET/DELETE等等请求方法；
+    1.加载Servlet类并创建实例，若存在则不会创建了；
 
-4.destroy():仅执行一次；
-</code></pre><p> Servlet单实例多线程</p>
-<pre><code>1.设计成单例减少了创建Servlet实例的开销；
+    2.init():每个Servlet只会被初始化一次；
 
-2.容器每接收到一个请求就会通过线程池分配到一个线程，同一请求的多个线程并发执行；
+    3.service():执行Post/GET/DELETE等等请求方法；
 
-3.所以为了线程安全最好不要在Servlet中用实例变量，或使用synchronied同步；
+    4.destroy():仅执行一次；
 
-4.不要使用线程不安全的集合；
-</code></pre><p> Servlet如何处理多个请求同时访问？</p>
-<pre><code>1.Servlet加载实例化；
+Servlet单实例多线程
 
-2.容器初始化Servlet;
+    1.设计成单例减少了创建Servlet实例的开销；
 
-3.Servlet容器通过调度线程给处理请求；
+    2.容器每接收到一个请求就会通过线程池分配到一个线程，同一请求的多个线程并发执行；
 
-4.线程执行service()方法；
+    3.所以为了线程安全最好不要在Servlet中用实例变量，或使用synchronied同步；
 
-5.请求结束，放回线程池，等到被调用；
-</code></pre></li>
-</ol>
-<ol start="10">
-<li><p>Servlet中的变量是否需要加锁？</p>
-<p>实例变量需要考虑同步。</p>
-</li>
-</ol>
+    4.不要使用线程不安全的集合；
 
+Servlet如何处理多个请求同时访问？
+
+    1.Servlet加载实例化；
+
+    2.容器初始化Servlet;
+
+    3.Servlet容器通过调度线程给处理请求；
+
+    4.线程执行service()方法；
+
+    5.请求结束，放回线程池，等到被调用；
+</code></pre><p>14.Servlet中的变量是否需要加锁？</p>
+<pre><code>实例变量需要考虑同步。
+</code></pre>
       
     </div>
     
@@ -742,7 +808,7 @@ response.sendRedirect(&quot;/xxx&quot;);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

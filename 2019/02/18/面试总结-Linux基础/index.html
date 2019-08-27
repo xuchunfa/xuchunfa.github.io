@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/psAux.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/psEf.PNG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/top.PNG">
-<meta property="og:updated_time" content="2019-05-29T02:43:58.956Z">
+<meta property="og:updated_time" content="2019-08-21T09:09:36.622Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结--Linux基础">
 <meta name="twitter:description" content="cpu 100%怎样定位？ 进程间通信的方式有哪些？ 查看进程指令？  ps(Process Status)命令：查看当前进程的状态,显示的是进程的快照；  常用命令： 3.1 ps -aux     参数含义：      a:显示当前机器上包括所有用户运行的进程；      u:用户为主的形式显示程序；      x:显示所有程序，不以终端机来区分；  显示列表重要参数：      %CPU、">
@@ -453,10 +453,21 @@
         N：优先级较低的进程；
 
         D：无法中断的休眠状态；
+</code></pre><p>什么    是僵尸进程？</p>
+<pre><code>1.已经结束了的进程，但是没有从进程表中删除，导致进程表中的条目满了，进而
+导致系统崩溃，它不占有系统资源。
+
+2.ps -ef | grep defunct查看僵尸进程，
+
+3.解决办法
+
+    杀死父进程，或者改写父进程，在死子进程死后，父进程为它收尸；
+
+
 
 3.2 ps -ef
 </code></pre><p><img src="/images/psEf.PNG" alt=""></p>
-<pre><code>    e:显示所有程序，等同于-A参数；
+<pre><code>    e:显示所有进程，等同于-A参数；
 
     f:显示树状结构，表达程序间的相互关系，可以看出进程间的父子关系；
 
@@ -661,7 +672,7 @@ Swap:    1407     0    1407
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

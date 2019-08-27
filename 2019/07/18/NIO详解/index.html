@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/buffer.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/buffer3.JPG">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/channel.png">
-<meta property="og:updated_time" content="2019-07-23T13:52:43.029Z">
+<meta property="og:updated_time" content="2019-08-23T08:15:00.963Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NIO详解">
 <meta name="twitter:description" content="阻塞/非阻塞 和 同步/异步？ 1.同步/异步：同步是会阻塞请求进程的，异步不会阻塞请求进程的，所以BIO、NIO             和IO多路复用都是同步的；   2.阻塞/非阻塞：在等待一件事情的处理结果时，如果你还去干点其他的事，则为   非阻塞，否则为阻塞； 阻塞IO和非阻塞IO？ 1.阻塞IO  分析： 1.两个阶段都是阻塞的。第一个阶段指等待网络数据到达内核空间缓存区域，第二个阶">
@@ -557,10 +557,8 @@
 
 epoll高效的原因：
 
-    1.减少了用户态和内核态之间文件fd的拷贝；
-      (epoll_ctl中会将epoll_event结构体从用户空间拷贝到内存空间)
-
-    2.减少了对就绪文件fd的拷贝；
+    只需等待rdlist中有没有数据，有就返回，还有ET模式下，不会将socket
+    事件重新放到rdList中去；
 </code></pre><p>总结：</p>
 <pre><code>1.select
 
@@ -600,8 +598,6 @@ epoll高效的原因：
 
     3.2 不是轮询的方式扫描socket，只有活跃的fd才会调用callback函数，
         epoll只管活跃的连接，跟连接总数无关；
-
-    3.3 使用mmap减少复制开销；
 </code></pre><p>区别：</p>
 <pre><code>1.支持一个进程所能打开的最大连接数。
 
@@ -615,9 +611,6 @@ epoll高效的原因：
 3.消息传递方式。
 
     select和poll中内核需要将消息传递到用户空间，都需要内核拷贝；
-
-    epoll通过内核和用户空间共享一块内存实现的，返回的文件描述符是通过
-    mmap(内核和用户空间的共享内存)实现传递的，较少了不必要的拷贝；
 </code></pre><p>select</p>
 <pre><code>//返回值为fd的数量，超时返回0，出错返回-1；
 //如果timeout=null，select会一直阻塞，直到有描述符就绪；
@@ -659,6 +652,8 @@ epoll高效的原因：
 <p><img src="/images/epoll实现.png" alt=""></p>
 <pre><code>1.epoll_create方法
 
+    创建红黑树(插入、查找和删除时间复杂度低) 和就绪链表
+
 struct eventpoll{
     ....
     /*红黑树的根节点，这颗树中存储着所有添加到epoll中的需要监控的事件*/
@@ -672,8 +667,13 @@ struct eventpoll{
 
     2.1 添加epoll事件的最小单位，插入红黑树节点；
 
-    2.2 给内核中断处理程序注册一个回调函数，内核如果感知到了中断
+    2.2 给内核中断处理程序注册一个回调函数，如果这个fd的中断到了，
         就把它放到readylist链表；
+
+    补充：什么是中断？
+
+        指当出现需要时，CPU暂停当前程序的执行转而去处理新的情况，中断
+        要做的通常是比较紧急的事情；
 
     struct epitem{
         struct rb_node  rbn;//红黑树节点
@@ -709,11 +709,13 @@ struct eventpoll{
 </code></pre><p><img src="/images/LT.JPG" alt=""></p>
 <pre><code>4.1 LT和ET工作机制
 
-    如果是ET，epitem是不会再进入到ready_list中，除非fd再次发生了状态改变
-ep_poll_callback被调用，
-    如果是非ET，不管你还有没有有效的事件或者数据，都会被重新插入到ready_list
-下次再调用epoll_wait时会立即返回，并通知给用户空间，如果这个被监听的fd
-确定没事件也没数据了，epoll_wait会返回一个0；
+    当一个Socket句柄上(Linux中叫文件描述符)有事件时，内核将该句柄
+插入到rdlist就绪链表，调用epoll_wait函数，将就绪的socket拷贝到用
+户内存，清空rdlist链表，最后epoll_wait做了下面这件事：
+
+    判断这些socket是不是ET模式，如果不是的话，并且这些socket上有
+未处理的事件时，又把该句柄放到清空的rdlist中去，epoll_wait每次都会
+返回这些句柄。
 </code></pre><p><strong>Selector的基本使用流程？</strong></p>
 <p><img src="/images/selector.JPG" alt=""></p>
 <p><strong>NIO的组件详解</strong></p>
@@ -873,7 +875,7 @@ buf.get();//获取buffer数据
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

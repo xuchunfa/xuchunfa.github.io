@@ -81,17 +81,19 @@
 
 
 
-<meta name="description" content="QuickSelect算法: public class TopK {  //递归求解第k大的数 public static int kthLargest(int[] a,int l,int r,int k){     if(k &amp;gt; 0 &amp;amp;&amp;amp; k &amp;lt;= a.length){         int partition = QuickSort.versePartition(">
+<meta name="description" content="1.虚拟机参数 -Xms：最小堆空间  -Xmx：最大堆空间  -Xmn：设置年轻代的大小  -Xss：每个线程占用的栈内存大小，整个虚拟机栈可分配的内存跟物理机的       内存大小、Java堆内存、方法区内存大小相关   -XX：+PrintGCDetails：输出GC的详细日志  -XX：MetaspaceSize：元空间的大小  -XX：CMSInitiatingOccupancyFra">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数组中第k大的数">
-<meta property="og:url" content="http://www.xuchunfa.cn/2018/08/20/数组中第k大的数/index.html">
+<meta property="og:title" content="JVM调优">
+<meta property="og:url" content="http://www.xuchunfa.cn/2019/08/23/JVM调优/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="QuickSelect算法: public class TopK {  //递归求解第k大的数 public static int kthLargest(int[] a,int l,int r,int k){     if(k &amp;gt; 0 &amp;amp;&amp;amp; k &amp;lt;= a.length){         int partition = QuickSort.versePartition(">
+<meta property="og:description" content="1.虚拟机参数 -Xms：最小堆空间  -Xmx：最大堆空间  -Xmn：设置年轻代的大小  -Xss：每个线程占用的栈内存大小，整个虚拟机栈可分配的内存跟物理机的       内存大小、Java堆内存、方法区内存大小相关   -XX：+PrintGCDetails：输出GC的详细日志  -XX：MetaspaceSize：元空间的大小  -XX：CMSInitiatingOccupancyFra">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T12:29:24.917Z">
+<meta property="og:image" content="http://www.xuchunfa.cn/images/GC1.jpg">
+<meta property="og:updated_time" content="2019-08-24T13:47:04.382Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数组中第k大的数">
-<meta name="twitter:description" content="QuickSelect算法: public class TopK {  //递归求解第k大的数 public static int kthLargest(int[] a,int l,int r,int k){     if(k &amp;gt; 0 &amp;amp;&amp;amp; k &amp;lt;= a.length){         int partition = QuickSort.versePartition(">
+<meta name="twitter:title" content="JVM调优">
+<meta name="twitter:description" content="1.虚拟机参数 -Xms：最小堆空间  -Xmx：最大堆空间  -Xmn：设置年轻代的大小  -Xss：每个线程占用的栈内存大小，整个虚拟机栈可分配的内存跟物理机的       内存大小、Java堆内存、方法区内存大小相关   -XX：+PrintGCDetails：输出GC的详细日志  -XX：MetaspaceSize：元空间的大小  -XX：CMSInitiatingOccupancyFra">
+<meta name="twitter:image" content="http://www.xuchunfa.cn/images/GC1.jpg">
 
 
 
@@ -121,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://www.xuchunfa.cn/2018/08/20/数组中第k大的数/"/>
+  <link rel="canonical" href="http://www.xuchunfa.cn/2019/08/23/JVM调优/"/>
 
 
 
 
 
-  <title>数组中第k大的数 | Flying in the ocean of knowledge</title>
+  <title>JVM调优 | Flying in the ocean of knowledge</title>
   
 
 
@@ -289,7 +291,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/20/数组中第k大的数/">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/08/23/JVM调优/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Xu chunfa">
@@ -306,7 +308,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">数组中第k大的数</h1>
+          <h1 class="post-title" itemprop="name headline">JVM调优</h1>
         
 
         <div class="post-meta">
@@ -318,8 +320,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T19:42:39+08:00">
-                2018-08-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-23T16:48:15+08:00">
+                2019-08-23
               </time>
             
 
@@ -341,8 +343,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
-                    <span itemprop="name">数组</span>
+                  <a href="/categories/面试总结/" itemprop="url" rel="index">
+                    <span itemprop="name">面试总结</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试总结/java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">java虚拟机</span>
                   </a>
                 </span>
 
@@ -359,8 +372,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/20/数组中第k大的数/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/08/20/数组中第k大的数/" itemprop="commentsCount"></span>
+                <a href="/2019/08/23/JVM调优/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/08/23/JVM调优/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -368,7 +381,7 @@
 
           
           
-             <span id="/2018/08/20/数组中第k大的数/" class="leancloud_visitors" data-flag-title="数组中第k大的数">
+             <span id="/2019/08/23/JVM调优/" class="leancloud_visitors" data-flag-title="JVM调优">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -399,84 +412,114 @@
       
 
       
-        <p>QuickSelect算法:</p>
-<pre><code>public class TopK {
+        <p><strong>1.虚拟机参数</strong></p>
+<pre><code>-Xms：最小堆空间
 
-//递归求解第k大的数
-public static int kthLargest(int[] a,int l,int r,int k){
-    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
-        int partition = QuickSort.versePartition(a,l,r);//分界点前是大数，分界点后是小数
-        if(partition == k - 1)
-            return a[partition];
-        if(partition &lt; k - 1){
-            return kthLargest(a,partition+1,r,k);
-        }
-        if(partition &gt; k - 1){
-            return kthLargest(a,l,partition-1,k);
-        }
-    }
-    return Integer.MAX_VALUE;
-}
+-Xmx：最大堆空间
 
-//递归求解第k小的数
-public static int kthSmallest(int[] a,int l,int r,int k){
-    if(k &gt; 0 &amp;&amp; k &lt;= a.length){
-        int partition = QuickSort.partition(a,l,r);
-        if(partition == k - 1)
-            return a[partition];
-        if(partition &lt; k - 1){
-            return kthSmallest(a,partition+1,r,k);
-        }
-        if(partition &gt; k - 1){
-            return kthSmallest(a,l,partition-1,k);
-        }
-    }
-    return Integer.MAX_VALUE;
-}
+-Xmn：设置年轻代的大小
 
-//迭代求解第k小的数
-public static int kthSmallest1(int[] a,int k) {
-    if (k &gt; 0 &amp;&amp; k &lt;= a.length) {
-        int low = 0;
-        int high = a.length-1;
-        while (low &lt;= high){
-            int partition = QuickSort.partition(a,low,high);
-            if(partition == k - 1){
-                return a[partition];
+-Xss：每个线程占用的栈内存大小，整个虚拟机栈可分配的内存跟物理机的
+      内存大小、Java堆内存、方法区内存大小相关
+
+
+-XX：+PrintGCDetails：输出GC的详细日志
+
+-XX：MetaspaceSize：元空间的大小
+
+-XX：CMSInitiatingOccupancyFraction：老年代空间达到70%就开始执行
+                            CMS，老年代有足够的空间接收年轻代对象
+
+-XX：SurvivorRatio：Eden区与Survivor区的大小比值，例如：8代表
+                    两个S区和E区的比值为：2:8即1:1:8
+
+-XX:MaxTenuringThreshold：对象从年轻代晋升到老年代的年龄阈值，默认15；
+
+a)参数基本策略
+
+    活跃数据大小：程序稳定运行期间，长期存活在堆中的对象大小，即Full GC
+                 后堆中老年代占用空间大小，通过查看Full GC日志获得。
+</code></pre><p><img src="/images/GC1.jpg" alt=""></p>
+<pre><code>b)优化
+
+    1.扩容新生代容量。扩容以后虽然会增加Eden区的扫描时间，但是由于Minor 
+      GC的间隔增加了，对象的生命周期短的就不用在进行复制了，显然对象的
+      复制成本是要高于扫描Eden区的成本的；
+
+    2.CMS中的remark阶段比较耗时，因为要扫描全堆(新生代对象引用指向老年代)
+      所以可以在remark发生之前增加一次 Minor GC，减少要扫描的对象。
+
+      eg:增加CMSScavengeBeforeRemark参数，remark阶段前强制进行一次
+         Minor GC
+
+    3.将 MaxPermSize和MinPermSize设置成一致、Xms =Xmx，可以减少内存
+      自动扩容和收缩带来的性能损失。
+</code></pre><p><strong>2.命令行工具</strong></p>
+<pre><code>a）jps：查看虚拟机进程状态
+
+b) jstat：虚拟机统计信息监视工具
+
+   参数：
+
+     -class：监视类装载、卸载数量、总空间以及类装载消耗时间
+
+     -gc：监视Java堆状况、包括eden、survivor等的容量、已用空间、
+          GC时间合计等；
+
+     -gcutil：与gc类似，输出已用空间占总空间的占比；
+
+c) jinfo：查询Java虚拟机配置信息
+
+d）jmap：生成堆转储快照，称为heapdump或dump文件
+
+    -dump：生成Java转堆快照。
+
+        eg：jmap -dump:format=b，file=filename 3500
+
+    -heap：Linux/Solaris平台下有效，显示堆详细信息，如使用哪种回收器
+           参数配置、分代状况等等；
+
+e) jhat：分析jmap生成的dump文件，很少用；
+
+f) jstack：用于生成虚拟机当前时刻的线程快照，线程快照：即每一条
+           线程正在执行的方法堆栈的集合；
+</code></pre><p><strong>3.问题定位步骤</strong></p>
+<pre><code>a) 定位进程号，jstat监视堆状况
+
+    jstat -gc 11172 1000 //11172进程号，1000每隔1000ms打印一次日志
+
+b) jmap把当前堆dump下来
+
+    jmap -dump:live,format=b,file=dump.hprof 11172
+
+    使用 VisualVM 打开dump.hprof 文件进行分析
+</code></pre><p><strong>4.内存泄露问题</strong></p>
+<pre><code>a) 非静态内部类(匿名内部类)导致内存泄露
+
+   非静态内部类会持有外部类的引用，导致GC可能回收不了这部分引用，导致
+   OOM
+
+       eg:
+
+        public class NonStaticInnerDemo {
+          //注意是static
+          //生命周期比NonStaticInnerDemo长
+          private static String TAG = &quot;Outter&quot;;
+
+          //private static Runnable runnable 未持有外部引用
+          private Runnable runnable = new Runnable(){
+            public void run(){
+              System.out.println(&quot;inner run: &quot; + TAG);
             }
-            if(partition &lt; k - 1){
-                low = partition+1;
-            }else {
-                high = partition-1;
-            }
+          }
         }
-    }
-    return Integer.MAX_VALUE;
-}
-}
-</code></pre><blockquote>
-<p>多种解法开拓思路</p>
-</blockquote>
-<p>1.把数组从大到小进行排序，再直接通过数组下标获取元素</p>
-<pre><code>时间复杂度：O(nlogn)
-</code></pre><p>2.利用选择排序，每一次遍历数组就可以选出一个最大值，遍历k次就得到了第K大的值。</p>
-<pre><code>时间复杂度：O(n*k).所以最坏情况为O(n^2).
-</code></pre><p>3.基于快排的Quick Select.使用快排中的partition()函数，大的数值放在pivot左边，小的方右边。得到的Position就是第Position+1大的数值。然后再选择其中的一半数据递归。(也可以用循环解决)</p>
-<pre><code>时间复杂度：O(n).详细证明见算法导论
-</code></pre><p>4.可以建立最大堆,然后pop操作进行k次,就能找到第K大的值。</p>
-<pre><code>时间复杂度：O（n+klogn）
-</code></pre><p>5.通过优先队列实现,底层原理基于4方法。</p>
-<pre><code>时间复杂度：O(n)
+    看一下编译后的代码：
+        putfield  #1// Field this$0:LNonStaticInnerDemo;
+     表示有一个对NonStaticInnerDemo的引用存在了，即持有了外部类的
+    引用
 
-空间复杂度：O(n)
-</code></pre><h3 id="该题目的变形版本"><a href="#该题目的变形版本" class="headerlink" title="该题目的变形版本?"></a>该题目的变形版本?</h3><blockquote>
-<p>N个数中最大的第K个不同的数？</p>
-</blockquote>
-<p>例如：5，4，4，3 第三大的数是3,而不是4</p>
-<blockquote>
-<p>找第k到第m大的数？</p>
-</blockquote>
-
+    静态的内部类不会持有外部类的引用。
+</code></pre>
       
     </div>
     
@@ -500,8 +543,8 @@ public static int kthSmallest1(int[] a,int k) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/19/类文件结构和类加载/" rel="next" title="类文件结构和类加载">
-                <i class="fa fa-chevron-left"></i> 类文件结构和类加载
+              <a href="/2019/08/05/LRU的设计/" rel="next" title="LRU的设计">
+                <i class="fa fa-chevron-left"></i> LRU的设计
               </a>
             
           </div>
@@ -509,10 +552,6 @@ public static int kthSmallest1(int[] a,int k) {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/21/关于TopK问题的详解/" rel="prev" title="关于TopK问题的详解">
-                关于TopK问题的详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -571,17 +610,8 @@ public static int kthSmallest1(int[] a,int k) {
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -659,22 +689,6 @@ public static int kthSmallest1(int[] a,int k) {
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#该题目的变形版本"><span class="nav-number">1.</span> <span class="nav-text">该题目的变形版本?</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

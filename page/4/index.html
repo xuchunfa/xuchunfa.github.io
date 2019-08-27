@@ -286,6 +286,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/入栈序列和出栈序列是否匹配/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/入栈序列和出栈序列是否匹配/" itemprop="url">入栈序列和出栈序列是否匹配</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T11:33:53+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/03/入栈序列和出栈序列是否匹配/" class="leancloud_visitors" data-flag-title="入栈序列和出栈序列是否匹配">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>入栈序列和出栈序列是否匹配？</strong></p>
+<pre><code>public boolean IsPopOrder(int[] pushA,int[] popA) {
+    if(pushA == null || popA == null || pushA.length == 0 || popA.length == 0){
+        return false;
+    }
+    if(pushA.length != popA.length){
+        return false;
+    }
+    int length = pushA.length;
+    int popIndex = 0;
+    Stack&lt;Integer&gt; assit = new Stack&lt;&gt;();
+    for(int i = 0; i &lt; length;i++){
+        assit.push(pushA[i]);
+
+        while (!assit.isEmpty() &amp;&amp; assit.peek() == popA[popIndex] &amp;&amp; popIndex &lt; length){
+            assit.pop();
+            popIndex++;
+        }
+    }
+    return  popIndex == length;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/04/03/自定义栈返回最小值/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2673,382 +2846,6 @@ Cookie:客户端保存用户信息的机制，有限制，不能超过4K，实�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2019/02/18/面试总结-Spring框架基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/18/面试总结-Spring框架基础/" itemprop="url">面试总结--Spring框架基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-18T20:18:34+08:00">
-                2019-02-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Spring框架基础/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring框架基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/18/面试总结-Spring框架基础/" class="leancloud_visitors" data-flag-title="面试总结--Spring框架基础">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.springIOC容器详解？</p>
-<p><a href="http://www.xuchunfa.cn/2018/10/07/Spring%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Spring启动源码分析</a></p>
-<pre><code>常用的几个 ApplicationContext 的子类：
-
-    1.ClassPathXmlApplicationContext
-
-    2.FileSystemXmlApplicationContext
-
-    3.AnnotationConfigApplicationContext
-</code></pre><ol>
-<li><p>AOP和IOC原理？</p>
-<p> 1.IOC(Inversion of Control控制反转)</p>
-<pre><code>由调用者创建实例转变为交由 Spring容器完成；
-</code></pre><p> 2.DI(Dependency Injection)</p>
-<pre><code>告诉 Spring 我需要什么对象，Spring就会注入需要的对象；
-</code></pre><p> 3.AOP(Aspect Oriented Programming)</p>
-<pre><code>3.1 术语
-
-    Target(目标对象)：需要被代理的类；
-
-    Jointpoint(连接点)：指那些可能被拦截到的方法；
-
-    PointCut(切入点)：已经被增强了的连接点；
-
-    Advice(通知/增强)：切入点中的增强代码部分；
-
-    Weaving(织入)：把增强advice应用到目标对象target来，创建新的代理对象proxy的过程，
-
-    织入过程是代理类将目标类和切面类结合；
-
-    Proxy:代理类；
-
-    Aspect(切面)：是切入点pointcut和通知advice的结合;
-
-3.2 介绍
-
-    1.在Spring 中只需要定义切点和增强处理(Advice)，IOC容器会自动生成AOP代理，默认情况下是Jdk动态代理，即被代理对象需实现接口，
-    若被代理对象只是继承父类，则生成代理的方式为CGLIB代理；
-
-    若强制使用CGLIB代理如下：
-
-    &lt;aop:aspect-autoproxy proxy-target-class=true&gt;
-
-   2.AOP关注的是横切方面的代码，这些代码重复出现在各个业务模块当中，将他们抽取出来形成的就叫&quot;切面&quot;，
-   用户只需关注核心业务代码以及作相关配置，Spring会自动生成AOP代理，将切面内容和核心方法(切入点)织在一起；        
-</code></pre></li>
-</ol>
-<ol start="2">
-<li>Spring Bean的生命周期？</li>
-</ol>
-<p><img src="/images/Bean的生命周期.JPG" alt=""></p>
-<ol start="2">
-<li>Spring怎样解决循环依赖的问题？</li>
-</ol>
-<p><a href="https://segmentfault.com/a/1190000015221968" target="_blank" rel="noopener">源码详解</a></p>
-<p>spring单例对象的初始化：</p>
-<pre><code>1.createBeanInstance：实例化；
-
-2.populateBean：填充属性；
-
-3.initializeBean:调用spring xml的init方法；
-</code></pre><p>三级缓存解决循环依赖：</p>
-<pre><code>1.singletonObjects(ConcurrentHashMap):存放初始化好的bean,从该缓存中取出可以直接使用；
-
-2.earlySingletonObjects：尚未填充属性的Bean;
-
-3.singletonFactories: 存放bean工厂对象，Map&lt;String,ObjectFactory&lt;?&gt;&gt;类型；
-</code></pre><p>解决办法：</p>
-<pre><code>1.创建原始bean对象
-
-    instanceWrapper = createBeanInstance(beanName, mbd, args);
-
-2.暴露早期引用
-
-    addSingletonFactory(beanName, () -&gt; getEarlyBeanReference(beanName, mbd, bean));
-
-3.解析依赖
-
-    populateBean(beanName, mbd, instanceWrapper);
-
-4.获取早期依赖
-
-    protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-    Object singletonObject = this.singletonObjects.get(beanName);
-    if (singletonObject == null &amp;&amp; isSingletonCurrentlyInCreation(beanName)) {
-        synchronized (this.singletonObjects) {
-            //缓存中获取早期引用
-            singletonObject = this.earlySingletonObjects.get(beanName);
-            if (singletonObject == null &amp;&amp; allowEarlyReference) {
-                ObjectFactory&lt;?&gt; singletonFactory = this.singletonFactories.get(beanName);
-                if (singletonFactory != null) {
-
-                    //从singletonFactory中获取早期引用
-                    singletonObject = singletonFactory.getObject();
-                    this.earlySingletonObjects.put(beanName, singletonObject);
-                    this.singletonFactories.remove(beanName);
-                }
-            }
-        }
-    }
-    return singletonObject;
-}
-</code></pre><ol start="2">
-<li><p>Spring中的bean覆盖问题？</p>
-<p> Spring允许BeanDefinition覆盖，即不同配置文件中可以出现相同id或name相同的Bean；</p>
-</li>
-<li><p>DispatchServlet怎样分发任务的？</p>
-</li>
-</ol>
-<p>3.1 springMVC请求处理流程：</p>
-<p><img src="/images/springMVC.JPG" alt=""></p>
-<p>3.2 请求映射到Controller的方法：</p>
-<pre><code>3.2.1 实例级别的映射：
-
-    一个请求对应一个类实例来处理，需实现Controller接口，容易造成内存溢出，不推荐使用；
-
-3.2.2 方法级别的映射：
-
-    方法级别的映射，每一个Controller对应多个请求；
-</code></pre><ol start="4">
-<li>注解的原理？</li>
-<li>Spring的入口？</li>
-<li><p>SpringMVC 的 Controller 中返回值有哪些？</p>
-<p> 1.ModelAndView</p>
-<pre><code>跳转到某个页面时携带一些数据时使用。
-
-1.1 setViewName:跳转到指定页面；
-
-1.2 addObject：设置模型，加入到 ModelMap中，类型为LinkedHashMap&lt;String, Object&gt;；
-</code></pre><p> 2.String</p>
-<pre><code>2.1 指定返回的视图页面名称；
-
-2.2 可以加入转发forward:/login或者重定向redirect:/login;
-</code></pre><p> 3.void</p>
-<pre><code>必须在参数中添加 HttpServletRequest 和 HttpServletResponse;
-
-例如：
-
-public void test(HttpServletRequest request, HttpServletResponse response) {
-// 转发到指定页面
-request.getRequestDispatcher(&quot;xxx&quot;).forward(request, response);
-// 或者重定向到指定页面
-response.sendRedirect(&quot;/xxx&quot;);
-</code></pre><p> }</p>
-</li>
-</ol>
-<ol start="7">
-<li><p>Servlet 和 JSP 的区别？</p>
-<pre><code>1.Servlet控制业务流程，JSP动态生成网页；
-
-2.JSP第一次被访问时会被容器编译为Servlet类；
-
-3.Servlet接受Tomcat发送过来的request和response;
-</code></pre><p> Servlet的四大域对象：</p>
-<pre><code>1.Page域：作用域为整个JSP页面；
-
-2.Request域：一次请求一个request;
-
-3.Session域：一次会话一个session;
-
-4.Application域：作用于整个服务器端，服务器开启对象创建，关闭服务器对象销毁；例如ServletContext通过request.getServletContext（)获得；
-</code></pre><p> JSP的九大内置对象：</p>
-<pre><code>1.request、response、pageContext、session、application、out、config、page、exception;
-</code></pre></li>
-<li><p>Servlet类图详解</p>
-</li>
-</ol>
-<p><img src="/images/Servlet.JPG" alt=""></p>
-<ol start="8">
-<li><p>Servlet中的filter？</p>
-<p> 生命周期：</p>
-<pre><code>1.init()
-
-2.doFilter(ServletRequest req,ServletResponse resp,Filterchain chain)
-
-3.destroy()
-</code></pre></li>
-</ol>
-<ol start="9">
-<li><p>Servlet的生命周期，Servlet是单例的，如何判断？为什么要设计成单例的？</p>
-<p> 生命周期：</p>
-<pre><code>1.加载Servlet类并创建实例，若存在则不会创建了；
-
-2.init():每个Servlet只会被初始化一次；
-
-3.service():执行Post/GET/DELETE等等请求方法；
-
-4.destroy():仅执行一次；
-</code></pre><p> Servlet单实例多线程</p>
-<pre><code>1.设计成单例减少了创建Servlet实例的开销；
-
-2.容器每接收到一个请求就会通过线程池分配到一个线程，同一请求的多个线程并发执行；
-
-3.所以为了线程安全最好不要在Servlet中用实例变量，或使用synchronied同步；
-
-4.不要使用线程不安全的集合；
-</code></pre><p> Servlet如何处理多个请求同时访问？</p>
-<pre><code>1.Servlet加载实例化；
-
-2.容器初始化Servlet;
-
-3.Servlet容器通过调度线程给处理请求；
-
-4.线程执行service()方法；
-
-5.请求结束，放回线程池，等到被调用；
-</code></pre></li>
-</ol>
-<ol start="10">
-<li><p>Servlet中的变量是否需要加锁？</p>
-<p>实例变量需要考虑同步。</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3103,7 +2900,7 @@ response.sendRedirect(&quot;/xxx&quot;);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

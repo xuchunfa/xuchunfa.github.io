@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://www.xuchunfa.cn/images/内存溢出.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/双亲委派.png">
 <meta property="og:image" content="http://www.xuchunfa.cn/images/类加载器.png">
-<meta property="og:updated_time" content="2019-08-20T07:01:31.362Z">
+<meta property="og:updated_time" content="2019-08-24T08:34:44.404Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试总结-Java虚拟机">
 <meta name="twitter:description" content="1.Java类加载以及类初始化顺序？ 连接初始化详解 1.类加载的生命周期：  加载、连接（验证、准备、解析）、初始化、使用、卸载。  2.类初始化（类加载）的时机：      2.1 new 关键字、直接调用类的静态变量、静态方法（final修饰符除外);      2.2 类的反射调用，method.invoke(obj,agrs)初始化实例obj对应类;      2.3 初始化父类；(接口">
@@ -783,11 +783,6 @@ Eden内的所有存活对象进入到老年代，否则担保失败，发生Full
 <li><p>JVM 新生代为什么分为eden区和survivor区？为什么是8：1：1，为什么会有两个suvivor区？</p>
 <p> <a href="https://blog.csdn.net/antony9118/article/details/51425581#commentBox" target="_blank" rel="noopener">为什么新生代内存需要有两个Survivor区？</a></p>
 </li>
-<li><p>syn锁，jvm里面分成偏向锁、轻量级锁、重量级锁，其之间的转换过程是怎么样的，各自适用场景是什么样的，偏向锁情况产生竞争一定会膨胀成轻量级锁吗，为什么只能单向转换，比如偏向锁变成轻量级锁变成重量级锁之后不会在竞争消失之后在回到偏向锁，必须要重启jvm才行，是出于什么情况考虑的？</p>
-</li>
-</ol>
-<ol start="10">
-<li>JVM参数调优？</li>
 </ol>
 
       
@@ -904,7 +899,7 @@ Eden内的所有存活对象进入到老年代，否则担保失败，发生Full
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">129</span>
+                  <span class="site-state-item-count">130</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
