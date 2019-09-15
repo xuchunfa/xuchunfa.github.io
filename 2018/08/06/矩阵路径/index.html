@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="回溯和递归的理解？1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。 2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。 3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。  矩阵路径问题？ public class MatrixPath {  pub">
+<meta name="description" content="回溯和递归的理解？1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。 2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。 3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。 矩阵路径问题？        /**  * @description: 矩阵路">
 <meta property="og:type" content="article">
 <meta property="og:title" content="矩阵路径">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/06/矩阵路径/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="回溯和递归的理解？1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。 2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。 3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。  矩阵路径问题？ public class MatrixPath {  pub">
+<meta property="og:description" content="回溯和递归的理解？1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。 2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。 3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。 矩阵路径问题？        /**  * @description: 矩阵路">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-06T07:13:48.247Z">
+<meta property="og:updated_time" content="2019-09-14T13:36:52.773Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵路径">
-<meta name="twitter:description" content="回溯和递归的理解？1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。 2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。 3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。  矩阵路径问题？ public class MatrixPath {  pub">
+<meta name="twitter:description" content="回溯和递归的理解？1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。 2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。 3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。 矩阵路径问题？        /**  * @description: 矩阵路">
 
 
 
@@ -341,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/回溯算法/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/回溯算法/" itemprop="url" rel="index">
                     <span itemprop="name">回溯算法</span>
                   </a>
                 </span>
@@ -402,67 +413,68 @@
         <h4 id="回溯和递归的理解？"><a href="#回溯和递归的理解？" class="headerlink" title="回溯和递归的理解？"></a>回溯和递归的理解？</h4><p>1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。</p>
 <p>2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。</p>
 <p>3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。</p>
-<ul>
-<li><p>矩阵路径问题？</p>
-<pre><code>public class MatrixPath {
+<h4 id="矩阵路径问题？"><a href="#矩阵路径问题？" class="headerlink" title="矩阵路径问题？"></a>矩阵路径问题？</h4><pre><code>        /**
+ * @description: 矩阵路径
+ * @author: Xu chunfa
+ * @create: 2018-08-06 14:05
+ **/
+public class MatrixPath {
 
-public static boolean hasPath(char[][] a,int rows,int cols,String str){
-    if(a == null || rows &lt; 1 || cols &lt; 1 || str == null)
-        throw new RuntimeException(&quot;参数非法&quot;);
+    public static boolean hasPath(char[][] a,int rows,int cols,String str){
+        if(a == null || rows &lt; 1 || cols &lt; 1 || str == null)
+            throw new RuntimeException(&quot;参数非法&quot;);
 
-    boolean[][] visited = new boolean[rows][cols];
-    int pathLength = 0;
-    for(int row = 0;row &lt; rows;row++){
-        for(int col = 0;col &lt; cols;col++){
-            if(hasOnePath(a,row,col,rows,cols,str,pathLength,visited)){
-                return true;
+        boolean[][] visited = new boolean[rows][cols];
+        int pathLength = 0;
+        for(int row = 0;row &lt; rows;row++){
+            for(int col = 0;col &lt; cols;col++){
+                if(hasOnePath(a,row,col,rows,cols,str,pathLength,visited)){
+                    return true;
+                }
+            }
         }
-    }
-}
 
-    return false;
-}
-
-private static boolean hasOnePath(char[][] a, int row, int col, int rows, int cols, String str,int pathLength,boolean[][] visited) {
-    boolean result = false;
-    if(str.length() == pathLength){
-        return true;
+        return false;
     }
 
-    if(row &gt;= 0 &amp;&amp; row &lt; rows &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; cols &amp;&amp; a[row][col] == str.charAt(pathLength) &amp;&amp; !visited[row][col]) {
-        ++pathLength;
-        visited[row][col] = true;
-
-        result = hasOnePath(a, row - 1, col, rows, cols, str, pathLength, visited) ||
-            hasOnePath(a, row, col - 1, rows, cols, str, pathLength, visited) ||
-            hasOnePath(a, row + 1, col, rows, cols, str, pathLength, visited) ||
-            hasOnePath(a, row, col + 1, rows, cols, str, pathLength, visited);
-
-        if (!result) {
-            --pathLength;
-            visited[row][col] = false;
+    private static boolean hasOnePath(char[][] a, int row, int col, int rows, int cols, String str,int pathLength,boolean[][] visited) {
+        boolean result = false;
+        if(str.length() == pathLength){
+            return true;
         }
+
+        if(row &gt;= 0 &amp;&amp; row &lt; rows &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; cols &amp;&amp; a[row][col] == str.charAt(pathLength) &amp;&amp; !visited[row][col]) {
+            ++pathLength;
+            visited[row][col] = true;
+
+            result = hasOnePath(a, row - 1, col, rows, cols, str, pathLength, visited) ||
+                    hasOnePath(a, row, col - 1, rows, cols, str, pathLength, visited) ||
+                    hasOnePath(a, row + 1, col, rows, cols, str, pathLength, visited) ||
+                    hasOnePath(a, row, col + 1, rows, cols, str, pathLength, visited);
+
+            if (!result) {
+                --pathLength;
+                visited[row][col] = false;
+            }
+        }
+
+        return result;
     }
 
-    return result;
-}
+    public static void main(String[] args){
+        /*char[][] a = {{'a','b','t','g'},
+	                    {'c','f','c','s'},
+	                    {'j','d','e','h'}};*/
+        char[][] a = {{'a'},
+	                      {'f'},
+	                      {'g'},
+	                      {'d'}};
 
-  public static void main(String[] args){
-/*char[][] a = {{'a','b','t','g'},
-                    {'c','f','c','s'},
-                    {'j','d','e','h'}};*/
-char[][] a = {{'a'},
-                      {'f'},
-                      {'g'},
-                      {'d'}};
-
-String str = &quot;gl&quot;;
-System.out.println(MatrixPath.hasPath(a,4,1,str));
+        String str = &quot;gl&quot;;
+        System.out.println(MatrixPath.hasPath(a,4,1,str));
+    }
 }
-}
-</code></pre></li>
-</ul>
-
+</code></pre>
       
     </div>
     
@@ -496,8 +508,8 @@ System.out.println(MatrixPath.hasPath(a,4,1,str));
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/06/动态规划问题集/" rel="prev" title="动态规划问题集">
-                动态规划问题集 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/08/06/位运算/" rel="prev" title="位运算">
+                位运算 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -586,7 +598,7 @@ System.out.println(MatrixPath.hasPath(a,4,1,str));
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -597,7 +609,7 @@ System.out.println(MatrixPath.hasPath(a,4,1,str));
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -655,7 +667,7 @@ System.out.println(MatrixPath.hasPath(a,4,1,str));
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#回溯和递归的理解？"><span class="nav-number">1.</span> <span class="nav-text">回溯和递归的理解？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#回溯和递归的理解？"><span class="nav-number">1.</span> <span class="nav-text">回溯和递归的理解？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵路径问题？"><span class="nav-number">2.</span> <span class="nav-text">矩阵路径问题？</span></a></li></ol></div>
             
 
           </div>

@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="给定一个结点，找出中序遍历序列的下一个结点？public class ParentBinaryTree {  ParentBinaryTreeNode root;  public void createTree(ParentBinaryTreeNode node,int data){      if(this.root == null){         root = new ParentBina">
+<meta name="description" content="给定一个结点，找出中序遍历序列的下一个结点？public TreeLinkNode GetNext(TreeLinkNode pNode) {     if(pNode == null)         return null;      if(pNode.right != null){         TreeLinkNode after = pNode.right;         while">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二叉树的下一个结点">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/07/24/二叉树的下一个结点/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="给定一个结点，找出中序遍历序列的下一个结点？public class ParentBinaryTree {  ParentBinaryTreeNode root;  public void createTree(ParentBinaryTreeNode node,int data){      if(this.root == null){         root = new ParentBina">
+<meta property="og:description" content="给定一个结点，找出中序遍历序列的下一个结点？public TreeLinkNode GetNext(TreeLinkNode pNode) {     if(pNode == null)         return null;      if(pNode.right != null){         TreeLinkNode after = pNode.right;         while">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-24T14:19:19.302Z">
+<meta property="og:updated_time" content="2019-09-14T14:04:31.623Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树的下一个结点">
-<meta name="twitter:description" content="给定一个结点，找出中序遍历序列的下一个结点？public class ParentBinaryTree {  ParentBinaryTreeNode root;  public void createTree(ParentBinaryTreeNode node,int data){      if(this.root == null){         root = new ParentBina">
+<meta name="twitter:description" content="给定一个结点，找出中序遍历序列的下一个结点？public TreeLinkNode GetNext(TreeLinkNode pNode) {     if(pNode == null)         return null;      if(pNode.right != null){         TreeLinkNode after = pNode.right;         while">
 
 
 
@@ -341,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/树/" itemprop="url" rel="index">
                     <span itemprop="name">树</span>
                   </a>
                 </span>
@@ -399,122 +410,27 @@
       
 
       
-        <h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public class ParentBinaryTree {
+        <h4 id="给定一个结点，找出中序遍历序列的下一个结点？"><a href="#给定一个结点，找出中序遍历序列的下一个结点？" class="headerlink" title="给定一个结点，找出中序遍历序列的下一个结点？"></a>给定一个结点，找出中序遍历序列的下一个结点？</h4><pre><code>public TreeLinkNode GetNext(TreeLinkNode pNode)
+{
+    if(pNode == null)
+        return null;
 
-ParentBinaryTreeNode root;
-
-public void createTree(ParentBinaryTreeNode node,int data){
-
-    if(this.root == null){
-        root = new ParentBinaryTreeNode(data);
-    }else {
-        //二叉查找树
-        if(data &lt; node.data){
-            if(node.left == null){
-                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
-                node.left = temp;
-                temp.parent = node;
-            }else {
-                createTree(node.left,data);
-            }
-        }else {
-            if(node.right == null){
-                ParentBinaryTreeNode temp = new ParentBinaryTreeNode(data);
-                node.right = temp;
-                temp.parent = node;
-            }else {
-                createTree(node.right,data);
-            }
+    if(pNode.right != null){
+        TreeLinkNode after = pNode.right;
+        while(after.left != null){
+            after = after.left;
         }
-    }
-}
-
-//中序遍历,递归实现
-public void inOrder(ParentBinaryTreeNode node){
-    if(node == null)
-        return;
-
-    inOrder(node.left);
-    System.out.print(node.data + &quot; &quot;);
-    inOrder(node.right);
-}
-
-//找出中序遍历中的下一个点
-public ParentBinaryTreeNode searchNext(ParentBinaryTreeNode node,int data){
-
-    if(node == null){
-        throw new RuntimeException(&quot;空树&quot;);
+        return after;
     }
 
-    ParentBinaryTreeNode dataNode = searchData(node,data);
 
-    ParentBinaryTreeNode next = null;
-
-    if(dataNode == null){
-        throw new RuntimeException(&quot;不存在该值&quot;);
-    }else{
-        //有右子树
-        if(dataNode.right != null){
-            ParentBinaryTreeNode temp = dataNode.right;
-            while (temp.left != null){
-                temp = temp.left;
-            }
-            next = temp;
-        }else if(dataNode.parent != null){//等于null说明是根节点
-            ParentBinaryTreeNode current =  dataNode;
-            ParentBinaryTreeNode parent = current.parent;
-            while (parent != null &amp;&amp; parent.right == current){
-                current = parent;
-                parent = parent.parent;
-            }
-            next = parent;//parent有可能为null
-        }
+    while(pNode != null){
+        TreeLinkNode p = pNode.next;
+        if(p != null &amp;&amp; p.left == pNode)
+            return p;
+        pNode = p;
     }
-    return next;
-}
-
-private ParentBinaryTreeNode searchData(ParentBinaryTreeNode node, int data) {
-
-    if(node == null){
-       return null;
-    }
-
-    if(node.data == data){
-        return node;
-    }else if(searchData(node.left,data) != null){
-        return searchData(node.left,data);
-    }else
-        return searchData(node.right,data);
-}
-
-public static void main(String[] args){
-
-    ParentBinaryTree tree = new ParentBinaryTree();
-
-    //for(int i = 2;i&lt;10;i++){
-    //    tree.createTree(tree.root,i);
-    //}
-
-    tree.createTree(tree.root,9);
-    tree.createTree(tree.root,5);
-    tree.createTree(tree.root,3);
-    tree.createTree(tree.root,7);
-    tree.createTree(tree.root,6);
-    tree.createTree(tree.root,8);
-    tree.createTree(tree.root,12);
-    tree.createTree(tree.root,10);
-    tree.createTree(tree.root,14);
-
-    tree.inOrder(tree.root);
-    System.out.println();
-
-    ParentBinaryTreeNode node = tree.searchNext(tree.root,5);
-    if(node != null){
-        System.out.println(node.data);
-    }else {
-        System.out.println(&quot;最后一个结点&quot;);
-    }
-}
+    return null;
 }
 </code></pre>
       
@@ -640,7 +556,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -651,7 +567,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

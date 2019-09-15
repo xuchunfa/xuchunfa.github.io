@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="1到n的数组中和为m的所有组合？public class SumOfKnumber {  public static void findKNumber(int sum, int n, int[] combine,int index){      //index 最大取到 n     if(index &amp;gt; n || index &amp;gt; sum)         return;      if">
+<meta name="description" content="1到n的数组中和为m的所有组合？/**      * @description:      * 输入：5,6               输入：5，6      * 输出：                  正确输出：      *      1 1 1 1 1 1            1 1 1 1 1 1      *      1 1 1 1 2              1 1 1 1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1到n的数组中和为m的所有组合">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/26/1到n的数组中和为m的所有组合/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="1到n的数组中和为m的所有组合？public class SumOfKnumber {  public static void findKNumber(int sum, int n, int[] combine,int index){      //index 最大取到 n     if(index &amp;gt; n || index &amp;gt; sum)         return;      if">
+<meta property="og:description" content="1到n的数组中和为m的所有组合？/**      * @description:      * 输入：5,6               输入：5，6      * 输出：                  正确输出：      *      1 1 1 1 1 1            1 1 1 1 1 1      *      1 1 1 1 2              1 1 1 1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-06T11:18:06.390Z">
+<meta property="og:updated_time" content="2019-09-14T13:23:41.693Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="1到n的数组中和为m的所有组合">
-<meta name="twitter:description" content="1到n的数组中和为m的所有组合？public class SumOfKnumber {  public static void findKNumber(int sum, int n, int[] combine,int index){      //index 最大取到 n     if(index &amp;gt; n || index &amp;gt; sum)         return;      if">
+<meta name="twitter:description" content="1到n的数组中和为m的所有组合？/**      * @description:      * 输入：5,6               输入：5，6      * 输出：                  正确输出：      *      1 1 1 1 1 1            1 1 1 1 1 1      *      1 1 1 1 2              1 1 1 1">
 
 
 
@@ -341,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
                     <span itemprop="name">动态规划</span>
                   </a>
                 </span>
@@ -399,50 +410,48 @@
       
 
       
-        <h4 id="1到n的数组中和为m的所有组合？"><a href="#1到n的数组中和为m的所有组合？" class="headerlink" title="1到n的数组中和为m的所有组合？"></a>1到n的数组中和为m的所有组合？</h4><pre><code>public class SumOfKnumber {
+        <h4 id="1到n的数组中和为m的所有组合？"><a href="#1到n的数组中和为m的所有组合？" class="headerlink" title="1到n的数组中和为m的所有组合？"></a>1到n的数组中和为m的所有组合？</h4><pre><code>/**
+     * @description:
+     * 输入：5,6               输入：5，6
+     * 输出：                  正确输出：
+     *      1 1 1 1 1 1            1 1 1 1 1 1
+     *      1 1 1 1 2              1 1 1 1 2
+     *      1 1 1 3                1 1 1 3
+     *      1 1 2 2                1 1 2 2
+     *      1 1 4                  1 1 4
+     *      1 5                    1 2 3
+     *      2 1 1 1 1 重复了       1 5
+     *      2 1 1 2                2 2 2
+     *      2 1 3                  2 4
+     *      2 2 1 1                3 3
+     *      2 2 2
+     *      2 3 1
+     *      2 4
+     *      ....
+     *
+     * @author: Xu chunfa
+     * @create: 2019-04-07 10:46
+     **/
+public class CombineNM {
+    private ArrayList&lt;Integer&gt; path = new ArrayList&lt;Integer&gt;();
+    public void findPath(int num,int sum,int i){
+        if(sum &lt; 0)
+            return;
 
-public static void findKNumber(int sum, int n, int[] combine,int index){
+        if(sum == 0){
+            for(int j = 0;j &lt; path.size();j++){
+                System.out.print(path.get(j) + &quot; &quot;);
+            }
+            System.out.println();
+        }
 
-    //index 最大取到 n
-    if(index &gt; n || index &gt; sum)
-        return;
-
-    if(index == sum){
-        combine[index-1] = index;
-        printResult(combine);
-
-        //还可以作为其他组合的元素
-        combine[index-1] = 0;
-        return;
-    }
-
-    //选择i
-    combine[index-1] = index;
-    findKNumber(sum-index, n, combine, index+1);
-
-    //i被放弃
-    combine[index-1] = 0;
-    findKNumber(sum,n,combine,index+1);
-
-
-}
-
-private static void printResult(int[] combine) {
-
-    for(int i = 0;i &lt; combine.length;i++){
-        if(combine[i] != 0){
-            System.out.print(combine[i] + &quot; &quot;);
+        while (i &lt; num &amp;&amp; sum - i - 1 &gt;= 0){
+            path.add(i+1);
+            findPath(num,sum-i-1,i);
+            i++;
+            path.remove(path.size()-1);
         }
     }
-
-    System.out.println();
-}
-
-public static void main(String[] args){
-    int[] combine = new int[7];
-    SumOfKnumber.findKNumber(10,7,combine,1);
-}
-}
 </code></pre>
       
     </div>
@@ -467,8 +476,8 @@ public static void main(String[] args){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/25/字符串匹配算法/" rel="next" title="字符串匹配算法">
-                <i class="fa fa-chevron-left"></i> 字符串匹配算法
+              <a href="/2018/08/24/数组中和为m的所有组合/" rel="next" title="数组中和为m的所有组合">
+                <i class="fa fa-chevron-left"></i> 数组中和为m的所有组合
               </a>
             
           </div>
@@ -567,7 +576,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -578,7 +587,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

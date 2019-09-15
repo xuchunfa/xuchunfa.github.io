@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="连续子数组的最大和?public class MaxSubArraySum {  public static int resolve(int[] array,int length){      if(array == null || length &amp;lt; 0){         throw new RuntimeException(&amp;quot;参数不合法&amp;quot;);     }      i">
+<meta name="description" content="连续子数组的最大和?public class MaxSubArraySum {      public static int resolve(int[] array){          if(array == null || array.length == 0)             return 0;          int sum = array[0];         int maxS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最大子数组">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/27/最大子数组/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="连续子数组的最大和?public class MaxSubArraySum {  public static int resolve(int[] array,int length){      if(array == null || length &amp;lt; 0){         throw new RuntimeException(&amp;quot;参数不合法&amp;quot;);     }      i">
+<meta property="og:description" content="连续子数组的最大和?public class MaxSubArraySum {      public static int resolve(int[] array){          if(array == null || array.length == 0)             return 0;          int sum = array[0];         int maxS">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-27T08:33:04.475Z">
+<meta property="og:updated_time" content="2019-09-14T13:19:18.174Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最大子数组">
-<meta name="twitter:description" content="连续子数组的最大和?public class MaxSubArraySum {  public static int resolve(int[] array,int length){      if(array == null || length &amp;lt; 0){         throw new RuntimeException(&amp;quot;参数不合法&amp;quot;);     }      i">
+<meta name="twitter:description" content="连续子数组的最大和?public class MaxSubArraySum {      public static int resolve(int[] array){          if(array == null || array.length == 0)             return 0;          int sum = array[0];         int maxS">
 
 
 
@@ -341,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
                     <span itemprop="name">动态规划</span>
                   </a>
                 </span>
@@ -401,37 +412,32 @@
       
         <h4 id="连续子数组的最大和"><a href="#连续子数组的最大和" class="headerlink" title="连续子数组的最大和?"></a>连续子数组的最大和?</h4><pre><code>public class MaxSubArraySum {
 
-public static int resolve(int[] array,int length){
+    public static int resolve(int[] array){
 
-    if(array == null || length &lt; 0){
-        throw new RuntimeException(&quot;参数不合法&quot;);
+        if(array == null || array.length == 0)
+            return 0;
+
+        int sum = array[0];
+        int maxSum = array[0];
+        for(int i = 1;i &lt; array.length;i++){
+           if(sum &gt; 0){
+               sum += array[i];
+           }else {
+               //不是sum=0开始,无法解决全是负数的情况
+               sum = array[i];
+           }
+           if(sum &gt; maxSum){
+               maxSum = sum;
+           }
+
+        }
+        return maxSum;
     }
 
-    int maxSub = 0;
-    int currentSum = 0;
-
-    //循环的思想解决动态规划问题
-    for(int i = 0;i&lt;length;i++){
-        //如果之前的和小于0的话,那么当前和应该从下一个数开始
-        if(currentSum &lt;= 0){
-            currentSum = array[i];
-        }else {
-            currentSum = currentSum + array[i];
-        }
-
-        //判断子数组的最大值
-        if(currentSum &gt; maxSub){
-            maxSub = currentSum;
-        }
+    public static void main(String[] args){
+        int[] arr = {-4,-1,-7};//返回结果为-4 错误答案
+        System.out.println(MaxSubArraySum.resolve(arr));
     }
-
-    return maxSub;
-}
-
-public static void main(String[] args){
-    int[] arr = {-1,2,3,-4,5,6,-7,9};
-    System.out.println(MaxSubArraySum.resolve(arr,arr.length));
-}
 }
 </code></pre>
       
@@ -557,7 +563,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -568,7 +574,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

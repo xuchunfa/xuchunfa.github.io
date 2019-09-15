@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="两个结点的最近祖先？（一个节点可以是它自己的祖先）public class CommonAncestor {  //树为二叉搜索树的情况，默认node1 node2已经存在树中 public BinaryTreeNode BSTfindCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){      if(pRoot.data &amp;gt;">
+<meta name="description" content="两个结点的最近祖先？（一个节点可以是它自己的祖先）   //递归解法     public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){         if(pRoot == null)             return null;         if(pRoot.data ==">
 <meta property="og:type" content="article">
 <meta property="og:title" content="结点的最近祖先">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/09/03/结点的最近祖先/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="两个结点的最近祖先？（一个节点可以是它自己的祖先）public class CommonAncestor {  //树为二叉搜索树的情况，默认node1 node2已经存在树中 public BinaryTreeNode BSTfindCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){      if(pRoot.data &amp;gt;">
+<meta property="og:description" content="两个结点的最近祖先？（一个节点可以是它自己的祖先）   //递归解法     public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){         if(pRoot == null)             return null;         if(pRoot.data ==">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-29T12:02:01.281Z">
+<meta property="og:updated_time" content="2019-09-14T14:00:15.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="结点的最近祖先">
-<meta name="twitter:description" content="两个结点的最近祖先？（一个节点可以是它自己的祖先）public class CommonAncestor {  //树为二叉搜索树的情况，默认node1 node2已经存在树中 public BinaryTreeNode BSTfindCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){      if(pRoot.data &amp;gt;">
+<meta name="twitter:description" content="两个结点的最近祖先？（一个节点可以是它自己的祖先）   //递归解法     public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){         if(pRoot == null)             return null;         if(pRoot.data ==">
 
 
 
@@ -341,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/树/" itemprop="url" rel="index">
                     <span itemprop="name">树</span>
                   </a>
                 </span>
@@ -399,143 +410,76 @@
       
 
       
-        <h4 id="两个结点的最近祖先？（一个节点可以是它自己的祖先）"><a href="#两个结点的最近祖先？（一个节点可以是它自己的祖先）" class="headerlink" title="两个结点的最近祖先？（一个节点可以是它自己的祖先）"></a>两个结点的最近祖先？（一个节点可以是它自己的祖先）</h4><pre><code>public class CommonAncestor {
+        <h4 id="两个结点的最近祖先？（一个节点可以是它自己的祖先）"><a href="#两个结点的最近祖先？（一个节点可以是它自己的祖先）" class="headerlink" title="两个结点的最近祖先？（一个节点可以是它自己的祖先）"></a>两个结点的最近祖先？（一个节点可以是它自己的祖先）</h4><pre><code>   //递归解法
+    public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
+        if(pRoot == null)
+            return null;
+        if(pRoot.data == node1 || pRoot.data == node2){
+            return pRoot;
+        }
+        BinaryTreeNode leftNode = findCommonAncestor1(pRoot.left,node1,node2);
+        BinaryTreeNode rightNode = findCommonAncestor1(pRoot.right,node1,node2);
 
-//树为二叉搜索树的情况，默认node1 node2已经存在树中
-public BinaryTreeNode BSTfindCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
+        //查找节点在左右子树
+        if(leftNode != null &amp;&amp; rightNode != null)
+            return pRoot;
 
-    if(pRoot.data &gt;= node1 &amp;&amp; pRoot.data &lt;= node2 || pRoot.data &lt;= node1 &amp;&amp; pRoot.data &gt;= node2)
-        return pRoot;
-    return BSTfindCommonAncestor1(pRoot.left,node1,node2) != null?
-    BSTfindCommonAncestor1(pRoot.left,node1,node2):BSTfindCommonAncestor1(pRoot.right,node1,node2);
-}
-
-//树为二叉搜索树的情况迭代解法
-public BinaryTreeNode IterativeBSTfindCommonAncestor(BinaryTreeNode pRoot,int node1,int node2){
-    while (pRoot != null){
-        if(pRoot.data &gt; node1 &amp;&amp; pRoot.data &gt; node2){
-            pRoot = pRoot.left;
-        }else if(pRoot.data &lt; node1 &amp;&amp; pRoot.data &lt; node2) {
-            pRoot = pRoot.right;
+        if(leftNode != null){
+            return leftNode;
         }else {
-            break;
+            return rightNode;
         }
-    }
-    return pRoot;
-}
 
-
-//树为普通二叉树递归解法（有bug即节点值在树中不存在）：默认节点都存在
-public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
-    if(pRoot == null)
-        return null;
-
-    if(pathIsExisted(pRoot.left,node1)){
-        if(pathIsExisted(pRoot.right,node2)) {
-            return pRoot;
-        }else//两个结点都在左子树中继续向下递归
-            return findCommonAncestor1(pRoot.left,node1,node2);
-    }else {
-        if(pathIsExisted(pRoot.left,node2))
-            return pRoot;
-        else//两个结点都在右子树中继续向下递归
-            return findCommonAncestor1(pRoot.right,node1,node2);
-    }
-}
-
-//修复bug的递归实现
-public BinaryTreeNode findCommonAncestor3(BinaryTreeNode pRoot,int node1,int node2){
-    if(pRoot == null)
-        return null;
-    BinaryTreeNode temp = null;
-    if(pRoot.data == node1) {
-        v1 = true;
-        temp = pRoot;//不直接return
-    }
-    if(pRoot.data == node2){
-        v2 = true;
-        temp = pRoot;
     }
 
-    BinaryTreeNode leftTargetNode = findCommonAncestor3(pRoot.left,node1,node2);
-    BinaryTreeNode rightTargetNode = findCommonAncestor3(pRoot.right,node1,node2);
 
-    if(temp != null){
-        return temp;
-    }
+    //树为普通二叉树非递归解法
+    public BinaryTreeNode findCommonAncestor2(BinaryTreeNode pRoot,int node1,int node2){
 
-    if(leftTargetNode!=null &amp;&amp; rightTargetNode!=null){
-        return pRoot;
-    }
-    return leftTargetNode != null?leftTargetNode:rightTargetNode;
-}
+        //list1和list2保存根节点到目标结点的路径
+        List&lt;BinaryTreeNode&gt; list1 = new ArrayList&lt;BinaryTreeNode&gt;();
+        boolean path1 = findPath(pRoot,node1,list1);
 
-//判断路径中是否存在指定结点的值
-public boolean pathIsExisted(BinaryTreeNode pRoot,int node){
+        List&lt;BinaryTreeNode&gt; list2 = new ArrayList&lt;BinaryTreeNode&gt;();
+        boolean path2 = findPath(pRoot,node2,list2);
 
-    if(pRoot == null)
-        return false;
-
-    if(pRoot.data == node)
-        return true;
-
-    boolean flag = pathIsExisted(pRoot.left,node);
-
-    //如果找到了就不用继续递归了
-    if(!flag){
-        flag = pathIsExisted(pRoot.right,node);
-    }
-
-    return flag;
-}
-
-//树为普通二叉树非递归解法
-public BinaryTreeNode findCommonAncestor2(BinaryTreeNode pRoot,int node1,int node2){
-
-    //list1和list2保存根节点到目标结点的路径
-    List&lt;BinaryTreeNode&gt; list1 = new ArrayList&lt;BinaryTreeNode&gt;();
-    boolean path1 = findPath(pRoot,node1,list1);
-
-    List&lt;BinaryTreeNode&gt; list2 = new ArrayList&lt;BinaryTreeNode&gt;();
-    boolean path2 = findPath(pRoot,node2,list2);
-
-    BinaryTreeNode ancestor = null;
-    if(!path1 || !path2){//某个节点不存在
-        return null;
-    }
-
-    int i = 0;
-    //找到两条路径岔开的那个位置结点，那么前一个结点就是最后一个公共路径上的结点，也就是最近的祖先
-    for(;i &lt; list1.size() &amp;&amp; i &lt; list2.size();i++){
-        if(list1.get(i) != list2.get(i)){
-            break;
+        BinaryTreeNode ancestor = null;
+        if(!path1 || !path2){//某个节点不存在
+            return null;
         }
-    }
-    return list1.get(i-1);
-}
 
-//保存包含指定节点路径结点的方法
-public boolean findPath(BinaryTreeNode pRoot, int node, List&lt;BinaryTreeNode&gt; list){
-    if(pRoot ==  null)
-        return false;
-
-    list.add(pRoot);
-
-    if(pRoot.data == node)
-        return true;
-
-    boolean isExisted = findPath(pRoot.left,node,list);
-
-    if(!isExisted){
-        isExisted = findPath(pRoot.right,node,list);
+        int i = 0;
+        //找到两条路径岔开的那个位置结点，那么前一个结点就是最后一个公共路径上的结点，也就是最近的祖先
+        for(;i &lt; list1.size() &amp;&amp; i &lt; list2.size();i++){
+            if(list1.get(i) != list2.get(i)){
+                break;
+            }
+        }
+        return list1.get(i-1);
     }
 
-    if(!isExisted)
-        list.remove(list.size()-1);
+    //保存包含指定节点路径结点的方法
+    public boolean findPath(BinaryTreeNode pRoot, int node, List&lt;BinaryTreeNode&gt; list){
+        if(pRoot ==  null)
+            return false;
 
-    return isExisted;
-}
+        list.add(pRoot);
 
+        if(pRoot.data == node)
+            return true;
+
+        boolean isExisted = findPath(pRoot.left,node,list);
+
+        if(!isExisted){
+            isExisted = findPath(pRoot.right,node,list);
+        }
+
+        //左右节点都没找到删掉该元素
+        if(!isExisted)
+            list.remove(list.size()-1);
+
+        return isExisted;
+    } 
 
 public static void main(String[] args){
     BinaryTree tree = new BinaryTree();
@@ -676,7 +620,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -687,7 +631,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

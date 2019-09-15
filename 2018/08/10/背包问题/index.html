@@ -81,20 +81,17 @@
 
 
 
-<meta name="description" content="解背包问题？ 例如： int[] v = {4,2,10,1,2} int[] w = {12,1,4,1,2} 最大价值为：15kg c[i][m]:前i个物体放入容量为m的背包的最大价值。 v[i]:第i个物体的价值。 w[i]:第i个物体的重量。 放入第i个物体：c[i][m] = c[i-1][m-w[i]] + v[i] 不放入第i个物体：c[i][m] = c[i-1][m]  动态规">
+<meta name="description" content="背包问题？    /**  * @description: 0-1背包问题  *               输入：  *                  Weight  1   2   3  *                  value   6   10  12  *                  背包容量：5  *               输出最大价值：22  * @author">
 <meta property="og:type" content="article">
 <meta property="og:title" content="背包问题">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/10/背包问题/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="解背包问题？ 例如： int[] v = {4,2,10,1,2} int[] w = {12,1,4,1,2} 最大价值为：15kg c[i][m]:前i个物体放入容量为m的背包的最大价值。 v[i]:第i个物体的价值。 w[i]:第i个物体的重量。 放入第i个物体：c[i][m] = c[i-1][m-w[i]] + v[i] 不放入第i个物体：c[i][m] = c[i-1][m]  动态规">
+<meta property="og:description" content="背包问题？    /**  * @description: 0-1背包问题  *               输入：  *                  Weight  1   2   3  *                  value   6   10  12  *                  背包容量：5  *               输出最大价值：22  * @author">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.imgur.com/bZL8dQF.png">
-<meta property="og:image" content="https://i.imgur.com/r8NVvQu.png">
-<meta property="og:updated_time" content="2018-08-15T11:53:10.738Z">
+<meta property="og:updated_time" content="2019-09-14T13:33:21.229Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="背包问题">
-<meta name="twitter:description" content="解背包问题？ 例如： int[] v = {4,2,10,1,2} int[] w = {12,1,4,1,2} 最大价值为：15kg c[i][m]:前i个物体放入容量为m的背包的最大价值。 v[i]:第i个物体的价值。 w[i]:第i个物体的重量。 放入第i个物体：c[i][m] = c[i-1][m-w[i]] + v[i] 不放入第i个物体：c[i][m] = c[i-1][m]  动态规">
-<meta name="twitter:image" content="https://i.imgur.com/bZL8dQF.png">
+<meta name="twitter:description" content="背包问题？    /**  * @description: 0-1背包问题  *               输入：  *                  Weight  1   2   3  *                  value   6   10  12  *                  背包容量：5  *               输出最大价值：22  * @author">
 
 
 
@@ -344,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
                     <span itemprop="name">动态规划</span>
                   </a>
                 </span>
@@ -402,82 +410,100 @@
       
 
       
-        <h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="https://i.imgur.com/bZL8dQF.png" alt=""></p>
-<p>例如：</p>
-<p>int[] v = {4,2,10,1,2}</p>
-<p>int[] w = {12,1,4,1,2}</p>
-<p>最大价值为：15kg</p>
-<p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p>
-<p>v[i]:第i个物体的价值。</p>
-<p>w[i]:第i个物体的重量。</p>
-<p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p>
-<p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p>
-<blockquote>
-<p>动态规划</p>
-</blockquote>
-<p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p>
-<pre><code>public class ThiefProblem {
+        <h4 id="背包问题？"><a href="#背包问题？" class="headerlink" title="背包问题？"></a>背包问题？</h4><pre><code>    /**
+ * @description: 0-1背包问题
+ *               输入：
+ *                  Weight  1   2   3
+ *                  value   6   10  12
+ *                  背包容量：5
+ *               输出最大价值：22
+ * @author: Xu chunfa
+ * @create: 2019-07-28 20:12
+ **/
+public class PackageProblem {
 
-static int max(int a, int b) { return (a &gt; b)? a : b; }
+    //时间和空间复杂度都为：O(weight.length * capacity)
+    public int maxValue(int[] weight,int[] value,int capacity){
+        int[][] dp = new int[weight.length][capacity+1];
 
-//基于递归的解法
-static int knapSack(int W, int wt[], int val[], int n)
-{
-    if (n == 0 || W == 0)
-        return 0;
-
-    // If weight of the nth item is more than Knapsack capacity W, then
-    // this item cannot be included in the optimal solution
-    if (wt[n-1] &gt; W)
-        return knapSack(W, wt, val, n-1);
-
-        // Return the maximum of two cases:
-        // (1) nth item included
-        // (2) not included
-    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),
-            knapSack(W, wt, val, n-1)
-    );
-}
-
-//基于动态规划的解法
-static int maxValue(int W, int wt[], int val[], int n)
-{
-
-   int[][] itemToValue = new int[n+1][W+1];
-
-   for(int i = 0;i&lt;W+1;i++){
-       itemToValue[0][i] = 0;
-   }
-
-   for(int j = 0;j&lt;n+1;j++){
-       itemToValue[j][0] = 0;
-   }
-
-
-   for(int i = 1;i&lt;=n;i++){
-        for(int j = 1;j&lt;=W;j++){
-            int weightPlus = j - wt[i-1];
-            if(weightPlus &lt; 0){
-                itemToValue[i][j] = itemToValue[i-1][j];
-            }else {
-                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);
-            }
-
+        for(int i = 0;i &lt;= capacity;i++){
+            //每件物品只能拿一次
+            dp[0][i] = (i &lt; weight[0] ? 0 : value[0]);
         }
-   }
 
-   return itemToValue[n][W];
+        for(int i = 1;i &lt; weight.length;i++){
+            for(int j = 0;j &lt;= capacity;j++){
+                //不装第i个物品
+                dp[i][j] = dp[i-1][j];
+                //装第i个物品
+                if(j - weight[i] &gt;= 0){
+                    dp[i][j] = Math.max(dp[i][j],dp[i-1][j-weight[i]] + value[i]);
+                }
+            }
+        }
+        return dp[weight.length-1][capacity];
+    }
+
+    //优化空间复杂度都为：O(capacity)
+    public int maxValueOpt(int[] weight,int[] value,int capacity){
+        int[] dp = new int[capacity+1];
+        //初始化第一行
+        for(int i = 0;i &lt;= capacity;i++){
+            dp[i] = (i &lt; weight[0] ? 0 : value[0]);
+        }
+
+        for(int i = 1;i &lt; weight.length;i++){
+            //从后往前覆盖
+            for(int j = capacity;j &gt;= weight[i];j--){
+                dp[j] = Math.max(dp[j],dp[j - weight[i]]+value[i]);
+            }
+        }
+        return dp[capacity];
+    }
+
+    @Test
+    public void test(){
+        int[] weight = {1,2,3};
+        int[] value = {6,10,12};
+        int cap = 5;
+
+        System.out.println(maxValue(weight,value,cap));
+        System.out.println(maxValueOpt(weight,value,cap));
+    }
 }
+</code></pre><h4 id="完全背包问题？"><a href="#完全背包问题？" class="headerlink" title="完全背包问题？"></a>完全背包问题？</h4><pre><code>/**
+ * @description: 完全背包问题，物品可以拿多次
+ *               输入：
+ *                  Weight  1   2   3
+ *                  value   6   10  12
+ *               背包容量：5
+ *               输出最大价值：30
+ * @author: Xu chunfa
+ * @create: 2019-07-29 18:55
+ **/
+public class CompletePackageProblem {
 
-public static void main(String[] args){
-    int[] value = {6,3,5,4,6};
-    int[] weight = {2,3,6,5,7};
-    int maxWeight = 10;
-    int n = value.length;
+    //优化空间复杂度都为：O(capacity)
+    public int maxValueOpt(int[] weight,int[] value,int capacity){
+        int[] dp = new int[capacity+1];
 
-    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));
-    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));
-}
+        for(int i = 0;i &lt; weight.length;i++){
+            //j从weight[i]开始
+            for(int j = weight[i];j &lt;= capacity;j++){
+                dp[j] = Math.max(dp[j],dp[j - weight[i]]+value[i]);
+            }
+        }
+        return dp[capacity];
+    }
+
+    @Test
+    public void test(){
+        int[] weight = {1,2,3};
+        int[] value = {6,10,12};
+        int cap = 5;
+
+        System.out.println(maxValueOpt(weight,value,cap));
+    }
 }
 </code></pre>
       
@@ -603,7 +629,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,7 +640,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -672,7 +698,7 @@ public static void main(String[] args){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#解背包问题？"><span class="nav-number">1.</span> <span class="nav-text">解背包问题？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#背包问题？"><span class="nav-number">1.</span> <span class="nav-text">背包问题？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完全背包问题？"><span class="nav-number">2.</span> <span class="nav-text">完全背包问题？</span></a></li></ol></div>
             
 
           </div>

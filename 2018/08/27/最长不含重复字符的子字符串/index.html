@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="最长不含重复字符的子字符串？public class MaxDistinctSubString {  //返回字符串长度 public static String resolve(String str,int length){      if(str == null || length &amp;lt; 0){         throw new RuntimeException(&amp;quot;参数非法&amp;q">
+<meta name="description" content="最长不含重复字符的子字符串？//优化方法 public static String optFindDistinctStr(String str){     int[] assit = new int[128];     int startIndex,substrStartIndex,maxLen,curLen;     startIndex = 0;     substrStartIndex =">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最长不含重复字符的子字符串">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/08/27/最长不含重复字符的子字符串/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="最长不含重复字符的子字符串？public class MaxDistinctSubString {  //返回字符串长度 public static String resolve(String str,int length){      if(str == null || length &amp;lt; 0){         throw new RuntimeException(&amp;quot;参数非法&amp;q">
+<meta property="og:description" content="最长不含重复字符的子字符串？//优化方法 public static String optFindDistinctStr(String str){     int[] assit = new int[128];     int startIndex,substrStartIndex,maxLen,curLen;     startIndex = 0;     substrStartIndex =">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-27T08:35:50.271Z">
+<meta property="og:updated_time" content="2019-09-14T13:18:09.213Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最长不含重复字符的子字符串">
-<meta name="twitter:description" content="最长不含重复字符的子字符串？public class MaxDistinctSubString {  //返回字符串长度 public static String resolve(String str,int length){      if(str == null || length &amp;lt; 0){         throw new RuntimeException(&amp;quot;参数非法&amp;q">
+<meta name="twitter:description" content="最长不含重复字符的子字符串？//优化方法 public static String optFindDistinctStr(String str){     int[] assit = new int[128];     int startIndex,substrStartIndex,maxLen,curLen;     startIndex = 0;     substrStartIndex =">
 
 
 
@@ -341,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
                     <span itemprop="name">动态规划</span>
                   </a>
                 </span>
@@ -399,66 +410,29 @@
       
 
       
-        <h4 id="最长不含重复字符的子字符串？"><a href="#最长不含重复字符的子字符串？" class="headerlink" title="最长不含重复字符的子字符串？"></a>最长不含重复字符的子字符串？</h4><pre><code>public class MaxDistinctSubString {
+        <h4 id="最长不含重复字符的子字符串？"><a href="#最长不含重复字符的子字符串？" class="headerlink" title="最长不含重复字符的子字符串？"></a>最长不含重复字符的子字符串？</h4><pre><code>//优化方法
+public static String optFindDistinctStr(String str){
+    int[] assit = new int[128];
+    int startIndex,substrStartIndex,maxLen,curLen;
+    startIndex = 0;
+    substrStartIndex = 0;
+    maxLen = 0;
+    curLen = 0;
+    for(int i = 0;i &lt; str.length();i++){
+        startIndex = Math.max(assit[str.charAt(i)],startIndex);
 
-//返回字符串长度
-public static String resolve(String str,int length){
-
-    if(str == null || length &lt; 0){
-        throw new RuntimeException(&quot;参数非法&quot;);
-    }
-
-    int distance = 0;
-    int currentLen = 0;
-    int maxLen = 0;
-
-    StringBuffer sb = new StringBuffer();
-
-    //用来存放字符在字符串中的最近访问的index
-    int[] judgeExisted = new int[256];
-    for(int j = 0;j &lt; judgeExisted.length;j++){
-        judgeExisted[j] = -1;
-    }
-
-     int startIndex = 0;
-
-    for(int i = 0;i &lt; length;i++){
-
-        //所有字符0~255
-        int index =str.charAt(i);
-
-        //字符没出现过
-        if(judgeExisted[index] &lt; 0){
-            currentLen = currentLen + 1;
-        }else {
-            distance = i - judgeExisted[index];
-            if(distance &lt;= currentLen){//字符出现在子串的中间
-                currentLen = distance;
-            }else {//d &gt; currentLen
-                currentLen = currentLen + 1;
-            }
+        curLen = i - startIndex + 1;//跳过那个重复出现的数 从它的下一个开始
+        if(curLen &gt; maxLen){
+            maxLen = curLen;
+            substrStartIndex = startIndex;
         }
-
-        //更新出现字符的坐标
-        judgeExisted[index] = i;
-
-        if(currentLen &gt; maxLen){
-            maxLen = currentLen;
-            //如果出现了重复的字符的话,i会一直前进但maxLen不会变,所以满足条件时,startIndex已经跳过了出现重复的字符。
-            startIndex = i + 1 - maxLen;
-        }
+        //数组初始化都为0,辅助数组的坐标为原位置的index + 1;
+        assit[str.charAt(i)] = i + 1;
     }
-
-
-    return str.substring(startIndex,startIndex + maxLen);
+    return str.substring(substrStartIndex,substrStartIndex + maxLen);
 }
-
-public static void main(String[] args){
-    String str = &quot;arabcacfrg&quot;;
-    System.out.println(MaxDistinctSubString.resolve(str,str.length()));
 }
-</code></pre><p>}</p>
-
+</code></pre>
       
     </div>
     
@@ -492,8 +466,8 @@ public static void main(String[] args){
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/09/02/EffectiveJava笔记/" rel="prev" title="Java笔记">
-                Java笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/09/03/逆序对的个数/" rel="prev" title="逆序对的个数">
+                逆序对的个数 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -582,7 +556,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -593,7 +567,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

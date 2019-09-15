@@ -286,2154 +286,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/打印从1到最大的n位数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/11/打印从1到最大的n位数/" itemprop="url">打印从1到最大的n位数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T20:23:13+08:00">
-                2018-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/字符串/" itemprop="url" rel="index">
-                    <span itemprop="name">字符串</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/11/打印从1到最大的n位数/" class="leancloud_visitors" data-flag-title="打印从1到最大的n位数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="打印从1到最大的n位数？"><a href="#打印从1到最大的n位数？" class="headerlink" title="打印从1到最大的n位数？"></a>打印从1到最大的n位数？</h4><pre><code>public class Print1ToMaxOfNdigits {
-
-public static void print1ToMaxOfNdigits(int n){
-    if(n &lt;= 0){
-        throw new RuntimeException(&quot;参数非法&quot;);
-    }
-
-    char[] nums = new char[n+1];
-    nums[n] = &apos;\0&apos;;
-
-    for(int i = 0;i&lt;10;i++){
-        nums[0] = (char) (i + &apos;0&apos;);
-        everyBigitRecursive(nums,n,0);
-    }
-}
-
-private static void everyBigitRecursive(char[] nums, int length, int index) {
-
-    if(index == length-1){
-        printNum(nums);
-        return;
-    }
-
-    for(int i = 0;i&lt;10;i++){
-
-        //向个位递进
-        nums[index + 1] = (char) (i + &apos;0&apos;);
-        everyBigitRecursive(nums,length,index+1);
-    }
-}
-
-private static void printNum(char[] nums) {
-
-    boolean isBegin0 = true;
-
-    for(int i = 0;i &lt; nums.length;i++){
-        if(isBegin0 &amp;&amp; nums[i] != &apos;0&apos;)
-            isBegin0 = false;
-
-        if(!isBegin0){
-            System.out.print(nums[i]);
-        }
-    }
-
-    System.out.println();
-}
-
-public static void main(String[] args){
-    Print1ToMaxOfNdigits.print1ToMaxOfNdigits(10);
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/11/指数幂运算/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/11/指数幂运算/" itemprop="url">指数幂运算</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T14:58:18+08:00">
-                2018-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/位运算/" itemprop="url" rel="index">
-                    <span itemprop="name">位运算</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/11/指数幂运算/" class="leancloud_visitors" data-flag-title="指数幂运算">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="计算a的n次幂考虑边界情况？"><a href="#计算a的n次幂考虑边界情况？" class="headerlink" title="计算a的n次幂考虑边界情况？"></a>计算a的n次幂考虑边界情况？</h4><p>方法1：</p>
-<pre><code>public static double allCalPow(double base, int exp){
-    if(exp == 0)
-        return 1;
-
-    if(exp == 1)
-        return base;
-
-    double result = allCalPow(base,exp/2);
-
-    if((exp &amp; 1) == 0){
-        result *= result;
-    }else {
-        if(exp &gt; 0){
-            result = base*result*result;
-        }else {
-            result = 1/base*result*result;
-        }
-    }
-
-    return result;
-}
-</code></pre><p>时间复杂度：</p>
-<p>方法2：</p>
-<pre><code>public class Pow {
-
-public static double pow(double base,int exp){
-
-    if(Double.compare(base,0) == 0 &amp;&amp; exponent &lt; 0){
-        throw new RuntimeException(&quot;exponent is not allowed negative&quot;);
-    }
-    if(Double.compare(base,0) == 0 &amp;&amp; exponent &gt; 0){
-        return 0;
-    }
-    if(exponent == 0){
-        return 1;
-    }
-    int positiveExp = exponent;
-    boolean negative = false;
-    if(exponent &lt; 0){
-        negative = true;
-        positiveExp = -exponent;
-    }
-
-    double result = 1;
-    for(int i = 1;i &lt;= positiveExp;i++){
-        result = result*base;
-    }
-    if(negative){
-        result = 1/result;
-    }
-    return result;
-}
-
-public static void main(String[] args){
-    System.out.println(Pow.pow(0,-4));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/10/背包问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/10/背包问题/" itemprop="url">背包问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T16:06:29+08:00">
-                2018-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
-                    <span itemprop="name">动态规划</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/10/背包问题/" class="leancloud_visitors" data-flag-title="背包问题">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="解背包问题？"><a href="#解背包问题？" class="headerlink" title="解背包问题？"></a>解背包问题？</h4><p><img src="https://i.imgur.com/bZL8dQF.png" alt=""></p>
-<p>例如：</p>
-<p>int[] v = {4,2,10,1,2}</p>
-<p>int[] w = {12,1,4,1,2}</p>
-<p>最大价值为：15kg</p>
-<p>c[i][m]:前i个物体放入容量为m的背包的最大价值。</p>
-<p>v[i]:第i个物体的价值。</p>
-<p>w[i]:第i个物体的重量。</p>
-<p>放入第i个物体：<br>c[i][m] = c[i-1][m-w[i]] + v[i]</p>
-<p>不放入第i个物体：<br>c[i][m] = c[i-1][m]</p>
-<blockquote>
-<p>动态规划</p>
-</blockquote>
-<p><img src="https://i.imgur.com/r8NVvQu.png" alt=""></p>
-<pre><code>public class ThiefProblem {
-
-static int max(int a, int b) { return (a &gt; b)? a : b; }
-
-//基于递归的解法
-static int knapSack(int W, int wt[], int val[], int n)
-{
-    if (n == 0 || W == 0)
-        return 0;
-
-    // If weight of the nth item is more than Knapsack capacity W, then
-    // this item cannot be included in the optimal solution
-    if (wt[n-1] &gt; W)
-        return knapSack(W, wt, val, n-1);
-
-        // Return the maximum of two cases:
-        // (1) nth item included
-        // (2) not included
-    else return max( val[n-1] + knapSack(W-wt[n-1], wt, val, n-1),
-            knapSack(W, wt, val, n-1)
-    );
-}
-
-//基于动态规划的解法
-static int maxValue(int W, int wt[], int val[], int n)
-{
-
-   int[][] itemToValue = new int[n+1][W+1];
-
-   for(int i = 0;i&lt;W+1;i++){
-       itemToValue[0][i] = 0;
-   }
-
-   for(int j = 0;j&lt;n+1;j++){
-       itemToValue[j][0] = 0;
-   }
-
-
-   for(int i = 1;i&lt;=n;i++){
-        for(int j = 1;j&lt;=W;j++){
-            int weightPlus = j - wt[i-1];
-            if(weightPlus &lt; 0){
-                itemToValue[i][j] = itemToValue[i-1][j];
-            }else {
-                itemToValue[i][j] = max(itemToValue[i-1][j],itemToValue[i-1][weightPlus]+val[i-1]);
-            }
-
-        }
-   }
-
-   return itemToValue[n][W];
-}
-
-public static void main(String[] args){
-    int[] value = {6,3,5,4,6};
-    int[] weight = {2,3,6,5,7};
-    int maxWeight = 10;
-    int n = value.length;
-
-    //System.out.println(ThiefProblem.maxValue(value,weight,maxWeight));
-    System.out.println(ThiefProblem.knapSack(maxWeight,weight,value,n));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/08/ConcurrentHashMap的理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/08/ConcurrentHashMap的理解/" itemprop="url">ConcurrentHashMap的理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T19:47:32+08:00">
-                2018-08-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/08/ConcurrentHashMap的理解/" class="leancloud_visitors" data-flag-title="ConcurrentHashMap的理解">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>JDK 1.7的参数：</p>
-<pre><code>1.DEFAULT_CONCURRENCY_LEVEL
-
-    简单看成是segment的个数，即并发度。默认值：16。
-
-2.MAX_SEGMENTS：
-
-    segment的最大个数。值为2^16=65536
-
-3.DEFAULT_INITIAL_CAPACITY:
-
-    默认值16。整个ConcurrentHashMap的容量，会平分给每个Segment[i].
-
-4.segmentMask:默认值15。
-
-5.segmentShift:默认值28。
-</code></pre><p>JDK1.8 的参数：</p>
-<pre><code>1.TREEIFY_THRESHOLD：默认值8，链表转红黑树的阈值。
-
-2.table：取消分段锁，直接改用一个table数组；
-
-    table = transient volatile Node&lt;K,V&gt;[]
-</code></pre><ul>
-<li><p>初始化操作</p>
-<pre><code>1.Segment[i] 为每个段中表的默认初始化容量，默认值为2，负载因子是 0.75，得出初始阈值为 1.5，
-也就是以后插入第一个元素不会触发扩容，插入第二个会进行第一次扩容。
-</code></pre></li>
-</ul>
-<ul>
-<li><p>定位Segment的散列算法</p>
-<pre><code>1.(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask
-
-  即让hash值的高4位与掩码做与运算。
-</code></pre></li>
-<li><p>定位HashEntry的散列算法</p>
-<pre><code>int index = (tab.length - 1) &amp; hash;//类似于HashMap中的数组下标
-</code></pre></li>
-</ul>
-<p>1.JDK 1.7 ConHashMap的put()操作</p>
-<pre><code>else {
-    //node是scanAndLockForPut()获取锁时的返回值
-    if (node != null)
-        node.setNext(first);
-    else
-        node = new HashEntry&lt;K,V&gt;(hash, key, value, first);
-
-    int c = count + 1;
-
-    if (c &gt; threshold &amp;&amp; tab.length &lt; MAXIMUM_CAPACITY)
-        rehash(node); 
-    else
-        //头插法插入元素
-        setEntryAt(tab, index, node);
-    ++modCount;
-    count = c;
-    oldValue = null;
-    break;
-    }
-}
-
-//循环获取锁
-while (!tryLock()) {
-    HashEntry&lt;K,V&gt; f; // to recheck first below
-    if (retries &lt; 0) {
-        if (e == null) {
-            //e = fisrt
-            if (node == null) // speculatively create node
-                node = new HashEntry&lt;K,V&gt;(hash, key, value, null);
-            retries = 0;
-        }
-        else if (key.equals(e.key))
-            retries = 0;
-        else
-            e = e.next;
-    }
-     //尝试获取锁超过一定次数后线程阻塞
-    else if (++retries &gt; MAX_SCAN_RETRIES) {
-        lock();
-        break;
-    }
-    else if ((retries &amp; 1) == 0 &amp;&amp;
-             //这个时候是有大问题了，那就是有新的元素进到了链表，成为了新的表头
-             //所以这边的策略是，相当于重新走一遍这个 scanAndLockForPut 方法
-             (f = entryForHash(this, hash)) != first) {
-        e = first = f; // re-traverse if entry changed
-        retries = -1;
-    }
-}
-    return node;
-}
-</code></pre><p>1.JDK 1.8 ConHashMap的put()操作</p>
-<pre><code> //在表头插入节点
- else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) {
-    if (casTabAt(tab, i, null,
-                 new Node&lt;K,V&gt;(hash, key, value, null)))
-        break;                   
-    }
-
-synchronized (f) {
-    if (tabAt(tab, i) == f) {
-        if (fh &gt;= 0) {
-            binCount = 1;
-            for (Node&lt;K,V&gt; e = f;; ++binCount) {
-                K ek;
-                ......
-                Node&lt;K,V&gt; pred = e;
-                //尾插法插入节点
-                if ((e = e.next) == null) {
-                    pred.next = new Node&lt;K,V&gt;(hash, key,
-                                              value, null);
-                    break;
-                }
-            }
-        }
-        //红黑树插入节点
-        else if (f instanceof TreeBin) {
-            Node&lt;K,V&gt; p;
-            binCount = 2;
-            if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,
-                                           value)) != null) {
-                oldVal = p.val;
-                if (!onlyIfAbsent)
-                    p.val = value;
-            }
-        }
-    }
-}
-</code></pre><p>2.JDK 1.7 ConHashMap的get()操作</p>
-<pre><code>//没有加锁
-public V get(Object key) {
-
-    if ((s = (Segment&lt;K,V&gt;)UNSAFE.getObjectVolatile(segments, u)) != null &amp;&amp;
-        (tab = s.table) != null) {
-          //native方法得到表头节点
-        for (HashEntry&lt;K,V&gt; e = (HashEntry&lt;K,V&gt;) UNSAFE.getObjectVolatile
-                 (tab, ((long)(((tab.length - 1) &amp; h)) &lt;&lt; TSHIFT) + TBASE);
-             e != null; e = e.next) {
-            K k;
-            if ((k = e.key) == key || (e.hash == h &amp;&amp; key.equals(k)))
-                return e.value;
-        }
-    }
-    return null;
-}
-</code></pre><p>2.JDK 1.8 ConHashMap的get()操作</p>
-<pre><code>//没有加锁
-public V get(Object key) {
-    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; e, p; int n, eh; K ek;
-    int h = spread(key.hashCode());
-    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
-        //底层还是Unsafe的getObjectVolatile方法
-        (e = tabAt(tab, (n - 1) &amp; h)) != null) {
-        if ((eh = e.hash) == h) {
-            if ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek)))
-                return e.val;
-        }
-        else if (eh &lt; 0)
-            return (p = e.find(h, key)) != null ? p.val : null;
-        while ((e = e.next) != null) {
-            if (e.hash == h &amp;&amp;
-                ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek))))
-                return e.val;
-        }
-    }
-    return null;
-}
-</code></pre><p>3.JDK1.7 CHM的size()操作</p>
-<pre><code>//CHM不上锁的前提下逐个计算Segment的更新次数，若相邻两次
-//获取到的Segment更新次数相等则说明无更新操作，则返回总size
-for (int j = 0; j &lt; segments.length; ++j) {
-    Segment&lt;K,V&gt; seg = segmentAt(segments, j);
-    if (seg != null) {
-      sum += seg.modCount;//每个segment的修改次数
-      int c = seg.count;
-      if (c &lt; 0 || (size += c) &lt; 0)
-        overflow = true;
-    }
-  }
-  if (sum == last)
-    break;
-  last = sum;
-}
-</code></pre><p>1.定位到Segment</p>
-<p>2.初始化segment的某一段，ensureSegment(int k)。</p>
-<p>3.获取锁，scanAndLockForPut(key, hash, value);</p>
-<p>4.如果需要的话，进行扩容。segment数组是不能扩容的，扩容的对象是HashEntry数组，该方法不需要考虑并发的，因为此时segment分段锁被独占的。</p>
-<blockquote>
-<p>Segment&lt;K,V&gt;的理解</p>
-</blockquote>
-<p>1.HashEntry&lt;K,V&gt;[] table：每个segment有一个HashEntry数组。</p>
-<p>2.HashEntry&lt;K,V&gt;：一个四元组，next被声明成final,所以每次插入元素都只能头插。node&lt;K,V&gt;的next域呢？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/07/HashMap原理解析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/07/HashMap原理解析/" itemprop="url">HashMap原理解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T16:01:32+08:00">
-                2018-08-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/07/HashMap原理解析/" class="leancloud_visitors" data-flag-title="HashMap原理解析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>JDK1.8 参数</p>
-<pre><code>1.TREEIFY_THRESHOLD：链表节点转树节点的阈值，默认值8；
-
-2.MIN_TREEIFY_CAPACITY：树化的最小容量，默认值64，只有当链表长度大于8，桶数组容量大于32才树化，否则resize()；
-</code></pre><h4 id="哈希表的长度为什么要为2-n"><a href="#哈希表的长度为什么要为2-n" class="headerlink" title="哈希表的长度为什么要为2^n?"></a>哈希表的长度为什么要为2^n?</h4><pre><code>因为当哈希表的长度为2^n次方时，hash &amp; (length-1) == hash % length
-</code></pre><h4 id="查找到哈希表中元素的条件？"><a href="#查找到哈希表中元素的条件？" class="headerlink" title="查找到哈希表中元素的条件？"></a>查找到哈希表中元素的条件？</h4><pre><code>1.两个key的hashcode相等的话，那么他们的hash值肯定相等。
-
-2.
-
-//散列值hash不同的key也在同一条链表中(冲突)
-for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next)
-
-{
-    //散列值不等的键值肯定不等，排除一大批元素
-    //散列值相等的键值也可能不等，这种可能性比较小，故继续比较key
-    e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))
-}
-</code></pre><p>在这里引申出来一个问题：</p>
-<h4 id="HashMap为什么常用String类型作为key？"><a href="#HashMap为什么常用String类型作为key？" class="headerlink" title="HashMap为什么常用String类型作为key？"></a>HashMap为什么常用String类型作为key？</h4><p>两个对象的散列码不等，那么两个对象equals()时不等。</p>
-<pre><code>设计 hashCode() 时最重要的因素就是对同一个对象调用 hashCode() 都应该产生相同值。String 类型的对象对这个条件有着很好的支持，因为 String 对象的 hashCode() 值是根据 String 对象的内容计算的，并不是根据对象的地址计算。
-</code></pre><h4 id="HashMap怎么处理key为null元素"><a href="#HashMap怎么处理key为null元素" class="headerlink" title="HashMap怎么处理key为null元素"></a>HashMap怎么处理key为null元素</h4><pre><code>所有key为null的元素放在了table[0]的桶里面了。
-private V putForNullKey(V value) {
-    for (Entry&lt;K,V&gt; e = table[0]; e != null; e = e.next) {
-        if (e.key == null) {
-            V oldValue = e.value;
-            e.value = value;
-            e.recordAccess(this);
-            return oldValue;
-        }
-    }
-    modCount++;
-    addEntry(0, null, value, 0);
-    return null;
-}
-</code></pre><blockquote>
-<p>JDK1.8的源码注释总结</p>
-</blockquote>
-<p>1.HashMap允许键和值为空，而且是不同步的，非线程安全的，而HashTable不允许键值为空。</p>
-<p>2.HashMap的两个重要参数：</p>
-<ul>
-<li><p>DEFAULT_INITIAL_CAPACITY:默认的初始容量。默认值16。</p>
-</li>
-<li><p>DEFAULT_LOAD_FACTOR:负载因子，用来衡量哈希表满的程度。默认值0.75。</p>
-</li>
-<li><p>threshold:存放元素的阈值。threshold = capacity * load factor.当key-value对的数量大于threshold，将调用resize()方法。</p>
-</li>
-</ul>
-<p>其他参数：</p>
-<ul>
-<li><p>MAXIMUM_CAPACITY：最大容量。为2^30.</p>
-</li>
-<li><p>TREEIFY_THRESHOLD:链表转化成红黑树的临界值。默认值为8。</p>
-</li>
-<li><p>UNTREEIFY_THRESHOLD：当执行resize操作时，当桶中bin的数量少于UNTREEIFY_THRESHOLD时使用链表来代替树。默认值是6。</p>
-</li>
-<li><p>MIN_TREEIFY_CAPACITY：当桶中的bin被树化时最小的hash表容量。默认值64.</p>
-</li>
-</ul>
-<p><strong>3.把Map元素哈希到桶的索引方法</strong></p>
-<p>1.将key.hashcode() 与 哈希值的高16位作异或运算。</p>
-<pre><code>(key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);
-</code></pre><p>2.将1步得到的值进行取模运算(取模哈希桶的长度，长度为2^n)，而方法采用的是高效的与运算。咋证明的呢？？？</p>
-<pre><code>i = (table.length - 1) &amp; hash
-</code></pre><p>3.jdk1.8中的rehash的理解。</p>
-<pre><code>rehash是很耗性能的，所以如果我们知道hashmap元素个数为N，可以计算默认容量，Capacity*0.75 &gt; N
-
-这里的Capacity取2^n次方，直接这样初始化：new HashMap(Capacity)
-</code></pre><p>在确定元素在新数组的下标时，我们只需要检测元素的hash值与oldCap作与操作的结果是否为0：</p>
-<p>为0，那么下标还是原来的下标。</p>
-<p>为1，那么下标等于原来下标加上旧数组长度。</p>
-<pre><code>为0的情况由loHead和loTail这组指针维护。维护的是旧桶的index在新表中保持不变。
-
-为1的情况由hiHead和hiTail这组指针维护。维护的是旧桶的index在新表中发生改变，变为 newTab[j + oldCap] = hiHead。
-</code></pre><p>如图所示：<br><img src="https://i.imgur.com/8h4npik.png" alt=""></p>
-<h4 id="JDK1-8-和-JDK1-7-HashMap源码中方法的理解？"><a href="#JDK1-8-和-JDK1-7-HashMap源码中方法的理解？" class="headerlink" title="JDK1.8 和 JDK1.7 HashMap源码中方法的理解？"></a>JDK1.8 和 JDK1.7 HashMap源码中方法的理解？</h4><p>1.JDK1.7 和 JDK1.8 get()操作，除红黑树结构外差不多</p>
-<pre><code>do {
-    if (e.hash == hash &amp;&amp;
-        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
-        return e;
-} while ((e = e.next) != null);
-</code></pre><p>2.JDK1.7 put()操作</p>
-<pre><code>void createEntry(int hash, K key, V value, int bucketIndex) {  
-    Entry&lt;K,V&gt; e = table[bucketIndex]; //获取待插入位置元素
-    //头插法
-    table[bucketIndex] = new Entry&lt;&gt;(hash, key, value, e);
-    size++;//元素个数+1  
-}  
-</code></pre><p>2.JDK1.8 put()操作—链表</p>
-<pre><code>//p是表头节点
-for (int binCount = 0; ; ++binCount) {
-    //等价于p=p.next;
-    if ((e = p.next) == null) {
-        p.next = newNode(hash, key, value, null);//尾插法
-        if (binCount &gt;= TREEIFY_THRESHOLD - 1)
-            treeifyBin(tab, hash);
-        break;
-    }
-    //节点key已经存在跳出
-    if (e.hash == hash &amp;&amp;
-        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
-        break;
-    //等价于p=p.next
-    p = e;
-}
-</code></pre><p>2.JDK1.8 put()操作—红黑树</p>
-<pre><code> //插入后的调整
-static &lt;K,V&gt; TreeNode&lt;K,V&gt; balanceInsertion(TreeNode&lt;K,V&gt; root,
-                                                TreeNode&lt;K,V&gt; x) {
-    x.red = true;
-    for (TreeNode&lt;K,V&gt; xp, xpp, xppl, xppr;;) {
-        if ((xp = x.parent) == null) {//插入的第一个节点
-            x.red = false;
-            return x;
-        }
-        else if (!xp.red || (xpp = xp.parent) == null)
-            return root;
-        if (xp == (xppl = xpp.left)) {
-            //插入节点的父节点是祖父节点的左子树，为red，父节点的叔叔节点
-            //也为red
-            if ((xppr = xpp.right) != null &amp;&amp; xppr.red) {
-                xppr.red = false;
-                xp.red = false;
-                xpp.red = true;
-                x = xpp;
-            }
-            else {
-                //插入节点是父节点的右子树，且都为red，叔叔节点为black，左旋
-                if (x == xp.right) {
-                    root = rotateLeft(root, x = xp);
-                    xpp = (xp = x.parent) == null ? null : xp.parent;
-                }
-                //插入节点是父节点的左子树，父节点为black，叔叔节点为black，右旋
-                if (xp != null) {
-                    xp.red = false;
-                    if (xpp != null) {
-                        xpp.red = true;
-                        root = rotateRight(root, xpp);
-                    }
-</code></pre><p>3.JDK1.7 resize()操作</p>
-<pre><code>//将老的表中的数据拷贝到新的结构中  
-void transfer(Entry[] newTable, boolean rehash) {  
-    int newCapacity = newTable.length;
-    for (Entry&lt;K,V&gt; e : table) { 
-        while(null != e) { 
-            Entry&lt;K,V&gt; next = e.next;  
-            if (rehash) { 
-                e.hash = null == e.key ? 0 : hash(e.key);  
-            }  
-            int i = indexFor(e.hash, newCapacity);  
-            e.next = newTable[i];
-            newTable[i] = e;//头插法插入到新的table中去，线程不安全
-            e = next;
-        }  
-    }  
-}  
-</code></pre><p>3.JDK1.8 resize()操作</p>
-<pre><code>else { 
-    Node&lt;K,V&gt; loHead = null, loTail = null;
-    Node&lt;K,V&gt; hiHead = null, hiTail = null;
-    Node&lt;K,V&gt; next;
-    do {
-        next = e.next;
-        //在oldTab中的index在newTab仍保持不变
-        if ((e.hash &amp; oldCap) == 0) {
-            if (loTail == null)
-                loHead = e;
-            else
-                loTail.next = e;
-            loTail = e;
-        }
-        else {
-            if (hiTail == null)
-                hiHead = e;
-            else
-                hiTail.next = e;
-            hiTail = e;
-        }
-    } while ((e = next) != null);
-    if (loTail != null) {
-        loTail.next = null;
-        newTab[j] = loHead;
-    }
-    if (hiTail != null) {
-        hiTail.next = null;
-        newTab[j + oldCap] = hiHead;
-    }
-}
-</code></pre><p><strong>4.JDK1.7版本hashMap线程不安全的原因？</strong></p>
-<p>1.因为扩容后可能会出现结点顺序反掉的情况。</p>
-<p>源码：</p>
-<pre><code>void transfer(Entry[] newTable, boolean rehash) {  
-    while(null != e) {  
-        Entry&lt;K,V&gt; next = e.next;           
-        if (rehash) {  
-            e.hash = null == e.key ? 0 : hash(e.key);  
-        }  
-        int i = indexFor(e.hash, newCapacity);   
-        e.next = newTable[i];  
-        newTable[i] = e;  
-        e = next;  
-    } 
-    }  
-}
-
-在进行哈希表扩容的时候，如果是多线程的话，则会因为transfer()(采用的头插法)原因，会出现循环链表的情况。
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/07/二进制中1的个数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/07/二进制中1的个数/" itemprop="url">二进制中1的个数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T13:13:50+08:00">
-                2018-08-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/位运算/" itemprop="url" rel="index">
-                    <span itemprop="name">位运算</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/07/二进制中1的个数/" class="leancloud_visitors" data-flag-title="二进制中1的个数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="计算二进制中的1的个数？"><a href="#计算二进制中的1的个数？" class="headerlink" title="计算二进制中的1的个数？"></a>计算二进制中的1的个数？</h4><pre><code>public class Count1 {
-
-//循环次数为num的位数
-public static int count2(int num){
-
-    int count = 0;
-
-    int flag = 1;
-
-    while (flag != 0){
-        if((num &amp; flag) != 0){
-            count++;
-        }
-
-        flag = flag &lt;&lt; 1;
-    }
-    return count;
-}
-
-public static int count1(int num){
-    int count = 0;
-
-    while (num != 0){
-        num = num &amp; num-1;
-        count++;
-    }
-
-    return count;
-}
-
-public static void main(String[] args){
-    System.out.println(Count1.count1(0));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/06/位运算/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/06/位运算/" itemprop="url">位运算</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T21:21:30+08:00">
-                2018-08-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/位运算/" itemprop="url" rel="index">
-                    <span itemprop="name">位运算</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/06/位运算/" class="leancloud_visitors" data-flag-title="位运算">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>移位实现乘除运算</p>
-</blockquote>
-<p>除2 = 右移1位 乘2 = 左移1位 </p>
-<p>除4 = 右移2位 乘4 = 左移2位 </p>
-<p>除8 = 右移3位 乘8 = 左移3位 </p>
-<blockquote>
-<p>取余运算用位运算与来代替</p>
-</blockquote>
-<p>A % B - A &amp; (B - 1)其中满足 A&gt;0 And B = 2^n</p>
-<p><strong>其中&gt;&gt;&gt;表示：</strong>无符号右移，忽略符号位，空位都以0补齐,在hashMap中有用到。</p>
-<blockquote>
-<p>要注意带符号类型的左右移位</p>
-</blockquote>
-<p>将负值向右移位可生成原始值一半的值（向下舍入）。 例如，-253（二进制 11111111 00000011）向右移动 1 位会生成 -127（二进制 11111111 10000001）。 将 + 253 向右移位生成 +126。</p>
-<p><strong>注：</strong></p>
-<p>1.如果数字是有符号正数，右移n位，则在最左边补n个0;</p>
-<p>2.如果数字是有符号负数，右移n位，则在最左边补n个1;</p>
-<p>3.如果一个数字，左移n位，则在最右边补n个0;</p>
-<blockquote>
-<p>一个数减去一后再与原本的自己做位与运算，得到的结果是将原数二进制中最右边的1变为0</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/06/动态规划问题集/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/06/动态规划问题集/" itemprop="url">动态规划问题集</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T15:26:09+08:00">
-                2018-08-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
-                    <span itemprop="name">动态规划</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/06/动态规划问题集/" class="leancloud_visitors" data-flag-title="动态规划问题集">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>动态规划问题的特点</p>
-</blockquote>
-<ul>
-<li><p>大问题可以分解成小问题，每个小问题都存在最优解。</p>
-</li>
-<li><p>整体问题最优解依赖子问题的最优解。</p>
-</li>
-<li><p>小问题之间还会存在相互重叠的更小的问题。</p>
-</li>
-<li><p>从上往下分析问题，从下往上求解问题。</p>
-</li>
-</ul>
-<h4 id="剪绳子把长度为-n-的绳子剪成-m-段-n-gt-1-m-gt-1-所有相乘乘积最小？"><a href="#剪绳子把长度为-n-的绳子剪成-m-段-n-gt-1-m-gt-1-所有相乘乘积最小？" class="headerlink" title="剪绳子把长度为 n 的绳子剪成 m 段(n &gt; 1,m &gt; 1)所有相乘乘积最小？"></a>剪绳子把长度为 n 的绳子剪成 m 段(n &gt; 1,m &gt; 1)所有相乘乘积最小？</h4><pre><code>public class CutStrip {
-
-public static int cutStrip(int length){
-    if(length &lt; 2)
-        return 0;
-
-    if(length == 2)
-        return 1;
-    if(length == 3)
-        return 2;
-
-    int[] result = new int[length+1];
-    result[1] = 1;
-    result[2] = 2;
-    result[3] = 3;
-
-    for (int i = 4;i&lt;=length;i++){
-        int max = 0;
-        for(int j = 1;j&lt;=i/2;j++){
-            int temp = result[j]*result[i-j];
-            if(temp &gt; max)
-                max = temp;
-        }
-        result[i] = max;
-    }
-
-    return result[length];
-}
-
-public static void main(String[] args){
-    System.out.println(CutStrip.cutStrip(10));
-}
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/06/矩阵路径/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/06/矩阵路径/" itemprop="url">矩阵路径</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T13:20:10+08:00">
-                2018-08-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/回溯算法/" itemprop="url" rel="index">
-                    <span itemprop="name">回溯算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/06/矩阵路径/" class="leancloud_visitors" data-flag-title="矩阵路径">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="回溯和递归的理解？"><a href="#回溯和递归的理解？" class="headerlink" title="回溯和递归的理解？"></a>回溯和递归的理解？</h4><p>1.如果一个问题的子问题和自身类似，只是规模和条件上发生变化，那么一套代码就可以解决二者，这就是递归。</p>
-<p>2.如果一个问题的解存在于一个可以深度遍历的解空间中，通过深度优先遍历找到解的过程就是回溯 。回溯有的时候可以用递归解决。</p>
-<p>3.回溯法可以通过递归方法列出所有的解空间。解空间还可以用迭代的方法实现。</p>
-<ul>
-<li><p>矩阵路径问题？</p>
-<pre><code>public class MatrixPath {
-
-public static boolean hasPath(char[][] a,int rows,int cols,String str){
-    if(a == null || rows &lt; 1 || cols &lt; 1 || str == null)
-        throw new RuntimeException(&quot;参数非法&quot;);
-
-    boolean[][] visited = new boolean[rows][cols];
-    int pathLength = 0;
-    for(int row = 0;row &lt; rows;row++){
-        for(int col = 0;col &lt; cols;col++){
-            if(hasOnePath(a,row,col,rows,cols,str,pathLength,visited)){
-                return true;
-        }
-    }
-}
-
-    return false;
-}
-
-private static boolean hasOnePath(char[][] a, int row, int col, int rows, int cols, String str,int pathLength,boolean[][] visited) {
-    boolean result = false;
-    if(str.length() == pathLength){
-        return true;
-    }
-
-    if(row &gt;= 0 &amp;&amp; row &lt; rows &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; cols &amp;&amp; a[row][col] == str.charAt(pathLength) &amp;&amp; !visited[row][col]) {
-        ++pathLength;
-        visited[row][col] = true;
-
-        result = hasOnePath(a, row - 1, col, rows, cols, str, pathLength, visited) ||
-            hasOnePath(a, row, col - 1, rows, cols, str, pathLength, visited) ||
-            hasOnePath(a, row + 1, col, rows, cols, str, pathLength, visited) ||
-            hasOnePath(a, row, col + 1, rows, cols, str, pathLength, visited);
-
-        if (!result) {
-            --pathLength;
-            visited[row][col] = false;
-        }
-    }
-
-    return result;
-}
-
-  public static void main(String[] args){
-/*char[][] a = {{'a','b','t','g'},
-                    {'c','f','c','s'},
-                    {'j','d','e','h'}};*/
-char[][] a = {{'a'},
-                      {'f'},
-                      {'g'},
-                      {'d'}};
-
-String str = &quot;gl&quot;;
-System.out.println(MatrixPath.hasPath(a,4,1,str));
-}
-}
-</code></pre></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2950,11 +802,1941 @@ final void runWorker(Worker w) {
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/基数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/基数排序/" itemprop="url">基数排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T14:04:16+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/04/基数排序/" class="leancloud_visitors" data-flag-title="基数排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="桶的思想？"><a href="#桶的思想？" class="headerlink" title="桶的思想？"></a>桶的思想？</h4><p><img src="/images/基数排序.PNG" alt=""></p>
+<pre><code>public class RadixSort {
+
+public static void radixSort(int[] a,int k){
+    int[] counter = new int[10];
+    int[][] container = new int[10][a.length];
+    int n = 1;
+    int t = 0;
+    while (n &lt; k){
+        for(int num : a){
+            int radix = (num/n)%10;
+            container[radix][counter[radix]] = num;
+            counter[radix]++;
+        }
+
+        for(int i = 0;i &lt; 10;i++){
+                if(counter[i] != 0){
+                    for(int j = 0;j&lt;counter[i];j++){
+                        a[t] = container[i][j];
+                        t++;
+                    }
+                }
+            counter[i] = 0;
+        }
+
+        t = 0;
+        n *= 10;
+    }
+}
+
+public static void main(String[] args){
+    int[] a = {1,21,32,45,687,89,43,44,95};
+    RadixSort.radixSort(a,1000);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre><p><strong>时间复杂度：</strong></p>
+<pre><code>时间复杂度 = [放桶的时间(O(n)) + 取桶里面的元素(O(n))]*位数
+
+     = O(d*n) (d为常数)
+
+空间复杂度 = O(n * 10 + 10) = O(n)
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/计数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/计数排序/" itemprop="url">计数排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T12:32:23+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/04/计数排序/" class="leancloud_visitors" data-flag-title="计数排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>核心思想：</strong>哈希表的思想，确定元素在整个数组的排第几来确定它在最终排序数组中的位置。</p>
+<p>计数排序示意图：</p>
+<p><img src="/images/计数排序.PNG" alt=""></p>
+<pre><code>public class CountSort {
+
+//数组数字在0 ~ k之间
+public static int[] countSort(int[] a,int k){
+
+    int[] elementCounter = new int[k+1];
+
+    for(int i = 0;i&lt;a.length;i++){
+        elementCounter[a[i]]++;
+    }
+
+    //构造计数数组(即小于等于该元素的个数)
+    for(int j = 1;j&lt;elementCounter.length;j++){
+        elementCounter[j] = elementCounter[j-1]+elementCounter[j];
+    }
+
+
+    int[] result = new int[a.length];
+
+    //从原数组末尾开始遍历
+    for(int i = a.length-1;i&gt;=0;i--){
+        result[elementCounter[a[i]]-1] = a[i];
+        elementCounter[a[i]]--;
+    }
+
+    return result;
+}
+
+//优化方法只用了一个辅助数组
+public static void optCountSort(int[] a,int k){
+    int[] c = new int[k+1];
+    for(int i = 0;i &lt; a.length;i++){
+        c[a[i]]++;
+    }
+    int z = 0;
+    for(int j = 0;j &lt;= k;j++){
+        while (c[j] &gt; 0){
+            a[z++] = j;
+            c[j]--;
+        }
+    }
+}
+
+public static void main(String[] args){
+    int[] a = {6,5,4,3,2,1};
+    int[] result = new int[a.length];
+    result = CountSort.countSort(a,6);
+    System.out.println(Arrays.toString(result));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/03/希尔排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/03/希尔排序/" itemprop="url">希尔排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-03T14:46:38+08:00">
+                2018-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/03/希尔排序/" class="leancloud_visitors" data-flag-title="希尔排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="希尔排序示意图"><a href="#希尔排序示意图" class="headerlink" title="希尔排序示意图"></a>希尔排序示意图</h4><p><img src="/images/希尔.png" alt=""></p>
+<pre><code>public class ShellSort {
+
+public static void shellSort(int[] a){
+    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){
+        for(int i = increment;i&lt;a.length;i++){
+            int j = i;
+            while (j - increment &gt;=0  &amp;&amp; a[j-increment] &gt; a[j]){
+                //交换排序
+                swap(a,j,j-increment);
+                j -= increment;
+        }
+        }
+    }
+}
+
+private static void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+
+public static void shellSort1(int[] a){
+    for(int increment = a.length/2;increment &gt; 0 ;increment /= 2){
+        for(int i = increment;i&lt;a.length;i++){
+            int j = i;
+            int temp = a[j];
+
+            //直接插入
+            while(j-increment &gt;= 0 &amp;&amp; a[j-increment] &gt; temp){
+                a[j] = a[j-increment];
+                j -= increment;
+            }
+            a[j] = temp;
+        }
+    }
+}
+
+public static void main(String[] args){
+    int[] a = {9,8,7,6,5,4,3,2,1};
+    ShellSort.shellSort1(a);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6104371.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6104371.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/02/归并排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/归并排序/" itemprop="url">归并排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T14:40:42+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/02/归并排序/" class="leancloud_visitors" data-flag-title="归并排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>什么叫分治思想？</strong></p>
+<p>分治法将问题分(divide)成一些小的问题然后递归求解，而治(conquer)的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之</p>
+<p><img src="/images/归并.png" alt=""></p>
+<pre><code>public class MergeSort {
+
+//临时数组
+public static void sort(int[] a){
+    int[] temp = new int[a.length];
+    mergeSort(a,0,a.length-1,temp);
+}
+
+//治的思想
+public static void merge(int[] a,int left,int mid,int right,int[] temp){
+    int i = left;
+    int j = mid + 1;
+    int k = 0;
+    while(i &lt;= mid &amp;&amp; j &lt;= right){
+        if(a[i] &lt; a[j]){
+            temp[k++] = a[i++];
+        }else{
+            temp[k++] = a[j++];
+        }
+    }
+
+    while (i &lt;= mid){
+        temp[k++] = a[i++];
+    }
+
+    while (j &lt;= right){
+        temp[k++] = a[j++];
+    }
+
+    k = 0;
+    while (left &lt;= right){
+        a[left++] = temp[k++];
+    }
+}
+
+//归并排序
+public static void mergeSort(int[] a,int left,int right,int[] temp){
+
+    if(a == null){
+        throw new RuntimeException(&quot;输入数组&quot;);
+    }
+
+    if(left &lt; 0 || left &gt;= a.length || right &lt; 0 || right &gt;= a.length ){
+        throw new RuntimeException(&quot;越界&quot;);
+    }
+
+    if(left &gt;= right)
+        return;
+
+    int mid = (left + right)/2;
+
+    //分
+    mergeSort(a,left,mid,temp);
+    mergeSort(a,mid+1,right,temp);
+
+    //治
+    merge(a,left,mid,right,temp);
+}
+
+public static void main(String[] args){
+    int[] a = {6,5,4,4,4,3,2,1};
+    sort(a);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre><p>参考文档一：<a href="https://www.cnblogs.com/chengxiao/p/6194356.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6194356.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/02/进程和线程的区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/进程和线程的区别/" itemprop="url">进程和线程分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T13:36:27+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java并发编程/" itemprop="url" rel="index">
+                    <span itemprop="name">Java并发编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/02/进程和线程的区别/" class="leancloud_visitors" data-flag-title="进程和线程分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="线程中Blocked-和-Waiting-状态的区别？"><a href="#线程中Blocked-和-Waiting-状态的区别？" class="headerlink" title="线程中Blocked 和 Waiting 状态的区别？"></a>线程中Blocked 和 Waiting 状态的区别？</h4><p><strong>Blocked:</strong>线程在等待监视器锁(例如synchronized方法或者块)或者线程在调用过对象的wait()方法后，重新被唤醒时(例如：notify()),此时会进入Blocked状态,试图获得调用对象的锁。</p>
+<p><strong>Waiting:</strong><br>由于主动调用了以下方法而进入的状态：<br>1.Object.wait()<br>2.Thread.join()<br>3.LockSupport.park()</p>
+<p><strong>Time_waiting:</strong><br>调用了以下方法：<br>1.Thread.sleep<br>2.Object.wait(long)<br>3.Thread.join(long)<br>4.LockSupport.parkNanos<br>5.LockSupport.parkUntil</p>
+<h4 id="同步队列和等待队列的区别？"><a href="#同步队列和等待队列的区别？" class="headerlink" title="同步队列和等待队列的区别？"></a>同步队列和等待队列的区别？</h4><p><strong>同步队列：</strong>存放竞争同步资源的线程的引用。</p>
+<p><strong>等待队列：</strong>存放着等待被唤醒的线程的引用。</p>
+<pre><code>等待/通知的经典范式如下：
+等待方
+synchronized(对象){
+    while(条件不满足){
+        对象.wait()
+    }
+    处理逻辑
+}
+
+通知方
+synchronized(对象){
+    改变条件
+    对象.notifyAll()
+}
+</code></pre><hr>
+<pre><code>等待超时模式如下：
+public synchronized Object get(long mills) throw InterruptedException{
+if(mills &lt;= 0){
+    while(result == null){
+        wait();
+    }
+     return result;
+}else{
+    long future = System.currentTimeMillis() + mills;
+    long remaining = mills;
+    while(result == null &amp;&amp; remaining &gt; 0){
+        wait(remaining);
+        remaining = future - System.currentTimeMillis();
+    }
+    result == null;
+    if(result != null){
+        return result;
+    }
+    return result;
+}
+</code></pre><h4 id="进程和线程的区别？"><a href="#进程和线程的区别？" class="headerlink" title="进程和线程的区别？"></a>进程和线程的区别？</h4><p><strong>进程：</strong>资源分配的最小单位。可以看成是每个运行中的程序。它可以拥有自己独立的资源。有自己的内存空间。</p>
+<p><strong>线程：</strong>操作系统调度的最小单元。线程是进程的一个实体，这些线程共同享有进程占有的资源和内存空间。</p>
+<p><strong>进程和线程的联系：</strong>一个进程里面可以创建多个线程，每个线程都拥有各自的计数器、堆栈和局部变量等。</p>
+<p><strong>进程和线程的区别：</strong></p>
+<p>1.进程之间是相互独立的，不共享内存和数据，线程之间的内存和数据是公用的。</p>
+<p>2.一个进程内可以创建多个线程，所有这些线程都共享创建这个进程时所占用的系统资源。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/29/堆排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/堆排序/" itemprop="url">堆排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T18:33:19+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/29/堆排序/" class="leancloud_visitors" data-flag-title="堆排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="堆排序？"><a href="#堆排序？" class="headerlink" title="堆排序？"></a>堆排序？</h4><pre><code>public class HeapSort {
+
+public static void heapSort(int[] a){
+
+    if(a == null){
+        throw new RuntimeException(&quot;输入数组&quot;);
+    }
+
+    int len = a.length;
+    for(int i = len/2-1;i&gt;=0;i--){
+        createHeap(a,i,len);
+    }
+
+    for(int j = a.length-1;j&gt;0;j--){
+        swap(a,0,j);
+        createHeap(a,0,j);
+    }
+}
+
+private static void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+}
+
+//构建大顶堆
+private static void createHeap(int[] a,int i,int len) {
+
+    int father = a[i];
+    int j = 2i+1;//j代表子结点坐标 i代表父结点坐标
+
+    while(j &lt; len){
+
+        if(j + 1 &lt; len &amp;&amp; a[j] &lt; a[j+1] )
+            j++;
+
+        if(a[j] &gt; father){
+            a[i] = a[j];
+            i = j;
+        }else {
+            break;
+        }
+        j = 2*i+1;
+    }
+
+    //找到最终位置
+    a[i] = father;
+}
+
+//构建小顶堆
+public static void createMinHeap(int[] a,int i,int length){
+    int father = a[i];
+    int j = 2*i + 1;
+    while (j &lt; length){
+        if(j+1 &lt; length &amp;&amp; a[j] &gt; a[j+1]){
+            j++;
+        }
+        if(a[j] &lt; father){
+            a[i] = a[j];
+            i = j;
+        }else {
+            break;
+        }
+        j = 2*i+1;
+    }
+    a[i] = father;
+}
+
+public static void main(String[] args){
+    int[] a = {1,1,1};
+    HeapSort.heapSort(a);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/29/直接插入排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/直接插入排序/" itemprop="url">直接插入排序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T18:30:34+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/29/直接插入排序/" class="leancloud_visitors" data-flag-title="直接插入排序">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="直接插入排序？"><a href="#直接插入排序？" class="headerlink" title="直接插入排序？"></a>直接插入排序？</h4><pre><code>public class InsertSort {
+
+public static void insert(int[] a){
+    if(a == null){
+        throw new RuntimeException(&quot;输入数组&quot;);
+    }
+
+    if(a.length &lt;= 1){
+        return;
+    }
+
+    for(int j = 1;j&lt;a.length;j++){
+        int temp = a[j];
+        int i;
+
+        for(i = j-1;i&gt;=0 &amp;&amp; a[i]&gt;temp;i--){
+            a[i+1] = a[i];
+        }
+
+        //不满足上面for循环的话,元素不动
+        a[i+1] = temp;
+    }
+}
+
+public static void main(String[] args){
+    int[] a = {4,2,2,2,1,5,7,6};
+    InsertSort.insert(a);
+    System.out.println(Arrays.toString(a));
+}
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/旋转数组中的最小值/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/旋转数组中的最小值/" itemprop="url">旋转数组中的最小值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T21:37:21+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/数组/" itemprop="url" rel="index">
+                    <span itemprop="name">数组</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/28/旋转数组中的最小值/" class="leancloud_visitors" data-flag-title="旋转数组中的最小值">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="找出递增数组旋转后的最小值？"><a href="#找出递增数组旋转后的最小值？" class="headerlink" title="找出递增数组旋转后的最小值？"></a>找出递增数组旋转后的最小值？</h4><pre><code>public int findMin(int[] a,int l,int r){
+    if(l == r){
+        return a[l];
+    }
+    int mid = (l+r)/2;
+    if(a[mid] &gt; a[r]){
+        return findMin(a,mid+1,r);
+    }else{
+        return findMin(a,l,mid);
+    }
+}
+
+public int minNumberInRotateArray(int [] array) {
+    if(array == null){
+        throw new RuntimeException(&quot;array is not existed&quot;);
+    }
+    if(array.length == 0){
+        return 0;
+    }
+    return findMin(array,0,array.length-1);
+}
+
+//迭代
+public int findMin(int [] array) {
+    int low = 0 ;
+    int high = array.length - 1;
+    while(low &lt; high){
+        int mid = (low + high) / 2;
+        if(array[mid] &gt; array[high]){
+            low = mid + 1;
+        }else{
+            high = mid;
+        }
+    }
+    return array[low];
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/28/排序算法比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/28/排序算法比较/" itemprop="url">排序算法比较</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T16:13:19+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/排序/" itemprop="url" rel="index">
+                    <span itemprop="name">排序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/28/排序算法比较/" class="leancloud_visitors" data-flag-title="排序算法比较">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/排序比较.png" alt=""></p>
+<p><strong>学习过程中一点点积累补充</strong></p>
+<h4 id="什么叫做稳定性？"><a href="#什么叫做稳定性？" class="headerlink" title="什么叫做稳定性？"></a>什么叫做稳定性？</h4><p>稳定性是指：表示两个值相同的元素在排序前后是否有位置变化。如果前后位置变化，则排序算法是不稳定的，否则是稳定的。</p>
+<ul>
+<li><p>快排分析</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况下：两边元素被划分的很均匀，递归次数等价于一颗二叉树的深度<a href="取下整的意思">logn</a>+1，第一次partition的时候需要和pivot比较n次</p>
+<p>  时间复杂度：nlogn</p>
+<p>  2.最差情况下：划分为了一颗斜着的树，递归次数为n-1,第一次划分还是得比较n次</p>
+<p>  时间复杂度：n^2</p>
+<p>  3.一般情况下：略</p>
+<p>  时间复杂度：nlogn</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  1.最优情况：因为递归调用会消耗空间，空间复杂度取决于栈的调用层数。</p>
+<p>  空间复杂度：O(logn)</p>
+<p>  2.最差情况：略</p>
+<p>  空间复杂度：O(n)</p>
+<p>  <strong>补充：</strong>快排是不稳定的。</p>
+</li>
+<li><p>直接插入排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：正序时，比较次数O(n),移动次数0次。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：反序时，移动次数O(n^2),比较次数也是O(n^2)的。</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  平均复杂度:O(n^2)</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  空间复杂度：O(1)</p>
+<p>  <strong>补充：</strong>插入排序是稳定的。适用于有一定顺序的数据。</p>
+</li>
+<li><p>冒泡排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：优化后的冒泡排序，只进行了一轮比较，O(n-1)。</p>
+<p>  时间复杂度：O(n)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)。</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>简单选择排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  1.最优情况：有序，交换次数0次，比较次数O(n^2)</p>
+<p>  时间复杂度：O(n^2)</p>
+<p>  2.最坏情况：逆序，交换次数O(n^2)，比较次数O(n^2)</p>
+<p>  时间复杂度:O(n^2)</p>
+<p>  平均时间复杂度：O(n^2)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>堆排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  分析：</p>
+<p>  初始化堆的过程时间：O(n)</p>
+<p>  更改元素后重建时间：O(nlogn) = (n-1)logn = 循环次数*树的深度</p>
+<p>  最好 = 最坏 = 平均时间复杂度 = O(nlogn)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>归并排序</p>
+<p>  总时间 = 划分时间 + 合并时间</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  最好 = 最坏 = 平均 = O(nlogn)</p>
+<p>  <strong>空间复杂度：</strong></p>
+<p>  O(n) = O(logn) + O(n)</p>
+</li>
+<li><p>希尔排序</p>
+<p>  <strong>时间复杂度：</strong></p>
+<p>  最坏：O(n^2)</p>
+<p>  最好：O(nlogn)</p>
+<p>  平均：O(n^1.5)</p>
+<p>  <strong>空间复杂度：</strong>O(1)</p>
+</li>
+<li><p>计数排序</p>
+<p>  时间复杂度： </p>
+<p>  O(n+K) = 遍历原数组 + 遍历计数数组 + 元素插入新数组</p>
+<pre><code>= O(n) + O(k) + O(n)
+</code></pre><p>  空间复杂度：O(n+k)</p>
+</li>
+</ul>
+<p>参考文档一：<a href="https://www.cnblogs.com/fengty90/p/3768827.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengty90/p/3768827.html</a></p>
+<p>参考文档二：<a href="https://blog.csdn.net/YuZhiHui_No1/article/details/44258297" target="_blank" rel="noopener">https://blog.csdn.net/YuZhiHui_No1/article/details/44258297</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3004,7 +2786,7 @@ final void runWorker(Worker w) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3015,7 +2797,7 @@ final void runWorker(Worker w) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

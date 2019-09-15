@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="求解指定索引的丑数？public class UglyNumber {  public static int resolve(int index){      if(index &amp;lt;= 0){         throw new RuntimeException(&amp;quot;参数非法&amp;quot;);     }      int[] uglyNumber = new int[index];">
+<meta name="description" content="求解指定索引的丑数？public int GetUglyNumber_Solution(int index) {      if(index &amp;lt; 7)         return index;     int[] result = new int[index];     result[0] = 1;     int index2 = 0,index3 = 0,index5 = 0;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="丑数">
 <meta property="og:url" content="http://www.xuchunfa.cn/2018/09/03/丑数/index.html">
 <meta property="og:site_name" content="Flying in the ocean of knowledge">
-<meta property="og:description" content="求解指定索引的丑数？public class UglyNumber {  public static int resolve(int index){      if(index &amp;lt;= 0){         throw new RuntimeException(&amp;quot;参数非法&amp;quot;);     }      int[] uglyNumber = new int[index];">
+<meta property="og:description" content="求解指定索引的丑数？public int GetUglyNumber_Solution(int index) {      if(index &amp;lt; 7)         return index;     int[] result = new int[index];     result[0] = 1;     int index2 = 0,index3 = 0,index5 = 0;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-03T02:33:02.339Z">
+<meta property="og:updated_time" content="2019-09-15T02:03:52.866Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="丑数">
-<meta name="twitter:description" content="求解指定索引的丑数？public class UglyNumber {  public static int resolve(int index){      if(index &amp;lt;= 0){         throw new RuntimeException(&amp;quot;参数非法&amp;quot;);     }      int[] uglyNumber = new int[index];">
+<meta name="twitter:description" content="求解指定索引的丑数？public int GetUglyNumber_Solution(int index) {      if(index &amp;lt; 7)         return index;     int[] result = new int[index];     result[0] = 1;     int index2 = 0,index3 = 0,index5 = 0;">
 
 
 
@@ -341,7 +341,18 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/策略类/" itemprop="url" rel="index">
                     <span itemprop="name">策略类</span>
                   </a>
                 </span>
@@ -399,54 +410,24 @@
       
 
       
-        <h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public class UglyNumber {
+        <h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public int GetUglyNumber_Solution(int index) {
 
-public static int resolve(int index){
+    if(index &lt; 7)
+        return index;
+    int[] result = new int[index];
+    result[0] = 1;
+    int index2 = 0,index3 = 0,index5 = 0;
+    for(int i = 1;i &lt; index;i++){
+        result[i] = Math.min(Math.min(2*result[index2],3*result[index3]),5*result[index5]);
+        if(result[i] == result[index2]*2)
+            index2++;
+        if(result[i] == result[index3]*3)
+            index3++;
+        if(result[i] == result[index5]*5)
+            index5++;
 
-    if(index &lt;= 0){
-        throw new RuntimeException(&quot;参数非法&quot;);
     }
-
-    int[] uglyNumber = new int[index];
-
-    uglyNumber[0] = 1;
-    int indexOf2,indexOf3,indexOf5;
-    indexOf2 = indexOf3 = indexOf5 = 0;
-
-    int uglyNumberIndex = 1;
-
-    while (uglyNumberIndex &lt; index){
-        int min = Min(uglyNumber[indexOf2]*2,uglyNumber[indexOf3]*3,uglyNumber[indexOf5]*5);
-        uglyNumber[uglyNumberIndex] = min;
-
-        //uglyNumber[uglyNumberIndex]代表的是目前数组中最大的丑数
-        while (uglyNumber[indexOf2]*2 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf2++;
-        }
-
-        //下次的uglyNumber[indexOf3]肯定就大于Max uglyNumber
-        while (uglyNumber[indexOf3]*3 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf3++;
-        }
-
-        while (uglyNumber[indexOf5]*5 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf5++;
-        }
-
-        uglyNumberIndex++;
-    }
-    return uglyNumber[index-1];
-}
-
-
-private static int Min(int i, int j, int k) {
-    int min;
-    return (min = i &lt; j ? i : j) &lt; k ? min : k;
-}
-
-public static void main(String[] args){
-    System.out.println(UglyNumber.resolve(100));
-}
+    return result[index-1];
 }
 </code></pre>
       
@@ -572,7 +553,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -583,7 +564,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

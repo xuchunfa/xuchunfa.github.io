@@ -340,8 +340,19 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring入门/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring入门</span>
+                  <a href="/categories/Spring基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring基础</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring基础/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
                   </a>
                 </span>
 
@@ -600,7 +611,18 @@ public UserValidator userValidator;
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/树/" itemprop="url" rel="index">
                     <span itemprop="name">树</span>
                   </a>
                 </span>
@@ -1044,7 +1066,18 @@ WHERE COUNT(customers_id) &gt; 1
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/树/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/树/" itemprop="url" rel="index">
                     <span itemprop="name">树</span>
                   </a>
                 </span>
@@ -1094,143 +1127,76 @@ WHERE COUNT(customers_id) &gt; 1
       
         
           
-            <h4 id="两个结点的最近祖先？（一个节点可以是它自己的祖先）"><a href="#两个结点的最近祖先？（一个节点可以是它自己的祖先）" class="headerlink" title="两个结点的最近祖先？（一个节点可以是它自己的祖先）"></a>两个结点的最近祖先？（一个节点可以是它自己的祖先）</h4><pre><code>public class CommonAncestor {
+            <h4 id="两个结点的最近祖先？（一个节点可以是它自己的祖先）"><a href="#两个结点的最近祖先？（一个节点可以是它自己的祖先）" class="headerlink" title="两个结点的最近祖先？（一个节点可以是它自己的祖先）"></a>两个结点的最近祖先？（一个节点可以是它自己的祖先）</h4><pre><code>   //递归解法
+    public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
+        if(pRoot == null)
+            return null;
+        if(pRoot.data == node1 || pRoot.data == node2){
+            return pRoot;
+        }
+        BinaryTreeNode leftNode = findCommonAncestor1(pRoot.left,node1,node2);
+        BinaryTreeNode rightNode = findCommonAncestor1(pRoot.right,node1,node2);
 
-//树为二叉搜索树的情况，默认node1 node2已经存在树中
-public BinaryTreeNode BSTfindCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
+        //查找节点在左右子树
+        if(leftNode != null &amp;&amp; rightNode != null)
+            return pRoot;
 
-    if(pRoot.data &gt;= node1 &amp;&amp; pRoot.data &lt;= node2 || pRoot.data &lt;= node1 &amp;&amp; pRoot.data &gt;= node2)
-        return pRoot;
-    return BSTfindCommonAncestor1(pRoot.left,node1,node2) != null?
-    BSTfindCommonAncestor1(pRoot.left,node1,node2):BSTfindCommonAncestor1(pRoot.right,node1,node2);
-}
-
-//树为二叉搜索树的情况迭代解法
-public BinaryTreeNode IterativeBSTfindCommonAncestor(BinaryTreeNode pRoot,int node1,int node2){
-    while (pRoot != null){
-        if(pRoot.data &gt; node1 &amp;&amp; pRoot.data &gt; node2){
-            pRoot = pRoot.left;
-        }else if(pRoot.data &lt; node1 &amp;&amp; pRoot.data &lt; node2) {
-            pRoot = pRoot.right;
+        if(leftNode != null){
+            return leftNode;
         }else {
-            break;
+            return rightNode;
         }
-    }
-    return pRoot;
-}
 
-
-//树为普通二叉树递归解法（有bug即节点值在树中不存在）：默认节点都存在
-public BinaryTreeNode findCommonAncestor1(BinaryTreeNode pRoot,int node1,int node2){
-    if(pRoot == null)
-        return null;
-
-    if(pathIsExisted(pRoot.left,node1)){
-        if(pathIsExisted(pRoot.right,node2)) {
-            return pRoot;
-        }else//两个结点都在左子树中继续向下递归
-            return findCommonAncestor1(pRoot.left,node1,node2);
-    }else {
-        if(pathIsExisted(pRoot.left,node2))
-            return pRoot;
-        else//两个结点都在右子树中继续向下递归
-            return findCommonAncestor1(pRoot.right,node1,node2);
-    }
-}
-
-//修复bug的递归实现
-public BinaryTreeNode findCommonAncestor3(BinaryTreeNode pRoot,int node1,int node2){
-    if(pRoot == null)
-        return null;
-    BinaryTreeNode temp = null;
-    if(pRoot.data == node1) {
-        v1 = true;
-        temp = pRoot;//不直接return
-    }
-    if(pRoot.data == node2){
-        v2 = true;
-        temp = pRoot;
     }
 
-    BinaryTreeNode leftTargetNode = findCommonAncestor3(pRoot.left,node1,node2);
-    BinaryTreeNode rightTargetNode = findCommonAncestor3(pRoot.right,node1,node2);
 
-    if(temp != null){
-        return temp;
-    }
+    //树为普通二叉树非递归解法
+    public BinaryTreeNode findCommonAncestor2(BinaryTreeNode pRoot,int node1,int node2){
 
-    if(leftTargetNode!=null &amp;&amp; rightTargetNode!=null){
-        return pRoot;
-    }
-    return leftTargetNode != null?leftTargetNode:rightTargetNode;
-}
+        //list1和list2保存根节点到目标结点的路径
+        List&lt;BinaryTreeNode&gt; list1 = new ArrayList&lt;BinaryTreeNode&gt;();
+        boolean path1 = findPath(pRoot,node1,list1);
 
-//判断路径中是否存在指定结点的值
-public boolean pathIsExisted(BinaryTreeNode pRoot,int node){
+        List&lt;BinaryTreeNode&gt; list2 = new ArrayList&lt;BinaryTreeNode&gt;();
+        boolean path2 = findPath(pRoot,node2,list2);
 
-    if(pRoot == null)
-        return false;
-
-    if(pRoot.data == node)
-        return true;
-
-    boolean flag = pathIsExisted(pRoot.left,node);
-
-    //如果找到了就不用继续递归了
-    if(!flag){
-        flag = pathIsExisted(pRoot.right,node);
-    }
-
-    return flag;
-}
-
-//树为普通二叉树非递归解法
-public BinaryTreeNode findCommonAncestor2(BinaryTreeNode pRoot,int node1,int node2){
-
-    //list1和list2保存根节点到目标结点的路径
-    List&lt;BinaryTreeNode&gt; list1 = new ArrayList&lt;BinaryTreeNode&gt;();
-    boolean path1 = findPath(pRoot,node1,list1);
-
-    List&lt;BinaryTreeNode&gt; list2 = new ArrayList&lt;BinaryTreeNode&gt;();
-    boolean path2 = findPath(pRoot,node2,list2);
-
-    BinaryTreeNode ancestor = null;
-    if(!path1 || !path2){//某个节点不存在
-        return null;
-    }
-
-    int i = 0;
-    //找到两条路径岔开的那个位置结点，那么前一个结点就是最后一个公共路径上的结点，也就是最近的祖先
-    for(;i &lt; list1.size() &amp;&amp; i &lt; list2.size();i++){
-        if(list1.get(i) != list2.get(i)){
-            break;
+        BinaryTreeNode ancestor = null;
+        if(!path1 || !path2){//某个节点不存在
+            return null;
         }
-    }
-    return list1.get(i-1);
-}
 
-//保存包含指定节点路径结点的方法
-public boolean findPath(BinaryTreeNode pRoot, int node, List&lt;BinaryTreeNode&gt; list){
-    if(pRoot ==  null)
-        return false;
-
-    list.add(pRoot);
-
-    if(pRoot.data == node)
-        return true;
-
-    boolean isExisted = findPath(pRoot.left,node,list);
-
-    if(!isExisted){
-        isExisted = findPath(pRoot.right,node,list);
+        int i = 0;
+        //找到两条路径岔开的那个位置结点，那么前一个结点就是最后一个公共路径上的结点，也就是最近的祖先
+        for(;i &lt; list1.size() &amp;&amp; i &lt; list2.size();i++){
+            if(list1.get(i) != list2.get(i)){
+                break;
+            }
+        }
+        return list1.get(i-1);
     }
 
-    if(!isExisted)
-        list.remove(list.size()-1);
+    //保存包含指定节点路径结点的方法
+    public boolean findPath(BinaryTreeNode pRoot, int node, List&lt;BinaryTreeNode&gt; list){
+        if(pRoot ==  null)
+            return false;
 
-    return isExisted;
-}
+        list.add(pRoot);
 
+        if(pRoot.data == node)
+            return true;
+
+        boolean isExisted = findPath(pRoot.left,node,list);
+
+        if(!isExisted){
+            isExisted = findPath(pRoot.right,node,list);
+        }
+
+        //左右节点都没找到删掉该元素
+        if(!isExisted)
+            list.remove(list.size()-1);
+
+        return isExisted;
+    } 
 
 public static void main(String[] args){
     BinaryTree tree = new BinaryTree();
@@ -1349,7 +1315,18 @@ public static void main(String[] args){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/策略类/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/策略类/" itemprop="url" rel="index">
                     <span itemprop="name">策略类</span>
                   </a>
                 </span>
@@ -1399,54 +1376,24 @@ public static void main(String[] args){
       
         
           
-            <h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public class UglyNumber {
+            <h4 id="求解指定索引的丑数？"><a href="#求解指定索引的丑数？" class="headerlink" title="求解指定索引的丑数？"></a>求解指定索引的丑数？</h4><pre><code>public int GetUglyNumber_Solution(int index) {
 
-public static int resolve(int index){
+    if(index &lt; 7)
+        return index;
+    int[] result = new int[index];
+    result[0] = 1;
+    int index2 = 0,index3 = 0,index5 = 0;
+    for(int i = 1;i &lt; index;i++){
+        result[i] = Math.min(Math.min(2*result[index2],3*result[index3]),5*result[index5]);
+        if(result[i] == result[index2]*2)
+            index2++;
+        if(result[i] == result[index3]*3)
+            index3++;
+        if(result[i] == result[index5]*5)
+            index5++;
 
-    if(index &lt;= 0){
-        throw new RuntimeException(&quot;参数非法&quot;);
     }
-
-    int[] uglyNumber = new int[index];
-
-    uglyNumber[0] = 1;
-    int indexOf2,indexOf3,indexOf5;
-    indexOf2 = indexOf3 = indexOf5 = 0;
-
-    int uglyNumberIndex = 1;
-
-    while (uglyNumberIndex &lt; index){
-        int min = Min(uglyNumber[indexOf2]*2,uglyNumber[indexOf3]*3,uglyNumber[indexOf5]*5);
-        uglyNumber[uglyNumberIndex] = min;
-
-        //uglyNumber[uglyNumberIndex]代表的是目前数组中最大的丑数
-        while (uglyNumber[indexOf2]*2 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf2++;
-        }
-
-        //下次的uglyNumber[indexOf3]肯定就大于Max uglyNumber
-        while (uglyNumber[indexOf3]*3 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf3++;
-        }
-
-        while (uglyNumber[indexOf5]*5 &lt;= uglyNumber[uglyNumberIndex]){
-            indexOf5++;
-        }
-
-        uglyNumberIndex++;
-    }
-    return uglyNumber[index-1];
-}
-
-
-private static int Min(int i, int j, int k) {
-    int min;
-    return (min = i &lt; j ? i : j) &lt; k ? min : k;
-}
-
-public static void main(String[] args){
-    System.out.println(UglyNumber.resolve(100));
-}
+    return result[index-1];
 }
 </code></pre>
           
@@ -1550,7 +1497,18 @@ public static void main(String[] args){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数组/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/数组/" itemprop="url" rel="index">
                     <span itemprop="name">数组</span>
                   </a>
                 </span>
@@ -1712,164 +1670,6 @@ public static void main(String[] args){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/09/02/EffectiveJava笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/02/EffectiveJava笔记/" itemprop="url">Java笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T15:34:14+08:00">
-                2018-09-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java语言基础/" itemprop="url" rel="index">
-                    <span itemprop="name">java语言基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/09/02/EffectiveJava笔记/" class="leancloud_visitors" data-flag-title="Java笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.有时可以用静态工厂方法来代替构造器。</p>
-<p>2.带有私有构造函数的类不能被继承。</p>
-<p>3.如果把那些不会修改的对象放在方法里面的话，要是频繁调用这个方法就会每次创建多余的对象,一种好的方法是在 static{…….} 代码块中初始化这些对象。</p>
-<p>4.如果创建对象的代价非常高，那么此时可以创建对象池，目的是为了重用对象，通常情况下重用对象付出的代价要高于创建对象付出的代价。</p>
-<p>5.为什么静态方法只能访问静态域？</p>
-<pre><code>静态域是属于类的，程序在进行编译的时候就会加载到虚拟机内存的方法区，直到程序退出都会一直存在，而非静态域是和对象挂钩的，需要 new 一个对象，实例域才会在堆中分配内存，对象都还没有怎么能访问非静态域呢？
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/27/最长不含重复字符的子字符串/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1924,7 +1724,18 @@ public static void main(String[] args){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
                     <span itemprop="name">动态规划</span>
                   </a>
                 </span>
@@ -1974,66 +1785,29 @@ public static void main(String[] args){
       
         
           
-            <h4 id="最长不含重复字符的子字符串？"><a href="#最长不含重复字符的子字符串？" class="headerlink" title="最长不含重复字符的子字符串？"></a>最长不含重复字符的子字符串？</h4><pre><code>public class MaxDistinctSubString {
+            <h4 id="最长不含重复字符的子字符串？"><a href="#最长不含重复字符的子字符串？" class="headerlink" title="最长不含重复字符的子字符串？"></a>最长不含重复字符的子字符串？</h4><pre><code>//优化方法
+public static String optFindDistinctStr(String str){
+    int[] assit = new int[128];
+    int startIndex,substrStartIndex,maxLen,curLen;
+    startIndex = 0;
+    substrStartIndex = 0;
+    maxLen = 0;
+    curLen = 0;
+    for(int i = 0;i &lt; str.length();i++){
+        startIndex = Math.max(assit[str.charAt(i)],startIndex);
 
-//返回字符串长度
-public static String resolve(String str,int length){
-
-    if(str == null || length &lt; 0){
-        throw new RuntimeException(&quot;参数非法&quot;);
-    }
-
-    int distance = 0;
-    int currentLen = 0;
-    int maxLen = 0;
-
-    StringBuffer sb = new StringBuffer();
-
-    //用来存放字符在字符串中的最近访问的index
-    int[] judgeExisted = new int[256];
-    for(int j = 0;j &lt; judgeExisted.length;j++){
-        judgeExisted[j] = -1;
-    }
-
-     int startIndex = 0;
-
-    for(int i = 0;i &lt; length;i++){
-
-        //所有字符0~255
-        int index =str.charAt(i);
-
-        //字符没出现过
-        if(judgeExisted[index] &lt; 0){
-            currentLen = currentLen + 1;
-        }else {
-            distance = i - judgeExisted[index];
-            if(distance &lt;= currentLen){//字符出现在子串的中间
-                currentLen = distance;
-            }else {//d &gt; currentLen
-                currentLen = currentLen + 1;
-            }
+        curLen = i - startIndex + 1;//跳过那个重复出现的数 从它的下一个开始
+        if(curLen &gt; maxLen){
+            maxLen = curLen;
+            substrStartIndex = startIndex;
         }
-
-        //更新出现字符的坐标
-        judgeExisted[index] = i;
-
-        if(currentLen &gt; maxLen){
-            maxLen = currentLen;
-            //如果出现了重复的字符的话,i会一直前进但maxLen不会变,所以满足条件时,startIndex已经跳过了出现重复的字符。
-            startIndex = i + 1 - maxLen;
-        }
+        //数组初始化都为0,辅助数组的坐标为原位置的index + 1;
+        assit[str.charAt(i)] = i + 1;
     }
-
-
-    return str.substring(startIndex,startIndex + maxLen);
+    return str.substring(substrStartIndex,substrStartIndex + maxLen);
 }
-
-public static void main(String[] args){
-    String str = &quot;arabcacfrg&quot;;
-    System.out.println(MaxDistinctSubString.resolve(str,str.length()));
 }
-</code></pre><p>}</p>
-
+</code></pre>
           
         
       
@@ -2135,7 +1909,18 @@ public static void main(String[] args){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
                     <span itemprop="name">动态规划</span>
                   </a>
                 </span>
@@ -2187,37 +1972,32 @@ public static void main(String[] args){
           
             <h4 id="连续子数组的最大和"><a href="#连续子数组的最大和" class="headerlink" title="连续子数组的最大和?"></a>连续子数组的最大和?</h4><pre><code>public class MaxSubArraySum {
 
-public static int resolve(int[] array,int length){
+    public static int resolve(int[] array){
 
-    if(array == null || length &lt; 0){
-        throw new RuntimeException(&quot;参数不合法&quot;);
+        if(array == null || array.length == 0)
+            return 0;
+
+        int sum = array[0];
+        int maxSum = array[0];
+        for(int i = 1;i &lt; array.length;i++){
+           if(sum &gt; 0){
+               sum += array[i];
+           }else {
+               //不是sum=0开始,无法解决全是负数的情况
+               sum = array[i];
+           }
+           if(sum &gt; maxSum){
+               maxSum = sum;
+           }
+
+        }
+        return maxSum;
     }
 
-    int maxSub = 0;
-    int currentSum = 0;
-
-    //循环的思想解决动态规划问题
-    for(int i = 0;i&lt;length;i++){
-        //如果之前的和小于0的话,那么当前和应该从下一个数开始
-        if(currentSum &lt;= 0){
-            currentSum = array[i];
-        }else {
-            currentSum = currentSum + array[i];
-        }
-
-        //判断子数组的最大值
-        if(currentSum &gt; maxSub){
-            maxSub = currentSum;
-        }
+    public static void main(String[] args){
+        int[] arr = {-4,-1,-7};//返回结果为-4 错误答案
+        System.out.println(MaxSubArraySum.resolve(arr));
     }
-
-    return maxSub;
-}
-
-public static void main(String[] args){
-    int[] arr = {-1,2,3,-4,5,6,-7,9};
-    System.out.println(MaxSubArraySum.resolve(arr,arr.length));
-}
 }
 </code></pre>
           
@@ -2321,7 +2101,18 @@ public static void main(String[] args){
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/动态规划/" itemprop="url" rel="index">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
                     <span itemprop="name">动态规划</span>
                   </a>
                 </span>
@@ -2371,49 +2162,255 @@ public static void main(String[] args){
       
         
           
-            <h4 id="1到n的数组中和为m的所有组合？"><a href="#1到n的数组中和为m的所有组合？" class="headerlink" title="1到n的数组中和为m的所有组合？"></a>1到n的数组中和为m的所有组合？</h4><pre><code>public class SumOfKnumber {
+            <h4 id="1到n的数组中和为m的所有组合？"><a href="#1到n的数组中和为m的所有组合？" class="headerlink" title="1到n的数组中和为m的所有组合？"></a>1到n的数组中和为m的所有组合？</h4><pre><code>/**
+     * @description:
+     * 输入：5,6               输入：5，6
+     * 输出：                  正确输出：
+     *      1 1 1 1 1 1            1 1 1 1 1 1
+     *      1 1 1 1 2              1 1 1 1 2
+     *      1 1 1 3                1 1 1 3
+     *      1 1 2 2                1 1 2 2
+     *      1 1 4                  1 1 4
+     *      1 5                    1 2 3
+     *      2 1 1 1 1 重复了       1 5
+     *      2 1 1 2                2 2 2
+     *      2 1 3                  2 4
+     *      2 2 1 1                3 3
+     *      2 2 2
+     *      2 3 1
+     *      2 4
+     *      ....
+     *
+     * @author: Xu chunfa
+     * @create: 2019-04-07 10:46
+     **/
+public class CombineNM {
+    private ArrayList&lt;Integer&gt; path = new ArrayList&lt;Integer&gt;();
+    public void findPath(int num,int sum,int i){
+        if(sum &lt; 0)
+            return;
 
-public static void findKNumber(int sum, int n, int[] combine,int index){
+        if(sum == 0){
+            for(int j = 0;j &lt; path.size();j++){
+                System.out.print(path.get(j) + &quot; &quot;);
+            }
+            System.out.println();
+        }
 
-    //index 最大取到 n
-    if(index &gt; n || index &gt; sum)
-        return;
-
-    if(index == sum){
-        combine[index-1] = index;
-        printResult(combine);
-
-        //还可以作为其他组合的元素
-        combine[index-1] = 0;
-        return;
-    }
-
-    //选择i
-    combine[index-1] = index;
-    findKNumber(sum-index, n, combine, index+1);
-
-    //i被放弃
-    combine[index-1] = 0;
-    findKNumber(sum,n,combine,index+1);
-
-
-}
-
-private static void printResult(int[] combine) {
-
-    for(int i = 0;i &lt; combine.length;i++){
-        if(combine[i] != 0){
-            System.out.print(combine[i] + &quot; &quot;);
+        while (i &lt; num &amp;&amp; sum - i - 1 &gt;= 0){
+            path.add(i+1);
+            findPath(num,sum-i-1,i);
+            i++;
+            path.remove(path.size()-1);
         }
     }
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
 
-    System.out.println();
-}
+    
 
-public static void main(String[] args){
-    int[] combine = new int[7];
-    SumOfKnumber.findKNumber(10,7,combine,1);
-}
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/24/数组中和为m的所有组合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/24/数组中和为m的所有组合/" itemprop="url">数组中和为m的所有组合</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T18:09:40+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/动态规划/" itemprop="url" rel="index">
+                    <span itemprop="name">动态规划</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/24/数组中和为m的所有组合/" class="leancloud_visitors" data-flag-title="数组中和为m的所有组合">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>/**
+ * @description:
+ *
+ * 输入：[1,2,4] sum=4
+ *
+ * 输出：[1,1,1,1]
+ *      [1,1,2]
+ *      [2,2]
+ *
+ * @author: Xu chunfa
+ * @create: 2019-04-06 21:25
+ **/
+public class CombineSum {
+
+    private ArrayList&lt;Integer&gt; combine = new ArrayList&lt;&gt;();
+    private ArrayList&lt;ArrayList&lt;Integer&gt;&gt; allCombine = new ArrayList&lt;&gt;();
+
+
+    public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; findCombination(int[] array,int sum,int i){
+        if(sum &lt; 0){
+            return allCombine;
+        }
+
+        if(sum == 0){
+            allCombine.add(new ArrayList&lt;&gt;(combine));
+            return allCombine;
+        }
+
+        while(i &lt; array.length &amp;&amp; sum - array[i] &gt;= 0){
+            combine.add(array[i]);
+            //findCombination(array,sum-array[i],i+1);
+            findCombination(array,sum-array[i],i);
+            i++;
+            combine.remove(combine.size()-1);
+        }
+        return allCombine;
+    }
+
+    @Test
+    public void test(){
+        int[] a = {1,4,4,2,6};
+        Arrays.sort(a);
+        System.out.println(findCombination(a,10,0).toString());
+    }
 }
 </code></pre>
           
@@ -2454,7 +2451,7 @@ public static void main(String[] args){
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2504,7 +2501,7 @@ public static void main(String[] args){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">130</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2515,7 +2512,7 @@ public static void main(String[] args){
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
