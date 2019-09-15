@@ -286,535 +286,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/线程池/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xu chunfa">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Flying in the ocean of knowledge">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/04/线程池/" itemprop="url">线程池</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T20:12:47+08:00">
-                2018-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/" itemprop="url" rel="index">
-                    <span itemprop="name">面试总结</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试总结/Java并发编程/" itemprop="url" rel="index">
-                    <span itemprop="name">Java并发编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/08/04/线程池/" class="leancloud_visitors" data-flag-title="线程池">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="为什么要使用线程池？"><a href="#为什么要使用线程池？" class="headerlink" title="为什么要使用线程池？"></a>为什么要使用线程池？</h4><p>1.降低资源消耗。重复利用已经创建的线程。因为线程的创建和销毁是需要消耗java虚拟机内存的。</p>
-<p>2.提高响应速度。任务不需要等待线程的创建(当然是在线程池中的线程还没完全被消耗完的情况下)</p>
-<p>3.提高线程的可管理性。</p>
-<h4 id="线程池执行流程？"><a href="#线程池执行流程？" class="headerlink" title="线程池执行流程？"></a>线程池执行流程？</h4><p><img src="/images/ThreadPool.jpg" alt=""></p>
-<h4 id="线程池中线程创建的时机？"><a href="#线程池中线程创建的时机？" class="headerlink" title="线程池中线程创建的时机？"></a>线程池中线程创建的时机？</h4><pre><code>1.判断核心线程池是否已满，否则提交任务的时候创建新的线程，并由这个线程执行这个任务，是则进入下步；
-
-2.判断工作队列是否已满，否的话任务存储在该工作队列，等待线程池中的线程通过while循环从队列里面
-拉取任务，是则进入下步；
-
-3.判断线程池是否已满，否的话就创建新线程执行任务，并由这个线程执行这个任务，是则进入下步；
-
-4.交给饱和策略处理；
-</code></pre><h4 id="任务在执行的过程中发生了异常怎么处理？"><a href="#任务在执行的过程中发生了异常怎么处理？" class="headerlink" title="任务在执行的过程中发生了异常怎么处理？"></a>任务在执行的过程中发生了异常怎么处理？</h4><pre><code>某个任务执行时出现异常，那么执行任务的线程将会关闭（移除），然后启动一个新的线程来代替它，
-新的线程也会不断的从队列里面获取任务执行。
-</code></pre><p>解决办法：</p>
-<pre><code>在执行业务代码时，自己try...catch捕获异常。
-</code></pre><p>看一下源码理解：</p>
-<pre><code>private void processWorkerExit(Worker w, boolean completedAbruptly) {
-    if (completedAbruptly) //执行任务时出现异常
-        decrementWorkerCount();
-
-    final ReentrantLock mainLock = this.mainLock;
-    mainLock.lock();
-    try {
-        completedTaskCount += w.completedTasks;
-        workers.remove(w);//移除出现异常的线程
-    } finally {
-        mainLock.unlock();
-    }
-
-    tryTerminate();
-
-    int c = ctl.get();
-    if (runStateLessThan(c, STOP)) {
-        if (!completedAbruptly) {
-            int min = allowCoreThreadTimeOut ? 0 : corePoolSize;
-            if (min == 0 &amp;&amp; ! workQueue.isEmpty())
-                min = 1;
-            if (workerCountOf(c) &gt;= min)//例如如果有空闲线程，就不用创建新的线程来代替
-                return; // replacement not needed
-        }
-        addWorker(null, false);//创建新的线程代替出现异常的线程
-    }
-}
-</code></pre><h4 id="Worker加锁的原因？"><a href="#Worker加锁的原因？" class="headerlink" title="Worker加锁的原因？"></a>Worker加锁的原因？</h4><pre><code>因为外部有可能在线程池里面调用了其他方法中断Worker,为了保证任务完整被执行，必须在获得锁的情况下
-才能中断Worker.
-</code></pre><h4 id="线程池的创建？"><a href="#线程池的创建？" class="headerlink" title="线程池的创建？"></a>线程池的创建？</h4><p><strong>参数：</strong></p>
-<p>在ThreadPoolExecutor类中提供了四个构造方法：</p>
-<pre><code>//ThreadPoolExecutor.java
-//
-public class ThreadPoolExecutor extends AbstractExecutorService {
-.....
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue);
-
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory);
-
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-        BlockingQueue&lt;Runnable&gt; workQueue,RejectedExecutionHandler handler);
-
-//前三个构造器都调用第四个构造器进行初始化
-public ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
-    BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler);
-...
-</code></pre><p>}</p>
-<p>1.corePoolSize:线程池中线程的基本数量。（工人）</p>
-<p>2.maxinumPoolsize：任务队列满了之后，满足条件：当前线程数 &lt; maxinumPoolsize 又会创建线程。且：<br>当前线程数 + 新创建的线程数 &lt;= maxinumPoolsize（工人+临时工）</p>
-<p>3.workerQueue:用来存放任务的队列。是通过调用方法execute()来实现的。</p>
-<pre><code>类型：BlockingQueue&lt;Runnable&gt;;
-</code></pre><p>4.keepAliveTime:工作线程空闲时的存活时间。默认情况下，只有当线程池中的线程数大于corePoolSize时，keepAliveTime才会起作用。如果设置allowCoreThreadTimeOut为true那么这个参数对所有线程有效；</p>
-<p>5.handler：表示当拒绝处理任务时的策略。</p>
-<p>6.poolSize：线程池中当前的线程数。</p>
-<p><strong>拒绝策略(队列和线程池满了)：</strong></p>
-<pre><code>1.AbortPolicy:默认策略，直接抛出异常RejectedExecutionException；
-
-2.DiscardPolicy:不处理直接抛弃；
-
-3.DiscardOldestPolicy:如果线程池没有关闭，丢弃队列最前面的任务，执行当前任务；
-
-    eg:e.getQueue().poll();
-
-4.CallerRunsPolicy:如果线程池没有关闭，由调用线程（例如main线程）执行任务；
-</code></pre><p><strong>创建线程池的方式：(Executors框架提供)</strong></p>
-<pre><code>1.newFixedThreadPool：创建固定数量的线程池。默认使用的是无界队列，maximumPoolSize和keepAliveTime参数无效，不会拒绝任务。
-适合于负载较重的服务器。
-
-    return new ThreadPoolExecutor(nThreads, nThreads,
-                                  0L, TimeUnit.MILLISECONDS,
-                        new LinkedBlockingQueue&lt;Runnable&gt;());
-
-2.newCachedThreadPool：没有数量限制的线程池。
-                       适合处理生存期短的大量异步任务或负载较轻、空闲线程等待执行任务超过60s则销毁线程。
-
-    1.return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                                  60L, TimeUnit.SECONDS,
-                      new SynchronousQueue&lt;Runnable&gt;());
-
-    2.SynchronousQueue&lt;Runnable&gt;阻塞队列没有存储空间，每来一个任务必须找到一个线程来处理，
-    如果此时maxPoolSize=0的话会创建一个新线程执行任务；即没有空闲线程接收任务时进入下面这个分支：
-
-        ......
-        else if (!addWorker(command, false))
-            reject(command);
-
-
-
-3.newSingleThreadExecutor：单线程的线程池，默认的使用无界队列。
-任务在线程池里顺序执行、如果当前线程终止会创建一个新线程继续执行任务、不能配置去重新加入线程。
-
-    return new FinalizableDelegatedExecutorService
-        (new ThreadPoolExecutor(1, 1,
-                                0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue&lt;Runnable&gt;()));
-
-4.newSingleThreadScheduledExecutor和newScheduledThreadPool：继承ThreadExecutor
-实现ScheduledExecutorService接口、执行周期任务、定期执行命令
-
-super(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS,
-          new DelayedWorkQueue());
-
-DelayedWorkerQueue是可以提供延迟的阻塞队列，保存的是延迟期到了以后的元素，按延迟时间从短到长排的序；
-
-执行步骤：
-
-    1.从DelayedWorkQueue获取到期的任务，即当前时间大于ScheduledFutureTask的time参数；
-
-    2.执行ScheduledFutureTask任务；
-
-    3.修改下次执行ScheduledFutureTask任务的time;
-
-    4.添加任务到DelayedWorkQueue，会按time顺序排好队，底层原理PriorQueue.
-</code></pre><p><strong>newSingleThreadScheduledExecutor和newFixedThreadPool(1)？</strong></p>
-<pre><code>1.前者中任务被顺序执行，而且不能重新配置corePoolSize的大小；
-
-2.两者线程执行任务发生异常时，都会重新创建一个新的线程来执行任务；
-</code></pre><p><strong>任务提交到线程池：</strong></p>
-<pre><code>1.execute:提交不需要返回值的任务；
-
-2.submit:提交需要返回值的任务；
-</code></pre><p><strong>关闭线程池：</strong></p>
-<pre><code>1.shutdown:SHUTDOWN状态，interrupt没有执行任务的线程；
-
-2.shutdownNow:STOP状态，停止所有线程然后进行关闭；
-</code></pre><h4 id="ThreadExecutor详解"><a href="#ThreadExecutor详解" class="headerlink" title="ThreadExecutor详解"></a>ThreadExecutor详解</h4><p>核心类图：</p>
-<p><img src="/images/线程池类图.PNG" alt=""></p>
-<p>ThreadPoolExecutor源码解析：</p>
-<pre><code>1.将Integer32位分成两部分，高3位表示线程池的状态，低29位表示线程的最大数量；
-
-2.线程池的状态：
-
-    2.1 RUNNING:接收新的任务，处理等待队列中的任务；
-
-    2.2 SHUTDOWN:不接收新的任务，但会处理等待队列中的任务（调用shutdown方法）；
-
-    2.3 STOP:不接收新的任务,不处理等待队列中的任务，interrupt正在执行任务的线程（调用shutdownNow方法）；
-
-    2.4 TIDYING:所有的任务都销毁了，线程池被清空；
-
-    2.5 TERMINATED：terminated()方法执行完成后的状态；
-
-3.状态大小的比较
-
-    RUNNING &lt; SHUTDOWN &lt; STOP &lt; TIDYING &lt; TERMINATED
-</code></pre><p>源码解析：</p>
-<p>ThreadPoolExecutor的execute()方法:</p>
-<pre><code>//ThreadPoolExecutor.java
-public void execute(Runnable command) {
-    if (command == null)
-        throw new NullPointerException();
-
-    int c = ctl.get();
-    if (workerCountOf(c) &lt; corePoolSize) {//当前线程数小于核心线程数
-        if (addWorker(command, true))
-            return;
-        c = ctl.get();
-    }
-
-    //线程数大于corePoolSize或者addWorker失败，会执行到这
-    /////isRunning的源码
-
-        private static boolean isRunning(int c) {
-            return c &lt; SHUTDOWN;
-        }
-    /////
-
-    if (isRunning(c) &amp;&amp; workQueue.offer(command)) {
-        int recheck = ctl.get();
-
-        if (! isRunning(recheck) &amp;&amp; remove(command))
-            reject(command)；//线程池不处于Running状态，移除已经入队的任务
-        else if (workerCountOf(recheck) == 0)
-            //任务提交到了队列，但线程数为0，开启新的线程
-            addWorker(null, false);
-    }
-
-    //执行到这，说明任务队列已满，以maximumPoolSize为界创建线程
-    else if (!addWorker(command, false))
-        reject(command);//线程数大于maximumPoolSize时执行任务拒绝策略
-}
-</code></pre><p>创建线程（addWorker）:</p>
-<pre><code>private boolean addWorker(Runnable firstTask, boolean core) {
-    retry:
-    for (;;) {
-        int c = ctl.get();
-        int rs = runStateOf(c);
-
-          //当线程池状态为SHUTDOWM、STOP、TIDYING、TERMINATED时
-        //且满足：
-            1.rs != SHUTDOWN
-            2.firstTask != null
-            3.workQueue.isEmpty()队列为空
-
-        //主要就是当线程池关闭时，提交任务会失败
-        //rs == SHUTDOWN &amp;&amp; firstTask = null &amp;! workQueue.isEmpty()仍然成功
-        if (rs &gt;= SHUTDOWN &amp;&amp;
-            ! (rs == SHUTDOWN &amp;&amp;
-               firstTask == null &amp;&amp;
-               ! workQueue.isEmpty()))
-            return false;
-
-        for (;;) {
-            int wc = workerCountOf(c);
-            if (wc &gt;= CAPACITY ||
-                wc &gt;= (core ? corePoolSize : maximumPoolSize))
-                return false;
-            if (compareAndIncrementWorkerCount(c))
-                break retry;//条件校验工作完毕，准备创建线程
-
-            //执行到这说明CAS失败，有其他线程创建完毕
-            c = ctl.get();
-            if (runStateOf(c) != rs)
-                continue retry;//状态变更需要回到最外层的for循环
-        }
-    }
-
-    //开始创建线程
-    boolean workerStarted = false;
-    boolean workerAdded = false;
-    Worker w = null;
-    try {
-        w = new Worker(firstTask);
-        final Thread t = w.thread;
-        if (t != null) {
-            final ReentrantLock mainLock = this.mainLock;
-            mainLock.lock();
-            try {
-
-                int rs = runStateOf(ctl.get());
-                //进入if的条件
-                    1.线程池处于RUUNING状态；
-                    2.线程池处于SHUTDOWN状态，且未提交任务；
-
-                if (rs &lt; SHUTDOWN ||
-                    (rs == SHUTDOWN &amp;&amp; firstTask == null)) {
-                    if (t.isAlive()) 
-                        throw new IllegalThreadStateException();
-                    workers.add(w);
-                    int s = workers.size();
-                    if (s &gt; largestPoolSize)//记录线程池线程曾经达到的最大数量
-                        largestPoolSize = s;
-                    workerAdded = true;
-                }
-            } finally {
-                mainLock.unlock();
-            }
-            if (workerAdded) {
-                t.start();//启动线程，真正执行的是Worker中的run方法
-                workerStarted = true;
-            }
-        }
-    } finally {
-        if (! workerStarted)
-            addWorkerFailed(w);//失败后的处理，移除线程以及workCount的还原
-    }
-    return workerStarted;//返回添加线程是否成功的布尔值
-}
-</code></pre><p>启动线程时调用Worker的run方法：</p>
-<pre><code>public void run() {
-    runWorker(this);
-}
-
-final void runWorker(Worker w) {
-    Thread wt = Thread.currentThread();
-    Runnable task = w.firstTask;
-    w.firstTask = null;
-    w.unlock(); // allow interrupts
-    boolean completedAbruptly = true;
-    try {
-        //执行指定的firstTask或者从任务队列中取任务执行
-        //while循环一直获取任务执行
-        while (task != null || (task = getTask()) != null) {
-            w.lock();
-            //STOP状态中断线程
-            if ((runStateAtLeast(ctl.get(), STOP) ||
-                 (Thread.interrupted() &amp;&amp;
-                  runStateAtLeast(ctl.get(), STOP))) &amp;&amp;
-                !wt.isInterrupted())
-                wt.interrupt();
-            try {
-                beforeExecute(wt, task);
-                Throwable thrown = null;
-                try {
-                    task.run();//真正执行任务
-                } catch (RuntimeException x) {
-                    thrown = x; throw x;
-                } catch (Error x) {
-                    thrown = x; throw x;
-                } catch (Throwable x) {
-                    thrown = x; throw new Error(x);
-                } finally {
-                    afterExecute(task, thrown);
-                }
-            } finally {
-                task = null;
-                w.completedTasks++;
-                w.unlock();
-            }
-        }
-        completedAbruptly = false;
-    } finally {
-        processWorkerExit(w, completedAbruptly);
-    }
-}
-</code></pre><p>看一下获取队列任务的源码：</p>
-<pre><code>private Runnable getTask() {
-    boolean timedOut = false; // Did the last poll() time out?
-
-    for (;;) {
-        int c = ctl.get();
-        int rs = runStateOf(c);
-
-        //两种情况：
-            1.rs &gt;= STOP
-            2.rs = SHUTDOWN &amp;&amp; workQueue.isEmpty()
-            补充：
-                上面说到过，如果rs = SHUTDOWN &amp;&amp; ！workQueue.isEmpty()仍然会
-            执行完队列中的任务；
-        if (rs &gt;= SHUTDOWN &amp;&amp; (rs &gt;= STOP || workQueue.isEmpty())) {
-            decrementWorkerCount();
-            return null;
-        }
-
-        int wc = workerCountOf(c);
-        boolean timed = allowCoreThreadTimeOut || wc &gt; corePoolSize;
-
-        if ((wc &gt; maximumPoolSize || (timed &amp;&amp; timedOut))
-            &amp;&amp; (wc &gt; 1 || workQueue.isEmpty())) {
-            if (compareAndDecrementWorkerCount(c))
-                return null;
-            continue;
-        }
-
-        //wc &lt;= maximumPoolSize &amp;&amp; 没有超时
-        try {
-            Runnable r = timed ?
-                workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) :
-                workQueue.take();//一旦列队为空，线程就会发生阻塞
-            if (r != null)
-                return r;//返回任务
-            timedOut = true;
-        } catch (InterruptedException retry) {
-            timedOut = false;
-        }
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/08/04/基数排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2732,6 +2203,247 @@ public int findMin(int [] array) {
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.xuchunfa.cn/2018/07/27/斐波拉契数列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xu chunfa">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/pig.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flying in the ocean of knowledge">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/27/斐波拉契数列/" itemprop="url">斐波拉契数列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-27T19:43:48+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/策略类/" itemprop="url" rel="index">
+                    <span itemprop="name">策略类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/27/斐波拉契数列/" class="leancloud_visitors" data-flag-title="斐波拉契数列">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="斐波拉契数列？"><a href="#斐波拉契数列？" class="headerlink" title="斐波拉契数列？"></a>斐波拉契数列？</h4><pre><code>public class Fibonacci {
+
+//效率差
+public static long fibonacci1(int n){
+
+    if(n == 0)
+        return 0;
+
+    if(n == 1)
+        return 1;
+
+    return fibonacci1(n-1) + fibonacci1(n-2);
+
+}
+
+public static long fibonacci(int n){
+
+    if(n == 0)
+        return 0;
+
+    if(n == 1)
+        return 1;
+
+    long one = 0;
+    long two = 1;
+    long three = 0;
+    for(int i = 2;i&lt;=n;i++){
+        three = one + two;
+        one = two;
+        two = three;
+    }
+
+    return three;
+}
+
+public static void main(String[] args){
+    System.out.println(Fibonacci.fibonacci1(50));
+}
+}
+</code></pre><h4 id="青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？"><a href="#青蛙可以跳一级台阶和二级台阶-跳上-n-级台阶共有多少种跳法？" class="headerlink" title="青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？"></a>青蛙可以跳一级台阶和二级台阶,跳上 n 级台阶共有多少种跳法？</h4><pre><code>public class FrogStep {
+
+public static long solution(int n) {
+
+    if (n == 0) {
+        throw new RuntimeException(&quot;输入自然数&quot;);
+    }
+
+    if (n == 1) {
+        return 1;
+    }
+
+    if (n == 2) {
+        return 2;
+    }
+
+    long one = 1;
+    long two = 2;
+    long three = 0;
+    for (int i = 3; i &lt;= n; i++) {
+        three = one + two;
+        one = two;
+        two = three;
+    }
+
+    return three;
+}
+
+public static void main(String[] args){
+    System.out.println(FrogStep.solution(100));
+}
+}
+</code></pre><h4 id="一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？"><a href="#一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？" class="headerlink" title="一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？"></a>一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法？</h4><pre><code>//除最后一个台阶必跳之外，其余所有台阶都有跳和不跳两种选择，故为2的n-1次方
+public int JumpFloorII(int target) {
+    if(target &lt;= 0){
+        return -1;
+    }
+    return 1&lt;&lt;--target;
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -2786,7 +2498,7 @@ public int findMin(int [] array) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">118</span>
+                  <span class="site-state-item-count">116</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2797,7 +2509,7 @@ public int findMin(int [] array) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
